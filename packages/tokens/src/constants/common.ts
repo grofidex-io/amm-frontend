@@ -3,7 +3,7 @@ import { ERC20Token } from '@pancakeswap/sdk'
 
 export const CAKE_MAINNET = new ERC20Token(
   ChainId.BSC,
-  '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
+  '0x6d7ce523d59C59De27BB755A1981f4043e79C70E',
   18,
   'CAKE',
   'PancakeSwap Token',
@@ -26,6 +26,15 @@ export const USDC_BSC = new ERC20Token(
   'USDC',
   'Binance-Peg USD Coin',
   'https://www.centre.io/usdc',
+)
+
+export const USDC_U2U = new ERC20Token(
+  ChainId.U2U_NEBULAS,
+  '0x9a0359e8432C856e1EEfc6F2E242b5dfEd41B3ec',
+  18,
+  'USDC',
+  'USD Coin',
+  '',
 )
 
 export const USDC_TESTNET = new ERC20Token(
@@ -236,9 +245,18 @@ export const CAKE = {
     'PancakeSwap Token',
     'https://pancakeswap.finance/',
   ),
+  [ChainId.U2U_NEBULAS]: new ERC20Token(
+    ChainId.U2U_NEBULAS,
+    '0x6d7ce523d59C59De27BB755A1981f4043e79C70E',
+    18,
+    'CAKE',
+    'Cake Token',
+    '',
+  ),
 }
 
 export const USDC = {
+  [ChainId.U2U_NEBULAS]: USDC_U2U,
   [ChainId.BSC]: USDC_BSC,
   [ChainId.BSC_TESTNET]: USDC_TESTNET,
   [ChainId.ETHEREUM]: USDC_ETH,
@@ -402,4 +420,5 @@ export const STABLE_COIN = {
   [ChainId.SEPOLIA]: USDC[ChainId.SEPOLIA],
   [ChainId.ARBITRUM_SEPOLIA]: USDC[ChainId.ARBITRUM_SEPOLIA],
   [ChainId.BASE_SEPOLIA]: USDC[ChainId.BASE_SEPOLIA],
+  [ChainId.U2U_NEBULAS]: USDC[ChainId.U2U_NEBULAS],
 } satisfies Record<ChainId, ERC20Token>

@@ -1,27 +1,27 @@
 import { ChainId } from '@pancakeswap/chains'
 import {
-  bsc,
-  bscTestnet,
-  goerli,
-  mainnet,
-  zkSync,
-  zkSyncTestnet,
-  polygonZkEvmTestnet,
-  polygonZkEvm,
-  lineaTestnet,
+  Chain,
   arbitrum,
   arbitrumGoerli,
   base,
   baseGoerli,
+  bsc,
+  bscTestnet,
+  goerli,
+  lineaTestnet,
+  mainnet,
+  polygonZkEvm,
+  polygonZkEvmTestnet,
   scrollSepolia as scrollSepolia_,
-  Chain,
+  zkSync,
+  zkSyncTestnet,
 } from 'viem/chains'
 
 const scrollSepolia = {
   ...scrollSepolia_,
   contracts: {
     multicall3: {
-      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+      address: '0x1F98415757620B543A52E61c46B32eB19261F984',
       blockCreated: 9473,
     },
   },
@@ -48,7 +48,7 @@ export const opbnbTestnet = {
   },
   contracts: {
     multicall3: {
-      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+      address: '0x1F98415757620B543A52E61c46B32eB19261F984',
       blockCreated: 3705108,
     },
   },
@@ -86,7 +86,7 @@ export const linea = {
   },
   contracts: {
     multicall3: {
-      address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+      address: '0x1F98415757620B543A52E61c46B32eB19261F984',
       blockCreated: 42,
     },
   },

@@ -3,6 +3,7 @@ import { Percent, Token, WNATIVE } from '@pancakeswap/sdk'
 import {
   BUSD,
   USDC,
+  USDC_U2U,
   USDT,
   WBTC_ETH,
   arbSepoliaTokens,
@@ -53,6 +54,7 @@ export const CHAIN_REFRESH_TIME = {
   [ChainId.SEPOLIA]: 12_000,
   [ChainId.BASE_SEPOLIA]: 6_000,
   [ChainId.ARBITRUM_SEPOLIA]: 6_000,
+  [ChainId.U2U_NEBULAS]: 6_000,
 } as const satisfies Record<ChainId, number>
 
 // used for display in the default list when adding liquidity
@@ -82,6 +84,7 @@ export const SUGGESTED_BASES: ChainTokenList = {
   [ChainId.SEPOLIA]: [scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth],
   [ChainId.ARBITRUM_SEPOLIA]: [arbSepoliaTokens.usdc, arbSepoliaTokens.weth],
   [ChainId.BASE_SEPOLIA]: [baseSepoliaTokens.usdc, baseSepoliaTokens.weth],
+  [ChainId.U2U_NEBULAS]: [WNATIVE[ChainId.U2U_NEBULAS], USDC_U2U],
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -106,6 +109,7 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [ChainId.SEPOLIA]: [scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth],
   [ChainId.ARBITRUM_SEPOLIA]: [arbSepoliaTokens.usdc, arbSepoliaTokens.weth],
   [ChainId.BASE_SEPOLIA]: [baseSepoliaTokens.usdc, baseSepoliaTokens.weth],
+  [ChainId.U2U_NEBULAS]: [WNATIVE[ChainId.U2U_NEBULAS], USDC_U2U],
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
@@ -134,6 +138,7 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
   [ChainId.BASE]: [[baseTokens.usdc, baseTokens.weth]],
   [ChainId.BASE_TESTNET]: [[baseTestnetTokens.usdc, baseTestnetTokens.weth]],
   [ChainId.SCROLL_SEPOLIA]: [[scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth]],
+  [ChainId.U2U_NEBULAS]: [[WNATIVE[ChainId.U2U_NEBULAS], USDC_U2U]],
 }
 
 export const BIG_INT_ZERO = 0n
@@ -164,7 +169,7 @@ export const INPUT_FRACTION_AFTER_FEE = ONE_HUNDRED_PERCENT.subtract(BASE_FEE)
 // BNB
 export const DEFAULT_INPUT_CURRENCY = 'BNB'
 // CAKE
-export const DEFAULT_OUTPUT_CURRENCY = '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82'
+export const DEFAULT_OUTPUT_CURRENCY = '0x6d7ce523d59C59De27BB755A1981f4043e79C70E'
 
 // Handler string is passed to Gelato to use PCS router
 export const GELATO_HANDLER = 'pancakeswap'

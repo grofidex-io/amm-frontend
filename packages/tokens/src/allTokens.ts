@@ -18,6 +18,7 @@ import { polygonZkEvmTokens } from './constants/polygonZkEVM'
 import { polygonZkEvmTestnetTokens } from './constants/polygonZkEVMTestnet'
 import { scrollSepoliaTokens } from './constants/scrollSepolia'
 import { sepoliaTokens } from './constants/sepolia'
+import { u2uNebulasTokens } from './constants/u2uNebulas'
 import { zksyncTokens } from './constants/zkSync'
 import { zkSyncTestnetTokens } from './constants/zkSyncTestnet'
 
@@ -42,4 +43,5 @@ export const allTokens = {
   [ChainId.SEPOLIA]: sepoliaTokens,
   [ChainId.ARBITRUM_SEPOLIA]: arbSepoliaTokens,
   [ChainId.BASE_SEPOLIA]: baseSepoliaTokens,
+  [ChainId.U2U_NEBULAS]: u2uNebulasTokens,
 }

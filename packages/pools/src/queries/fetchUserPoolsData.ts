@@ -1,11 +1,11 @@
 import { ChainId } from '@pancakeswap/chains'
 import BigNumber from 'bignumber.js'
-import uniq from 'lodash/uniq'
 import fromPairs from 'lodash/fromPairs'
-import { erc20ABI } from 'wagmi'
+import uniq from 'lodash/uniq'
 import { Address } from 'viem'
-import { getPoolsConfig } from '../constants'
+import { erc20ABI } from 'wagmi'
 import { sousChefABI } from '../abis/ISousChef'
+import { getPoolsConfig } from '../constants'
 import { OnChainProvider, SerializedPool } from '../types'
 
 // Pool 0, Cake / Cake is a different kind of contract (master chef)
@@ -66,7 +66,7 @@ export const fetchUserBalances = async ({ account, chainId, provider }: FetchUse
             type: 'function',
           },
         ] as const,
-        address: '0xcA11bde05977b3631167028862bE2a173976CA11', // TODO: Here is multicall address, should extract addresses to a package for multi chain
+        address: '0x1F98415757620B543A52E61c46B32eB19261F984', // TODO: Here is multicall address, should extract addresses to a package for multi chain
         functionName: 'getEthBalance',
         args: [account as Address] as const,
       } as const,

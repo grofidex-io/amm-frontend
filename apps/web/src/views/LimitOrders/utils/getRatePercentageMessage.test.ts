@@ -2,7 +2,7 @@ import { ERC20Token, Price } from '@pancakeswap/sdk'
 import getRatePercentageDifference from './getRatePercentageDifference'
 import { PercentageDirection, getRatePercentageMessage } from './getRatePercentageMessage'
 
-const CAKE = new ERC20Token(56, '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82', 18, 'CAKE', 'PancakeSwap Token')
+const CAKE = new ERC20Token(56, '0x6d7ce523d59C59De27BB755A1981f4043e79C70E', 18, 'CAKE', 'PancakeSwap Token')
 const BUSD = new ERC20Token(56, '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56', 18, 'BUSD', 'Binance USD')
 
 const EIGHTEEN_DECIMALS = 10n ** 18n

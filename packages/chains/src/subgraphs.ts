@@ -17,6 +17,7 @@ export const BLOCKS_SUBGRAPHS = getBlocksSubgraphs(publicSubgraphParams)
 
 export const STABLESWAP_SUBGRAPHS = {
   [ChainId.BSC]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-stableswap',
+  [ChainId.U2U_NEBULAS]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-stableswap',
   [ChainId.ARBITRUM_ONE]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-stableswap-arb',
 }
 
@@ -43,6 +44,7 @@ export function getV3Subgraphs({ noderealApiKey }: SubgraphParams) {
     [ChainId.SEPOLIA]: null,
     [ChainId.ARBITRUM_SEPOLIA]: null,
     [ChainId.BASE_SEPOLIA]: null,
+    [ChainId.U2U_NEBULAS]: 'https://subgraph-amm-dev.uniultra.xyz/subgraphs/name/u2u-amm/f-v3-exchange',
   } satisfies Record<ChainId, string | null>
 }
 
@@ -63,7 +65,7 @@ export function getV2Subgraphs({ noderealApiKey }: SubgraphParams) {
 
 export function getBlocksSubgraphs({ noderealApiKey }: SubgraphParams) {
   return {
-    [ChainId.BSC]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/blocks',
+    [ChainId.BSC]: 'https://subgraph-amm-dev.uniultra.xyz/subgraphs/name/u2u-amm/f-blocks',
     [ChainId.ETHEREUM]: 'https://api.thegraph.com/subgraphs/name/blocklytics/ethereum-blocks',
     [ChainId.POLYGON_ZKEVM]: 'https://api.studio.thegraph.com/query/45376/polygon-zkevm-block/version/latest',
     [ChainId.ZKSYNC]: 'https://api.studio.thegraph.com/query/45376/blocks-zksync/version/latest',
@@ -71,5 +73,6 @@ export function getBlocksSubgraphs({ noderealApiKey }: SubgraphParams) {
     [ChainId.LINEA]: 'https://api.studio.thegraph.com/query/45376/blocks-linea/version/latest',
     [ChainId.BASE]: 'https://api.studio.thegraph.com/query/48211/base-blocks/version/latest',
     [ChainId.OPBNB]: `https://open-platform-ap.nodereal.io/${noderealApiKey}/opbnb-mainnet-graph-query/subgraphs/name/pancakeswap/blocks`,
+    [ChainId.U2U_NEBULAS]: 'https://subgraph-amm-dev.uniultra.xyz/subgraphs/name/u2u-amm/f-blocks',
   }
 }

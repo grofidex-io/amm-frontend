@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Flex, Link, OpenNewIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
-import useTheme from 'hooks/useTheme'
 import { ASSET_CDN } from 'config/constants/endpoints'
+import useTheme from 'hooks/useTheme'
 import React, { memo, useCallback, useLayoutEffect, useRef } from 'react'
 import { css, styled } from 'styled-components'
 import { useDrawCanvas } from '../../hooks/useDrawCanvas'
@@ -426,7 +426,7 @@ const CakeSection: React.FC = () => {
         </Text>
       </Flex>
       <Flex justifyContent="center" style={{ gap: 14 }}>
-        <Link href="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82&chainId=56">
+        <Link href="https://pancakeswap.finance/swap?outputCurrency=0x6d7ce523d59C59De27BB755A1981f4043e79C70E&chainId=56">
           <Button variant="primary">{t('Buy CAKE')}</Button>
         </Link>
         <Link href="https://docs.pancakeswap.finance/governance-and-tokenomics/cake-tokenomics">

@@ -1,6 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { Token } from '@pancakeswap/sdk'
 import {
+  USDC_U2U,
   arbSepoliaTokens,
   arbitrumGoerliTokens,
   arbitrumTokens,
@@ -43,6 +44,7 @@ export const usdGasTokensByChain = {
   [ChainId.SEPOLIA]: [scrollSepoliaTokens.usdc],
   [ChainId.ARBITRUM_SEPOLIA]: [arbSepoliaTokens.usdc],
   [ChainId.BASE_SEPOLIA]: [baseSepoliaTokens.usdc],
+  [ChainId.U2U_NEBULAS]: [USDC_U2U],
 } satisfies Record<ChainId, Token[]>
 
 export * from './stableSwap'

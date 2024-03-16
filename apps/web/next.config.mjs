@@ -221,6 +221,4 @@ const config = {
   },
 }
 
-export default withBundleAnalyzer(
-  withVanillaExtract(withSentryConfig(withWebSecurityHeaders(config)), sentryWebpackPluginOptions),
-)
+export default withBundleAnalyzer(withVanillaExtract(withSentryConfig(withWebSecurityHeaders(config))))

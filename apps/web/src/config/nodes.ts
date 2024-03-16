@@ -30,7 +30,7 @@ export const SERVER_NODES = {
     getNodeRealUrl(ChainId.BSC, process.env.SERVER_NODE_REAL_API_ETH) || '',
     process.env.NEXT_PUBLIC_NODE_PRODUCTION || '',
     getGroveUrl(ChainId.BSC, process.env.NEXT_PUBLIC_GROVE_API_KEY) || '',
-    'https://bsc.publicnode.com',
+    'https://rpc-nebulas-testnet.uniultra.xyz',
     'https://binance.llamarpc.com',
     'https://bsc-dataseed1.defibit.io',
     'https://bsc-dataseed1.binance.org',
@@ -83,6 +83,7 @@ export const SERVER_NODES = {
   [ChainId.SEPOLIA]: sepolia.rpcUrls.public.http,
   [ChainId.ARBITRUM_SEPOLIA]: arbitrumSepolia.rpcUrls.public.http,
   [ChainId.BASE_SEPOLIA]: baseSepolia.rpcUrls.public.http,
+  [ChainId.U2U_NEBULAS]: ['https://rpc-nebulas-testnet.uniultra.xyz'],
 } satisfies Record<ChainId, readonly string[]>
 
 export const PUBLIC_NODES = {
@@ -91,7 +92,7 @@ export const PUBLIC_NODES = {
     getNodeRealUrl(ChainId.BSC, process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) || '',
     process.env.NEXT_PUBLIC_NODIES_BSC || '',
     getGroveUrl(ChainId.BSC, process.env.NEXT_PUBLIC_GROVE_API_KEY) || '',
-    'https://bsc.publicnode.com',
+    'https://rpc-nebulas-testnet.uniultra.xyz',
     'https://binance.llamarpc.com',
     'https://bsc-dataseed1.defibit.io',
     'https://bsc-dataseed1.binance.org',
@@ -155,4 +156,5 @@ export const PUBLIC_NODES = {
   [ChainId.SEPOLIA]: sepolia.rpcUrls.public.http,
   [ChainId.ARBITRUM_SEPOLIA]: arbitrumSepolia.rpcUrls.public.http,
   [ChainId.BASE_SEPOLIA]: baseSepolia.rpcUrls.public.http,
+  [ChainId.U2U_NEBULAS]: ['https://rpc-nebulas-testnet.uniultra.xyz'],
 } satisfies Record<ChainId, readonly string[]>

@@ -1,11 +1,11 @@
-import noop from "lodash/noop";
 import type { Language } from "@pancakeswap/localization";
-import { vi } from "vitest";
+import noop from "lodash/noop";
 import { BrowserRouter } from "react-router-dom";
+import { vi } from "vitest";
+import { SubMenuItemsType } from "../../components";
+import { footerLinks } from "../../components/Footer/config";
 import { renderWithProvider } from "../../testHelpers";
 import { Menu, menuConfig } from "../../widgets/Menu";
-import { footerLinks } from "../../components/Footer/config";
-import { SubMenuItemsType } from "../../components";
 
 /**
  * @see https://jestjs.io/docs/en/manual-mocks
@@ -47,7 +47,7 @@ it("renders correctly", () => {
         activeItem="Trade"
         activeSubItem="Exchange"
         buyCakeLabel="Buy CAKE"
-        buyCakeLink="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82&chainId=56"
+        buyCakeLink="https://pancakeswap.finance/swap?outputCurrency=0x6d7ce523d59C59De27BB755A1981f4043e79C70E&chainId=56"
       >
         body
       </Menu>
