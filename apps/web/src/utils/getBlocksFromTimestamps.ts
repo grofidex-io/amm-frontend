@@ -1,7 +1,6 @@
 import { gql } from 'graphql-request'
 import orderBy from 'lodash/orderBy'
-import { multiChainBlocksClient, multiChainName, MultiChainNameExtend } from 'state/info/constant'
-import { ChainId, getLlamaChainName } from '@pancakeswap/chains'
+import { multiChainBlocksClient, MultiChainNameExtend } from 'state/info/constant'
 import { Block } from 'state/info/types'
 import { multiQuery } from 'views/Info/utils/infoQueryHelpers'
 
@@ -35,28 +34,6 @@ export const getBlocksFromTimestamps = async (
 ): Promise<Block[]> => {
   if (timestamps?.length === 0) {
     return []
-  }
-
-  if (chainName === 'ZKSYNC') {
-    const chainId = Object.entries(multiChainName).find(([, value]) => value === chainName)?.[0]
-    const llamaChainName = chainId && getLlamaChainName(chainId as unknown as ChainId)
-    const blocks = await timestamps.reduce(async (accumP, timestamp) => {
-      const acc = await accumP
-      try {
-        const response = await fetch(`https://coins.llama.fi/block/${llamaChainName}/${timestamp}`)
-        const height = await response.json().then((data) => data.height)
-        if (height) {
-          acc.push({
-            timestamp: timestamp.toString(),
-            number: parseInt(height, 10),
-          })
-        }
-      } catch (error) {
-        console.error('Unable to fetch data:', error)
-      }
-      return acc
-    }, Promise.resolve([] as Block[]))
-    return orderBy(blocks, (block) => block.number, sortDirection)
   }
   const fetchedData: any = await multiQuery(
     blocksQueryConstructor,

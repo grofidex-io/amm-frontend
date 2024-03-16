@@ -34,6 +34,8 @@ export function createQuoteProvider(config: QuoterConfig): QuoteProvider<QuoterC
       const mixedRoutesHaveV3Pool: RouteWithoutQuote[] = []
       const routesCanQuoteOffChain: RouteWithoutQuote[] = []
       for (const route of routes) {
+        console.log('🚀 ~ createGetRouteWithQuotes ~ route:', route)
+
         if (route.type === RouteType.V2 || route.type === RouteType.STABLE) {
           routesCanQuoteOffChain.push(route)
           continue
@@ -53,6 +55,9 @@ export function createQuoteProvider(config: QuoterConfig): QuoteProvider<QuoterC
         }
         routesCanQuoteOffChain.push(route)
       }
+      console.log('🚀 ~ createGetRouteWithQuotes ~ v3SingleHopRoutes:', v3SingleHopRoutes)
+
+      console.log('🚀 ~ createGetRouteWithQuotes ~ v3MultihopRoutes:', v3MultihopRoutes)
 
       const results = await Promise.allSettled([
         getOffChainQuotes(routesCanQuoteOffChain, { blockNumber, gasModel, signal }),

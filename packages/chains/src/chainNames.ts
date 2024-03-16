@@ -54,5 +54,5 @@ export const defiLlamaChainNames: Record<ChainId, string> = {
   [ChainId.SEPOLIA]: '',
   [ChainId.ARBITRUM_SEPOLIA]: '',
   [ChainId.BASE_SEPOLIA]: '',
-  [ChainId.U2U_NEBULAS]: '',
+  [ChainId.U2U_NEBULAS]: 'u2u_nebulas',
 }

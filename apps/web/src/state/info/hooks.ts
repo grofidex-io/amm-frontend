@@ -343,7 +343,7 @@ export const useChainNameByQuery = (): MultiChainName => {
       case 'opbnb':
         return 'OPBNB'
       default:
-        return 'BSC'
+        return 'U2U_NEBULAS'
     }
   }, [query])
   return chainName

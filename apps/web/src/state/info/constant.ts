@@ -21,7 +21,16 @@ import {
 import mapValues from 'lodash/mapValues'
 import { arbitrum, base, bsc, linea, mainnet, opBNB, polygonZkEvm, zkSync } from 'wagmi/chains'
 
-export type MultiChainName = 'BSC' | 'ETH' | 'POLYGON_ZKEVM' | 'ZKSYNC' | 'ARB' | 'LINEA' | 'BASE' | 'OPBNB'
+export type MultiChainName =
+  | 'BSC'
+  | 'ETH'
+  | 'POLYGON_ZKEVM'
+  | 'ZKSYNC'
+  | 'ARB'
+  | 'LINEA'
+  | 'BASE'
+  | 'OPBNB'
+  | 'U2U_NEBULAS'
 
 export type MultiChainNameExtend = MultiChainName | 'BSC_TESTNET' | 'ZKSYNC_TESTNET'
 
@@ -35,6 +44,7 @@ export const multiChainName: Record<number | string, MultiChainNameExtend> = {
   [ChainId.BASE]: 'BASE',
   [ChainId.OPBNB]: 'OPBNB',
   [ChainId.ARBITRUM_ONE]: 'ARB',
+  [ChainId.U2U_NEBULAS]: 'U2U_NEBULAS',
 }
 
 export const multiChainShortName: Record<number, string> = {
@@ -50,6 +60,7 @@ export const multiChainQueryMainToken: Record<MultiChainName, string> = {
   LINEA: 'ETH',
   BASE: 'ETH',
   OPBNB: 'ETH',
+  U2U_NEBULAS: 'U2U',
 }
 
 export const multiChainBlocksClient: Record<MultiChainNameExtend, string> = {
@@ -63,6 +74,7 @@ export const multiChainBlocksClient: Record<MultiChainNameExtend, string> = {
   LINEA: BLOCKS_CLIENT_LINEA,
   BASE: BLOCKS_CLIENT_BASE,
   OPBNB: BLOCKS_CLIENT_OPBNB,
+  U2U_NEBULAS: 'https://subgraph-amm-dev.uniultra.xyz/subgraphs/name/u2u-amm/f-blocks',
 }
 
 export const multiChainStartTime = {
@@ -85,6 +97,7 @@ export const multiChainId: Record<MultiChainName, ChainId> = {
   LINEA: ChainId.LINEA,
   BASE: ChainId.BASE,
   OPBNB: ChainId.OPBNB,
+  U2U_NEBULAS: ChainId.U2U_NEBULAS,
 }
 
 export const multiChainPaths = {
@@ -96,6 +109,7 @@ export const multiChainPaths = {
   [ChainId.LINEA]: '/linea',
   [ChainId.BASE]: '/base',
   [ChainId.OPBNB]: '/opbnb',
+  [ChainId.U2U_NEBULAS]: '/u2u-nebulas',
 }
 
 export const multiChainQueryClient = {
@@ -127,6 +141,7 @@ export const multiChainScan: Record<MultiChainName, string> = {
   LINEA: linea.blockExplorers.default.name,
   BASE: base.blockExplorers.default.name,
   OPBNB: opBNB.blockExplorers.default.name,
+  U2U_NEBULAS: '',
 }
 
 export const multiChainTokenBlackList: Record<MultiChainName, string[]> = mapValues(
@@ -139,6 +154,7 @@ export const multiChainTokenBlackList: Record<MultiChainName, string[]> = mapVal
     LINEA: ['0x'],
     BASE: ['0x'],
     OPBNB: ['0x'],
+    U2U_NEBULAS: ['0x'],
   },
   (val) => val.map((address) => address.toLowerCase()),
 )
@@ -153,6 +169,7 @@ export const multiChainTokenWhiteList: Record<MultiChainName, string[]> = mapVal
     LINEA: [],
     BASE: [],
     OPBNB: [],
+    U2U_NEBULAS: [],
   },
   (val) => val.map((address) => address.toLowerCase()),
 )

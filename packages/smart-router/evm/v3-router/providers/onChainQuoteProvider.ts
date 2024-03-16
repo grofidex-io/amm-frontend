@@ -132,6 +132,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
   }: ProviderConfig): QuoteProvider {
     const createGetRoutesWithQuotes = (isExactIn = true) => {
       const functionName = getQuoteFunctionName(isExactIn)
+      console.log('🚀 ~ createGetRoutesWithQuotes ~ functionName:', functionName)
       const adjustQuoteForGas: AdjustQuoteForGasHandler = ({ quote, gasCostInToken }) =>
         onAdjustQuoteForGas({ quote, gasCostInToken, isExactIn })
 
@@ -149,12 +150,16 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
           },
         } = routes[0]
         const quoterAddress = getQuoterAddress(chainId)
+        console.log('🚀 ~ createGetRoutesWithQuotes ~ quoterAddress:', quoterAddress)
         const minSuccessRate = SUCCESS_RATE_CONFIG[chainId as ChainId]
+        console.log('🚀 ~ createGetRoutesWithQuotes ~ minSuccessRate:', minSuccessRate)
         // const blockConflictTolerance = BLOCK_CONFLICT_TOLERANCE[chainId as ChainId]
         const multicallConfigs =
           multicallConfigsOverride?.[chainId as ChainId] ||
           BATCH_MULTICALL_CONFIGS[chainId as ChainId] ||
           BATCH_MULTICALL_CONFIGS[ChainId.ETHEREUM]
+        console.log('🚀 ~ createGetRoutesWithQuotes ~ multicallConfigs:', multicallConfigs)
+
         const {
           defaultConfig: { gasLimitPerCall: defaultGasLimitPerCall, dropUnexecutedCalls },
         } = multicallConfigs
@@ -169,6 +174,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
           maxTimeout: 250,
           ...retryOptions,
         }
+        console.log('🚀 ~ createGetRoutesWithQuotes ~ retryOptionsWithDefault:', retryOptionsWithDefault)
         const { shouldRetry, onRetry } = retryControllerFactory(retryOptionsWithDefault)
 
         async function getQuotes({ gasLimitPerCall }: GetQuotesConfig) {
@@ -191,7 +197,10 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
                   signal,
                 },
               })
+            console.log('🚀 ~ getQuotes ~ results:', results)
+
             const successRateError = validateSuccessRate(results, minSuccessRate)
+            console.log('🚀 ~ getQuotes ~ successRateError:', successRateError)
             if (successRateError) {
               throw successRateError
             }
@@ -202,6 +211,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
               approxGasUsedPerSuccessCall,
             }
           } catch (err: any) {
+            console.log('🚀 ~ getQuotes ~ err:', err)
             if (err instanceof SuccessRateError || err instanceof BlockConflictError || isAbortError(err)) {
               throw err
             }
@@ -228,6 +238,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
             const quotes = await getQuotes({
               gasLimitPerCall: defaultGasLimitPerCall,
             })
+            console.log('🚀 ~ quoteResult ~ quotes:', quotes)
             return quotes
           } catch (e: unknown) {
             const error = e instanceof Error ? e : new Error(`Unexpected error type ${e}`)
@@ -252,13 +263,14 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, a
             throw error
           }
         }, retryOptionsWithDefault)
-
+        console.log(quoteResult, '1234567')
         if (!quoteResult) {
           throw new Error(`Unexpected empty quote result ${quoteResult}`)
         }
 
         const { results: quoteResults } = quoteResult
         const routesWithQuote = processQuoteResults(quoteResults, routes, gasModel, adjustQuoteForGas)
+        console.log('🚀 ~ createGetRoutesWithQuotes ~ routesWithQuote:', routesWithQuote)
 
         // metric.putMetric('QuoteApproxGasUsedPerSuccessfulCall', approxGasUsedPerSuccessCall, MetricLoggerUnit.Count)
 

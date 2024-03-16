@@ -12,13 +12,13 @@ const v3TopFixedLps: FarmConfigV3[] = [
     token1: ethereumTokens.weth,
     feeAmount: FeeAmount.LOW,
   },
-  {
-    pid: 2,
-    lpAddress: '0x6CA298D2983aB03Aa1dA7679389D955A4eFEE15C',
-    token0: ethereumTokens.weth,
-    token1: ethereumTokens.usdt,
-    feeAmount: FeeAmount.LOW,
-  },
+  // {
+  //   pid: 2,
+  //   lpAddress: '0x6CA298D2983aB03Aa1dA7679389D955A4eFEE15C',
+  //   token0: ethereumTokens.weth,
+  //   token1: ethereumTokens.usdt,
+  //   feeAmount: FeeAmount.LOW,
+  // },
   {
     pid: 3,
     lpAddress: '0x04c8577958CcC170EB3d2CCa76F9d51bc6E42D8f',

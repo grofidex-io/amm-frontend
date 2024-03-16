@@ -372,6 +372,7 @@ export const useTopPoolsData = ():
     enabled: Boolean(chainId && blocks && blocks.length > 0),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
+  console.log('data', data)
   return data?.data
 }
 

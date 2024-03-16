@@ -61,7 +61,7 @@ const base = {
   },
   contracts: {
     multicall3: {
-      address: '0x1F98415757620B543A52E61c46B32eB19261F984',
+      address: '0x1689ec416daE726e4fb162b132b8250c153f6a5B',
       blockCreated: 5022,
     },
   },
@@ -102,7 +102,7 @@ const linea = {
   },
   contracts: {
     multicall3: {
-      address: '0x1F98415757620B543A52E61c46B32eB19261F984',
+      address: '0x1689ec416daE726e4fb162b132b8250c153f6a5B',
       blockCreated: 42,
     },
   },
@@ -180,7 +180,7 @@ const polygonZkEvmClient = createPublicClient({
     ...polygonZkEvm,
     contracts: {
       multicall3: {
-        address: '0x1F98415757620B543A52E61c46B32eB19261F984',
+        address: '0x1689ec416daE726e4fb162b132b8250c153f6a5B',
         blockCreated: 57746,
       },
     },

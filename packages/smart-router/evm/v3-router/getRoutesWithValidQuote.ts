@@ -1,6 +1,6 @@
 import { BigintIsh, Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
-import chunk from 'lodash/chunk.js'
 import { AbortControl } from '@pancakeswap/utils/abortControl'
+import chunk from 'lodash/chunk.js'
 
 import { getAmountDistribution } from './functions'
 import { BaseRoute, GasModel, QuoteProvider, RouteWithoutQuote, RouteWithQuote } from './types'
@@ -29,6 +29,8 @@ export async function getRoutesWithValidQuote({
   signal,
 }: Params): Promise<RouteWithQuote[]> {
   const [percents, amounts] = getAmountDistribution(amount, distributionPercent)
+  console.log('🚀 ~ percents:', percents)
+  console.log('🚀 ~ amounts:', amounts)
   const routesWithoutQuote = amounts.reduce<RouteWithoutQuote[]>(
     (acc, curAmount, i) => [
       ...acc,
@@ -40,10 +42,13 @@ export async function getRoutesWithValidQuote({
     ],
     [],
   )
+  console.log(routesWithoutQuote)
   const getRoutesWithQuote =
     tradeType === TradeType.EXACT_INPUT
       ? quoteProvider.getRouteWithQuotesExactIn
       : quoteProvider.getRouteWithQuotesExactOut
+
+  console.log('🚀 ~ quoterOptimization:', quoterOptimization)
 
   if (!quoterOptimization) {
     return getRoutesWithQuote(routesWithoutQuote, { blockNumber, gasModel, signal })

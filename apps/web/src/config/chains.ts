@@ -1,7 +1,7 @@
 import { ChainId, chainNames } from '@pancakeswap/chains'
 import memoize from 'lodash/memoize'
+import { defineChain } from 'viem/utils'
 import {
-  Chain,
   arbitrum,
   arbitrumGoerli,
   arbitrumSepolia,
@@ -9,7 +9,6 @@ import {
   baseGoerli,
   baseSepolia,
   bscTestnet,
-  bsc as bsc_,
   goerli,
   linea,
   lineaTestnet,
@@ -38,20 +37,30 @@ export const getChainId = memoize((chainName: string) => {
   return CHAIN_QUERY_NAME_TO_ID[chainName.toLowerCase()] ? +CHAIN_QUERY_NAME_TO_ID[chainName.toLowerCase()] : undefined
 })
 
-const bsc = {
-  ...bsc_,
+const bsc = defineChain({
+  id: 2484,
+  name: 'BNB Smart Chain',
+  network: 'bsc',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'BNB',
+    symbol: 'BNB',
+  },
   rpcUrls: {
-    ...bsc_.rpcUrls,
-    public: {
-      ...bsc_.rpcUrls.public,
-      http: ['https://bsc-dataseed.binance.org/'],
-    },
-    default: {
-      ...bsc_.rpcUrls.default,
-      http: ['https://bsc-dataseed.binance.org/'],
+    default: { http: ['https://rpc-nebulas-testnet.uniultra.xyz/'] },
+    public: { http: ['https://rpc-nebulas-testnet.uniultra.xyz/'] },
+  },
+  blockExplorers: {
+    etherscan: { name: 'BscScan', url: 'https://testnet.u2uscan.xyz/' },
+    default: { name: 'BscScan', url: 'https://testnet.u2uscan.xyz/' },
+  },
+  contracts: {
+    multicall3: {
+      address: '0x1689ec416daE726e4fb162b132b8250c153f6a5B',
+      blockCreated: 16487930,
     },
   },
-} satisfies Chain
+})
 
 /**
  * Controls some L2 specific behavior, e.g. slippage tolerance, special UI behavior.

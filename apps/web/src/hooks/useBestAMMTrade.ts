@@ -31,8 +31,8 @@ import {
 } from './useCommonPools'
 import { useCurrencyUsdPrice } from './useCurrencyUsdPrice'
 import { useMulticallGasLimit } from './useMulticallGasLimit'
-import { useGlobalWorker } from './useWorker'
 import { useSpeedQuote } from './useSpeedQuote'
+import { useGlobalWorker } from './useWorker'
 
 export class NoValidRouteError extends Error {
   constructor(message?: string) {
@@ -172,7 +172,6 @@ function bestTradeHookFactory({
     if (currenciesUpdated) {
       keepPreviousDataRef.current = false
     }
-
     const blockNumber = useCurrentBlock()
     const {
       refresh: refreshPools,
@@ -256,6 +255,7 @@ function bestTradeHookFactory({
           nativeCurrencyUsdPrice,
           signal,
         })
+        console.log(res, '_______________res')
         const duration = Math.floor(performance.now() - startTime)
 
         if (trackPerf) {
