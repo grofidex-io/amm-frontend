@@ -1,4 +1,7 @@
 export const get2DayChange = (valueNow: string, value24HoursAgo: string, value48HoursAgo: string): [number, number] => {
+  console.log('🚀 ~ get2DayChange ~ value48HoursAgo:', value48HoursAgo)
+  console.log('🚀 ~ get2DayChange ~ valueNow:', valueNow)
+  console.log('🚀 ~ get2DayChange ~ value24HoursAgo:', value24HoursAgo)
   // get volume info for both 24 hour periods
   const currentChange = parseFloat(valueNow) - parseFloat(value24HoursAgo)
   const previousChange = parseFloat(value24HoursAgo) - parseFloat(value48HoursAgo)

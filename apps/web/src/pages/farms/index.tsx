@@ -1,14 +1,14 @@
-import { useContext } from 'react'
 import { SUPPORT_FARMS } from 'config/constants/supportChains'
-import { FarmsV3PageLayout, FarmsV3Context } from 'views/Farms'
-import { FarmV3Card } from 'views/Farms/components/FarmCard/V3/FarmV3Card'
-import { getDisplayApr } from 'views/Farms/components/getDisplayApr'
 import { useCakePrice } from 'hooks/useCakePrice'
-import { useAccount } from 'wagmi'
+import { useContext } from 'react'
+import { FarmsV3Context, FarmsV3PageLayout } from 'views/Farms'
 import FarmCard from 'views/Farms/components/FarmCard/FarmCard'
+import { FarmV3Card } from 'views/Farms/components/FarmCard/V3/FarmV3Card'
 import ProxyFarmContainer, {
   YieldBoosterStateContext,
 } from 'views/Farms/components/YieldBooster/components/ProxyFarmContainer'
+import { getDisplayApr } from 'views/Farms/components/getDisplayApr'
+import { useAccount } from 'wagmi'
 
 export const ProxyFarmCardContainer = ({ farm }) => {
   const { address: account } = useAccount()
@@ -32,7 +32,9 @@ export const ProxyFarmCardContainer = ({ farm }) => {
 const FarmsPage = () => {
   const { address: account } = useAccount()
   const { chosenFarmsMemoized } = useContext(FarmsV3Context)
+  console.log('🚀 ~ FarmsPage ~ chosenFarmsMemoized:', chosenFarmsMemoized)
   const cakePrice = useCakePrice()
+  console.log('🚀 ~ FarmsPage ~ cakePrice:', cakePrice)
 
   return (
     <>

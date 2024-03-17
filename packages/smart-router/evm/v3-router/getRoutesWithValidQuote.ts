@@ -29,8 +29,6 @@ export async function getRoutesWithValidQuote({
   signal,
 }: Params): Promise<RouteWithQuote[]> {
   const [percents, amounts] = getAmountDistribution(amount, distributionPercent)
-  console.log('🚀 ~ percents:', percents)
-  console.log('🚀 ~ amounts:', amounts)
   const routesWithoutQuote = amounts.reduce<RouteWithoutQuote[]>(
     (acc, curAmount, i) => [
       ...acc,

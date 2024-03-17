@@ -1,27 +1,7 @@
 import { ChainId, chainNames } from '@pancakeswap/chains'
 import memoize from 'lodash/memoize'
 import { defineChain } from 'viem/utils'
-import {
-  arbitrum,
-  arbitrumGoerli,
-  arbitrumSepolia,
-  base,
-  baseGoerli,
-  baseSepolia,
-  bscTestnet,
-  goerli,
-  linea,
-  lineaTestnet,
-  mainnet,
-  opBNB,
-  opBNBTestnet,
-  polygonZkEvm,
-  polygonZkEvmTestnet,
-  scrollSepolia,
-  sepolia,
-  zkSync,
-  zkSyncTestnet,
-} from 'wagmi/chains'
+import { bsc } from 'wagmi/chains'
 
 export const CHAIN_QUERY_NAME = chainNames
 
@@ -37,22 +17,22 @@ export const getChainId = memoize((chainName: string) => {
   return CHAIN_QUERY_NAME_TO_ID[chainName.toLowerCase()] ? +CHAIN_QUERY_NAME_TO_ID[chainName.toLowerCase()] : undefined
 })
 
-const bsc = defineChain({
+const u2uNebulas = defineChain({
   id: 2484,
-  name: 'BNB Smart Chain',
-  network: 'bsc',
+  name: 'U2U Nebulas',
+  network: 'u2u-nebulas',
   nativeCurrency: {
     decimals: 18,
-    name: 'BNB',
-    symbol: 'BNB',
+    name: 'U2U',
+    symbol: 'U2U',
   },
   rpcUrls: {
     default: { http: ['https://rpc-nebulas-testnet.uniultra.xyz/'] },
     public: { http: ['https://rpc-nebulas-testnet.uniultra.xyz/'] },
   },
   blockExplorers: {
-    etherscan: { name: 'BscScan', url: 'https://testnet.u2uscan.xyz/' },
-    default: { name: 'BscScan', url: 'https://testnet.u2uscan.xyz/' },
+    etherscan: { name: 'U2U Scan', url: 'https://testnet.u2uscan.xyz/' },
+    default: { name: 'U2U Scan', url: 'https://testnet.u2uscan.xyz/' },
   },
   contracts: {
     multicall3: {
@@ -83,25 +63,4 @@ export const L2_CHAIN_IDS: ChainId[] = [
   ChainId.BASE_SEPOLIA,
 ]
 
-export const CHAINS = [
-  bsc,
-  bscTestnet,
-  mainnet,
-  goerli,
-  sepolia,
-  polygonZkEvm,
-  polygonZkEvmTestnet,
-  zkSync,
-  zkSyncTestnet,
-  arbitrum,
-  arbitrumGoerli,
-  arbitrumSepolia,
-  linea,
-  lineaTestnet,
-  base,
-  baseGoerli,
-  baseSepolia,
-  opBNB,
-  opBNBTestnet,
-  scrollSepolia,
-]
+export const CHAINS = [bsc, u2uNebulas]

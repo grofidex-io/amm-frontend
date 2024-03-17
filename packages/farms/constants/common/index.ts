@@ -3,14 +3,11 @@ import { ERC20Token } from '@pancakeswap/sdk'
 import {
   arbitrumTokens,
   baseTokens,
-  bscTestnetTokens,
   bscTokens,
   ethereumTokens,
-  goerliTestnetTokens,
   lineaTokens,
   opBnbTokens,
   polygonZkEvmTokens,
-  zkSyncTestnetTokens,
   zksyncTokens,
 } from '@pancakeswap/tokens'
 import type { FarmV3SupportedChainId } from '../../src'
@@ -60,26 +57,6 @@ export const priceHelperTokens = {
 
 // for testing purposes
 export const DEFAULT_COMMON_PRICE: Record<FarmV3SupportedChainId, CommonPrice> = {
-  [ChainId.ETHEREUM]: {},
-  [ChainId.GOERLI]: {
-    [goerliTestnetTokens.mockA.address]: '10',
-  },
   [ChainId.BSC]: {},
-  [ChainId.BSC_TESTNET]: {
-    [bscTestnetTokens.mockA.address]: '10',
-    [bscTestnetTokens.usdt.address]: '1',
-    [bscTestnetTokens.busd.address]: '1',
-    [bscTestnetTokens.usdc.address]: '1',
-  },
-  [ChainId.ZKSYNC_TESTNET]: {
-    [zkSyncTestnetTokens.mock.address]: '10',
-  },
-  [ChainId.POLYGON_ZKEVM]: {},
-  [ChainId.ZKSYNC]: {},
-  [ChainId.POLYGON_ZKEVM_TESTNET]: {},
-  [ChainId.ARBITRUM_ONE]: {},
-  [ChainId.LINEA]: {},
-  [ChainId.BASE]: {},
-  [ChainId.OPBNB_TESTNET]: {},
-  [ChainId.OPBNB]: {},
+  [ChainId.U2U_NEBULAS]: {},
 }

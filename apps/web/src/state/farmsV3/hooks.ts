@@ -381,6 +381,7 @@ const useV3BoostedFarm = (pids?: number[]) => {
     retry: 3,
     retryDelay: 3000,
   })
+
   return { data }
 }
 
@@ -393,6 +394,7 @@ export async function getV3FarmBoosterWhiteList({
   chainId: ChainId
   pids: number[]
 }): Promise<{ pid: number; boosted: boolean }[]> {
+  console.log('🚀 ~ farmBoosterContract:', farmBoosterContract.address)
   const contracts = pids?.map((pid) => {
     return {
       address: farmBoosterContract.address,
@@ -404,6 +406,7 @@ export async function getV3FarmBoosterWhiteList({
   const whiteList = await publicClient({ chainId }).multicall({
     contracts,
   })
+  console.log('🚀 ~ whiteList ~ whiteList:', whiteList)
 
   if (!whiteList || whiteList?.length !== pids?.length) return []
   return pids?.map((d, index) => ({ pid: d, boosted: whiteList[index].result ?? false }))

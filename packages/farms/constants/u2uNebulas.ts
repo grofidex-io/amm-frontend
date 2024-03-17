@@ -4,10 +4,24 @@ import { defineFarmV3Configs } from '../src/defineFarmV3Configs'
 
 export const farmsV3 = defineFarmV3Configs([
   {
-    pid: 41,
-    lpAddress: '0x35D85D531BE7159cB6f92E8B9CeaF04eC28c6ad9',
+    pid: 3,
+    lpAddress: '0xb7ff2cd12acfb9d175407d05066661b7b95dba51',
+    token0: u2uNebulasTokens.cake,
+    token1: u2uNebulasTokens.usdc,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 1,
+    lpAddress: '0x28aD4a77c63068425A34C1e375382A96084D2CBC',
+    token0: u2uNebulasTokens.wu2u,
+    token1: u2uNebulasTokens.usdc,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 2,
+    lpAddress: '0x0d71d040dccc62ad8faf1a66c13ac5526eae35ac',
     token0: u2uNebulasTokens.wu2u,
     token1: u2uNebulasTokens.cake,
-    feeAmount: FeeAmount.LOWEST,
+    feeAmount: FeeAmount.LOW,
   },
 ])

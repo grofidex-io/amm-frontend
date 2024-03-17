@@ -73,10 +73,8 @@ async function getBestRoutes(
     protocols: allowedPoolTypes,
     signal,
   })
-  console.log('🚀 ~ candidatePools:', candidatePools)
 
   let baseRoutes = computeAllRoutes(inputCurrency, outputCurrency, candidatePools, maxHops)
-  console.log('🚀 ~ baseRoutes:', baseRoutes)
   // Do not support mix route on exact output
   if (tradeType === TradeType.EXACT_OUTPUT) {
     baseRoutes = baseRoutes.filter(({ type }) => type !== RouteType.MIXED)

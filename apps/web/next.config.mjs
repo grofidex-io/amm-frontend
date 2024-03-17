@@ -2,7 +2,6 @@
 import BundleAnalyzer from '@next/bundle-analyzer'
 import { withWebSecurityHeaders } from '@pancakeswap/next-config/withWebSecurityHeaders'
 import smartRouterPkgs from '@pancakeswap/smart-router/package.json' assert { type: 'json' }
-import { withSentryConfig } from '@sentry/nextjs'
 import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -221,4 +220,4 @@ const config = {
   },
 }
 
-export default withBundleAnalyzer(withVanillaExtract(withSentryConfig(withWebSecurityHeaders(config))))
+export default withBundleAnalyzer(withVanillaExtract(withWebSecurityHeaders(config)))
