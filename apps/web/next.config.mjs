@@ -183,7 +183,7 @@ const config = {
       },
       {
         source: '/api/v3/:chainId/farms/liquidity/:address',
-        destination: 'https://farms-api.pancakeswap.com/v3/:chainId/liquidity/:address',
+        destination: 'https://amm-prod.frankie060392.workers.dev/v3/:chainId/liquidity/:address',
         permanent: false,
       },
       {

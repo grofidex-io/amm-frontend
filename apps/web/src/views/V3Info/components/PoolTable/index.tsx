@@ -147,7 +147,6 @@ export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDat
   if (!poolDatas) {
     return <Loader />
   }
-  console.log('🚀 ~ PoolTable ~ poolDatas:', poolDatas)
 
   return (
     <TableWrapper>

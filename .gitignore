@@ -16,7 +16,7 @@ cypress/fixtures/example.json
 .next/
 out/
 .idea/
-
+.env
 # production
 build
 dist

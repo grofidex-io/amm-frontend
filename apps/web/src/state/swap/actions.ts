@@ -27,3 +27,6 @@ export const updateDerivedPairData = createAction<{
   pairId: string
   timeWindow: PairDataTimeWindowEnum
 }>('swap/updateDerivedPairData')
+export const updateTypeSwap = createAction<{
+  typeSwap: number
+}>('swap/updateTypeSwap')

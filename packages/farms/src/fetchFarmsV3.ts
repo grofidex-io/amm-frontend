@@ -37,12 +37,6 @@ export async function farmV3FetchFarms({
   totalAllocPoint: bigint
   commonPrice: CommonPrice
 }) {
-  console.log('🚀 ~ totalAllocPoint:', totalAllocPoint)
-  console.log('🚀 ~ commonPrice:', commonPrice)
-  console.log('🚀 ~ chainId:', chainId)
-  console.log('🚀 ~ provider:', provider)
-  console.log('🚀 ~ masterChefAddress:', masterChefAddress)
-  console.log('🚀 ~ farms:', farms)
   const [poolInfos, cakePrice, v3PoolData] = await Promise.all([
     fetchPoolInfos(farms, chainId, provider, masterChefAddress),
     provider({ chainId: ChainId.BSC })

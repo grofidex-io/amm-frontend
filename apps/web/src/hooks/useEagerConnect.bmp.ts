@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
 import { useCallback } from 'react'
 
-import { useToast } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { useToast } from '@pancakeswap/uikit'
 import { MiniProgramConnector } from '@pancakeswap/wagmi/connectors/miniProgram'
-import { useConnect } from 'wagmi'
 import getWeb3Provider from 'utils/mpBridge'
+import { useConnect } from 'wagmi'
 import { chains } from '../utils/wagmi'
 
 const injected = new MiniProgramConnector({ chains, getWeb3Provider })
@@ -16,7 +16,6 @@ const useActive = () => {
   return useCallback(
     () =>
       connectAsync({ connector: injected }).catch((error) => {
-        console.log('🚀 ~ file: useEagerConnect.ts ~ line 183 ~ activate ~ error', error)
         // captureException(error)
       }),
     [connectAsync],

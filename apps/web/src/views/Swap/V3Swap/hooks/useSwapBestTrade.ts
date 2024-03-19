@@ -1,4 +1,4 @@
-import { TradeType } from '@pancakeswap/sdk'
+import { TradeType } from '@pancakeswap/swap-sdk-core'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useUserSingleHopOnly } from '@pancakeswap/utils/user'
 
@@ -7,6 +7,7 @@ import { useBestAMMTrade } from 'hooks/useBestAMMTrade'
 import { useDeferredValue, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
+import { TYPE_SWAP } from 'state/swap/reducer'
 import {
   useUserSplitRouteEnable,
   useUserStableSwapEnable,
@@ -24,14 +25,18 @@ export function useSwapBestTrade({ maxHops }: Options = {}) {
     typedValue,
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
+    typeSwap,
   } = useSwapState()
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
   const isExactIn = independentField === Field.INPUT
   const independentCurrency = isExactIn ? inputCurrency : outputCurrency
   const dependentCurrency = isExactIn ? outputCurrency : inputCurrency
-  const tradeType = isExactIn ? TradeType.EXACT_INPUT : TradeType.EXACT_OUTPUT
+  let tradeType = isExactIn ? TradeType.EXACT_INPUT : TradeType.EXACT_OUTPUT
   const amount = tryParseAmount(typedValue, independentCurrency ?? undefined)
+  if (typeSwap === TYPE_SWAP.BUY) {
+    tradeType = isExactIn ? TradeType.EXACT_OUTPUT : TradeType.EXACT_INPUT
+  }
 
   const [singleHopOnly] = useUserSingleHopOnly()
   const [split] = useUserSplitRouteEnable()

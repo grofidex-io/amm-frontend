@@ -39,7 +39,6 @@ export default function Swap() {
     if (firstTime && query.showTradingReward) {
       setFirstTime(false)
       setIsSwapHotTokenDisplay(true)
-
       if (!isSwapHotTokenDisplay && isChartDisplayed) {
         setIsChartDisplayed?.((currentIsChartDisplayed) => !currentIsChartDisplayed)
       }
@@ -84,7 +83,6 @@ export default function Swap() {
 
     [inputCurrencyId, outputCurrencyId, onCurrencySelection, warningSwapHandler],
   )
-
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
       <Flex width={['328px', '100%']} height="100%" justifyContent="center" position="relative" alignItems="flex-start">

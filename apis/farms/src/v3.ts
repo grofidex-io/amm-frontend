@@ -25,12 +25,13 @@ export const V3_SUBGRAPH_CLIENTS_CHAIN_IDS = [
   ChainId.LINEA,
   ChainId.BASE,
   ChainId.OPBNB,
+  ChainId.U2U_NEBULAS,
 ] as const
 
 type SupportChainId = (typeof V3_SUBGRAPH_CLIENTS_CHAIN_IDS)[number]
 
 const V3_SUBGRAPHS = getV3Subgraphs({
-  noderealApiKey: NODE_REAL_SUBGRAPH_API_KEY,
+  noderealApiKey: 'NODE_REAL_SUBGRAPH_API_KEY',
 })
 
 export const V3_SUBGRAPH_CLIENTS = V3_SUBGRAPH_CLIENTS_CHAIN_IDS.reduce((acc, chainId) => {

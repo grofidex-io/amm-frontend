@@ -11,7 +11,7 @@ export default {
     [ChainId.BSC_TESTNET]: '0xB4A466911556e39210a6bB2FaECBB59E4eB7E43d',
     [ChainId.BSC]: '0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652',
   },
-  masterChefV3: masterChefV3Addresses,
+  masterChefV3: masterChefV3Addresses as any,
   masterChefV1: {
     [ChainId.BSC_TESTNET]: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
     [ChainId.BSC]: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',

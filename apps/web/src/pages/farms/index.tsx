@@ -32,9 +32,7 @@ export const ProxyFarmCardContainer = ({ farm }) => {
 const FarmsPage = () => {
   const { address: account } = useAccount()
   const { chosenFarmsMemoized } = useContext(FarmsV3Context)
-  console.log('🚀 ~ FarmsPage ~ chosenFarmsMemoized:', chosenFarmsMemoized)
   const cakePrice = useCakePrice()
-  console.log('🚀 ~ FarmsPage ~ cakePrice:', cakePrice)
 
   return (
     <>
