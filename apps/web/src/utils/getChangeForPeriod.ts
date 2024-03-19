@@ -14,10 +14,7 @@ export const getChangeForPeriod = (
   valueTwoPeriodsAgo?: number,
 ): [number, number] => {
   const currentPeriodAmount = getAmountChange(valueNow, valueOnePeriodAgo)
-  console.log('🚀 ~ currentPeriodAmount:', currentPeriodAmount)
   const previousPeriodAmount = getAmountChange(valueOnePeriodAgo, valueTwoPeriodsAgo)
-  console.log('🚀 ~ previousPeriodAmount:', previousPeriodAmount)
   const percentageChange = getPercentChange(currentPeriodAmount, previousPeriodAmount)
-  console.log('🚀 ~ percentageChange:', percentageChange)
   return [currentPeriodAmount, percentageChange]
 }

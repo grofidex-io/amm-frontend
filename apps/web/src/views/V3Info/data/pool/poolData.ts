@@ -125,11 +125,9 @@ export async function fetchPoolDatas(
     // return early if not all data yet
 
     const ethPriceUSD = data?.bundles?.[0]?.ethPriceUSD ? parseFloat(data?.bundles?.[0]?.ethPriceUSD) : 0
-    console.log('🚀 ~ ethPriceUSD:', ethPriceUSD)
 
     const parsed = data?.pools
       ? data.pools.reduce((accum: { [address: string]: PoolFields }, poolData) => {
-          console.log('🚀 ~ ?data.pools.reduce ~ poolData:', poolData)
           // eslint-disable-next-line no-param-reassign
           accum[poolData.id] = poolData
           return accum
