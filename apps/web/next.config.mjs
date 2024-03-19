@@ -183,7 +183,7 @@ const config = {
       },
       {
         source: '/api/v3/:chainId/farms/liquidity/:address',
-        destination: 'http://127.0.0.1:8787/v3/:chainId/liquidity/:address',
+        destination: 'https://amm-prod.frankie060392.workers.dev/v3/:chainId/liquidity/:address',
         permanent: false,
       },
       {

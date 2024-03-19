@@ -17,19 +17,10 @@ kv_namespaces = [
 ]
 name = "amm-prod"
 node_compat = true
+
 [env.production.vars]
 KV_CACHE = true
+U2U_TESTNET_NODE = "https://rpc-nebulas-testnet.uniultra.xyz"
+
 [env.production.triggers]
 crons = ["0 0 * * *", "*/1 * * * *"]
-
-# The necessary secrets are:
-# - ETH_NODE
-# - GOERLI_NODE
-# - BSC_NODE
-# - BSC_TESTNET_NODE
-# - POLYGON_ZKEVM_NODE
-# - ZKSYNC_NODE
-# - ARBITRUM_ONE_NODE
-# - LINEA_NODE
-# - BASE_NODE
-# Run `echo <VALUE> | wrangler secret put <NAME>` for each of these
