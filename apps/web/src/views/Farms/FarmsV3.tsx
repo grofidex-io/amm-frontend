@@ -220,7 +220,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
       ...farms.slice(sableFarmIndex + 1),
     ]
   }, [farmsV2, farmsV3, chainId])
-  console.log('🚀 ~ constfarmsLP:V2AndV3Farms=useMemo ~ farmsLP:', farmsLP)
 
   const cakePrice = useCakePrice()
 

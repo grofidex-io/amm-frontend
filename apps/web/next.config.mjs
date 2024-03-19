@@ -183,7 +183,7 @@ const config = {
       },
       {
         source: '/api/v3/:chainId/farms/liquidity/:address',
-        destination: 'https://farms-api.pancakeswap.com/v3/:chainId/liquidity/:address',
+        destination: 'http://127.0.0.1:8787/v3/:chainId/liquidity/:address',
         permanent: false,
       },
       {

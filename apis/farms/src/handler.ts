@@ -1,13 +1,13 @@
+import { ChainId } from '@pancakeswap/chains'
+import { FarmWithPrices, SerializedFarmConfig } from '@pancakeswap/farms'
+import { CurrencyAmount, Pair } from '@pancakeswap/sdk'
+import { BUSD, CAKE } from '@pancakeswap/tokens'
 import BN from 'bignumber.js'
 import { formatUnits } from 'viem'
-import { SerializedFarmConfig, FarmWithPrices } from '@pancakeswap/farms'
-import { CurrencyAmount, Pair } from '@pancakeswap/sdk'
-import { ChainId } from '@pancakeswap/chains'
-import { BUSD, CAKE } from '@pancakeswap/tokens'
 import { farmFetcher } from './helper'
 import { FarmKV, FarmResult } from './kv'
 import { updateLPsAPR } from './lpApr'
-import { bscClient, bscTestnetClient } from './provider'
+import { bscClient, u2uNebulasClient } from './provider'
 
 // copy from src/config, should merge them later
 const BSC_BLOCK_TIME = 3
@@ -77,7 +77,7 @@ const cakeBusdPairMap = {
 
 const getCakePrice = async (isTestnet: boolean) => {
   const pairConfig = cakeBusdPairMap[isTestnet ? ChainId.BSC_TESTNET : ChainId.BSC]
-  const client = isTestnet ? bscTestnetClient : bscClient
+  const client = isTestnet ? u2uNebulasClient : u2uNebulasClient
   const [reserve0, reserve1] = await client.readContract({
     abi: pairAbi,
     address: pairConfig.address,

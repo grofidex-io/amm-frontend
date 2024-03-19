@@ -338,7 +338,6 @@ export const useTokenTransactions = (address: string): Transaction[] | undefined
 export async function fetchTopPools(dataClient: GraphQLClient, chainId: ChainId, blocks?: Block[]) {
   try {
     const topPoolAddress = await fetchTopPoolAddresses(dataClient, chainId)
-    console.log('🚀 ~ fetchTopPools ~ topPoolAddress:', topPoolAddress)
     const data = await fetchPoolDatas(dataClient, topPoolAddress.addresses ?? [], blocks)
     return data
   } catch (e) {
