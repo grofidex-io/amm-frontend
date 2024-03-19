@@ -245,6 +245,7 @@ export function queryParametersToSwapState(
     recipient,
     pairDataById: {},
     derivedPairDataById: {},
+    typeSwap: 0,
   }
 }
 
