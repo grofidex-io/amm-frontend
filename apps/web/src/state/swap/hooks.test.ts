@@ -220,6 +220,7 @@ describe('#useDerivedSwapInfo', () => {
           recipient,
           [Field.INPUT]: { currencyId: inputCurrencyId },
           [Field.OUTPUT]: { currencyId: outputCurrencyId },
+          typeSwap,
         } = useSwapState()
         const inputCurrency = useCurrency(inputCurrencyId)
         const outputCurrency = useCurrency(outputCurrencyId)
@@ -229,6 +230,7 @@ describe('#useDerivedSwapInfo', () => {
           inputCurrency as Currency,
           outputCurrency as Currency,
           recipient || '',
+          typeSwap,
         )
         return {
           swapInfo,

@@ -9,6 +9,7 @@ import {
   typeInput,
   updateDerivedPairData,
   updatePairData,
+  updateTypeSwap,
 } from './actions'
 import { DerivedPairDataNormalized, PairDataNormalized } from './types'
 
@@ -25,6 +26,12 @@ export interface SwapState {
   readonly recipient: string | null
   readonly pairDataById: Record<number, Record<string, PairDataNormalized>> | null
   readonly derivedPairDataById: Record<number, Record<string, DerivedPairDataNormalized>> | null
+  readonly typeSwap: number
+}
+
+export const TYPE_SWAP = {
+  BUY: 0,
+  SELL: 1,
 }
 
 const initialState: SwapState = {
@@ -39,6 +46,7 @@ const initialState: SwapState = {
   pairDataById: {},
   derivedPairDataById: {},
   recipient: null,
+  typeSwap: TYPE_SWAP.BUY,
 }
 
 const reducer = createReducer<SwapState>(initialState, (builder) =>
@@ -58,6 +66,7 @@ const reducer = createReducer<SwapState>(initialState, (builder) =>
           recipient,
           pairDataById: state.pairDataById,
           derivedPairDataById: state.derivedPairDataById,
+          typeSwap: TYPE_SWAP.BUY,
         }
       },
     )
@@ -109,6 +118,9 @@ const reducer = createReducer<SwapState>(initialState, (builder) =>
         state.derivedPairDataById[pairId] = {}
       }
       state.derivedPairDataById[pairId][timeWindow] = pairData
+    })
+    .addCase(updateTypeSwap, (state, { payload: { typeSwap } }) => {
+      state.typeSwap = typeSwap
     }),
 )
 
