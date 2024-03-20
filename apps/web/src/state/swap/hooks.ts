@@ -97,8 +97,8 @@ export function useSingleTokenSwapInfo(
   const outputTokenPrice = 1 / inputTokenPrice
 
   return {
-    [token0Address]: inputTokenPrice,
-    [token1Address]: outputTokenPrice,
+    [token0Address.toLowerCase()]: inputTokenPrice,
+    [token1Address.toLowerCase()]: outputTokenPrice,
   }
 }
 

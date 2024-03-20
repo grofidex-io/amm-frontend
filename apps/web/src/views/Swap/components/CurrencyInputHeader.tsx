@@ -1,11 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
-  ChartDisableIcon,
-  ChartIcon,
   Flex,
   HistoryIcon,
-  HotDisableIcon,
-  HotIcon,
   IconButton,
   NotificationDot,
   Text,
@@ -22,17 +18,14 @@ import RefreshIcon from 'components/Svg/RefreshIcon'
 import { CHAIN_REFRESH_TIME } from 'config/constants/exchange'
 import { SUPPORT_BUY_CRYPTO } from 'config/constants/supportChains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { useAtom } from 'jotai'
 import Image from 'next/image'
-import { ReactElement, memo, useCallback, useContext, useEffect, useState } from 'react'
+import { ReactElement, memo, useCallback, useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import { useRoutingSettingChanged } from 'state/user/smartRouter'
-import { styled } from 'styled-components'
 import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 import BuyCryptoIcon from '../../../../public/images/moneyBangs.svg'
 import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
-import { SwapFeaturesContext } from '../SwapFeaturesContext'
 
 interface Props {
   title: string | ReactElement
@@ -44,10 +37,10 @@ interface Props {
   onRefreshPrice: () => void
 }
 
-const ColoredIconButton = styled(IconButton)`
-  color: ${({ theme }) => theme.colors.textSubtle};
-  overflow: hidden;
-`
+// const ColoredIconButton = styled(IconButton)`
+//   color: ${({ theme }) => theme.colors.textSubtle};
+//   overflow: hidden;
+// `
 
 //  disable this during the v3 campaign
 const mobileShowOnceTokenHighlightAtom = atomWithStorageWithErrorCatch('pcs::mobileShowOnceTokenHighlightV2', true)
@@ -59,11 +52,11 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
     const [mobileTooltipShowOnce, setMobileTooltipShowOnce] = useAtom(mobileShowOnceTokenHighlightAtom)
     const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
 
-    const { tooltip, tooltipVisible, targetRef } = useTooltip(<Text>{t('Check out the top traded tokens')}</Text>, {
-      placement: isMobile ? 'top' : 'bottom',
-      trigger: isMobile ? 'focus' : 'hover',
-      ...(isMobile && { manualVisible: mobileTooltipShow }),
-    })
+    // const { tooltip, tooltipVisible, targetRef } = useTooltip(<Text>{t('Check out the top traded tokens')}</Text>, {
+    //   placement: isMobile ? 'top' : 'bottom',
+    //   trigger: isMobile ? 'focus' : 'hover',
+    //   ...(isMobile && { manualVisible: mobileTooltipShow }),
+    // })
     const {
       tooltip: buyCryptoTooltip,
       tooltipVisible: buyCryptoTooltipVisible,
@@ -74,15 +67,15 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
       ...(isMobile && { manualVisible: mobileTooltipShow }),
     })
 
-    const { isChartSupported, isChartDisplayed, setIsChartDisplayed, isHotTokenSupported } =
-      useContext(SwapFeaturesContext)
+    // const {  setIsChartDisplayed } =
+    //   useContext(SwapFeaturesContext)
     const [expertMode] = useExpertMode()
     const [isRoutingSettingChange] = useRoutingSettingChanged()
-    const toggleChartDisplayed = () => {
-      setIsChartDisplayed?.((currentIsChartDisplayed) => !currentIsChartDisplayed)
-    }
+    // const toggleChartDisplayed = () => {
+    //   setIsChartDisplayed?.((currentIsChartDisplayed) => !currentIsChartDisplayed)
+    // }
     const [onPresentTransactionsModal] = useModal(<TransactionsModal />)
-    const [isSwapHotTokenDisplay, setIsSwapHotTokenDisplay] = useSwapHotTokenDisplay()
+    // const [isSwapHotTokenDisplay, setIsSwapHotTokenDisplay] = useSwapHotTokenDisplay()
 
     const mobileTooltipClickOutside = useCallback(() => {
       setMobileTooltipShow(false)
@@ -126,7 +119,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
               {buyCryptoTooltipVisible && (!isMobile || mobileTooltipShow) && buyCryptoTooltip}
             </Flex>
           ) : null}
-          {isChartSupported && (
+          {/* {isChartSupported && (
             <ColoredIconButton
               onClick={() => {
                 if (!isChartDisplayed && isSwapHotTokenDisplay) {
@@ -173,7 +166,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
                 </>
               )}
             </ColoredIconButton>
-          )}
+          )} */}
           <NotificationDot show={expertMode || isRoutingSettingChange}>
             <GlobalSettings
               color="textSubtle"
