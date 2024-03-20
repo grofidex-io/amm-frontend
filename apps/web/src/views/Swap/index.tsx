@@ -4,14 +4,16 @@ import { BottomDrawer, Flex, Modal, ModalV2, useMatchBreakpoints } from '@pancak
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { AppBody } from 'components/App'
 import { useRouter } from 'next/router'
-import { useCallback, useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { currencyId } from 'utils/currencyId'
 
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { useCurrency } from 'hooks/Tokens'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { Field } from 'state/swap/actions'
 import { useDefaultsFromURLSearch, useSingleTokenSwapInfo, useSwapState } from 'state/swap/hooks'
+import { useTopPoolsData } from 'views/V3Info/hooks'
 import Page from '../Page'
 import { SwapFeaturesContext } from './SwapFeaturesContext'
 import { V3SwapForm } from './V3Swap'
@@ -83,6 +85,17 @@ export default function Swap() {
 
     [inputCurrencyId, outputCurrencyId, onCurrencySelection, warningSwapHandler],
   )
+
+  const topPoolsData = useTopPoolsData()
+
+  const poolDatas = useMemo(() => {
+    if (topPoolsData)
+      return Object.values(topPoolsData)
+        .map((p) => p)
+        .filter((p) => !isUndefinedOrNull(p))
+    return []
+  }, [topPoolsData])
+
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
       <Flex width={['328px', '100%']} height="100%" justifyContent="center" position="relative" alignItems="flex-start">
@@ -96,6 +109,7 @@ export default function Swap() {
             setIsChartExpanded={setIsChartExpanded}
             isChartDisplayed={isChartDisplayed}
             currentSwapPrice={singleTokenPrice}
+            poolDatas={poolDatas}
           />
         )}
         {!isDesktop && isChartSupported && (
@@ -112,6 +126,7 @@ export default function Swap() {
                 currentSwapPrice={singleTokenPrice}
                 isFullWidthContainer
                 isMobile
+                poolDatas={poolDatas}
               />
             }
             isOpen={isChartDisplayed}

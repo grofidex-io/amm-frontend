@@ -4,6 +4,7 @@ import {
   Field,
   replaceSwapState,
   selectCurrency,
+  selectPair,
   setRecipient,
   switchCurrencies,
   typeInput,
@@ -121,6 +122,10 @@ const reducer = createReducer<SwapState>(initialState, (builder) =>
     })
     .addCase(updateTypeSwap, (state, { payload: { typeSwap } }) => {
       state.typeSwap = typeSwap
+    })
+    .addCase(selectPair, (state, { payload: { inputCurrencyId, outputCurrencyId } }) => {
+      state[Field.INPUT].currencyId = inputCurrencyId
+      state[Field.OUTPUT].currencyId = outputCurrencyId
     }),
 )
 
