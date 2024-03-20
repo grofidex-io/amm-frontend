@@ -1,5 +1,4 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { SubMenuItems } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import { multiChainQueryStableClient } from 'state/info/constant'
@@ -35,7 +34,7 @@ export const InfoPageLayout = ({ children }) => {
 
   return (
     <>
-      <SubMenuItems items={subMenuItems} activeItem={isV3 ? `/info/v3${chainPath}` : `/info${chainPath}`} />
+      {/* <SubMenuItems items={subMenuItems} activeItem={isV3 ? `/info/v3${chainPath}` : `/info${chainPath}`} /> */}
       <InfoNav isStableSwap={false} />
       {children}
     </>
