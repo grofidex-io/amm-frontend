@@ -16,11 +16,11 @@ export const SwapFeaturesContext = createContext<{
   setIsChartDisplayed: React.Dispatch<React.SetStateAction<boolean>> | null
 }>({
   isHotTokenSupported: false,
-  isChartSupported: false,
+  isChartSupported: true,
   isStableSupported: false,
   isAccessTokenSupported: false,
   isChartExpanded: false,
-  isChartDisplayed: false,
+  isChartDisplayed: true,
   setIsChartExpanded: null,
   setIsChartDisplayed: null,
 })

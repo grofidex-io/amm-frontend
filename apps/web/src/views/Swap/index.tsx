@@ -3,8 +3,7 @@ import { Currency } from '@pancakeswap/sdk'
 import { BottomDrawer, Flex, Modal, ModalV2, useMatchBreakpoints } from '@pancakeswap/uikit'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { AppBody } from 'components/App'
-import { useRouter } from 'next/router'
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { useCallback, useContext, useMemo } from 'react'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { currencyId } from 'utils/currencyId'
 
@@ -23,7 +22,7 @@ import useWarningImport from './hooks/useWarningImport'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 
 export default function Swap() {
-  const { query } = useRouter()
+  // const { query } = useRouter()
   const { isDesktop } = useMatchBreakpoints()
   const {
     isChartExpanded,
@@ -35,17 +34,17 @@ export default function Swap() {
   } = useContext(SwapFeaturesContext)
   const [isSwapHotTokenDisplay, setIsSwapHotTokenDisplay] = useSwapHotTokenDisplay()
   const { t } = useTranslation()
-  const [firstTime, setFirstTime] = useState(true)
+  // const [firstTime, setFirstTime] = useState(true)
 
-  useEffect(() => {
-    if (firstTime && query.showTradingReward) {
-      setFirstTime(false)
-      setIsSwapHotTokenDisplay(true)
-      if (!isSwapHotTokenDisplay && isChartDisplayed) {
-        setIsChartDisplayed?.((currentIsChartDisplayed) => !currentIsChartDisplayed)
-      }
-    }
-  }, [firstTime, isChartDisplayed, isSwapHotTokenDisplay, query, setIsSwapHotTokenDisplay, setIsChartDisplayed])
+  // useEffect(() => {
+  //   if (firstTime && query.showTradingReward) {
+  //     setFirstTime(false)
+  //     setIsSwapHotTokenDisplay(true)
+  //     if (!isSwapHotTokenDisplay && isChartDisplayed) {
+  //       setIsChartDisplayed?.((currentIsChartDisplayed) => !currentIsChartDisplayed)
+  //     }
+  //   }
+  // }, [firstTime, isChartDisplayed, isSwapHotTokenDisplay, query, setIsSwapHotTokenDisplay, setIsChartDisplayed])
 
   // swap state & price data
   const {
