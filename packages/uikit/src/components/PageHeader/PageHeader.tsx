@@ -6,7 +6,7 @@ import { PageHeaderProps } from "./types";
 const Outer = styled(Box)<{ background?: string }>`
   padding-top: 32px;
   padding-bottom: 32px;
-  background: ${({ theme, background }) => background || theme.colors.gradientBubblegum};
+  background: ${({ theme, background }) => background || theme.colors.background};
 `;
 
 const Inner = styled(Container)`

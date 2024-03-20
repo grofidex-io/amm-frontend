@@ -1,4 +1,5 @@
 import { Box, ExpandIcon, Flex, IconButton, Select, ShrinkIcon } from '@pancakeswap/uikit'
+import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useMemo } from 'react'
 import { PoolData } from 'state/info/types'
@@ -61,6 +62,8 @@ const PriceChart = ({
     const inputCurrencyId = option?.token0 || ''
     const outputCurrencyId = option?.token1 || ''
     onSelectPair(inputCurrencyId, outputCurrencyId)
+    replaceBrowserHistory('inputCurrency', inputCurrencyId)
+    replaceBrowserHistory('outputCurrencyId', outputCurrencyId)
   }
 
   return (
