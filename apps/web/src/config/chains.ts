@@ -31,8 +31,8 @@ const u2uNebulas = defineChain({
     public: { http: ['https://rpc-nebulas-testnet.uniultra.xyz/'] },
   },
   blockExplorers: {
-    etherscan: { name: 'U2U Scan', url: 'https://testnet.u2uscan.xyz/' },
-    default: { name: 'U2U Scan', url: 'https://testnet.u2uscan.xyz/' },
+    etherscan: { name: 'U2U Scan', url: 'https://testnet.u2uscan.xyz' },
+    default: { name: 'U2U Scan', url: 'https://testnet.u2uscan.xyz' },
   },
   contracts: {
     multicall3: {
