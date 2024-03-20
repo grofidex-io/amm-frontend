@@ -10,7 +10,7 @@ export const fetchAceTokenPrice = async (tokenAddress: string) => {
   const timestampsString = JSON.stringify([t24, t48, t7d])
   const timestampsArray = JSON.parse(timestampsString)
 
-  const blocks = await getBlocksFromTimestamps(timestampsArray, 'desc', 1000, 'BSC')
+  const blocks = await getBlocksFromTimestamps(timestampsArray, 'desc', 1000, 'U2U_NEBULAS')
 
   const result = await fetchedTokenDatas(
     v3InfoClients[ChainId.BSC],

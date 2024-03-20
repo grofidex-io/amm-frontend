@@ -117,7 +117,6 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
         ?.find((x) => x.title === "current")
         ?.price?.toString()
         ?.split(".")?.[1]?.length ?? 2;
-
     const newSeries = chart.addAreaSeries({
       lineWidth: 2,
       lineColor: colors.gradient1,

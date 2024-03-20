@@ -27,7 +27,7 @@ const PriceChartContainer: React.FC<React.PropsWithChildren<PriceChartContainerP
   setIsChartExpanded,
   isChartDisplayed,
   isMobile,
-  isFullWidthContainer = false,
+  isFullWidthContainer = true,
   currentSwapPrice,
   poolDatas,
 }) => {

@@ -11,7 +11,6 @@ import {
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { NotifyClientTypes } from '@walletconnect/notify-client'
-import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useAppDispatch } from 'state'
@@ -63,7 +62,7 @@ const getNotificationPairlogo = (title: string, message: string) => {
   const chainId = CHAIN_NAME_TO_CHAIN_ID[chainName === 'polygon_zkevm.' ? 'polygon_zkevm' : chainName]
 
   const image1 = isAprNotification ? '/images/notifications/farms-scope.svg' : '/logo.png'
-  const image2 = `${ASSET_CDN}/web/chains/${chainId}.png`
+  const image2 = `https://raw.githubusercontent.com/u2u-eco/default-token-list/master/logos/network/native-currency/u2u.png`
 
   return { image1, image2 }
 }

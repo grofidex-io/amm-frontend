@@ -5,7 +5,6 @@ import { useMemo } from 'react'
 import { multiChainId, multiChainName } from 'state/info/constant'
 import { useChainNameByQuery } from 'state/info/hooks'
 import { Block } from 'state/info/types'
-import { getChainName } from 'state/info/utils'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { v3InfoClients } from 'utils/graphql'
 import { useBlockFromTimeStampQuery } from 'views/Info/hooks/useBlocksFromTimestamps'
@@ -16,7 +15,7 @@ import { fetchPoolChartData } from '../data/pool/chartData'
 import { fetchPoolDatas } from '../data/pool/poolData'
 import { PoolTickData, fetchTicksSurroundingPrice } from '../data/pool/tickData'
 import { fetchTopPoolAddresses } from '../data/pool/topPools'
-import { fetchPoolTransactions } from '../data/pool/transactions'
+import { fetchPoolTransactions, fetchPoolTransactionsWithPair } from '../data/pool/transactions'
 import { fetchChartData } from '../data/protocol/chart'
 import { fetchProtocolData } from '../data/protocol/overview'
 import { fetchTopTransactions } from '../data/protocol/transactions'
@@ -83,6 +82,21 @@ export const useProtocolTransactionData = (): Transaction[] | undefined => {
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return useMemo(() => data?.filter((d) => d.amountUSD > 0) ?? [], [data])
+}
+
+export const useProtocolTransactionDataWidthPair = (params: {
+  token0: string
+  token1: string
+}): Transaction[] | undefined => {
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
+  const { data } = useQuery({
+    queryKey: [`v3/info/pool/poolTransaction/${chainId}/1`, chainId],
+    queryFn: () => fetchPoolTransactionsWithPair(v3InfoClients[chainId], params.token0, params.token1),
+    enabled: Boolean(chainId && params.token0 && params.token1),
+    ...QUERY_SETTINGS_IMMUTABLE,
+  })
+  return useMemo(() => data?.data?.filter((d) => d.amountUSD > 0) ?? undefined, [data])
 }
 
 export const useTokenPriceChartData = (
@@ -216,7 +230,7 @@ export const useTokensData = (addresses: string[], targetChainId?: ChainId): Tok
   const chainName = useChainNameByQuery()
   const chainId = targetChainId ?? multiChainId[chainName]
   const [t24, t48, t7d] = getDeltaTimestamps()
-  const { blocks } = useBlockFromTimeStampQuery([t24, t48, t7d], undefined, undefined, getChainName(chainId))
+  const { blocks } = useBlockFromTimeStampQuery([t24, t48, t7d], undefined, undefined)
 
   const { data } = useQuery({
     queryKey: [`v3/info/token/tokensData/${targetChainId}/${addresses?.join()}`, chainId],

@@ -29,7 +29,9 @@ export const getImageUrlFromToken = (token: Token) => {
 
   return token?.isNative && token.chainId !== ChainId.BSC
     ? `${ASSET_CDN}/web/native/${token.chainId}.png`
-    : `https://raw.githubusercontent.com/u2u-eco/default-token-list/master/logos/network/${token.chainId}/${address}.png`
+    : `https://raw.githubusercontent.com/u2u-eco/default-token-list/master/logos/network/${
+        token.chainId
+      }/${address.toLowerCase()}.png`
 }
 
 export const TokenPairImage: React.FC<React.PropsWithChildren<TokenPairImageProps>> = ({

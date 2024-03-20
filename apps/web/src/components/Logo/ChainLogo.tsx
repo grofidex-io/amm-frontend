@@ -1,8 +1,7 @@
-import Image from 'next/image'
 import { HelpIcon } from '@pancakeswap/uikit'
-import { isChainSupported } from 'utils/wagmi'
+import Image from 'next/image'
 import { memo } from 'react'
-import { ASSET_CDN } from 'config/constants/endpoints'
+import { isChainSupported } from 'utils/wagmi'
 
 export const ChainLogo = memo(
   ({ chainId, width = 24, height = 24 }: { chainId: number; width?: number; height?: number }) => {
@@ -11,7 +10,7 @@ export const ChainLogo = memo(
         <Image
           alt={`chain-${chainId}`}
           style={{ maxHeight: `${height}px` }}
-          src={`${ASSET_CDN}/web/chains/${chainId}.png`}
+          src="https://raw.githubusercontent.com/u2u-eco/default-token-list/master/logos/network/native-currency/u2u.png"
           width={width}
           height={height}
           unoptimized

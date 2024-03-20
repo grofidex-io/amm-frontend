@@ -64,6 +64,84 @@ const POOL_TRANSACTIONS = gql`
   }
 `
 
+const TRANSACTIONS_WITH_PAIR = gql`
+  query transactions($token0: String, $token1: String) {
+    mints(
+      first: 100
+      orderBy: timestamp
+      orderDirection: desc
+      where: { token0_: { id: $token0 }, token1_: { id: $token1 } }
+    ) {
+      timestamp
+      transaction {
+        id
+      }
+
+      token0 {
+        id
+        symbol
+      }
+      token1 {
+        id
+        symbol
+      }
+      owner
+      sender
+      origin
+      amount0
+      amount1
+      amountUSD
+    }
+    swaps(
+      first: 100
+      orderBy: timestamp
+      orderDirection: desc
+      where: { token0_: { id: $token0 }, token1_: { id: $token1 } }
+    ) {
+      timestamp
+      transaction {
+        id
+      }
+      token0 {
+        id
+        symbol
+      }
+      token1 {
+        id
+        symbol
+      }
+      origin
+      amount0
+      amount1
+      amountUSD
+    }
+    burns(
+      first: 100
+      orderBy: timestamp
+      orderDirection: desc
+      where: { token0_: { id: $token0 }, token1_: { id: $token1 } }
+    ) {
+      timestamp
+      transaction {
+        id
+      }
+      token0 {
+        id
+        symbol
+      }
+      token1 {
+        id
+        symbol
+      }
+      owner
+      origin
+      amount0
+      amount1
+      amountUSD
+    }
+  }
+`
+
 interface TransactionResults {
   mints: {
     timestamp: string
@@ -122,14 +200,13 @@ interface TransactionResults {
   }[]
 }
 
-export async function fetchPoolTransactions(
-  address: string,
+async function getTransaction(
   client: GraphQLClient,
+  query: string,
+  params: any,
 ): Promise<{ data: Transaction[] | undefined; error: boolean }> {
   try {
-    const data = await client.request<TransactionResults>(POOL_TRANSACTIONS, {
-      address,
-    })
+    const data = await client.request<TransactionResults>(query, params)
 
     const mints = data.mints.map((m) => {
       return {
@@ -183,4 +260,24 @@ export async function fetchPoolTransactions(
     console.error(e)
     return { data: undefined, error: true }
   }
+}
+
+export async function fetchPoolTransactions(
+  address: string,
+  client: GraphQLClient,
+): Promise<{ data: Transaction[] | undefined; error: boolean }> {
+  return getTransaction(client, POOL_TRANSACTIONS, {
+    address,
+  })
+}
+
+export async function fetchPoolTransactionsWithPair(
+  client: GraphQLClient,
+  token0: string,
+  token1: string,
+): Promise<{ data: Transaction[] | undefined; error: boolean }> {
+  return getTransaction(client, TRANSACTIONS_WITH_PAIR, {
+    token0,
+    token1,
+  })
 }

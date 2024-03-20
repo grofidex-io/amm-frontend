@@ -107,9 +107,9 @@ interface TransactionResults {
   transactions: TransactionEntry[]
 }
 
-export async function fetchTopTransactions(client: GraphQLClient): Promise<Transaction[] | undefined> {
+async function fetchTransaction(client: GraphQLClient, query: string): Promise<Transaction[] | undefined> {
   try {
-    const data = await client.request<TransactionResults>(GLOBAL_TRANSACTIONS)
+    const data = await client.request<TransactionResults>(query)
 
     if (!data) {
       return undefined
@@ -171,4 +171,8 @@ export async function fetchTopTransactions(client: GraphQLClient): Promise<Trans
   } catch {
     return undefined
   }
+}
+
+export async function fetchTopTransactions(client: GraphQLClient): Promise<Transaction[] | undefined> {
+  return fetchTransaction(client, GLOBAL_TRANSACTIONS)
 }
