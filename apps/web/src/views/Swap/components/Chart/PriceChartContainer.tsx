@@ -1,6 +1,6 @@
 import { Currency, WNATIVE } from '@pancakeswap/sdk'
 import useTheme from 'hooks/useTheme'
-import { useCallback, useState } from 'react'
+import { PoolData } from 'views/V3Info/types'
 import BnbWbnbNotice from './BnbWbnbNotice'
 import PriceChart from './PriceChart'
 
@@ -17,6 +17,7 @@ type PriceChartContainerProps = {
   }
   isMobile?: boolean
   isFullWidthContainer?: boolean
+  poolDatas: Array<PoolData>
 }
 
 const PriceChartContainer: React.FC<React.PropsWithChildren<PriceChartContainerProps>> = ({
@@ -28,11 +29,13 @@ const PriceChartContainer: React.FC<React.PropsWithChildren<PriceChartContainerP
   isMobile,
   isFullWidthContainer = false,
   currentSwapPrice,
+  poolDatas,
 }) => {
   const token0Address = inputCurrency?.wrapped.address?.toLowerCase()
   const token1Address = outputCurrency?.wrapped.address?.toLowerCase()
-  const [isPairReversed, setIsPairReversed] = useState(false)
-  const togglePairReversed = useCallback(() => setIsPairReversed((prePairReversed) => !prePairReversed), [])
+  const isPairReversed = false
+  // const [isPairReversed, setIsPairReversed] = useState(false)
+  // const togglePairReversed = useCallback(() => setIsPairReversed((prePairReversed) => !prePairReversed), [])
 
   const { isDark } = useTheme()
 
@@ -52,11 +55,11 @@ const PriceChartContainer: React.FC<React.PropsWithChildren<PriceChartContainerP
 
   return (
     <PriceChart
+      poolDatas={poolDatas}
       token0Address={isPairReversed ? token1Address : token0Address}
       token1Address={isPairReversed ? token0Address : token1Address}
       inputCurrency={isPairReversed ? outputCurrency : inputCurrency}
       outputCurrency={isPairReversed ? inputCurrency : outputCurrency}
-      onSwitchTokens={togglePairReversed}
       isDark={isDark}
       isChartExpanded={isChartExpanded}
       setIsChartExpanded={setIsChartExpanded}
