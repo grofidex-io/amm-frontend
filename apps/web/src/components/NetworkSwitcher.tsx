@@ -102,10 +102,10 @@ const WrongNetworkSelect = ({ switchNetwork, chainId }) => {
     },
   )
   const { chain } = useNetwork()
-  const localChainId = useLocalNetworkChain() || ChainId.BSC
+  const localChainId = useLocalNetworkChain() || ChainId.U2U_NEBULAS
   const [, setSessionChainId] = useSessionChainId()
 
-  const localChainName = chains.find((c) => c.id === localChainId)?.name ?? 'BSC'
+  const localChainName = chains.find((c) => c.id === localChainId)?.name ?? 'U2U'
 
   const [ref1, isHover] = useHover<HTMLButtonElement>()
 
@@ -199,7 +199,7 @@ export const NetworkSwitcher = () => {
         placement="bottom"
         variant={isLoading ? 'pending' : isWrongNetwork ? 'danger' : 'default'}
         avatarSrc={`${ASSET_CDN}/web/chains/${chainId}.png`}
-        disabled={cannotChangeNetwork}
+        disabled
         text={
           isLoading ? (
             t('Requesting')
