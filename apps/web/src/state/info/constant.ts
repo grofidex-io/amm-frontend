@@ -1,11 +1,3 @@
-import {
-  BLOCKS_CLIENT,
-  BLOCKS_CLIENT_BASE,
-  BLOCKS_CLIENT_ETH,
-  BLOCKS_CLIENT_LINEA,
-  BLOCKS_CLIENT_OPBNB,
-  BLOCKS_CLIENT_ZKSYNC,
-} from 'config/constants/endpoints'
 import { GraphQLClient } from 'graphql-request'
 import { infoClient, infoClientETH, infoStableSwapClients, v2Clients } from 'utils/graphql'
 
@@ -19,31 +11,30 @@ import {
   TOKEN_BLACKLIST,
 } from 'config/constants/info'
 import mapValues from 'lodash/mapValues'
-import { arbitrum, base, bsc, linea, mainnet, opBNB, polygonZkEvm, zkSync } from 'wagmi/chains'
 
 export type MultiChainName =
-  | 'BSC'
-  | 'ETH'
-  | 'POLYGON_ZKEVM'
-  | 'ZKSYNC'
-  | 'ARB'
-  | 'LINEA'
-  | 'BASE'
-  | 'OPBNB'
-  | 'U2U_NEBULAS'
+  // | 'BSC'
+  // | 'ETH'
+  // | 'POLYGON_ZKEVM'
+  // | 'ZKSYNC'
+  // | 'ARB'
+  // | 'LINEA'
+  // | 'BASE'
+  // | 'OPBNB'
+  'U2U_NEBULAS'
 
-export type MultiChainNameExtend = MultiChainName | 'BSC_TESTNET' | 'ZKSYNC_TESTNET'
+export type MultiChainNameExtend = MultiChainName
 
 export const multiChainName: Record<number | string, MultiChainNameExtend> = {
-  [ChainId.BSC]: 'BSC',
-  [ChainId.ETHEREUM]: 'ETH',
-  [ChainId.BSC_TESTNET]: 'BSC_TESTNET',
-  [ChainId.POLYGON_ZKEVM]: 'POLYGON_ZKEVM',
-  [ChainId.ZKSYNC]: 'ZKSYNC',
-  [ChainId.LINEA]: 'LINEA',
-  [ChainId.BASE]: 'BASE',
-  [ChainId.OPBNB]: 'OPBNB',
-  [ChainId.ARBITRUM_ONE]: 'ARB',
+  // [ChainId.BSC]: 'BSC',
+  // [ChainId.ETHEREUM]: 'ETH',
+  // [ChainId.BSC_TESTNET]: 'BSC_TESTNET',
+  // [ChainId.POLYGON_ZKEVM]: 'POLYGON_ZKEVM',
+  // [ChainId.ZKSYNC]: 'ZKSYNC',
+  // [ChainId.LINEA]: 'LINEA',
+  // [ChainId.BASE]: 'BASE',
+  // [ChainId.OPBNB]: 'OPBNB',
+  // [ChainId.ARBITRUM_ONE]: 'ARB',
   [ChainId.U2U_NEBULAS]: 'U2U_NEBULAS',
 }
 
@@ -52,28 +43,28 @@ export const multiChainShortName: Record<number, string> = {
 }
 
 export const multiChainQueryMainToken: Record<MultiChainName, string> = {
-  BSC: 'BNB',
-  ETH: 'ETH',
-  POLYGON_ZKEVM: 'ETH',
-  ZKSYNC: 'ETH',
-  ARB: 'ETH',
-  LINEA: 'ETH',
-  BASE: 'ETH',
-  OPBNB: 'ETH',
+  // BSC: 'BNB',
+  // ETH: 'ETH',
+  // POLYGON_ZKEVM: 'ETH',
+  // ZKSYNC: 'ETH',
+  // ARB: 'ETH',
+  // LINEA: 'ETH',
+  // BASE: 'ETH',
+  // OPBNB: 'ETH',
   U2U_NEBULAS: 'U2U',
 }
 
 export const multiChainBlocksClient: Record<MultiChainNameExtend, string> = {
-  BSC: BLOCKS_CLIENT,
-  ETH: BLOCKS_CLIENT_ETH,
-  BSC_TESTNET: 'https://api.thegraph.com/subgraphs/name/lengocphuc99/bsc_testnet-blocks',
-  POLYGON_ZKEVM: 'https://api.studio.thegraph.com/query/45376/polygon-zkevm-block/version/latest',
-  ZKSYNC_TESTNET: 'https://api.studio.thegraph.com/query/45376/blocks-zksync-testnet/version/latest',
-  ZKSYNC: BLOCKS_CLIENT_ZKSYNC,
-  ARB: 'https://api.thegraph.com/subgraphs/name/ianlapham/arbitrum-one-blocks',
-  LINEA: BLOCKS_CLIENT_LINEA,
-  BASE: BLOCKS_CLIENT_BASE,
-  OPBNB: BLOCKS_CLIENT_OPBNB,
+  // BSC: BLOCKS_CLIENT,
+  // ETH: BLOCKS_CLIENT_ETH,
+  // BSC_TESTNET: 'https://api.thegraph.com/subgraphs/name/lengocphuc99/bsc_testnet-blocks',
+  // POLYGON_ZKEVM: 'https://api.studio.thegraph.com/query/45376/polygon-zkevm-block/version/latest',
+  // ZKSYNC_TESTNET: 'https://api.studio.thegraph.com/query/45376/blocks-zksync-testnet/version/latest',
+  // ZKSYNC: BLOCKS_CLIENT_ZKSYNC,
+  // ARB: 'https://api.thegraph.com/subgraphs/name/ianlapham/arbitrum-one-blocks',
+  // LINEA: BLOCKS_CLIENT_LINEA,
+  // BASE: BLOCKS_CLIENT_BASE,
+  // OPBNB: BLOCKS_CLIENT_OPBNB,
   U2U_NEBULAS: 'https://subgraph-amm-dev.uniultra.xyz/subgraphs/name/u2u-amm/f-blocks',
 }
 
@@ -89,14 +80,14 @@ export const multiChainStartTime = {
 }
 
 export const multiChainId: Record<MultiChainName, ChainId> = {
-  BSC: ChainId.BSC,
-  ETH: ChainId.ETHEREUM,
-  POLYGON_ZKEVM: ChainId.POLYGON_ZKEVM,
-  ZKSYNC: ChainId.ZKSYNC,
-  ARB: ChainId.ARBITRUM_ONE,
-  LINEA: ChainId.LINEA,
-  BASE: ChainId.BASE,
-  OPBNB: ChainId.OPBNB,
+  // BSC: ChainId.BSC,
+  // ETH: ChainId.ETHEREUM,
+  // POLYGON_ZKEVM: ChainId.POLYGON_ZKEVM,
+  // ZKSYNC: ChainId.ZKSYNC,
+  // ARB: ChainId.ARBITRUM_ONE,
+  // LINEA: ChainId.LINEA,
+  // BASE: ChainId.BASE,
+  // OPBNB: ChainId.OPBNB,
   U2U_NEBULAS: ChainId.U2U_NEBULAS,
 }
 
@@ -133,14 +124,14 @@ export const STABLESWAP_SUBGRAPHS_START_BLOCK = {
 }
 
 export const multiChainScan: Record<MultiChainName, string> = {
-  BSC: bsc.blockExplorers.etherscan.name,
-  ETH: mainnet.blockExplorers.etherscan.name,
-  POLYGON_ZKEVM: polygonZkEvm.blockExplorers.default.name,
-  ZKSYNC: zkSync.blockExplorers.default.name,
-  ARB: arbitrum.blockExplorers.default.name,
-  LINEA: linea.blockExplorers.default.name,
-  BASE: base.blockExplorers.default.name,
-  OPBNB: opBNB.blockExplorers.default.name,
+  // BSC: bsc.blockExplorers.etherscan.name,
+  // ETH: mainnet.blockExplorers.etherscan.name,
+  // POLYGON_ZKEVM: polygonZkEvm.blockExplorers.default.name,
+  // ZKSYNC: zkSync.blockExplorers.default.name,
+  // ARB: arbitrum.blockExplorers.default.name,
+  // LINEA: linea.blockExplorers.default.name,
+  // BASE: base.blockExplorers.default.name,
+  // OPBNB: opBNB.blockExplorers.default.name,
   U2U_NEBULAS: '',
 }
 

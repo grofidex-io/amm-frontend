@@ -30,7 +30,7 @@ export const getBlocksFromTimestamps = async (
   timestamps: number[],
   sortDirection: 'asc' | 'desc' | undefined = 'desc',
   skipCount: number | undefined = 500,
-  chainName: MultiChainNameExtend | undefined = 'BSC',
+  chainName: MultiChainNameExtend | undefined = 'U2U_NEBULAS',
 ): Promise<Block[]> => {
   if (timestamps?.length === 0) {
     return []
@@ -38,7 +38,7 @@ export const getBlocksFromTimestamps = async (
   const fetchedData: any = await multiQuery(
     blocksQueryConstructor,
     getBlockSubqueries(timestamps),
-    multiChainBlocksClient[chainName],
+    multiChainBlocksClient[chainName || 'U2U_NEBULAS'],
     skipCount,
   )
 

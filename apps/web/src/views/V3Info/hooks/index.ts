@@ -5,7 +5,6 @@ import { useMemo } from 'react'
 import { multiChainId, multiChainName } from 'state/info/constant'
 import { useChainNameByQuery } from 'state/info/hooks'
 import { Block } from 'state/info/types'
-import { getChainName } from 'state/info/utils'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { v3InfoClients } from 'utils/graphql'
 import { useBlockFromTimeStampQuery } from 'views/Info/hooks/useBlocksFromTimestamps'
@@ -216,7 +215,7 @@ export const useTokensData = (addresses: string[], targetChainId?: ChainId): Tok
   const chainName = useChainNameByQuery()
   const chainId = targetChainId ?? multiChainId[chainName]
   const [t24, t48, t7d] = getDeltaTimestamps()
-  const { blocks } = useBlockFromTimeStampQuery([t24, t48, t7d], undefined, undefined, getChainName(chainId))
+  const { blocks } = useBlockFromTimeStampQuery([t24, t48, t7d], undefined, undefined)
 
   const { data } = useQuery({
     queryKey: [`v3/info/token/tokensData/${targetChainId}/${addresses?.join()}`, chainId],

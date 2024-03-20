@@ -28,11 +28,9 @@ export const CurrencyLogo: React.FC<
     return getTokenLogoURL(new Token(multiChainId[chainName], address as Address, 18, ''))
   }, [address, chainName])
 
-  const imagePath = chainName === 'BSC' ? '' : `${chainName?.toLowerCase()}/`
+  const imagePath = multiChainId[chainName]
   const checkedsummedAddress = safeGetAddress(address)
-  const srcFromPCS = checkedsummedAddress
-    ? `https://tokens.pancakeswap.finance/images/${imagePath}${checkedsummedAddress}.png`
-    : ''
+  const srcFromPCS = `https://raw.githubusercontent.com/u2u-eco/default-token-list/master/logos/network/${imagePath}/${checkedsummedAddress.toLowerCase()}.png`
   return <StyledLogo size={size} srcs={[srcFromPCS, src]} alt="token logo" useFilledIcon {...rest} />
 }
 
@@ -55,7 +53,7 @@ export const DoubleCurrencyLogo: React.FC<React.PropsWithChildren<DoubleCurrency
   address0,
   address1,
   size = 16,
-  chainName = 'BSC',
+  chainName = 'U2U_NEBULAS',
 }) => {
   return (
     <DoubleCurrencyWrapper>

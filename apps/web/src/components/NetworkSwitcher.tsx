@@ -14,7 +14,6 @@ import {
   UserMenuItem,
   useTooltip,
 } from '@pancakeswap/uikit'
-import { ASSET_CDN } from 'config/constants/endpoints'
 import { useActiveChainId, useLocalNetworkChain } from 'hooks/useActiveChainId'
 import { useNetworkConnectorUpdater } from 'hooks/useActiveWeb3React'
 import { useHover } from 'hooks/useHover'
@@ -198,7 +197,7 @@ export const NetworkSwitcher = () => {
         mr="8px"
         placement="bottom"
         variant={isLoading ? 'pending' : isWrongNetwork ? 'danger' : 'default'}
-        avatarSrc={`${ASSET_CDN}/web/chains/${chainId}.png`}
+        avatarSrc="https://raw.githubusercontent.com/u2u-eco/default-token-list/master/logos/network/native-currency/u2u.png"
         disabled
         text={
           isLoading ? (
