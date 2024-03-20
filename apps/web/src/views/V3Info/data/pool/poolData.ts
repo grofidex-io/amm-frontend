@@ -158,19 +158,19 @@ export async function fetchPoolDatas(
     // format data and calculate daily changes
     const formatted = poolAddresses.reduce((accum: { [address: string]: PoolData }, address) => {
       const current: PoolFields | undefined = parsed[address]
-      const oneDay: PoolFields | undefined = parsed24[address]
-      const twoDay: PoolFields | undefined = parsed48[address]
-      const week: PoolFields | undefined = parsedWeek[address]
 
+      const oneDay: PoolFields | undefined = parsed24[address]
+
+      const twoDay: PoolFields | undefined = parsed48[address]
+
+      const week: PoolFields | undefined = parsedWeek[address]
       const [volumeUSD, volumeUSDChange] =
         current && oneDay && twoDay
           ? get2DayChange(current.volumeUSD, oneDay.volumeUSD, twoDay.volumeUSD)
           : current
           ? [parseFloat(current.volumeUSD), 0]
           : [0, 0]
-      console.log('**********')
-      console.log(volumeUSD)
-      console.log(current.volumeUSD)
+
       const volumeUSDWeek =
         current && week
           ? parseFloat(current.volumeUSD) - parseFloat(week.volumeUSD)
