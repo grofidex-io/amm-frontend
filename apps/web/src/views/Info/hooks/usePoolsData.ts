@@ -50,7 +50,7 @@ export const useNonSpamPoolsData = () => {
       }, [] as typeof rawPoolsData),
     [rawPoolsData],
   )
-
+  console.log('🚀 ~ useNonSpamPoolsData ~ others:', poolsData)
   return {
     poolsData,
     ...others,
