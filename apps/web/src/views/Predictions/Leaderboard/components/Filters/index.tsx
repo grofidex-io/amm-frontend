@@ -4,7 +4,6 @@ import { PredictionConfig, PredictionSupportedSymbol, targetChains } from '@panc
 import { Box, Flex, OptionProps, Select, Text } from '@pancakeswap/uikit'
 import Container from 'components/Layout/Container'
 import { getImageUrlFromToken } from 'components/TokenImage'
-import { ASSET_CDN } from 'config/constants/endpoints'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useMemo, useState } from 'react'
 import { setLeaderboardFilter } from 'state/predictions'
@@ -83,7 +82,7 @@ const Filters: React.FC<React.PropsWithChildren<FiltersProps>> = ({
       targetChains?.map((i) => ({
         label: i?.name ?? '',
         value: i?.id?.toString?.() ?? '',
-        imageUrl: `${ASSET_CDN}/web/chains/${i.id}.png`,
+        imageUrl: `https://raw.githubusercontent.com/u2u-eco/default-token-list/master/logos/network/native-currency/u2u.png`,
       })) ?? []
     )
   }, [])

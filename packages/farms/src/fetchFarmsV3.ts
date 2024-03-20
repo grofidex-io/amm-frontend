@@ -1,11 +1,11 @@
-import { ChainId, getLlamaChainName } from '@pancakeswap/chains'
+import { getLlamaChainName } from '@pancakeswap/chains'
 import { Currency, ERC20Token } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { tickToPrice } from '@pancakeswap/v3-sdk'
 import BN from 'bignumber.js'
 import chunk from 'lodash/chunk'
-import { Address, PublicClient, formatUnits } from 'viem'
+import { Address, PublicClient } from 'viem'
 
 import { DEFAULT_COMMON_PRICE, PriceHelper } from '../constants/common'
 import { getFarmApr } from './apr'
@@ -39,13 +39,7 @@ export async function farmV3FetchFarms({
 }) {
   const [poolInfos, cakePrice, v3PoolData] = await Promise.all([
     fetchPoolInfos(farms, chainId, provider, masterChefAddress),
-    provider({ chainId: ChainId.BSC })
-      .readContract({
-        abi: chainlinkAbi,
-        address: '0xB6064eD41d4f67e353768aA239cA86f4F73665a1',
-        functionName: 'latestAnswer',
-      })
-      .then((res) => formatUnits(res, 8)),
+    '0.001',
     fetchV3Pools(farms, chainId, provider),
   ])
 

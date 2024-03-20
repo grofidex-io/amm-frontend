@@ -21,11 +21,9 @@ export function getTokenInfoPath(
 // TODO: refactor
 export function getChainName(chainId: ChainId) {
   switch (chainId) {
-    case ChainId.BSC:
-      return 'BSC'
-    case ChainId.ETHEREUM:
-      return 'ETH'
+    case ChainId.U2U_NEBULAS:
+      return 'U2U Nebulas'
     default:
-      return 'BSC'
+      return 'U2U Nebulas'
   }
 }

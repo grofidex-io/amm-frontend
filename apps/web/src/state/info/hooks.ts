@@ -311,8 +311,7 @@ export const useGetChainName = () => {
   const { pathname, query } = useRouter()
 
   const getChain = useCallback(() => {
-    if (pathname.includes('eth') || query.chain === 'eth') return 'ETH'
-    return 'BSC'
+    return 'U2U_NEBULAS'
   }, [pathname, query])
   const [name, setName] = useState<MultiChainName | null>(() => getChain())
   const result = useMemo(() => name, [name])
@@ -325,28 +324,11 @@ export const useGetChainName = () => {
 }
 
 export const useChainNameByQuery = (): MultiChainName => {
-  const { query } = useRouter()
-  const chainName = useMemo(() => {
-    switch (query?.chainName) {
-      case 'eth':
-        return 'ETH'
-      case 'polygon-zkevm':
-        return 'POLYGON_ZKEVM'
-      case 'zksync':
-        return 'ZKSYNC'
-      case 'arb':
-        return 'ARB'
-      case 'linea':
-        return 'LINEA'
-      case 'base':
-        return 'BASE'
-      case 'opbnb':
-        return 'OPBNB'
-      default:
-        return 'U2U_NEBULAS'
-    }
-  }, [query])
-  return chainName
+  // const { query } = useRouter()
+  // const chainName = useMemo(() => {
+  //   return 'U2U_NEBULAS'
+  // }, [query])
+  return 'U2U_NEBULAS'
 }
 
 export const useChainIdByQuery = () => {
