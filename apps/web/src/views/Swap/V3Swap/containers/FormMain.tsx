@@ -22,7 +22,6 @@ import { useAccount } from 'wagmi'
 import useWarningImport from '../../hooks/useWarningImport'
 import { FormContainer } from '../components'
 import { useIsWrapping } from '../hooks'
-import { FlipButton } from './FlipButton'
 import { Recipient } from './Recipient'
 import { RiskCheck } from './RiskCheck'
 
@@ -146,7 +145,7 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
         title="Amount"
       />
       <RiskCheck currency={inputCurrency} />
-      <FlipButton />
+      {/* <FlipButton /> */}
       <CurrencyInputPanel
         id="swap-currency-output"
         showUSDPrice
