@@ -17,7 +17,7 @@ type PriceChartContainerProps = {
   }
   isMobile?: boolean
   isFullWidthContainer?: boolean
-  poolDatas: Array<PoolData>
+  poolDatas?: Array<PoolData>
 }
 
 const PriceChartContainer: React.FC<React.PropsWithChildren<PriceChartContainerProps>> = ({
