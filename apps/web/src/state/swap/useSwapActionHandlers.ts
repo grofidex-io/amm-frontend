@@ -1,19 +1,25 @@
-import { useCallback } from 'react'
 import { Currency } from '@pancakeswap/sdk'
 import { useAtom } from 'jotai'
+import { useCallback } from 'react'
 import { swapReducerAtom } from 'state/swap/reducer'
-import { Field, selectCurrency, switchCurrencies, typeInput, setRecipient } from './actions'
+import { Field, selectCurrency, selectPair, setRecipient, switchCurrencies, typeInput } from './actions'
 
 export function useSwapActionHandlers(): {
   onCurrencySelection: (field: Field, currency: Currency) => void
   onSwitchTokens: () => void
   onUserInput: (field: Field, typedValue: string) => void
   onChangeRecipient: (recipient: string | null) => void
+  onSelectPair: (inputCurrencyId: string, outputCurrencyId: string) => void
 } {
   const [, dispatch] = useAtom(swapReducerAtom)
 
   const onSwitchTokens = useCallback(() => {
     dispatch(switchCurrencies())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const onSelectPair = useCallback((inputCurrencyId: string, outputCurrencyId: string) => {
+    dispatch(selectPair({ inputCurrencyId, outputCurrencyId }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -42,5 +48,6 @@ export function useSwapActionHandlers(): {
     onCurrencySelection,
     onUserInput,
     onChangeRecipient,
+    onSelectPair,
   }
 }

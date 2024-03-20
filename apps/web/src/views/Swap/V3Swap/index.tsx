@@ -36,7 +36,6 @@ export function V3SwapForm() {
   )
 
   const finalTrade = mm.isMMBetter ? mm?.mmTradeInfo?.trade : trade
-  console.log('🚀 ~ V3SwapForm ~ finalTrade:', finalTrade)
 
   // console.debug('debug trade', {
   //   trade,

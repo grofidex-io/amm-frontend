@@ -30,3 +30,7 @@ export const updateDerivedPairData = createAction<{
 export const updateTypeSwap = createAction<{
   typeSwap: number
 }>('swap/updateTypeSwap')
+export const selectPair = createAction<{
+  inputCurrencyId: string
+  outputCurrencyId: string
+}>('swap/selectPair')
