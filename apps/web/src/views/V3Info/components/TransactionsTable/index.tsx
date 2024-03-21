@@ -19,7 +19,7 @@ import { getTokenSymbolAlias } from 'utils/getTokenAlias'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import { Transaction, TransactionType } from '../../types'
 import { shortenAddress } from '../../utils'
-import { formatTime } from '../../utils/date'
+import { unixToDate } from '../../utils/date'
 import { formatDollarAmount } from '../../utils/numbers'
 import HoverInlineText from '../HoverInlineText'
 import Loader from '../Loader'
@@ -93,7 +93,7 @@ const SORT_FIELD = {
   amountToken1: 'amountToken1',
 }
 
-const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) => {
+const DataRow = ({ transaction, type }: { transaction: Transaction; color?: string; type?: string }) => {
   const abs0 = Math.abs(transaction.amountToken0)
   const abs1 = Math.abs(transaction.amountToken1)
   const chainName = useChainNameByQuery()
@@ -103,21 +103,32 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
   const token1Symbol = getTokenSymbolAlias(transaction.token1Address, chainId, transaction.token1Symbol)
   const outputTokenSymbol = transaction.amountToken0 < 0 ? token0Symbol : token1Symbol
   const inputTokenSymbol = transaction.amountToken1 < 0 ? token0Symbol : token1Symbol
+  let typeSwap = `Swap ${inputTokenSymbol} for ${outputTokenSymbol}`
+  let typeMint = `Add ${token0Symbol} and ${token1Symbol}`
+  let typeRemove = `Remove ${token0Symbol} and ${token1Symbol}`
+  if (type === 'SWAP_TRANSACTION') {
+    typeSwap = transaction.amountToken0 > 0 ? 'Sell' : 'Buy'
+    typeMint = 'Add'
+    typeRemove = 'Remove'
+  }
 
   return (
     <ResponsiveGrid>
-      <ScanLink
-        useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
-        href={getBlockExploreLink(transaction.hash, 'transaction', multiChainId[chainName])}
-      >
-        <Text fontWeight={400}>
-          {transaction.type === TransactionType.MINT
-            ? `Add ${token0Symbol} and ${token1Symbol}`
-            : transaction.type === TransactionType.SWAP
-            ? `Swap ${inputTokenSymbol} for ${outputTokenSymbol}`
-            : `Remove ${token0Symbol} and ${token1Symbol}`}
-        </Text>
-      </ScanLink>
+      <Flex justifyContent="center">
+        <ScanLink
+          useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
+          href={getBlockExploreLink(transaction.hash, 'transaction', multiChainId[chainName])}
+        >
+          <Text fontWeight={400}>
+            {transaction.type === TransactionType.MINT
+              ? typeMint
+              : transaction.type === TransactionType.SWAP
+              ? typeSwap
+              : typeRemove}
+          </Text>
+        </ScanLink>
+      </Flex>
+
       <Text fontWeight={400}>{formatDollarAmount(transaction.amountUSD)}</Text>
       <Text fontWeight={400}>
         <HoverInlineText text={`${formatAmount(abs0)}  ${token0Symbol}`} maxCharacters={16} />
@@ -133,7 +144,7 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
           {shortenAddress(transaction.sender)}
         </ScanLink>
       </Text>
-      <Text fontWeight={400}>{formatTime(transaction.timestamp, 0)}</Text>
+      <Text fontWeight={400}>{unixToDate(Number(transaction.timestamp), 'YYYY-DD-MM HH:mm:ss')}</Text>
     </ResponsiveGrid>
   )
 }
@@ -141,9 +152,11 @@ const DataRow = ({ transaction }: { transaction: Transaction; color?: string }) 
 export default function TransactionTable({
   transactions,
   maxItems = 10,
+  type,
 }: {
   transactions: Transaction[]
   maxItems?: number
+  type?: string
 }) {
   const { t } = useTranslation()
 
@@ -311,7 +324,7 @@ export default function TransactionTable({
             return (
               // eslint-disable-next-line react/no-array-index-key
               <React.Fragment key={`${d.hash}/${d.timestamp}/${index}/transactionRecord`}>
-                <DataRow transaction={d} />
+                <DataRow transaction={d} type={type} />
                 <Break />
               </React.Fragment>
             )

@@ -1,30 +1,48 @@
 /* eslint-disable no-restricted-syntax */
-import { Currency, Token } from '@pancakeswap/sdk'
-import { Box, Input, Text, useMatchBreakpoints, AutoColumn, Column } from '@pancakeswap/uikit'
-import { KeyboardEvent, RefObject, useCallback, useMemo, useRef, useState, useEffect } from 'react'
-import { useTranslation } from '@pancakeswap/localization'
 import { useDebounce, useSortedTokensByQuery } from '@pancakeswap/hooks'
+import { useTranslation } from '@pancakeswap/localization'
+import { Currency, Token } from '@pancakeswap/sdk'
+import { WrappedTokenInfo, createFilterToken } from '@pancakeswap/token-lists'
+import {
+  ArrowBackIcon,
+  AutoColumn,
+  Box,
+  Column,
+  Flex,
+  IconButton,
+  Input,
+  Text,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
+import { useAudioPlay } from '@pancakeswap/utils/user'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import useNativeCurrency from 'hooks/useNativeCurrency'
+import { KeyboardEvent, RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { FixedSizeList } from 'react-window'
 import { useAllLists, useInactiveListUrls } from 'state/lists/hooks'
-import { WrappedTokenInfo, createFilterToken } from '@pancakeswap/token-lists'
-import { useAudioPlay } from '@pancakeswap/utils/user'
+import styled from 'styled-components'
+import type SwiperCore from 'swiper'
+import 'swiper/css'
+import { Swiper, SwiperSlide } from 'swiper/react'
 import { safeGetAddress } from 'utils'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { whiteListedFiatCurrenciesMap } from 'views/BuyCrypto/constants'
 import { isAddress } from 'viem'
+import { whiteListedFiatCurrenciesMap } from 'views/BuyCrypto/constants'
 import { useAllTokens, useIsUserAddedToken, useToken } from '../../hooks/Tokens'
 import Row from '../Layout/Row'
 import CommonBases from './CommonBases'
 import CurrencyList from './CurrencyList'
+import ImportRow from './ImportRow'
 import useTokenComparator from './sorting'
 import { getSwapSound } from './swapSound'
 
-import ImportRow from './ImportRow'
+const FlexPointer = styled(Flex)`
+  cursor: pointer;
+`
 
 interface CurrencySearchProps {
   selectedCurrency?: Currency | null
   onCurrencySelect: (currency: Currency) => void
+  onMultiCurrencySelect?: (listCurrency: Currency[]) => void
   otherSelectedCurrency?: Currency | null
   showSearchInput?: boolean
   showCommonBases?: boolean
@@ -82,7 +100,7 @@ function useSearchInactiveTokenLists(search: string | undefined, minResults = 10
 
 function CurrencySearch({
   selectedCurrency,
-  onCurrencySelect,
+  onMultiCurrencySelect,
   otherSelectedCurrency,
   showCommonBases,
   commonBasesType,
@@ -104,7 +122,8 @@ function CurrencySearch({
   const debouncedQuery = useDebounce(searchQuery, 200)
 
   const [invertSearchOrder] = useState<boolean>(false)
-
+  const [step, setStep] = useState<number>(0)
+  const [currency0, setCurrency0] = useState<Currency | null>(null)
   const allTokens = useAllTokens()
 
   // if they input an address, use it
@@ -115,7 +134,7 @@ function CurrencySearch({
   const [audioPlay] = useAudioPlay()
 
   const native = useNativeCurrency()
-
+  const [swiperRef, setSwiperRef] = useState<SwiperCore | null>(null)
   const showNative: boolean = useMemo(() => {
     if (tokensToShow || mode === 'onramp-input') return false
     const s = debouncedQuery.toLowerCase().trim()
@@ -143,13 +162,29 @@ function CurrencySearch({
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
-      onCurrencySelect(currency)
+      if (step === 0) {
+        setCurrency0(currency)
+      }
+
+      if (currency0 && currency && step === 1 && onMultiCurrencySelect) {
+        onMultiCurrencySelect([currency0, currency])
+      }
+      // onCurrencySelect(currency)
+      swiperRef?.slideNext()
       if (audioPlay) {
         getSwapSound().play()
       }
     },
-    [audioPlay, onCurrencySelect],
+    [audioPlay, onMultiCurrencySelect, swiperRef, step, currency0],
   )
+
+  const updateActiveIndex = ({ activeIndex }) => {
+    setStep(activeIndex)
+  }
+
+  const handleBack = useCallback(() => {
+    swiperRef?.slidePrev()
+  }, [swiperRef])
 
   // manage focus on modal show
   const inputRef = useRef<HTMLInputElement>()
@@ -205,22 +240,56 @@ function CurrencySearch({
 
     return Boolean(filteredSortedTokens?.length) || hasFilteredInactiveTokens || mode === 'onramp-output' ? (
       <Box mx="-24px" my="24px">
-        <CurrencyList
-          height={isMobile ? (showCommonBases ? height || 250 : height ? height + 80 : 350) : 390}
-          showNative={showNative}
-          currencies={filteredSortedTokens}
-          inactiveCurrencies={mode === 'onramp-input' ? [] : filteredInactiveTokens}
-          breakIndex={
-            Boolean(filteredInactiveTokens?.length) && filteredSortedTokens ? filteredSortedTokens.length : undefined
-          }
-          onCurrencySelect={handleCurrencySelect}
-          otherCurrency={otherSelectedCurrency}
-          selectedCurrency={selectedCurrency}
-          fixedListRef={fixedList}
-          showImportView={showImportView}
-          setImportToken={setImportToken}
-          mode={mode as string}
-        />
+        {step === 1 && (
+          <FlexPointer alignItems="center" onClick={handleBack}>
+            <IconButton variant="text">
+              <ArrowBackIcon />
+            </IconButton>
+            <Text>Back</Text>
+          </FlexPointer>
+        )}
+        <Swiper onSwiper={setSwiperRef} onActiveIndexChange={updateActiveIndex} spaceBetween={50} slidesPerView={1}>
+          <SwiperSlide>
+            <CurrencyList
+              height={isMobile ? (showCommonBases ? height || 250 : height ? height + 80 : 350) : 390}
+              showNative={showNative}
+              currencies={filteredSortedTokens}
+              inactiveCurrencies={mode === 'onramp-input' ? [] : filteredInactiveTokens}
+              breakIndex={
+                Boolean(filteredInactiveTokens?.length) && filteredSortedTokens
+                  ? filteredSortedTokens.length
+                  : undefined
+              }
+              onCurrencySelect={handleCurrencySelect}
+              otherCurrency={otherSelectedCurrency}
+              selectedCurrency={selectedCurrency}
+              fixedListRef={fixedList}
+              showImportView={showImportView}
+              setImportToken={setImportToken}
+              mode={mode as string}
+            />
+          </SwiperSlide>
+          <SwiperSlide>
+            <CurrencyList
+              height={isMobile ? (showCommonBases ? height || 250 : height ? height + 80 : 350) : 390}
+              showNative={showNative}
+              currencies={filteredSortedTokens}
+              inactiveCurrencies={mode === 'onramp-input' ? [] : filteredInactiveTokens}
+              breakIndex={
+                Boolean(filteredInactiveTokens?.length) && filteredSortedTokens
+                  ? filteredSortedTokens.length
+                  : undefined
+              }
+              onCurrencySelect={handleCurrencySelect}
+              otherCurrency={currency0}
+              selectedCurrency={selectedCurrency}
+              fixedListRef={fixedList}
+              showImportView={showImportView}
+              setImportToken={setImportToken}
+              mode={mode as string}
+            />
+          </SwiperSlide>
+        </Swiper>
       </Box>
     ) : (
       <Column style={{ padding: '20px', height: '100%' }}>
@@ -246,6 +315,9 @@ function CurrencySearch({
     isMobile,
     height,
     mode,
+    step,
+    handleBack,
+    currency0,
   ])
 
   return (

@@ -15,7 +15,7 @@ import { useCurrencyBalances } from 'state/wallet/hooks'
 import { currencyId } from 'utils/currencyId'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 
-import { Tab, TabMenu } from '@pancakeswap/uikit'
+import { Tab, TabMenu, Text } from '@pancakeswap/uikit'
 import { useAtom } from 'jotai'
 import { TYPE_SWAP, swapReducerAtom } from 'state/swap/reducer'
 import { useAccount } from 'wagmi'
@@ -121,7 +121,9 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
   return (
     <FormContainer>
       <TabMenu activeIndex={tab} fullWidth isShowBorderBottom onItemClick={handleItemClick}>
-        <Tab>Buy</Tab>
+        <Tab>
+          <Text>Buy</Text>
+        </Tab>
         <Tab>Sell</Tab>
       </TabMenu>
       <CurrencyInputPanel

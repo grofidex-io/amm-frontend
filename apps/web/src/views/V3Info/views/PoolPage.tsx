@@ -37,7 +37,7 @@ import LineChart from '../components/LineChart/alt'
 import { LocalLoader } from '../components/Loader'
 import Percent from '../components/Percent'
 import { RowBetween, RowFixed } from '../components/Row'
-import TransactionTable from '../components/TransactionsTable'
+import TransactionsTable from '../components/TransactionsTable'
 import { v3InfoPath } from '../constants'
 import { usePoolChartData, usePoolData, usePoolTransactions } from '../hooks'
 import { feeTierPercent } from '../utils'
@@ -375,7 +375,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
             </Card>
           </ContentLayout>
           <Heading>{t('Transactions')}</Heading>
-          {transactions ? <TransactionTable transactions={transactions} /> : <LocalLoader fill={false} />}
+          {transactions ? <TransactionsTable transactions={transactions} /> : <LocalLoader fill={false} />}
         </AutoColumn>
       ) : (
         <Flex mt="80px" justifyContent="center">
