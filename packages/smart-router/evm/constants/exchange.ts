@@ -50,7 +50,7 @@ export const SMART_ROUTER_ADDRESSES = {
   [ChainId.SEPOLIA]: '0x678Aa4bF4E210cf2166753e054d5b7c31cc7fa86',
   [ChainId.ARBITRUM_SEPOLIA]: '0x678Aa4bF4E210cf2166753e054d5b7c31cc7fa86',
   [ChainId.BASE_SEPOLIA]: '0x678Aa4bF4E210cf2166753e054d5b7c31cc7fa86',
-  [ChainId.U2U_NEBULAS]: '0x1746dB21bFE8ac84eCBb3B2ACc95FFE7B1154140',
+  [ChainId.U2U_NEBULAS]: '0x334ba76FC38c9eD7bDdeb19dfBFcBb7622247141',
 } as const satisfies Record<ChainId, string>
 
 export const V2_ROUTER_ADDRESS: ChainMap<string> = {
