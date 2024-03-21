@@ -1,6 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { Address } from 'viem'
 
+// MUlticall v2
 export const MULTICALL_ADDRESS: { [key in ChainId]?: Address } = {
   [ChainId.ZKSYNC]: '0x95071cBD09184083E7F732a710c2e30c9882Fd5f',
   [ChainId.BSC]: '0x39eecaE833c944ebb94942Fa44CaE46e87a8Da17',
@@ -24,7 +25,7 @@ export const MULTICALL_ADDRESS: { [key in ChainId]?: Address } = {
   [ChainId.U2U_NEBULAS]: '0xD1a02ecbC2D820203D89b97a4C1B7A0c0f349A86',
 }
 
-export const MULTICALL3_ADDRESS = '0x1689ec416daE726e4fb162b132b8250c153f6a5B'
+export const MULTICALL3_ADDRESS = '0x052D5c85ced849a8D553b6858c871A84d76D8A51'
 
 export const MULTICALL3_ADDRESSES: {
   [key in ChainId]?: Address

@@ -34,7 +34,7 @@ export const FACTORY_ADDRESS_MAP = {
   [ChainId.U2U_NEBULAS]: FACTORY_ADDRESS,
 } as const satisfies Record<ChainId, Address>
 
-export const INIT_CODE_HASH = '0x00fb7f630766e6a796048ea87d01acd3068e8ff67d078148a3fa3f4a84f69bd5'
+export const INIT_CODE_HASH = '0x34fe98aefc7b111647fe0dfe9c361b57b704a434f64c749daef6d539a8c086fc'
 
 const INIT_CODE_HASH_ETH = '0x57224589c67f3f30a6b0d7a1b54cf3153ab84563bc609ef41dfb34f8b2974d2d'
 export const INIT_CODE_HASH_MAP = {
