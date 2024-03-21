@@ -15,7 +15,7 @@ import { fetchPoolChartData } from '../data/pool/chartData'
 import { fetchPoolDatas } from '../data/pool/poolData'
 import { PoolTickData, fetchTicksSurroundingPrice } from '../data/pool/tickData'
 import { fetchTopPoolAddresses } from '../data/pool/topPools'
-import { fetchPoolTransactions } from '../data/pool/transactions'
+import { fetchPoolTransactions, fetchPoolTransactionsWithPair } from '../data/pool/transactions'
 import { fetchChartData } from '../data/protocol/chart'
 import { fetchProtocolData } from '../data/protocol/overview'
 import { fetchTopTransactions } from '../data/protocol/transactions'
@@ -82,6 +82,21 @@ export const useProtocolTransactionData = (): Transaction[] | undefined => {
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return useMemo(() => data?.filter((d) => d.amountUSD > 0) ?? [], [data])
+}
+
+export const useProtocolTransactionDataWidthPair = (params: {
+  token0: string
+  token1: string
+}): Transaction[] | undefined => {
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
+  const { data } = useQuery({
+    queryKey: [`v3/info/pool/poolTransaction/${chainId}/1`, chainId],
+    queryFn: () => fetchPoolTransactionsWithPair(v3InfoClients[chainId], params.token0, params.token1),
+    enabled: Boolean(chainId && params.token0 && params.token1),
+    ...QUERY_SETTINGS_IMMUTABLE,
+  })
+  return useMemo(() => data?.data?.filter((d) => d.amountUSD > 0) ?? undefined, [data])
 }
 
 export const useTokenPriceChartData = (

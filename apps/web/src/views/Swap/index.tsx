@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { BottomDrawer, Flex, Modal, ModalV2, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { BottomDrawer, Flex, Heading, Modal, ModalV2, useMatchBreakpoints } from '@pancakeswap/uikit'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { AppBody } from 'components/App'
 import { useCallback, useContext, useMemo } from 'react'
@@ -12,7 +12,8 @@ import { useCurrency } from 'hooks/Tokens'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { Field } from 'state/swap/actions'
 import { useDefaultsFromURLSearch, useSingleTokenSwapInfo, useSwapState } from 'state/swap/hooks'
-import { useTopPoolsData } from 'views/V3Info/hooks'
+import TransactionsTable from 'views/V3Info/components/TransactionsTable'
+import { useProtocolTransactionDataWidthPair, useTopPoolsData } from 'views/V3Info/hooks'
 import Page from '../Page'
 import { SwapFeaturesContext } from './SwapFeaturesContext'
 import { V3SwapForm } from './V3Swap'
@@ -59,6 +60,11 @@ export default function Swap() {
     [Field.OUTPUT]: outputCurrency ?? undefined,
   }
 
+  const transactionData = useProtocolTransactionDataWidthPair({
+    token0: inputCurrency?.wrapped.address?.toLowerCase(),
+    token1: outputCurrency?.wrapped.address?.toLowerCase(),
+  })
+
   const singleTokenPrice = useSingleTokenSwapInfo(
     inputCurrencyId,
     inputCurrency,
@@ -97,62 +103,68 @@ export default function Swap() {
 
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
-      <Flex width={['328px', '100%']} height="100%" justifyContent="center" position="relative" alignItems="flex-start">
-        {isDesktop && isChartSupported && (
-          <PriceChartContainer
-            inputCurrencyId={inputCurrencyId}
-            inputCurrency={currencies[Field.INPUT]}
-            outputCurrencyId={outputCurrencyId}
-            outputCurrency={currencies[Field.OUTPUT]}
-            isChartExpanded={isChartExpanded}
-            setIsChartExpanded={setIsChartExpanded}
-            isChartDisplayed={isChartDisplayed}
-            currentSwapPrice={singleTokenPrice}
-            poolDatas={poolDatas}
-          />
-        )}
-        {!isDesktop && isChartSupported && (
-          <BottomDrawer
-            content={
-              <PriceChartContainer
-                inputCurrencyId={inputCurrencyId}
-                inputCurrency={currencies[Field.INPUT]}
-                outputCurrencyId={outputCurrencyId}
-                outputCurrency={currencies[Field.OUTPUT]}
-                isChartExpanded={isChartExpanded}
-                setIsChartExpanded={setIsChartExpanded}
-                isChartDisplayed={isChartDisplayed}
-                currentSwapPrice={singleTokenPrice}
-                isFullWidthContainer
-                isMobile
-                poolDatas={poolDatas}
-              />
-            }
-            isOpen={isChartDisplayed}
-            setIsOpen={(isOpen) => setIsChartDisplayed?.(isOpen)}
-          />
-        )}
-        {isDesktop && isSwapHotTokenDisplay && isHotTokenSupported && (
-          <HotTokenList handleOutputSelect={handleOutputSelect} />
-        )}
-        <ModalV2
-          isOpen={!isDesktop && isSwapHotTokenDisplay && isHotTokenSupported}
-          onDismiss={() => setIsSwapHotTokenDisplay(false)}
-        >
-          <Modal
-            style={{ padding: 0 }}
-            title={t('Top Token')}
-            onDismiss={() => setIsSwapHotTokenDisplay(false)}
-            bodyPadding="0px"
-          >
-            <HotTokenList
-              handleOutputSelect={(newCurrencyOutput: Currency) => {
-                handleOutputSelect(newCurrencyOutput)
-                setIsSwapHotTokenDisplay(false)
-              }}
+      <Flex width={['328px', '100%']} justifyContent="center" position="relative" alignItems="flex-start">
+        <Flex flexDirection="column" width={['328px', '100%']}>
+          {isDesktop && isChartSupported && (
+            <PriceChartContainer
+              inputCurrencyId={inputCurrencyId}
+              inputCurrency={currencies[Field.INPUT]}
+              outputCurrencyId={outputCurrencyId}
+              outputCurrency={currencies[Field.OUTPUT]}
+              isChartExpanded={isChartExpanded}
+              setIsChartExpanded={setIsChartExpanded}
+              isChartDisplayed={isChartDisplayed}
+              currentSwapPrice={singleTokenPrice}
+              poolDatas={poolDatas}
             />
-          </Modal>
-        </ModalV2>
+          )}
+          {!isDesktop && isChartSupported && (
+            <BottomDrawer
+              content={
+                <PriceChartContainer
+                  inputCurrencyId={inputCurrencyId}
+                  inputCurrency={currencies[Field.INPUT]}
+                  outputCurrencyId={outputCurrencyId}
+                  outputCurrency={currencies[Field.OUTPUT]}
+                  isChartExpanded={isChartExpanded}
+                  setIsChartExpanded={setIsChartExpanded}
+                  isChartDisplayed={isChartDisplayed}
+                  currentSwapPrice={singleTokenPrice}
+                  isFullWidthContainer
+                  isMobile
+                  poolDatas={poolDatas}
+                />
+              }
+              isOpen={isChartDisplayed}
+              setIsOpen={(isOpen) => setIsChartDisplayed?.(isOpen)}
+            />
+          )}
+          {isDesktop && isSwapHotTokenDisplay && isHotTokenSupported && (
+            <HotTokenList handleOutputSelect={handleOutputSelect} />
+          )}
+          <ModalV2
+            isOpen={!isDesktop && isSwapHotTokenDisplay && isHotTokenSupported}
+            onDismiss={() => setIsSwapHotTokenDisplay(false)}
+          >
+            <Modal
+              style={{ padding: 0 }}
+              title={t('Top Token')}
+              onDismiss={() => setIsSwapHotTokenDisplay(false)}
+              bodyPadding="0px"
+            >
+              <HotTokenList
+                handleOutputSelect={(newCurrencyOutput: Currency) => {
+                  handleOutputSelect(newCurrencyOutput)
+                  setIsSwapHotTokenDisplay(false)
+                }}
+              />
+            </Modal>
+          </ModalV2>
+          <Heading scale="lg" mt="40px" mb="16px">
+            {t('Transactions')}
+          </Heading>
+          {transactionData ? <TransactionsTable transactions={transactionData} type="SWAP_TRANSACTION" /> : null}
+        </Flex>
         <Flex flexDirection="column">
           <StyledSwapContainer $isChartExpanded={isChartExpanded}>
             <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
