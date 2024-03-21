@@ -10,9 +10,7 @@ import {
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import {
-  ArrowForwardIcon,
   Box,
-  Button,
   Flex,
   FlexLayout,
   Heading,
@@ -24,12 +22,11 @@ import {
   SearchInput,
   Select,
   Text,
-  Toggle,
   ToggleView,
 } from '@pancakeswap/uikit'
 
 import { BIG_ONE, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { FarmWidget, NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import Page from 'components/Layout/Page'
 import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
@@ -49,7 +46,6 @@ import { getFarmApr } from 'utils/apr'
 import { getStakedFarms } from 'views/Farms/utils/getStakedFarms'
 import { useAccount } from 'wagmi'
 import Table from './components/FarmTable/FarmTable'
-import { FarmTypesFilter } from './components/FarmTypesFilter'
 import { BCakeBoosterCard } from './components/YieldBooster/components/bCakeV3/BCakeBoosterCard'
 import { FarmsV3Context } from './context'
 
@@ -433,14 +429,14 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
               <FarmH2 scale="lg" color="text">
                 {t('Stake LP tokens to earn.')}
               </FarmH2>
-              <NextLinkFromReactRouter to="/farms/auction" prefetch={false}>
+              {/* <NextLinkFromReactRouter to="/farms/auction" prefetch={false}>
                 <Button p="0" variant="text">
                   <Text color="primary" bold fontSize="16px" mr="4px">
                     {t('Community Auctions')}
                   </Text>
                   <ArrowForwardIcon color="primary" />
                 </Button>
-              </NextLinkFromReactRouter>
+              </NextLinkFromReactRouter> */}
             </Box>
 
             {(chainId === ChainId.BSC || chainId === ChainId.BSC_TESTNET) && (
@@ -458,7 +454,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
               <ToggleView idPrefix="clickFarm" viewMode={viewMode} onToggle={setViewMode} />
             </Flex>
             <FarmWidget.FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms.length > 0} />
-            <Flex mt="20px" ml="16px">
+            {/* <Flex mt="20px" ml="16px">
               <FarmTypesFilter
                 v3FarmOnly={v3FarmOnly}
                 handleSetV3FarmOnly={setV3FarmOnly}
@@ -480,7 +476,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                 />
                 <Text> {t('Staked only')}</Text>
               </ToggleWrapper>
-            </Flex>
+            </Flex> */}
           </ViewControls>
           <FilterContainer>
             <LabelWrapper>
