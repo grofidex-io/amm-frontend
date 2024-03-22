@@ -66,6 +66,7 @@ export default function Swap() {
     outputCurrency,
     isChartSupported,
   )
+
   const warningSwapHandler = useWarningImport()
   useDefaultsFromURLSearch()
   const { onCurrencySelection } = useSwapActionHandlers()

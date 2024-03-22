@@ -24,8 +24,8 @@ const u2uNebulas = defineChain({
   },
   contracts: {
     multicall3: {
-      address: '0x1689ec416daE726e4fb162b132b8250c153f6a5B',
-      blockCreated: 16487930,
+      address: '0xc50C2b173bD9E07c7e6E19FE4c85F98f5Ea7e75b',
+      blockCreated: 19541237,
     },
   },
 })

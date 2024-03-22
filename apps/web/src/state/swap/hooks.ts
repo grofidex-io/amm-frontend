@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Price, Trade, TradeType } from '@pancakeswap/sdk'
-import { USDC, USDT } from '@pancakeswap/tokens'
+import { USDT } from '@pancakeswap/tokens'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import { useQuery } from '@tanstack/react-query'
@@ -76,6 +76,7 @@ export function useSingleTokenSwapInfo(
     autoRevalidate: false,
     enabled,
   })
+
   if (!inputCurrency || !outputCurrency || !bestTradeExactIn) {
     return {}
   }
@@ -267,7 +268,7 @@ export function useDefaultsFromURLSearch():
       query,
       native.symbol,
       // CAKE[chainId]?.address ?? STABLE_COIN[chainId]?.address ?? USDC[chainId]?.address ?? USDT[chainId]?.address,
-      USDC[chainId]?.address ?? USDT[chainId]?.address,
+      USDT[chainId]?.address,
     )
 
     dispatch(
