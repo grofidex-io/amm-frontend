@@ -3,8 +3,8 @@ import { Percent, Token, WNATIVE } from '@pancakeswap/sdk'
 import {
   BUSD,
   USDC,
-  USDC_U2U,
   USDT,
+  USDT_U2U,
   WBTC_ETH,
   arbSepoliaTokens,
   arbitrumGoerliTokens,
@@ -21,6 +21,7 @@ import {
   polygonZkEvmTestnetTokens,
   polygonZkEvmTokens,
   scrollSepoliaTokens,
+  u2uNebulasTokens,
   zkSyncTestnetTokens,
   zksyncTokens,
 } from '@pancakeswap/tokens'
@@ -84,7 +85,14 @@ export const SUGGESTED_BASES: ChainTokenList = {
   [ChainId.SEPOLIA]: [scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth],
   [ChainId.ARBITRUM_SEPOLIA]: [arbSepoliaTokens.usdc, arbSepoliaTokens.weth],
   [ChainId.BASE_SEPOLIA]: [baseSepoliaTokens.usdc, baseSepoliaTokens.weth],
-  [ChainId.U2U_NEBULAS]: [WNATIVE[ChainId.U2U_NEBULAS], USDC_U2U],
+  [ChainId.U2U_NEBULAS]: [
+    WNATIVE[ChainId.U2U_NEBULAS],
+    USDT_U2U,
+    u2uNebulasTokens.weth,
+    u2uNebulasTokens.wbnb,
+    u2uNebulasTokens.wtrx,
+    u2uNebulasTokens.wbtc,
+  ],
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -109,7 +117,7 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [ChainId.SEPOLIA]: [scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth],
   [ChainId.ARBITRUM_SEPOLIA]: [arbSepoliaTokens.usdc, arbSepoliaTokens.weth],
   [ChainId.BASE_SEPOLIA]: [baseSepoliaTokens.usdc, baseSepoliaTokens.weth],
-  [ChainId.U2U_NEBULAS]: [WNATIVE[ChainId.U2U_NEBULAS], USDC_U2U],
+  [ChainId.U2U_NEBULAS]: [WNATIVE[ChainId.U2U_NEBULAS], USDT_U2U],
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
@@ -138,7 +146,7 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
   [ChainId.BASE]: [[baseTokens.usdc, baseTokens.weth]],
   [ChainId.BASE_TESTNET]: [[baseTestnetTokens.usdc, baseTestnetTokens.weth]],
   [ChainId.SCROLL_SEPOLIA]: [[scrollSepoliaTokens.usdc, scrollSepoliaTokens.weth]],
-  [ChainId.U2U_NEBULAS]: [[WNATIVE[ChainId.U2U_NEBULAS], USDC_U2U]],
+  [ChainId.U2U_NEBULAS]: [[WNATIVE[ChainId.U2U_NEBULAS], USDT_U2U]],
 }
 
 export const BIG_INT_ZERO = 0n
