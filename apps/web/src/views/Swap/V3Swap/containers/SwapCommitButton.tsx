@@ -31,6 +31,7 @@ import { useCurrencyBalances } from 'state/wallet/hooks'
 import { warningSeverity } from 'utils/exchange'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { TYPE_SWAP } from 'state/swap/reducer'
 import { useAccount } from 'wagmi'
 import { useParsedAmounts, useSlippageAdjustedAmounts, useSwapCallback, useSwapInputError } from '../hooks'
 import { useConfirmModalState } from '../hooks/useConfirmModalState'
@@ -309,7 +310,6 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   if (!account) {
     return <ConnectWalletButton width="100%" />
   }
-  console.log('🚀 ~ wrapInputError:', swapInputError)
 
   if (showWrap) {
     return (
@@ -325,10 +325,12 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   }
 
   const noRoute = !((trade?.routes?.length ?? 0) > 0) || tradeError
+  console.log('🚀 ~ trade:', trade, tradeError)
 
   const userHasSpecifiedInputOutput = Boolean(
     inputCurrency && outputCurrency && parsedIndepentFieldAmount?.greaterThan(BIG_INT_ZERO),
   )
+  console.log('🚀 ~ wrapInputError:', noRoute, userHasSpecifiedInputOutput)
 
   if (noRoute && userHasSpecifiedInputOutput && !tradeLoading) {
     return (
@@ -392,7 +394,9 @@ export const SwapCommitButton = memo(function SwapCommitButton({
             ? t('Price Impact Too High')
             : priceImpactSeverity > 2
             ? t('Swap Anyway')
-            : t('Swap'))}
+            : typeSwap === TYPE_SWAP.BUY
+            ? t('Buy')
+            : t('Sell'))}
       </CommitButton>
     </Box>
   )
