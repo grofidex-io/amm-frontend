@@ -11,7 +11,6 @@ import {
   FloatingGraphic,
   GraphicDetail,
   LinkExternalAction,
-  U2DexBadge,
 } from '@pancakeswap/widgets-internal'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import styled from 'styled-components'
@@ -68,7 +67,7 @@ export const NemesisDownfallBanner = () => {
       <BannerMain
         badges={
           <Flex>
-            <U2DexBadge whiteText />
+            {/* <U2DexBadge whiteText /> */}
             <Box style={{ alignSelf: 'center' }} ml="8px" width={isMobile ? 54 : 98} height={isMobile ? 11 : 20}>
               <Image src={logo} alt="logo" width={isMobile ? 54 : 98} height={isMobile ? 11 : 20} />
             </Box>
