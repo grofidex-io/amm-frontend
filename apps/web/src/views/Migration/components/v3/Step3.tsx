@@ -1,13 +1,13 @@
-import { useTheme } from '@pancakeswap/hooks'
-import { AtomBox, AutoColumn, AutoRow, Heading, LinkExternal, Text } from '@pancakeswap/uikit'
-import { Chart } from '@pancakeswap/widgets-internal'
-import { format } from 'd3'
-import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/chains'
+import { useTheme } from '@pancakeswap/hooks'
+import { useTranslation } from '@pancakeswap/localization'
 import { bscTokens, ethereumTokens } from '@pancakeswap/tokens'
+import { AtomBox, AutoColumn, AutoRow, Heading, LinkExternal, Text } from '@pancakeswap/uikit'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { Chart } from '@pancakeswap/widgets-internal'
 import { LightCard } from 'components/Card'
 import { Bound } from 'config/constants/types'
+import { format } from 'd3'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { PoolState } from 'hooks/v3/types'
 import { tryParsePrice, tryParseTick } from 'hooks/v3/utils'
@@ -164,11 +164,11 @@ export function Step3() {
   return (
     <AtomBox textAlign="center">
       <Heading scale="lg" pb="16px">
-        {t('Quick Start')} - {t('PancakeSwap V3')}
+        {t('Quick Start')} - {t('U2Dex V3')}
       </Heading>
       <Text pb="48px">
         {t(
-          'In PancakeSwap Exchange V3, liquidity providers are able to customize the trading fee tier and concentrate their liquidity to a specific price range to maximize their capital efficiency.',
+          'In U2Dex Exchange V3, liquidity providers are able to customize the trading fee tier and concentrate their liquidity to a specific price range to maximize their capital efficiency.',
         )}
       </Text>
 

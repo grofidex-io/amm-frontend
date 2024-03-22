@@ -1,14 +1,14 @@
-import { useTranslation } from '@pancakeswap/localization'
 import { isNativeIfoSupported, PROFILE_SUPPORTED_CHAIN_IDS } from '@pancakeswap/ifos'
-import { useCallback, useMemo } from 'react'
-import { useRouter } from 'next/router'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { Flex, Button, useModalV2, ProfileAvatar, Text } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import { Button, Flex, ProfileAvatar, Text, useModalV2 } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useRouter } from 'next/router'
+import { useCallback, useMemo } from 'react'
 
-import { NetworkSwitcherModal } from './NetworkSwitcherModal'
 import { useChainNames } from '../../../hooks/useChainNames'
-import { WarningTips, LinkTitle, ContentText } from '../../WarningTips'
+import { ContentText, LinkTitle, WarningTips } from '../../WarningTips'
+import { NetworkSwitcherModal } from './NetworkSwitcherModal'
 
 type Props = {
   saleFinished?: boolean
@@ -65,7 +65,7 @@ export function ActivateProfileButton({ saleFinished }: Props) {
       content={
         <ContentText>
           {saleFinished
-            ? t('Activate PancakeSwap Profile to take part in next IFO.')
+            ? t('Activate U2Dex Profile to take part in next IFO.')
             : t('You need to create a profile to participate in the IFO.')}
         </ContentText>
       }

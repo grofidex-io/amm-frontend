@@ -17,7 +17,7 @@ export type FlatFeeOptions = {
   recipient: Address
 }
 
-export type PancakeSwapOptions = Omit<SwapOptions, 'inputTokenPermit'> & {
+export type U2DexOptions = Omit<SwapOptions, 'inputTokenPermit'> & {
   inputTokenPermit?: Permit2Signature
   flatFee?: FlatFeeOptions
 }

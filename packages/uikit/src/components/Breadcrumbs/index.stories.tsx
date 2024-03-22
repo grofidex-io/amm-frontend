@@ -1,10 +1,10 @@
 import React from "react";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { BrowserRouter, Link as RouterLink } from "react-router-dom";
-import Text from "../Text/Text";
 import Link from "../Link/Link";
 import LogoIcon from "../Svg/Icons/Logo";
 import PresentWonIcon from "../Svg/Icons/PresentWon";
+import Text from "../Text/Text";
 import BreadCrumbs from "./Breadcrumbs";
 
 export default {
@@ -25,7 +25,7 @@ export const Default: React.FC<React.PropsWithChildren> = () => {
           <Text color="textDisabled">Crumb 2</Text>
         </BreadCrumbs>
         <BreadCrumbs>
-          <Text>PancakeSwap</Text>
+          <Text>U2Dex</Text>
           <Text>The #1 AMM and yield farm on Binance Smart Chain.</Text>
         </BreadCrumbs>
       </Text>

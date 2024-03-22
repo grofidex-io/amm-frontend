@@ -3,7 +3,7 @@ import { ArrowForwardIcon, Box, Button, Flex, Link, useMatchBreakpoints } from '
 import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/legacy/image'
 import { memo } from 'react'
-import { styled, css } from 'styled-components'
+import { css, styled } from 'styled-components'
 import * as S from './Styled'
 
 const { pancakeProtectorBunny, pancakeProtectorBgMobile, pancakeProtectorBg, pancakeSwapLogo } = {
@@ -139,7 +139,7 @@ const PancakeProtectorBanner = () => {
             <Image src={pancakeSwapLogo} alt="pancakeSwapLogo" width={119} height={18} unoptimized />
           </LogoBox>
           <Header>{t('Join Pancake Protectors')}</Header>
-          <StyledSubheading>{isDesktop && t('Exclusive Perks for PancakeSwap Bunnies and Squads')}</StyledSubheading>
+          <StyledSubheading>{isDesktop && t('Exclusive Perks for U2Dex Bunnies and Squads')}</StyledSubheading>
           <Flex alignItems="center" style={{ gap: isMobile ? 4 : 16 }}>
             <Link
               href="https://blog.pancakeswap.finance/articles/pancake-protectors-is-here-discover-the-power-of-cake-and-perks-for-pancake-squads-and-bunnies"

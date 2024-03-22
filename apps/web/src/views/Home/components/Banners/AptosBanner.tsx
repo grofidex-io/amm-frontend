@@ -1,9 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Text, useMatchBreakpoints, Box, OpenNewIcon } from '@pancakeswap/uikit'
+import { Box, Button, OpenNewIcon, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import Image from 'next/legacy/image'
 import { styled } from 'styled-components'
-import { Aptos, AptosXPancakeSwap } from './images'
 import * as S from './Styled'
+import { Aptos, AptosXU2Dex } from './images'
 
 const RightWrapper = styled.div`
   position: absolute;
@@ -54,7 +54,7 @@ const AptosBanner = () => {
       <S.Inner>
         <S.LeftWrapper>
           <Box marginTop="3px">
-            <Image src={AptosXPancakeSwap} alt="aptosXPancakeSwapImage" width={211} height={18} placeholder="blur" />
+            <Image src={AptosXU2Dex} alt="aptosXU2DexImage" width={211} height={18} placeholder="blur" />
           </Box>
           <AptosTitle>{t('Hello Aptos Project Teams!')}</AptosTitle>
 

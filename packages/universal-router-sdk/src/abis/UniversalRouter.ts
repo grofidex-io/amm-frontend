@@ -563,7 +563,7 @@ export const UniversalRouterABI = [
         type: 'bytes',
       },
     ],
-    name: 'pancakeV3SwapCallback',
+    name: 'U2UDexSwapCallback',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',

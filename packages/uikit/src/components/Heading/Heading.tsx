@@ -1,8 +1,12 @@
 import { styled } from "styled-components";
 import Text from "../Text/Text";
-import { tags, scales, HeadingProps } from "./types";
+import { HeadingProps, scales, tags } from "./types";
 
 const style = {
+  [scales.SM]: {
+    fontSize: "16px",
+    fontSizeLg: "16px",
+  },
   [scales.MD]: {
     fontSize: "20px",
     fontSizeLg: "20px",

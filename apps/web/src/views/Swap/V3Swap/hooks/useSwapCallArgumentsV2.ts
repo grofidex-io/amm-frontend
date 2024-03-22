@@ -1,11 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Percent, TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
-import {
-  PancakeSwapUniversalRouter,
-  Permit2Signature,
-  getUniversalRouterAddress,
-} from '@pancakeswap/universal-router-sdk'
+import { Permit2Signature, U2DexUniversalRouter, getUniversalRouterAddress } from '@pancakeswap/universal-router-sdk'
 import { FeeOptions } from '@pancakeswap/v3-sdk'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useGetENSAddressByName } from 'hooks/useGetENSAddressByName'
@@ -50,7 +46,7 @@ export function useSwapCallArgumentsV2(
   return useMemo(() => {
     if (!trade || !recipient || !account || !chainId) return []
 
-    const methodParameters = PancakeSwapUniversalRouter.swapERC20CallParameters(trade, {
+    const methodParameters = U2DexUniversalRouter.swapERC20CallParameters(trade, {
       fee: feeOptions,
       recipient,
       inputTokenPermit: permitSignature,

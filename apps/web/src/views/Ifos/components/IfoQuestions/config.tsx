@@ -1,6 +1,6 @@
+import { Box, Link } from '@pancakeswap/uikit'
 import Trans from 'components/Trans'
 import { styled } from 'styled-components'
-import { Link, Box } from '@pancakeswap/uikit'
 
 const InlineLink = styled(Link)`
   display: inline;
@@ -34,8 +34,8 @@ const config = [
       </Box>,
       <Box mt="1rem">
         <Trans>
-          In the Public Sale, everyone with an active PancakeSwap profile can commit. However the maximum amount of CAKE
-          users can commit, is equal to the number of iCAKE they have.
+          In the Public Sale, everyone with an active U2Dex profile can commit. However the maximum amount of CAKE users
+          can commit, is equal to the number of iCAKE they have.
         </Trans>
       </Box>,
       <Box mt="1rem">
@@ -76,7 +76,7 @@ const config = [
       </Box>,
       <Box mt="1rem">
         <Trans>
-          Just remember: you need an active PancakeSwap Profile in order to participate in Private and Public Sales.
+          Just remember: you need an active U2Dex Profile in order to participate in Private and Public Sales.
         </Trans>
       </Box>,
     ],

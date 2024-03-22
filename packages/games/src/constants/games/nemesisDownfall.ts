@@ -75,7 +75,7 @@ export const nemesisDownfall: GameType = {
     },
   ],
   socialMedia: {
-    telegram: 'https://t.me/PancakeSwap/3340271',
+    telegram: 'https://t.me/U2Dex/3340271',
     discord: 'https://discord.com/channels/897834609272840232/1209684050370105434',
   },
 }

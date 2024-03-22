@@ -1,7 +1,7 @@
-import { memo } from 'react'
-import { PageHeader, Flex, Heading, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Flex, Heading, PageHeader, useMatchBreakpoints } from '@pancakeswap/uikit'
 import Image from 'next/image'
+import { memo } from 'react'
 
 export const Header = memo(function Header() {
   const { t } = useTranslation()
@@ -20,7 +20,7 @@ export const Header = memo(function Header() {
             {t('Position Manager')}
           </Heading>
           <Heading scale="md" color="text">
-            {t('Automate your PancakeSwap V3 liquidity')}
+            {t('Automate your U2Dex V3 liquidity')}
           </Heading>
         </Flex>
         {isDesktop && (

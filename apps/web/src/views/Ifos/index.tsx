@@ -1,9 +1,9 @@
-import { useEffect, useMemo } from 'react'
-import { SubMenuItems, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { useRouter } from 'next/router'
-import { useUserNotUsCitizenAcknowledgement, IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
+import { SubMenuItems, useModal } from '@pancakeswap/uikit'
 import USCitizenConfirmModal from 'components/Modal/USCitizenConfirmModal'
+import { IdType, useUserNotUsCitizenAcknowledgement } from 'hooks/useUserIsUsCitizenAcknowledgement'
+import { useRouter } from 'next/router'
+import { useEffect, useMemo } from 'react'
 import Hero from './components/Hero'
 import IfoProvider from './contexts/IfoContext'
 
@@ -15,7 +15,7 @@ export const IfoPageLayout = ({ children }) => {
   const [userNotUsCitizenAcknowledgement] = useUserNotUsCitizenAcknowledgement(IdType.IFO)
   const [onUSCitizenModalPresent] = useModal(
     <USCitizenConfirmModal
-      title={t('PancakeSwap IFOs')}
+      title={t('U2Dex IFOs')}
       id={IdType.IFO}
       checks={[
         {

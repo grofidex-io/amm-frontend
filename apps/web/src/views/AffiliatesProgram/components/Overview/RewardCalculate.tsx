@@ -1,7 +1,7 @@
-import { Flex, Text, Button, Box, PageSection, Link } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { styled } from 'styled-components'
+import { Box, Button, Flex, Link, PageSection, Text } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
+import { styled } from 'styled-components'
 // import Calculator from 'views/AffiliatesProgram/components/Overview/Calculator'
 import CommissionStructure from 'views/AffiliatesProgram/components/Overview/CommissionStructure'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
@@ -90,12 +90,12 @@ const RewardCalculate = () => {
               color="body"
               bold
             >
-              {t("Join PancakeSwap's Community and Make a Difference")}
+              {t("Join U2Dex's Community and Make a Difference")}
             </Text>
           </Box>
           <Text textAlign={['left', 'left', 'left', 'center']} color="textSubtle" mb="32px">
             {t(
-              "As an affiliate, you'll be part of a network of like-minded individuals who are committed to build a stronger DeFi community. Be part of something bigger with PancakeSwap's Affiliate program",
+              "As an affiliate, you'll be part of a network of like-minded individuals who are committed to build a stronger DeFi community. Be part of something bigger with U2Dex's Affiliate program",
             )}
           </Text>
           <Link

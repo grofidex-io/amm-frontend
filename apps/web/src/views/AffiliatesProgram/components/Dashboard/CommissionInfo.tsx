@@ -1,10 +1,10 @@
-import React, { ReactNode, useMemo } from 'react'
-import { useTranslation, Trans } from '@pancakeswap/localization'
-import { styled } from 'styled-components'
+import { Trans, useTranslation } from '@pancakeswap/localization'
 import { Box, Card, Flex, Text } from '@pancakeswap/uikit'
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { useCakePrice } from 'hooks/useCakePrice'
-import { formatNumber } from '@pancakeswap/utils/formatBalance'
+import React, { ReactNode, useMemo } from 'react'
+import { styled } from 'styled-components'
 import { InfoDetail } from 'views/AffiliatesProgram/hooks/useAuthAffiliate'
 import PieChartContainer from './PieChartContainer'
 
@@ -129,7 +129,7 @@ const CommissionInfo: React.FC<React.PropsWithChildren<CommissionInfoProps>> = (
             </StyledFlex>
             <StyledFlex pl="10%">
               <Text color="secondary" bold fontSize={['12px']} textTransform="uppercase">
-                {t('Total cake earned')}
+                {t('Total u2u earned')}
               </Text>
               <Text fontSize={['32px']} bold>{`~ ${totalCakeEarned}`}</Text>
               <Text color="textSubtle" fontSize="14px">{`$ ${formatNumber(Number(totalEarnFeeUSD))}`}</Text>

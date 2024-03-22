@@ -49,7 +49,7 @@ const Text = styled.div
 Text.defaultProps = {
   color: "text",
   small: false,
-  fontSize: "16px",
+  fontSize: "15px",
   ellipsis: false,
 };
 

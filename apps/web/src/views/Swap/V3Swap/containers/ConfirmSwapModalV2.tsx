@@ -244,7 +244,7 @@ export const ConfirmSwapModalV2: React.FC<ConfirmSwapModalProps> = ({
   return (
     <ConfirmSwapModalContainer
       minHeight={hasError ? 'auto' : '415px'}
-      width={['100%', '100%', '100%', '367px']}
+      width={['100%', '100%', '100%']}
       hideTitleAndBackground={confirmModalState !== ConfirmModalState.REVIEWING || hasError}
       headerPadding={loadingAnimationVisible ? '12px 24px 0px 24px !important' : '12px 24px'}
       bodyPadding={loadingAnimationVisible && !hasError ? '0 24px 24px 24px' : '24px'}

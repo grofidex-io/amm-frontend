@@ -4,13 +4,13 @@ import apolloXCampaignBunny from './ApolloXCampaignBunny.png'
 import apolloXCampaignBunnyMobile from './ApolloXCampaignBunnyMobile.png'
 import apolloXCampaignTitle from './ApolloXCampaignTitle.png'
 import Aptos from './Aptos.png'
-import AptosXPancakeSwap from './AptosXPancakeSwap.png'
+import AptosXU2Dex from './AptosXPancakeSwap.png'
 import ETHBunny from './ETHBunny.png'
 import IFOImage from './IFO.png'
 import IFOMobileImage from './IFOMobile.png'
 import competitionImage from './competition.png'
 import competitionMobileImage from './competitionMobile.png'
-import ETHXPancakeSwap from './ethXpancakeswap.png'
+import ETHXU2Dex from './ethXpancakeswap.png'
 import farmV3MigrationBunny from './farmV3MigrationBunny.png'
 import farmV3MigrationBunnyFull from './farmV3MigrationBunnyFull.png'
 import farmV3MigrationMobileBunny from './farmV3MigrationMobileBunny.png'
@@ -86,9 +86,9 @@ import zkSyncBunny from './zkSyncBunny.png'
 
 export {
   Aptos,
-  AptosXPancakeSwap,
+  AptosXU2Dex,
   ETHBunny,
-  ETHXPancakeSwap,
+  ETHXU2Dex,
   IFOImage,
   IFOMobileImage,
   apolloXCampaignBg,

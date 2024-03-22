@@ -144,6 +144,7 @@ const responsiveProperties = defineProperties({
     borderBottomColor: vars.colors,
     border: {
       "1": `1px solid ${vars.colors.cardBorder}`,
+      "2": `2px solid ${vars.colors.cardBorder}`,
     },
     borderBottom: {
       "1": `1px solid ${vars.colors.cardBorder}`,

@@ -1,6 +1,6 @@
-import { useState } from "react";
 import { useTranslation } from "@pancakeswap/localization";
-import { Button, Text, Flex, Checkbox, InjectedModalProps, Modal, Message } from "@pancakeswap/uikit";
+import { Button, Checkbox, Flex, InjectedModalProps, Message, Modal, Text } from "@pancakeswap/uikit";
+import { useState } from "react";
 
 interface ExpertModalProps extends InjectedModalProps {
   setShowConfirmExpertModal: (show: boolean) => void;
@@ -26,7 +26,7 @@ export const ExpertModal: React.FC<React.PropsWithChildren<ExpertModalProps>> = 
       width={["100%", "100%", "100%", "436px"]}
     >
       <Message variant="warning" mb="24px">
-        <Text>
+        <Text small>
           {t(
             "Expert mode turns off the 'Confirm' transaction prompt, and allows high slippage trades that often result in bad rates and lost funds."
           )}
@@ -48,6 +48,7 @@ export const ExpertModal: React.FC<React.PropsWithChildren<ExpertModalProps>> = 
       <Flex flexDirection="column">
         <Button
           mb="8px"
+          className="button-hover"
           id="confirm-expert-mode"
           onClick={() => {
             // eslint-disable-next-line no-alert
@@ -65,6 +66,7 @@ export const ExpertModal: React.FC<React.PropsWithChildren<ExpertModalProps>> = 
 
         <Button
           variant="secondary"
+          className="button-hover"
           onClick={() => {
             setShowConfirmExpertModal(false);
           }}

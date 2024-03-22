@@ -1,13 +1,13 @@
+import { useCountdown } from '@pancakeswap/hooks'
+import { useTranslation } from '@pancakeswap/localization'
+import { Flex, FlexGap, Link, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import Image from 'next/image'
 import { memo, useMemo } from 'react'
 import styled from 'styled-components'
-import Image from 'next/image'
-import { Flex, FlexGap, useMatchBreakpoints, Link, Text } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import { useCountdown } from '@pancakeswap/hooks'
 
 import { ASSET_CDN } from 'config/constants/endpoints'
 
-import { Wrapper, Inner } from './Styled'
+import { Inner, Wrapper } from './Styled'
 import bg from './images/spain-meetup-bg.png'
 import bunny from './images/spain-meetup-bunny.png'
 import ticketBtn from './images/spain-meetup-ticket-btn.png'
@@ -191,7 +191,7 @@ export const SpainMeetupBanner = memo(function SpainMeetupBanner() {
               height={isMobile ? 15 : 22}
               unoptimized
             />
-            <StyledHeading data-text={t('PancakeSwap Meetup')}>{t('PancakeSwap Meetup')}</StyledHeading>
+            <StyledHeading data-text={t('U2Dex Meetup')}>{t('U2Dex Meetup')}</StyledHeading>
             <Flex ml={isMobile ? 0 : '6rem'}>
               <HeadLine data-text={t('Spain')}>{t('Spain')}</HeadLine>
             </Flex>

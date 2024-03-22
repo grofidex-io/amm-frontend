@@ -1,11 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Link, OpenNewIcon, Text, useMatchBreakpoints, Button, Svg, SvgProps } from '@pancakeswap/uikit'
+import { Button, Flex, Link, OpenNewIcon, Svg, SvgProps, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/legacy/image'
 import { memo } from 'react'
 import { styled } from 'styled-components'
 import * as S from './Styled'
-import { opbnbBunny, opbnbBg, opbnbBgMobile } from './images'
+import { opbnbBg, opbnbBgMobile, opbnbBunny } from './images'
 
 const pancakeSwapLogo = `${ASSET_CDN}/web/banners/ethXpancakeswap.png`
 
@@ -134,7 +134,7 @@ export const OpBnbBanner = memo(() => {
             <Divider />
             <OpBnbLogo width={33} height={33} />
           </Flex>
-          <Header>{isMobile ? t('opBNB is LIVE!') : t('PancakeSwap Now Live on opBNB!')}</Header>
+          <Header>{isMobile ? t('opBNB is LIVE!') : t('U2Dex Now Live on opBNB!')}</Header>
           {!isMobile && <SubTitle>{t('Swap and Provide Liquidity Now')}</SubTitle>}
           <Link
             style={{ textDecoration: 'none' }}

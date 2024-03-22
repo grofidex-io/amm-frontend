@@ -1,36 +1,36 @@
-import { useCallback, useMemo } from 'react'
-import Cookie from 'js-cookie'
-import { Token } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
-import { BigNumber } from 'bignumber.js'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
-import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
-import useCatchTxError from 'hooks/useCatchTxError'
-import { styled } from 'styled-components'
-import { TokenPairImage } from 'components/TokenImage'
+import { Token } from '@pancakeswap/sdk'
 import {
-  Modal,
-  InjectedModalProps,
-  Flex,
-  Box,
-  Text,
-  Button,
-  Message,
-  MessageText,
   ArrowForwardIcon,
   AutoRenewIcon,
-  useToast,
-  FlexGap,
   Balance,
+  Box,
+  Button,
+  Flex,
+  FlexGap,
+  InjectedModalProps,
+  Message,
+  MessageText,
+  Modal,
+  Text,
+  useToast,
 } from '@pancakeswap/uikit'
-import { ChainLogo } from 'components/Logo/ChainLogo'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
+import { BigNumber } from 'bignumber.js'
 import { LightGreyCard } from 'components/Card'
+import { ChainLogo } from 'components/Logo/ChainLogo'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { TokenPairImage } from 'components/TokenImage'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import useCatchTxError from 'hooks/useCatchTxError'
+import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
+import Cookie from 'js-cookie'
+import { useCallback, useMemo } from 'react'
+import { farmFetcher } from 'state/farms'
+import { styled } from 'styled-components'
 import { useFarmCProxyAddress } from 'views/Farms/hooks/useFarmCProxyAddress'
 import useNonBscHarvestFarm from 'views/Farms/hooks/useNonBscHarvestFarm'
-import { farmFetcher } from 'state/farms'
 
 const TokenWrapper = styled.div`
   padding-right: 8px;
@@ -138,7 +138,7 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
         <LightGreyCard padding="16px">
           <Box mb="8px">
             <Text fontSize="12px" color="secondary" bold as="span">
-              {t('CAKE')}
+              {t('U2U')}
             </Text>
             <Text fontSize="12px" color="textSubtle" ml="4px" bold as="span">
               {t('Earned')}

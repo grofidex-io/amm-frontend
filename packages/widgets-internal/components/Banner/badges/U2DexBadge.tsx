@@ -2,15 +2,15 @@ import { Badge, BadgeLogo, BadgeText } from "./Badge";
 
 const pancakeSwapLogo = "https://assets.pancakeswap.finance/web/banners/pancakeswap-logo.png";
 
-interface PancakeSwapBadgeProps {
+interface U2DexBadgeProps {
   whiteText?: boolean;
 }
 
-export const PancakeSwapBadge: React.FC<React.PropsWithChildren<PancakeSwapBadgeProps>> = ({ whiteText }) => {
+export const U2DexBadge: React.FC<React.PropsWithChildren<U2DexBadgeProps>> = ({ whiteText }) => {
   return (
     <Badge
       logo={<BadgeLogo src={pancakeSwapLogo} alt="pancakeSwapLogo" />}
-      text={<BadgeText color={whiteText ? "#ffffff" : "#090909"}>PancakeSwap</BadgeText>}
+      text={<BadgeText color={whiteText ? "#ffffff" : "#090909"}>U2Dex</BadgeText>}
     />
   );
 };
