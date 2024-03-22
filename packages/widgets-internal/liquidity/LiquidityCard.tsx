@@ -1,13 +1,13 @@
 import { styled } from "styled-components";
 
-import { Card, CardBody, CardFooter, AtomBox, AtomBoxProps } from "@pancakeswap/uikit";
+import { AtomBox, AtomBoxProps, Card, CardBody, CardFooter } from "@pancakeswap/uikit";
 import LiquidityCardHeader from "./LiquidityCardHeader";
 
 type LiquidityCardProps = AtomBoxProps;
 
 export const CardWrapper = styled(Card)`
-  border-radius: 24px;
-  max-width: 436px;
+  border-radius: 8px;
+  max-width: 480px;
   width: 100%;
   z-index: 1;
 `;

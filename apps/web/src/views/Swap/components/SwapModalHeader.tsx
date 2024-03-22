@@ -7,9 +7,17 @@ import { RowBetween, RowFixed } from 'components/Layout/Row'
 import { CurrencyLogo } from 'components/Logo'
 import { ReactElement, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
+import styled from 'styled-components'
 import { basisPointsToPercent, warningSeverity } from 'utils/exchange'
 import { SlippageAdjustedAmounts } from '../V3Swap/utils/exchange'
 import { SwapShowAcceptChanges, TruncatedText } from './styleds'
+
+const BorderLayout = styled.div`
+  border: 2px solid ${({ theme }) => theme.colors.cardBorder};
+  box-shadow: ${({ theme }) => theme.shadows.card};
+  border-radius: 8px;
+  padding: 16px;
+`
 
 export default function SwapModalHeader({
   inputAmount,
@@ -78,57 +86,59 @@ export default function SwapModalHeader({
 
   return (
     <AutoColumn gap="md">
-      <RowBetween align="flex-end">
-        <RowFixed gap="4px">
-          <TruncatedText fontSize="24px" bold color={inputTextColor}>
-            {formatAmount(inputAmount, 6)}
-          </TruncatedText>
+      <BorderLayout>
+        <RowBetween align="flex-end">
+          <RowFixed gap="4px">
+            <TruncatedText fontSize="24px" bold color={inputTextColor}>
+              {formatAmount(inputAmount, 6)}
+            </TruncatedText>
+          </RowFixed>
+          <RowFixed style={{ alignSelf: 'center' }}>
+            <Text fontSize="14px" ml="10px" mr="8px">
+              {inputAmount.currency.symbol}
+            </Text>
+            <CurrencyLogo currency={currencyBalances.INPUT?.currency ?? inputAmount.currency} size="24px" />
+          </RowFixed>
+        </RowBetween>
+        <RowFixed margin="auto">
+          <ArrowDownIcon width="24px" ml="4px" />
         </RowFixed>
-        <RowFixed style={{ alignSelf: 'center' }}>
-          <Text fontSize="14px" ml="10px" mr="8px">
-            {inputAmount.currency.symbol}
-          </Text>
-          <CurrencyLogo currency={currencyBalances.INPUT?.currency ?? inputAmount.currency} size="24px" />
-        </RowFixed>
-      </RowBetween>
-      <RowFixed margin="auto">
-        <ArrowDownIcon width="24px" ml="4px" />
-      </RowFixed>
-      <RowBetween align="flex-end">
-        <RowFixed gap="4px">
-          <TruncatedText
-            bold
-            fontSize="24px"
-            color={
-              priceImpactSeverity > 2
-                ? 'failure'
-                : showAcceptChanges && tradeType === TradeType.EXACT_INPUT
-                ? 'primary'
-                : 'text'
-            }
-          >
-            {formatAmount(outputAmount, 6)}
-          </TruncatedText>
-        </RowFixed>
-        <RowFixed style={{ alignSelf: 'center' }}>
-          <Text fontSize="14px" ml="10px" mr="8px">
-            {outputAmount.currency.symbol}
-          </Text>
-          <CurrencyLogo currency={currencyBalances.OUTPUT?.currency ?? outputAmount.currency} size="24px" />
-        </RowFixed>
-      </RowBetween>
-      {showAcceptChanges ? (
-        <SwapShowAcceptChanges justify="flex-start" gap="0px">
-          <RowBetween>
-            <RowFixed>
-              <ErrorIcon mr="8px" />
-              <Text bold> {t('Price Updated')}</Text>
-            </RowFixed>
-            <Button onClick={onAcceptChanges}>{t('Accept')}</Button>
-          </RowBetween>
-        </SwapShowAcceptChanges>
-      ) : null}
-      <AutoColumn justify="flex-start" gap="sm" style={{ padding: '24px 0 0 0px' }}>
+        <RowBetween align="flex-end">
+          <RowFixed gap="4px">
+            <TruncatedText
+              bold
+              fontSize="24px"
+              color={
+                priceImpactSeverity > 2
+                  ? 'failure'
+                  : showAcceptChanges && tradeType === TradeType.EXACT_INPUT
+                  ? 'primary'
+                  : 'text'
+              }
+            >
+              {formatAmount(outputAmount, 6)}
+            </TruncatedText>
+          </RowFixed>
+          <RowFixed style={{ alignSelf: 'center' }}>
+            <Text fontSize="14px" ml="10px" mr="8px">
+              {outputAmount.currency.symbol}
+            </Text>
+            <CurrencyLogo currency={currencyBalances.OUTPUT?.currency ?? outputAmount.currency} size="24px" />
+          </RowFixed>
+        </RowBetween>
+        {showAcceptChanges ? (
+          <SwapShowAcceptChanges justify="flex-start" gap="0px">
+            <RowBetween>
+              <RowFixed>
+                <ErrorIcon mr="8px" />
+                <Text bold> {t('Price Updated')}</Text>
+              </RowFixed>
+              <Button onClick={onAcceptChanges}>{t('Accept')}</Button>
+            </RowBetween>
+          </SwapShowAcceptChanges>
+        ) : null}
+      </BorderLayout>
+      <AutoColumn justify="flex-start" gap="sm" style={{ padding: '12px 0 0 0px' }}>
         <RowFixed style={{ width: '100%' }}>
           <Text fontSize={12} color="secondary" bold textTransform="uppercase">
             {t('Slippage Tolerance')}

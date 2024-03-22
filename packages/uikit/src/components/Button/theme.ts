@@ -1,5 +1,5 @@
-import { scales, variants } from "./types";
 import { vars } from "../../css/vars.css";
+import { scales, variants } from "./types";
 
 export const scaleVariants = {
   [scales.MD]: {
@@ -21,6 +21,12 @@ export const styleVariants = {
   [variants.PRIMARY]: {
     backgroundColor: "primary",
     color: "invertedContrast",
+    border: "2px solid #000",
+    ":focus-visible": {
+      backgroundColor: vars.colors.hover,
+      opacity: 0.1,
+      boxShadow: vars.shadows.button,
+    },
   },
   [variants.SECONDARY]: {
     backgroundColor: "transparent",

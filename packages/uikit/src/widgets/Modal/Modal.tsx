@@ -36,7 +36,7 @@ export const ModalWrapper = ({
       ref={wrapperRef}
       style={{ overflow: "visible" }}
     >
-      <Box overflow="hidden" borderRadius="32px" {...props}>
+      <Box overflow="hidden" borderRadius="8px" {...props}>
         {children}
       </Box>
     </ModalContainer>

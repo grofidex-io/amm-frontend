@@ -1,5 +1,5 @@
-import { styled, DefaultTheme, css } from "styled-components";
-import { space, layout, variant } from "styled-system";
+import { DefaultTheme, css, styled } from "styled-components";
+import { layout, space, variant } from "styled-system";
 import { scaleVariants, styleVariants } from "./theme";
 import { BaseButtonProps } from "./types";
 
@@ -29,6 +29,11 @@ const getDisabledStyles = ({ $isLoading, theme }: TransientButtonProps) => {
       box-shadow: none;
       color: ${theme.colors.textDisabled};
       cursor: not-allowed;
+      &:hover {
+        background-color: ${theme.colors.backgroundDisabled};
+        box-shadow: none;
+        color: ${theme.colors.textDisabled};
+      }
     }
   `;
 };
@@ -49,8 +54,7 @@ const StyledButton = styled("button").withConfig({
   position: relative;
   align-items: center;
   border: 0;
-  border-radius: 16px;
-  box-shadow: 0px -1px 0px 0px rgba(14, 14, 44, 0.4) inset;
+  border-radius: 8px;
   cursor: pointer;
   display: inline-flex;
   font-family: inherit;
@@ -61,23 +65,9 @@ const StyledButton = styled("button").withConfig({
   line-height: 1;
   opacity: ${getOpacity};
   outline: 0;
-  transition: background-color 0.2s, opacity 0.2s;
-
+  transition: all 0.3s;
   &:focus-visible {
     outline: none;
-    box-shadow: ${({ theme }) => theme.shadows.focus};
-  }
-
-  @media (hover: hover) {
-    &:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-      opacity: 0.65;
-    }
-  }
-
-  &:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
-    opacity: 0.85;
-    transform: translateY(1px);
-    box-shadow: none;
   }
 
   ${getDisabledStyles}

@@ -69,14 +69,16 @@ export type InputVariants = RecipeVariants<typeof inputVariants>;
 export const inputContainerVariants = recipe({
   base: style([
     atoms({
-      borderRadius: "default",
+      borderRadius: "8px",
       backgroundColor: "input",
+      boxShadow: "input",
+      border: "2",
     }),
     style({
       selectors: {
-        "&:focus-within": {
-          boxShadow: vars.shadows.focus,
-        },
+        // "&:focus-within": {
+        //   boxShadow: vars.shadows.focus,
+        // },
       },
     }),
   ]),
@@ -84,9 +86,9 @@ export const inputContainerVariants = recipe({
     error: {
       true: style({
         selectors: {
-          "&:focus-within": {
-            boxShadow: vars.shadows.danger,
-          },
+          // "&:focus-within": {
+          //   boxShadow: vars.shadows.danger,
+          // },
         },
       }),
       false: atoms({
@@ -109,7 +111,7 @@ export const pageVariants = recipe({
       alignItems: "center",
       width: "100%",
       height: "100%",
-      background: "gradientBubblegum",
+      background: "background",
       padding: "16px",
       paddingBottom: "0px",
     }),

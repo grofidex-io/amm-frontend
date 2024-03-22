@@ -157,8 +157,8 @@ export default function Swap() {
 
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
-      <Flex width={['328px', '100%']} justifyContent="center" position="relative" alignItems="flex-start">
-        <Flex flexDirection="column" width={['328px', '100%']}>
+      <Flex justifyContent="center" position="relative" alignItems="flex-start">
+        <Flex flexDirection="column">
           {isDesktop && isChartSupported && (
             <PriceChartContainer
               onCurrencySelectClick={onCurrencySelectClick}
@@ -215,8 +215,8 @@ export default function Swap() {
               />
             </Modal>
           </ModalV2>
-          <Box pb="10px" pl="0" pr="0">
-            <TabMenu activeIndex={tab} onItemClick={setTab} isShowBorderBottom={false}>
+          <Box mt="48px">
+            <TabMenu activeIndex={tab} onItemClick={setTab} customWidth isShowBorderBottom={false}>
               <Tab>{t('Transactions')}</Tab>
               <Tab>{t('Holders')}</Tab>
             </TabMenu>

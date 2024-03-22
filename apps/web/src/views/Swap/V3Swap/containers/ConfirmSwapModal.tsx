@@ -236,7 +236,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
   return (
     <ConfirmSwapModalContainer
       minHeight="415px"
-      width={['100%', '100%', '100%', '367px']}
+      width={['100%', '100%', '100%']}
       hideTitleAndBackground={confirmModalState !== ConfirmModalStateV1.REVIEWING || Boolean(swapErrorMessage)}
       headerPadding={isShowingLoadingAnimation ? '12px 24px 0px 24px !important' : '12px 24px'}
       bodyPadding={isShowingLoadingAnimation ? '0 24px 24px 24px' : '24px'}

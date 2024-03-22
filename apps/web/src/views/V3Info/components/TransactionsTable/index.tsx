@@ -73,16 +73,21 @@ const ResponsiveGrid = styled.div`
 
 const SortText = styled.button<{ active: boolean }>`
   cursor: pointer;
-  font-weight: ${({ active }) => (active ? 500 : 400)};
-  margin-right: 0.75rem !important;
-  border: none;
-  background-color: transparent;
-  font-size: 1rem;
-  padding: 0px;
-  color: ${({ active, theme }) => (active ? theme.colors.text : theme.colors.textSubtle)};
+  font-weight: ${({ active }) => (active ? 700 : 400)};
+  margin-right: 16px !important;
+  border: 2px solid transparent;
+  background-color: ${({ active, theme }) => (active ? theme.colors.secondary : theme.colors.transparent)};
+  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  color: ${({ active, theme }) => (active ? theme.colors.black : theme.colors.textSubtle)};
+  border-color: ${({ active, theme }) => (active ? theme.colors.cardBorder : theme.colors.transparent)};
   outline: none;
   @media screen and (max-width: 600px) {
     font-size: 14px;
+  }
+  &:hover {
+    color: ${({ active, theme }) => (active ? theme.colors.black : theme.colors.hover)};
   }
 `
 
@@ -229,8 +234,8 @@ export default function TransactionTable({
   }
 
   return (
-    <TableWrapper>
-      <Flex justifyContent="space-between" alignItems="center" style={{ padding: '0 20px' }}>
+    <>
+      <Flex justifyContent="space-between" alignItems="center" my="16px">
         <RowFixed>
           <SortText
             onClick={() => {
@@ -266,110 +271,116 @@ export default function TransactionTable({
           </SortText>
         </RowFixed>
         <Flex alignItems="center">
-          <Toggle scale="md" checked={toggleFilter} onChange={filterFn} />
-          <Text ml="8px">{t('Only my transactions')}</Text>
+          <Toggle scale="sm" checked={toggleFilter} onChange={filterFn} />
+          <Text ml="16px" small color="textSubtle">
+            {t('Only my transactions')}
+          </Text>
         </Flex>
       </Flex>
-      <ResponsiveGrid>
-        <RowFixed />
-        <ClickableColumnHeader color="secondary">
-          {t('Total Value')}
-          <SortButton
-            scale="sm"
-            variant="subtle"
-            onClick={() => handleSort(SORT_FIELD.amountUSD)}
-            className={getSortFieldClassName(SORT_FIELD.amountUSD)}
-          >
-            <SortArrowIcon />
-          </SortButton>
-        </ClickableColumnHeader>
-        <ClickableColumnHeader color="secondary">
-          {t('Token%index% Amount', { index: '0' })}
-          <SortButton
-            scale="sm"
-            variant="subtle"
-            onClick={() => handleSort(SORT_FIELD.amountToken0)}
-            className={getSortFieldClassName(SORT_FIELD.amountToken0)}
-          >
-            <SortArrowIcon />
-          </SortButton>
-        </ClickableColumnHeader>
-        <ClickableColumnHeader color="secondary">
-          {t('Token%index% Amount', { index: '1' })}
-          <SortButton
-            scale="sm"
-            variant="subtle"
-            onClick={() => handleSort(SORT_FIELD.amountToken1)}
-            className={getSortFieldClassName(SORT_FIELD.amountToken1)}
-          >
-            <SortArrowIcon />
-          </SortButton>
-        </ClickableColumnHeader>
-        <ClickableColumnHeader color="secondary">
-          {t('Account')}
-          <SortButton
-            scale="sm"
-            variant="subtle"
-            onClick={() => handleSort(SORT_FIELD.sender)}
-            className={getSortFieldClassName(SORT_FIELD.sender)}
-          >
-            <SortArrowIcon />
-          </SortButton>
-        </ClickableColumnHeader>
-        <ClickableColumnHeader color="secondary">
-          {`${t('Time')} `}
-          <SortButton
-            scale="sm"
-            variant="subtle"
-            onClick={() => handleSort(SORT_FIELD.timestamp)}
-            className={getSortFieldClassName(SORT_FIELD.timestamp)}
-          >
-            <SortArrowIcon />
-          </SortButton>
-        </ClickableColumnHeader>
-      </ResponsiveGrid>
-      <AutoColumn gap="16px">
-        <Break />
+      <TableWrapper>
+        <ResponsiveGrid>
+          <Text textAlign="center" color="textSubtle">
+            {t('Type')}
+          </Text>
+          <ClickableColumnHeader color="textSubtle">
+            {t('Total Value')}
+            <SortButton
+              scale="sm"
+              variant="subtle"
+              onClick={() => handleSort(SORT_FIELD.amountUSD)}
+              className={getSortFieldClassName(SORT_FIELD.amountUSD)}
+            >
+              <SortArrowIcon />
+            </SortButton>
+          </ClickableColumnHeader>
+          <ClickableColumnHeader color="textSubtle">
+            {t('Token%index% Amount', { index: '0' })}
+            <SortButton
+              scale="sm"
+              variant="subtle"
+              onClick={() => handleSort(SORT_FIELD.amountToken0)}
+              className={getSortFieldClassName(SORT_FIELD.amountToken0)}
+            >
+              <SortArrowIcon />
+            </SortButton>
+          </ClickableColumnHeader>
+          <ClickableColumnHeader color="textSubtle">
+            {t('Token%index% Amount', { index: '1' })}
+            <SortButton
+              scale="sm"
+              variant="subtle"
+              onClick={() => handleSort(SORT_FIELD.amountToken1)}
+              className={getSortFieldClassName(SORT_FIELD.amountToken1)}
+            >
+              <SortArrowIcon />
+            </SortButton>
+          </ClickableColumnHeader>
+          <ClickableColumnHeader color="textSubtle">
+            {t('Account')}
+            <SortButton
+              scale="sm"
+              variant="subtle"
+              onClick={() => handleSort(SORT_FIELD.sender)}
+              className={getSortFieldClassName(SORT_FIELD.sender)}
+            >
+              <SortArrowIcon />
+            </SortButton>
+          </ClickableColumnHeader>
+          <ClickableColumnHeader color="textSubtle">
+            {`${t('Time')} `}
+            <SortButton
+              scale="sm"
+              variant="subtle"
+              onClick={() => handleSort(SORT_FIELD.timestamp)}
+              className={getSortFieldClassName(SORT_FIELD.timestamp)}
+            >
+              <SortArrowIcon />
+            </SortButton>
+          </ClickableColumnHeader>
+        </ResponsiveGrid>
+        <AutoColumn gap="16px">
+          <Break />
 
-        {sortedTransactions.map((d, index) => {
-          if (d) {
-            return (
-              // eslint-disable-next-line react/no-array-index-key
-              <React.Fragment key={`${d.hash}/${d.timestamp}/${index}/transactionRecord`}>
-                <DataRow transaction={d} type={type} />
-                <Break />
-              </React.Fragment>
-            )
-          }
-          return null
-        })}
-        {sortedTransactions.length === 0 && (
-          <Flex justifyContent="center">
-            <Text>{t('No Transactions')}</Text>
-          </Flex>
-        )}
-        <PageButtons>
-          <Box
-            onClick={() => {
-              if (page > 1) setPage(page - 1)
-            }}
-          >
-            <Arrow>
-              <ArrowBackIcon color={page <= 1 ? 'textDisabled' : 'primary'} />
-            </Arrow>
-          </Box>
-          <Text>{`Page ${page} of ${maxPage}`}</Text>
-          <Box
-            onClick={() => {
-              if (page !== maxPage) setPage(page + 1)
-            }}
-          >
-            <Arrow>
-              <ArrowForwardIcon color={page === maxPage ? 'textDisabled' : 'primary'} />
-            </Arrow>
-          </Box>
-        </PageButtons>
-      </AutoColumn>
-    </TableWrapper>
+          {sortedTransactions.map((d, index) => {
+            if (d) {
+              return (
+                // eslint-disable-next-line react/no-array-index-key
+                <React.Fragment key={`${d.hash}/${d.timestamp}/${index}/transactionRecord`}>
+                  <DataRow transaction={d} type={type} />
+                  <Break />
+                </React.Fragment>
+              )
+            }
+            return null
+          })}
+          {sortedTransactions.length === 0 && (
+            <Flex justifyContent="center">
+              <Text>{t('No Transactions')}</Text>
+            </Flex>
+          )}
+          <PageButtons>
+            <Box
+              onClick={() => {
+                if (page > 1) setPage(page - 1)
+              }}
+            >
+              <Arrow>
+                <ArrowBackIcon color={page <= 1 ? 'textDisabled' : 'primary'} />
+              </Arrow>
+            </Box>
+            <Text>{`Page ${page} of ${maxPage}`}</Text>
+            <Box
+              onClick={() => {
+                if (page !== maxPage) setPage(page + 1)
+              }}
+            >
+              <Arrow>
+                <ArrowForwardIcon color={page === maxPage ? 'textDisabled' : 'primary'} />
+              </Arrow>
+            </Box>
+          </PageButtons>
+        </AutoColumn>
+      </TableWrapper>
+    </>
   )
 }

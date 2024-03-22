@@ -19,6 +19,7 @@ import {
 } from '@pancakeswap/uikit'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { ListLogo } from '@pancakeswap/widgets-internal'
+import { useQuery } from '@tanstack/react-query'
 import AccessRisk, { TOKEN_RISK } from 'components/AccessRisk'
 import { ACCESS_TOKEN_SUPPORT_CHAIN_IDS } from 'components/AccessRisk/config/supportedChains'
 import { fetchRiskToken } from 'components/AccessRisk/utils/fetchTokenRisk'
@@ -28,7 +29,6 @@ import { useCombinedInactiveList } from 'state/lists/hooks'
 import { useAddUserToken } from 'state/user/hooks'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import { chains } from 'utils/wagmi'
-import { useQuery } from '@tanstack/react-query'
 
 interface ImportProps {
   tokens: Token[]
@@ -68,7 +68,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
   return (
     <AutoColumn gap="lg">
       <Message variant="warning">
-        <Text>
+        <Text fontSize="14px">
           {t(
             'Anyone can create tokens on %network% with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.',
             {
@@ -90,8 +90,11 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
             key={token.address}
             alignItems={['left', 'left', 'center']}
             justifyContent="space-between"
+            className="border-neubrutal"
+            p="16px"
+            borderRadius="8px"
           >
-            <Grid gridTemplateRows="1fr 1fr 1fr 1fr" gridGap="4px">
+            <Grid gridTemplateRows="1fr 1fr 1fr 1fr" gridGap="4px" width="100%">
               {list !== undefined ? (
                 <Tag
                   variant="success"
@@ -106,20 +109,37 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
                   {t('Unknown Source')}
                 </Tag>
               )}
-              <Flex alignItems="center">
-                <Text mr="8px">{token.name}</Text>
-                <Text>({token.symbol})</Text>
+              <Flex alignItems="center" justifyContent="space-between">
+                <Text fontSize="14px" color="textSubtle">
+                  Symbol
+                </Text>
+                <Flex alignItems="center">
+                  <Text fontSize="15px" mr="8px">
+                    {token.name}
+                  </Text>
+                  <Text fontSize="15px">({token.symbol})</Text>
+                </Flex>
               </Flex>
               {!!token.chainId && (
                 <>
-                  <Text mr="4px">{address}</Text>
-                  <Link href={getBlockExploreLink(token.address, 'address', token.chainId)} external>
-                    (
-                    {t('View on %site%', {
-                      site: getBlockExploreName(token.chainId),
-                    })}
-                    {token.chainId === ChainId.BSC && <BscScanIcon color="primary" ml="4px" />})
-                  </Link>
+                  <Flex alignItems="center" justifyContent="space-between">
+                    <Text fontSize="14px" color="textSubtle">
+                      Address
+                    </Text>
+                    <Text fontSize="15px" ml="10px">
+                      {address}
+                    </Text>
+                  </Flex>
+                  <Flex alignItems="center" justifyContent="space-between">
+                    <Text />
+                    <Link fontSize="15px" href={getBlockExploreLink(token.address, 'address', token.chainId)} external>
+                      (
+                      {t('View on %site%', {
+                        site: getBlockExploreName(token.chainId),
+                      })}
+                      {token.chainId === ChainId.BSC && <BscScanIcon color="primary" ml="4px" />})
+                    </Link>
+                  </Flex>
                 </>
               )}
             </Grid>
@@ -152,7 +172,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
           )}
         </Flex>
         <Button
-          variant="danger"
+          variant="primary"
           disabled={!confirmed}
           onClick={() => {
             tokens.forEach((token) => {
@@ -171,7 +191,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
               handleCurrencySelect(tokens[0])
             }
           }}
-          className=".token-dismiss-button"
+          className=".token-dismiss-button button-hover"
         >
           {hasRiskToken ? t('Proceed') : t('Import')}
         </Button>

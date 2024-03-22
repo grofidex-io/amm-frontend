@@ -1,5 +1,5 @@
 import shouldForwardProp from "@styled-system/should-forward-prop";
-import { styled, css, DefaultTheme } from "styled-components";
+import { DefaultTheme, css, styled } from "styled-components";
 import { space } from "styled-system";
 import { promotedGradient } from "../../util/animationToolkit";
 import { Box } from "../Box";
@@ -47,7 +47,8 @@ export const StyledCard = styled.div.withConfig({
       background-size: 400% 400%;
     `}
 
-  padding: 1px 1px 3px 1px;
+  padding: 2px;
+  box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 1);
 
   ${space}
 `;
