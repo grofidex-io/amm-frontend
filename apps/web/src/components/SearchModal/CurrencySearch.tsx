@@ -53,6 +53,7 @@ interface CurrencySearchProps {
   tokensToShow?: Token[]
   mode?: string
   onRampFlow?: boolean
+  isSelectMulti?: boolean
 }
 
 function useSearchInactiveTokenLists(search: string | undefined, minResults = 10): WrappedTokenInfo[] {
@@ -100,6 +101,7 @@ function useSearchInactiveTokenLists(search: string | undefined, minResults = 10
 
 function CurrencySearch({
   selectedCurrency,
+  onCurrencySelect,
   onMultiCurrencySelect,
   otherSelectedCurrency,
   showCommonBases,
@@ -111,6 +113,7 @@ function CurrencySearch({
   tokensToShow,
   mode,
   onRampFlow,
+  isSelectMulti,
 }: CurrencySearchProps) {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
@@ -159,23 +162,25 @@ function CurrencySearch({
   const filteredSortedTokens: Token[] = useMemo(() => {
     return onRampFlow ? [...filteredQueryTokens] : [...filteredQueryTokens].sort(tokenComparator)
   }, [filteredQueryTokens, tokenComparator, onRampFlow])
-
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
-      if (step === 0) {
-        setCurrency0(currency)
-      }
+      if (isSelectMulti) {
+        if (step === 0) {
+          setCurrency0(currency)
+        }
 
-      if (currency0 && currency && step === 1 && onMultiCurrencySelect) {
-        onMultiCurrencySelect([currency0, currency])
+        if (currency0 && currency && step === 1 && onMultiCurrencySelect) {
+          onMultiCurrencySelect([currency0, currency])
+        }
+        swiperRef?.slideNext()
+      } else {
+        onCurrencySelect(currency)
       }
-      // onCurrencySelect(currency)
-      swiperRef?.slideNext()
       if (audioPlay) {
         getSwapSound().play()
       }
     },
-    [audioPlay, onMultiCurrencySelect, swiperRef, step, currency0],
+    [audioPlay, onMultiCurrencySelect, onCurrencySelect, isSelectMulti, swiperRef, step, currency0],
   )
 
   const updateActiveIndex = ({ activeIndex }) => {
