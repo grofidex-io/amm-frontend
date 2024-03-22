@@ -53,6 +53,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   tradeLoading,
 }: SwapCommitButtonPropsType) {
   const { chainId } = useActiveChainId()
+
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const [isExpertMode] = useExpertMode()
@@ -61,6 +62,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     independentField,
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
+    typeSwap,
   } = useSwapState()
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
@@ -101,7 +103,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     () => (!showWrap ? computeTradePriceBreakdown(trade) : {}),
     [showWrap, trade],
   )
-  const swapInputError = useSwapInputError(trade, currencyBalances)
+  const swapInputError = useSwapInputError(trade, currencyBalances, typeSwap)
   const parsedAmounts = useParsedAmounts(trade, currencyBalances, showWrap)
   const parsedIndepentFieldAmount = parsedAmounts[independentField]
 
@@ -307,6 +309,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   if (!account) {
     return <ConnectWalletButton width="100%" />
   }
+  console.log('🚀 ~ wrapInputError:', swapInputError)
 
   if (showWrap) {
     return (
