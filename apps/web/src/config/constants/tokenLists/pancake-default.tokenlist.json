@@ -49,6 +49,14 @@
       "decimals": 18,
       "chainId": 2484,
       "logoURI": "https://raw.githubusercontent.com/u2u-eco/default-token-list/master/logos/network/2484/0x33dbb072e53cf0dd0fd55b19ffdb4e794364d666.png"
+    },
+    {
+      "name": "Wrapped BNB",
+      "address": "0x2ab42afc0e59fad4faebea40321479a9fb6440b9",
+      "symbol": "WBNB",
+      "decimals": 18,
+      "chainId": 2484,
+      "logoURI": "https://raw.githubusercontent.com/u2u-eco/default-token-list/master/logos/network/2484/0x2ab42afc0e59fad4faebea40321479a9fb6440b9.png"
     }
   ]
 }
