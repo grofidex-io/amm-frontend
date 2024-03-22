@@ -1,9 +1,9 @@
 import React from "react";
 import { styled } from "styled-components";
-import { Variant, variants } from "./types";
 import { Image } from "../../../../components/Image";
 import { RefreshIcon, WalletFilledIcon, WarningIcon } from "../../../../components/Svg";
 import { Colors } from "../../../../theme/types";
+import { Variant, variants } from "./types";
 
 const MenuIconWrapper = styled.div<{ borderColor: keyof Colors }>`
   align-items: center;
@@ -30,6 +30,11 @@ const ProfileIcon = styled(Image)`
 
   & > img {
     border-radius: 50%;
+    height: 80%;
+    object-fit: contain;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 `;
 
