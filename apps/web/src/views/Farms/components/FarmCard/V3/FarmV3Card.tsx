@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Card, ExpandableSectionButton, Flex, Text, TooltipText, useModalV2, useTooltip } from '@pancakeswap/uikit'
+import { Card, ExpandableSectionButton, Flex, Text, TooltipText, useModalV2, useTooltip } from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { CHAIN_QUERY_NAME } from 'config/chains'
@@ -14,7 +14,6 @@ import { isAddressEqual } from 'viem'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import { useFarmV3Multiplier } from 'views/Farms/hooks/v3/useFarmV3Multiplier'
-import { StatusView } from '../../YieldBooster/components/bCakeV3/StatusView'
 import { useUserBoostedPoolsTokenId } from '../../YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 import { BoostStatus, useBoostStatus } from '../../YieldBooster/hooks/bCakeV3/useBoostStatus'
 import { useIsSomePositionBoosted } from '../../YieldBooster/hooks/bCakeV3/useIsSomePositionBoosted'
@@ -63,7 +62,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
   const farmCakePerSecond = getFarmCakePerSecond(farm.poolWeight)
 
   const lpLabel = farm.lpSymbol && farm.lpSymbol.replace(/pancake/gi, '')
-  const earnLabel = t('CAKE + Fees')
+  const earnLabel = t('U2U Reward + Fees')
   const { lpAddress } = farm
   const isPromotedFarm = farm.token.symbol === 'CAKE'
   const { status: boostStatus } = useBoostStatus(farm.pid)
@@ -85,7 +84,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
     <>
       <Text>
         {t(
-          'Global APR calculated using the total amount of active & staked liquidity with the pool CAKE reward emissions.',
+          'Global APR calculated using the total amount of active & staked liquidity with the pool U2U reward emissions.',
         )}
       </Text>
       <br />
@@ -129,11 +128,11 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
           <Text>{t('Earn')}:</Text>
           <Text>{earnLabel}</Text>
         </Flex>
-        {!account && farm.boosted && (
+        {/* {!account && farm.boosted && (
           <Box mt="24px" mb="16px">
             <StatusView status={boostStatus} />
           </Box>
-        )}
+        )} */}
         <CardActionsContainer farm={farm} lpLabel={lpLabel} account={account} />
       </FarmCardInnerContainer>
       <ExpandingWrapper>
