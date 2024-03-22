@@ -46,8 +46,6 @@ export async function getRoutesWithValidQuote({
       ? quoteProvider.getRouteWithQuotesExactIn
       : quoteProvider.getRouteWithQuotesExactOut
 
-  console.log('🚀 ~ quoterOptimization:', quoterOptimization)
-
   if (!quoterOptimization) {
     return getRoutesWithQuote(routesWithoutQuote, { blockNumber, gasModel, signal })
   }

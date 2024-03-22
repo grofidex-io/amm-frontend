@@ -11,6 +11,7 @@ const l2DifferentBlockNumberChains = [
   ChainId.ARBITRUM_GOERLI,
   ChainId.OPBNB_TESTNET,
   ChainId.OPBNB,
+  ChainId.U2U_NEBULAS,
 ]
 
 export type FetchChunkResult = ReturnType<typeof fetchChunk>

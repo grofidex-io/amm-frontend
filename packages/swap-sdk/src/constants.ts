@@ -224,10 +224,10 @@ export const WETH9 = {
   ),
   [ChainId.U2U_NEBULAS]: new ERC20Token(
     ChainId.U2U_NEBULAS,
-    '0x4B9F8077856d81c5E97948dbeC8960024D4908C1',
+    '0x0a3c7baf490d9f5d77412051cbdf0a11ae7f6950',
     18,
-    'WU2U',
-    'Wrapped U2U',
+    'WETH',
+    'Wrapped ETH',
     ''
   ),
 }
@@ -273,6 +273,25 @@ export const WBNB = {
     'Wrapped BNB',
     'https://www.binance.org'
   ),
+  [ChainId.U2U_NEBULAS]: new ERC20Token(
+    ChainId.U2U_NEBULAS,
+    '0x2ab42afc0e59fad4faebea40321479a9fb6440b9',
+    18,
+    'WBNB',
+    'Wrapped BNB',
+    'https://www.binance.org'
+  ),
+}
+
+export const WU2U = {
+  [ChainId.U2U_NEBULAS]: new ERC20Token(
+    ChainId.U2U_NEBULAS,
+    '0x33dbb072e53cf0dd0fd55b19ffdb4e794364d666',
+    18,
+    'U2U',
+    'Wrapped U2U',
+    'https://www.uniultra.xyz'
+  ),
 }
 
 export const WNATIVE = {
@@ -296,7 +315,7 @@ export const WNATIVE = {
   [ChainId.SEPOLIA]: WETH9[ChainId.SEPOLIA],
   [ChainId.ARBITRUM_SEPOLIA]: WETH9[ChainId.ARBITRUM_SEPOLIA],
   [ChainId.BASE_SEPOLIA]: WETH9[ChainId.BASE_SEPOLIA],
-  [ChainId.U2U_NEBULAS]: WETH9[ChainId.U2U_NEBULAS],
+  [ChainId.U2U_NEBULAS]: WU2U[ChainId.U2U_NEBULAS],
 } satisfies Record<ChainId, ERC20Token>
 
 const ETHER = { name: 'Ether', symbol: 'ETH', decimals: 18 } as const
