@@ -91,7 +91,7 @@ export const useProtocolTransactionDataWidthPair = (params: {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
   const { data } = useQuery({
-    queryKey: [`v3/info/pool/poolTransaction/${chainId}/1`, chainId],
+    queryKey: [`v3/info/pool/poolTransaction/${chainId}/${params.token0}/${params.token1}`, chainId],
     queryFn: () => fetchPoolTransactionsWithPair(v3InfoClients[chainId], params.token0, params.token1),
     enabled: Boolean(chainId && params.token0 && params.token1),
     ...QUERY_SETTINGS_IMMUTABLE,

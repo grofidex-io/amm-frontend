@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { BottomDrawer, Flex, Heading, Modal, ModalV2, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { BottomDrawer, Flex, Heading, Modal, ModalV2, useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { AppBody } from 'components/App'
 import { useCallback, useContext, useMemo } from 'react'
@@ -8,7 +8,10 @@ import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { currencyId } from 'utils/currencyId'
 
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
+import CurrencySearchModal from 'components/SearchModal/CurrencySearchModal'
+import { BigNumber } from 'ethers'
 import { useCurrency } from 'hooks/Tokens'
+import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { Field } from 'state/swap/actions'
 import { useDefaultsFromURLSearch, useSingleTokenSwapInfo, useSwapState } from 'state/swap/hooks'
@@ -61,9 +64,39 @@ export default function Swap() {
   }
 
   const transactionData = useProtocolTransactionDataWidthPair({
-    token0: inputCurrency?.wrapped.address?.toLowerCase(),
-    token1: outputCurrency?.wrapped.address?.toLowerCase(),
+    token0: inputCurrency?.wrapped.address?.toLowerCase() || '',
+    token1: outputCurrency?.wrapped.address?.toLowerCase() || '',
   })
+
+  const { onSelectPair } = useSwapActionHandlers()
+  const native = useNativeCurrency()
+  const getAddress = (token: any) => {
+    if (native.wrapped.address.toLowerCase() === token.wrapped.address?.toLowerCase()) {
+      return native.symbol
+    }
+    return token.address
+  }
+
+  const handleSelectCurrency = (listCurrency: Array<Currency>) => {
+    if (listCurrency[0] && listCurrency[1]) {
+      let input = listCurrency[0]
+      let output = listCurrency[1]
+      if (!BigNumber.from(listCurrency[0].wrapped.address).lt(BigNumber.from(listCurrency[1].wrapped.address))) {
+        input = listCurrency[1]
+        output = listCurrency[0]
+      }
+      const _inputCurrencyId = getAddress(input) || ''
+      const _outputCurrencyId = _inputCurrencyId === 'U2U' ? output.wrapped?.address : getAddress(output) || ''
+      onSelectPair(_inputCurrencyId, _outputCurrencyId)
+      replaceBrowserHistory('inputCurrency', _inputCurrencyId)
+      replaceBrowserHistory('outputCurrencyId', _outputCurrencyId)
+      // setValue(`${getSymbol(input)}/${getSymbol(output)}`)
+    }
+  }
+  const [onPresentCurrencyModal] = useModal(<CurrencySearchModal onMultiCurrencySelect={handleSelectCurrency} />)
+  const onCurrencySelectClick = useCallback(() => {
+    onPresentCurrencyModal()
+  }, [onPresentCurrencyModal])
 
   const singleTokenPrice = useSingleTokenSwapInfo(
     inputCurrencyId,
@@ -107,6 +140,7 @@ export default function Swap() {
         <Flex flexDirection="column" width={['328px', '100%']}>
           {isDesktop && isChartSupported && (
             <PriceChartContainer
+              onCurrencySelectClick={onCurrencySelectClick}
               inputCurrencyId={inputCurrencyId}
               inputCurrency={currencies[Field.INPUT]}
               outputCurrencyId={outputCurrencyId}
