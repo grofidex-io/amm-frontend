@@ -1,21 +1,21 @@
 import { styled } from "styled-components";
-import { ToggleProps, HandleProps, InputProps, ScaleKeys, scales, StyleToggleProps } from "./types";
+import { HandleProps, InputProps, ScaleKeys, StyleToggleProps, ToggleProps, scales } from "./types";
 
 const scaleKeyValues = {
   sm: {
-    handleHeight: "16px",
-    handleWidth: "16px",
+    handleHeight: "18px",
+    handleWidth: "18px",
     handleLeft: "2px",
     handleTop: "2px",
-    checkedLeft: "calc(100% - 18px)",
-    toggleHeight: "20px",
-    toggleWidth: "36px",
+    checkedLeft: "calc(100% - 20px)",
+    toggleHeight: "24px",
+    toggleWidth: "46px",
   },
   md: {
     handleHeight: "26px",
     handleWidth: "26px",
     handleLeft: "3px",
-    handleTop: "3px",
+    handleTop: "2px",
     checkedLeft: "calc(100% - 30px)",
     toggleHeight: "32px",
     toggleWidth: "56px",
@@ -24,7 +24,7 @@ const scaleKeyValues = {
     handleHeight: "32px",
     handleWidth: "32px",
     handleLeft: "4px",
-    handleTop: "4px",
+    handleTop: "3px",
     checkedLeft: "calc(100% - 36px)",
     toggleHeight: "40px",
     toggleWidth: "72px",
@@ -38,7 +38,7 @@ const getScale =
   };
 
 export const Handle = styled.div<HandleProps>`
-  background-color: ${({ theme }) => theme.toggle.handleBackground};
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: 50%;
   cursor: pointer;
   height: ${getScale("handleHeight")};
@@ -48,6 +48,7 @@ export const Handle = styled.div<HandleProps>`
   transition: left 200ms ease-in;
   width: ${getScale("handleWidth")};
   z-index: 1;
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
 `;
 
 export const Input = styled.input<InputProps>`
@@ -58,16 +59,18 @@ export const Input = styled.input<InputProps>`
   width: 100%;
   z-index: 3;
 
+  &:disabled + ${Handle} {
+    background: ${({ theme }) => theme.colors.textSubtle};
+  }
+
   &:checked + ${Handle} {
     left: ${getScale("checkedLeft")};
   }
 
   &:focus + ${Handle} {
-    box-shadow: ${({ theme }) => theme.shadows.focus};
   }
 
   &:hover + ${Handle}:not(:disabled):not(:checked) {
-    box-shadow: ${({ theme }) => theme.shadows.focus};
   }
 `;
 
@@ -83,6 +86,8 @@ const StyledToggle = styled.div<StyleToggleProps>`
   position: relative;
   transition: background-color 200ms;
   width: ${getScale("toggleWidth")};
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  box-shadow: ${({ theme }) => theme.shadows.input};
 `;
 
 export default StyledToggle;

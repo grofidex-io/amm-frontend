@@ -18,10 +18,10 @@ import { SlippageAdjustedAmounts, formatExecutionPrice } from '../utils/exchange
 
 const SwapModalFooterContainer = styled(AutoColumn)`
   margin-top: 24px;
+  border: 2px solid ${({ theme }) => theme.colors.cardBorder};
+  box-shadow: ${({ theme }) => theme.shadows.card};
+  border-radius: 8px;
   padding: 16px;
-  border-radius: ${({ theme }) => theme.radii.default};
-  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  background-color: ${({ theme }) => theme.colors.background};
 `
 
 export const SwapModalFooter = memo(function SwapModalFooter({
@@ -236,6 +236,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
           mt="12px"
           id="confirm-swap-or-send"
           width="100%"
+          className="button-hover"
         >
           {isMM && !isRFQReady ? (
             <Dots>{t('Checking RFQ with MM')}</Dots>

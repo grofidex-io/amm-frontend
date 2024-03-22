@@ -44,7 +44,7 @@ const useWebNotificationsToggle = () => {
 
 function WebNotiToggle({ enabled }) {
   const toggle = useWebNotificationsToggle()
-  return <Toggle id="toggle-webnoti" checked={enabled} scale="md" onChange={toggle} />
+  return <Toggle id="toggle-webnoti" checked={enabled} scale="sm" onChange={toggle} />
 }
 
 export default WebNotiToggle

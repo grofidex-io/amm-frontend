@@ -14,7 +14,6 @@ import {
   Modal,
   ModalV2,
   NotificationDot,
-  PancakeToggle,
   PreTitle,
   QuestionHelper,
   RowFixed,
@@ -32,6 +31,7 @@ import { ExpertModal } from '@pancakeswap/widgets-internal'
 import { TOKEN_RISK } from 'components/AccessRisk'
 import AccessRiskTooltips from 'components/AccessRisk/AccessRiskTooltips'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useSpeedQuote } from 'hooks/useSpeedQuote'
 import useTheme from 'hooks/useTheme'
 import { useWebNotifications } from 'hooks/useWebNotifications'
 import { ReactNode, Suspense, lazy, useCallback, useState } from 'react'
@@ -40,7 +40,6 @@ import { useSubgraphHealthIndicatorManager, useUserUsernameVisibility } from 'st
 import { useUserShowTestnet } from 'state/user/hooks/useUserShowTestnet'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
 import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
-import { useSpeedQuote } from 'hooks/useSpeedQuote'
 import {
   useOnlyOneAMMSourceEnabled,
   useRoutingSettingChanged,
@@ -58,7 +57,7 @@ const WebNotiToggle = lazy(() => import('./WebNotiToggle'))
 
 const BetaTag = styled.div`
   border: 2px solid ${({ theme }) => theme.colors.success};
-  border-radius: 16px;
+  border-radius: 4px;
   padding-left: 6px;
   padding-right: 6px;
   padding-top: 3px;
@@ -66,7 +65,7 @@ const BetaTag = styled.div`
   color: ${({ theme }) => theme.colors.success};
   margin-left: 6px;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 10px;
 `
 const ScrollableContainer = styled(Flex)`
   flex-direction: column;
@@ -77,6 +76,13 @@ const ScrollableContainer = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.md} {
     max-height: none;
   }
+`
+
+const BorderLayout = styled.div`
+  border: 2px solid ${({ theme }) => theme.colors.cardBorder};
+  box-shadow: ${({ theme }) => theme.shadows.card};
+  border-radius: 8px;
+  padding: 16px;
 `
 
 export const withCustomOnDismiss =
@@ -144,166 +150,171 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
       <ScrollableContainer>
         {mode === SettingsMode.GLOBAL && (
           <>
-            <Flex pb="24px" flexDirection="column">
+            <Flex flexDirection="column">
               <PreTitle mb="24px">{t('Global')}</PreTitle>
-              <Flex justifyContent="space-between" mb="24px">
-                <Text>{t('Dark mode')}</Text>
-                <ThemeSwitcher isDark={isDark} toggleTheme={() => setTheme(isDark ? 'light' : 'dark')} />
-              </Flex>
-              <Flex justifyContent="space-between" alignItems="center" mb="24px">
-                <Flex alignItems="center">
-                  <Text>{t('Subgraph Health Indicator')}</Text>
-                  <QuestionHelper
-                    text={t(
-                      'Turn on subgraph health indicator all the time. Default is to show the indicator only when the network is delayed',
-                    )}
-                    placement="top"
-                    ml="4px"
-                  />
+              <BorderLayout>
+                <Flex justifyContent="space-between" mb="24px">
+                  <Text mr="16px">{t('Dark mode')}</Text>
+                  <ThemeSwitcher isDark={isDark} toggleTheme={() => setTheme(isDark ? 'light' : 'dark')} />
                 </Flex>
-                <Toggle
-                  id="toggle-subgraph-health-button"
-                  checked={subgraphHealth}
-                  scale="md"
-                  onChange={() => {
-                    setSubgraphHealth(!subgraphHealth)
-                  }}
-                />
-              </Flex>
-              <Flex justifyContent="space-between" alignItems="center" mb="24px">
-                <Flex alignItems="center">
-                  <Text>{t('Show username')}</Text>
-                  <QuestionHelper text={t('Shows username of wallet instead of bunnies')} placement="top" ml="4px" />
-                </Flex>
-                <Toggle
-                  id="toggle-username-visibility"
-                  checked={userUsernameVisibility}
-                  scale="md"
-                  onChange={() => {
-                    setUserUsernameVisibility(!userUsernameVisibility)
-                  }}
-                />
-              </Flex>
-              <Flex justifyContent="space-between" alignItems="center" mb="24px">
-                <Flex alignItems="center">
-                  <Text>{t('Allow notifications')}</Text>
-                  <QuestionHelper
-                    text={t(
-                      'Enables the web notifications feature. If turned off you will be automatically unsubscribed and the notification bell will not be visible',
-                    )}
-                    placement="top"
-                    ml="4px"
-                  />
-                  <BetaTag>{t('BETA')}</BetaTag>
-                </Flex>
-                <Suspense fallback={null}>
-                  <WebNotiToggle enabled={enabled} />
-                </Suspense>
-              </Flex>
-              <Flex justifyContent="space-between" alignItems="center" mb="24px">
-                <Flex alignItems="center">
-                  <Text>{t('Show testnet')}</Text>
-                </Flex>
-                <Toggle
-                  id="toggle-show-testnet"
-                  checked={showTestnet}
-                  scale="md"
-                  onChange={() => {
-                    setShowTestnet((s) => !s)
-                  }}
-                />
-              </Flex>
-              {chainId === ChainId.BSC && (
-                <>
-                  <Flex justifyContent="space-between" alignItems="center" mb="24px">
-                    <Flex alignItems="center">
-                      <Text>{t('Token Risk Scanning')}</Text>
-                      <QuestionHelper
-                        text={
-                          <AccessRiskTooltips
-                            hasResult
-                            riskLevel={TOKEN_RISK.SOME_RISK}
-                            riskLevelDescription={t(
-                              'Automatic risk scanning for the selected token. This scanning result is for reference only, and should NOT be taken as investment advice.',
-                            )}
-                          />
-                        }
-                        placement="top"
-                        ml="4px"
-                      />
-                    </Flex>
-                    <Toggle
-                      id="toggle-token-risk"
-                      checked={tokenRisk}
-                      scale="md"
-                      onChange={() => {
-                        setTokenRisk(!tokenRisk)
-                      }}
+                <Flex justifyContent="space-between" alignItems="center" mb="24px">
+                  <Flex alignItems="center" mr="16px">
+                    <Text>{t('Subgraph Health Indicator')}</Text>
+                    <QuestionHelper
+                      text={t(
+                        'Turn on subgraph health indicator all the time. Default is to show the indicator only when the network is delayed',
+                      )}
+                      placement="top"
+                      ml="4px"
                     />
                   </Flex>
-                  <GasSettings />
-                </>
-              )}
+                  <Toggle
+                    id="toggle-subgraph-health-button"
+                    checked={subgraphHealth}
+                    scale="sm"
+                    onChange={() => {
+                      setSubgraphHealth(!subgraphHealth)
+                    }}
+                  />
+                </Flex>
+                <Flex justifyContent="space-between" alignItems="center" mb="24px">
+                  <Flex alignItems="center" mr="16px">
+                    <Text>{t('Show username')}</Text>
+                    <QuestionHelper text={t('Shows username of wallet instead of bunnies')} placement="top" ml="4px" />
+                  </Flex>
+                  <Toggle
+                    id="toggle-username-visibility"
+                    checked={userUsernameVisibility}
+                    scale="sm"
+                    onChange={() => {
+                      setUserUsernameVisibility(!userUsernameVisibility)
+                    }}
+                  />
+                </Flex>
+                <Flex justifyContent="space-between" alignItems="center" mb="24px">
+                  <Flex alignItems="center" mr="16px">
+                    <Text>{t('Allow notifications')}</Text>
+                    <QuestionHelper
+                      text={t(
+                        'Enables the web notifications feature. If turned off you will be automatically unsubscribed and the notification bell will not be visible',
+                      )}
+                      placement="top"
+                      ml="4px"
+                    />
+                    <BetaTag>{t('BETA')}</BetaTag>
+                  </Flex>
+                  <Suspense fallback={null}>
+                    <WebNotiToggle enabled={enabled} />
+                  </Suspense>
+                </Flex>
+                <Flex justifyContent="space-between" alignItems="center" mb="24px">
+                  <Flex alignItems="center" mr="16px">
+                    <Text>{t('Show testnet')}</Text>
+                  </Flex>
+                  <Toggle
+                    id="toggle-show-testnet"
+                    checked={showTestnet}
+                    scale="sm"
+                    onChange={() => {
+                      setShowTestnet((s) => !s)
+                    }}
+                  />
+                </Flex>
+                {chainId === ChainId.BSC && (
+                  <>
+                    <Flex justifyContent="space-between" alignItems="center">
+                      <Flex alignItems="center" mr="16px">
+                        <Text>{t('Token Risk Scanning')}</Text>
+                        <QuestionHelper
+                          text={
+                            <AccessRiskTooltips
+                              hasResult
+                              riskLevel={TOKEN_RISK.SOME_RISK}
+                              riskLevelDescription={t(
+                                'Automatic risk scanning for the selected token. This scanning result is for reference only, and should NOT be taken as investment advice.',
+                              )}
+                            />
+                          }
+                          placement="top"
+                          ml="4px"
+                        />
+                      </Flex>
+                      <Toggle
+                        id="toggle-token-risk"
+                        checked={tokenRisk}
+                        scale="sm"
+                        onChange={() => {
+                          setTokenRisk(!tokenRisk)
+                        }}
+                      />
+                    </Flex>
+                    <GasSettings />
+                  </>
+                )}
+              </BorderLayout>
             </Flex>
           </>
         )}
         {mode === SettingsMode.SWAP_LIQUIDITY && (
           <>
             <Flex pt="3px" flexDirection="column">
-              <PreTitle>{t('Swaps & Liquidity')}</PreTitle>
+              <PreTitle color="hover">{t('Swaps & Liquidity')}</PreTitle>
               <Flex justifyContent="space-between" alignItems="center" mb="24px">
                 {chainId === ChainId.BSC && <GasSettings />}
               </Flex>
+            </Flex>
+            <BorderLayout>
               <TransactionSettings />
-            </Flex>
-            <Flex justifyContent="space-between" alignItems="center" mb="24px">
-              <Flex alignItems="center">
-                <Text>{t('Expert Mode')}</Text>
-                <QuestionHelper
-                  text={t('Bypasses confirmation modals and allows high slippage trades. Use at your own risk.')}
-                  placement="top"
-                  ml="4px"
+              <Flex justifyContent="space-between" alignItems="center" mb="24px">
+                <Flex alignItems="center">
+                  <Text>{t('Expert Mode')}</Text>
+                  <QuestionHelper
+                    text={t('Bypasses confirmation modals and allows high slippage trades. Use at your own risk.')}
+                    placement="top"
+                    ml="4px"
+                  />
+                </Flex>
+                <Toggle
+                  id="toggle-expert-mode-button"
+                  scale="sm"
+                  checked={expertMode}
+                  onChange={handleExpertModeToggle}
                 />
               </Flex>
-              <Toggle
-                id="toggle-expert-mode-button"
-                scale="md"
-                checked={expertMode}
-                onChange={handleExpertModeToggle}
-              />
-            </Flex>
-            <Flex justifyContent="space-between" alignItems="center" mb="24px">
-              <Flex alignItems="center">
-                <Text>{t('Flippy sounds')}</Text>
-                <QuestionHelper
-                  text={t('Fun sounds to make a truly immersive pancake-flipping trading experience')}
-                  placement="top"
-                  ml="4px"
+              <Flex justifyContent="space-between" alignItems="center" mb="24px">
+                <Flex alignItems="center">
+                  <Text>{t('Flippy sounds')}</Text>
+                  <QuestionHelper
+                    text={t('Fun sounds to make a truly immersive pancake-flipping trading experience')}
+                    placement="top"
+                    ml="4px"
+                  />
+                </Flex>
+                <Toggle
+                  id="toggle-audio-play"
+                  checked={audioPlay}
+                  onChange={() => setAudioMode((s) => !s)}
+                  scale="sm"
                 />
               </Flex>
-              <PancakeToggle
-                id="toggle-audio-play"
-                checked={audioPlay}
-                onChange={() => setAudioMode((s) => !s)}
-                scale="md"
-              />
-            </Flex>
-            <Flex justifyContent="space-between" alignItems="center" mb="24px">
-              <Flex alignItems="center">
-                <Text>{t('Fast routing (BETA)')}</Text>
-                <QuestionHelper
-                  text={t('Increase the speed of finding best swapping routes')}
-                  placement="top"
-                  ml="4px"
+              <Flex justifyContent="space-between" alignItems="center">
+                <Flex alignItems="center">
+                  <Text>{t('Fast routing (BETA)')}</Text>
+                  <QuestionHelper
+                    text={t('Increase the speed of finding best swapping routes')}
+                    placement="top"
+                    ml="4px"
+                  />
+                </Flex>
+                <Toggle
+                  id="toggle-speed-quote"
+                  checked={speedQuote}
+                  onChange={() => setSpeedQuote((s) => !s)}
+                  scale="sm"
                 />
               </Flex>
-              <PancakeToggle
-                id="toggle-speed-quote"
-                checked={speedQuote}
-                onChange={() => setSpeedQuote((s) => !s)}
-                scale="md"
-              />
-            </Flex>
+            </BorderLayout>
+            <Flex mt="24px" />
             <RoutingSettingsButton />
           </>
         )}
@@ -330,7 +341,13 @@ export function RoutingSettingsButton({
     <>
       <AtomBox textAlign="center">
         <NotificationDot show={isRoutingSettingChange && showRedDot}>
-          <Button variant="text" onClick={() => setShow(true)} scale="sm" {...buttonProps}>
+          <Button
+            variant="primary"
+            className="button-hover"
+            width="100%"
+            onClick={() => setShow(true)}
+            {...buttonProps}
+          >
             {children || t('Customize Routing')}
           </Button>
         </NotificationDot>
@@ -374,107 +391,109 @@ function RoutingSettings() {
       >
         <AtomBox>
           <PreTitle mb="24px">{t('Liquidity source')}</PreTitle>
-          <Flex justifyContent="space-between" alignItems="center" mb="24px">
-            <Flex alignItems="center">
-              <Text>PancakeSwap V3</Text>
-              <QuestionHelper
-                text={
-                  <Flex>
-                    <Text mr="5px">
-                      {t(
-                        'V3 offers concentrated liquidity to provide deeper liquidity for traders with the same amount of capital, offering lower slippage and more flexible trading fee tiers.',
-                      )}
-                    </Text>
-                  </Flex>
-                }
-                placement="top"
-                ml="4px"
+          <BorderLayout>
+            <Flex justifyContent="space-between" alignItems="center" mb="24px">
+              <Flex alignItems="center">
+                <Text>PancakeSwap V3</Text>
+                <QuestionHelper
+                  text={
+                    <Flex>
+                      <Text mr="5px">
+                        {t(
+                          'V3 offers concentrated liquidity to provide deeper liquidity for traders with the same amount of capital, offering lower slippage and more flexible trading fee tiers.',
+                        )}
+                      </Text>
+                    </Flex>
+                  }
+                  placement="top"
+                  ml="4px"
+                />
+              </Flex>
+              <Toggle
+                disabled={v3Enable && onlyOneAMMSourceEnabled}
+                scale="sm"
+                checked={v3Enable}
+                onChange={() => setV3Enable((s) => !s)}
               />
             </Flex>
-            <Toggle
-              disabled={v3Enable && onlyOneAMMSourceEnabled}
-              scale="md"
-              checked={v3Enable}
-              onChange={() => setV3Enable((s) => !s)}
-            />
-          </Flex>
-          <Flex justifyContent="space-between" alignItems="center" mb="24px">
-            <Flex alignItems="center">
-              <Text>PancakeSwap V2</Text>
-              <QuestionHelper
-                text={
-                  <Flex flexDirection="column">
-                    <Text mr="5px">
-                      {t('The previous V2 exchange is where a number of iconic, popular assets are traded.')}
-                    </Text>
-                    <Text mr="5px" mt="1em">
-                      {t('Recommend leaving this on to ensure backward compatibility.')}
-                    </Text>
-                  </Flex>
-                }
-                placement="top"
-                ml="4px"
+            <Flex justifyContent="space-between" alignItems="center" mb="24px">
+              <Flex alignItems="center">
+                <Text>PancakeSwap V2</Text>
+                <QuestionHelper
+                  text={
+                    <Flex flexDirection="column">
+                      <Text mr="5px">
+                        {t('The previous V2 exchange is where a number of iconic, popular assets are traded.')}
+                      </Text>
+                      <Text mr="5px" mt="1em">
+                        {t('Recommend leaving this on to ensure backward compatibility.')}
+                      </Text>
+                    </Flex>
+                  }
+                  placement="top"
+                  ml="4px"
+                />
+              </Flex>
+              <Toggle
+                disabled={v2Enable && onlyOneAMMSourceEnabled}
+                scale="sm"
+                checked={v2Enable}
+                onChange={() => setV2Enable((s) => !s)}
               />
             </Flex>
-            <Toggle
-              disabled={v2Enable && onlyOneAMMSourceEnabled}
-              scale="md"
-              checked={v2Enable}
-              onChange={() => setV2Enable((s) => !s)}
-            />
-          </Flex>
-          <Flex justifyContent="space-between" alignItems="center" mb="24px">
-            <Flex alignItems="center">
-              <Text>PancakeSwap {t('StableSwap')}</Text>
-              <QuestionHelper
-                text={
-                  <Flex flexDirection="column">
-                    <Text mr="5px">
-                      {t(
-                        'StableSwap provides higher efficiency for stable or pegged assets and lower fees for trades.',
-                      )}
-                    </Text>
-                  </Flex>
-                }
-                placement="top"
-                ml="4px"
+            <Flex justifyContent="space-between" alignItems="center" mb="24px">
+              <Flex alignItems="center">
+                <Text>PancakeSwap {t('StableSwap')}</Text>
+                <QuestionHelper
+                  text={
+                    <Flex flexDirection="column">
+                      <Text mr="5px">
+                        {t(
+                          'StableSwap provides higher efficiency for stable or pegged assets and lower fees for trades.',
+                        )}
+                      </Text>
+                    </Flex>
+                  }
+                  placement="top"
+                  ml="4px"
+                />
+              </Flex>
+              <Toggle
+                disabled={isStableSwapByDefault && onlyOneAMMSourceEnabled}
+                id="stable-swap-toggle"
+                scale="sm"
+                checked={isStableSwapByDefault}
+                onChange={() => {
+                  setIsStableSwapByDefault((s) => !s)
+                }}
               />
             </Flex>
-            <PancakeToggle
-              disabled={isStableSwapByDefault && onlyOneAMMSourceEnabled}
-              id="stable-swap-toggle"
-              scale="md"
-              checked={isStableSwapByDefault}
-              onChange={() => {
-                setIsStableSwapByDefault((s) => !s)
-              }}
-            />
-          </Flex>
-          <Flex justifyContent="space-between" alignItems="center" mb="24px">
-            <Flex alignItems="center">
-              <Text>{`PancakeSwap ${t('MM Linked Pool')}`}</Text>
-              <QuestionHelper
-                text={
-                  <Flex flexDirection="column">
-                    <Text mr="5px">{t('Trade through the market makers if they provide better deal')}</Text>
-                    <Text mr="5px" mt="1em">
-                      {t(
-                        'If a trade is going through market makers, it will no longer route through any traditional AMM DEX pools.',
-                      )}
-                    </Text>
-                  </Flex>
-                }
-                placement="top"
-                ml="4px"
+            <Flex justifyContent="space-between" alignItems="center">
+              <Flex alignItems="center">
+                <Text>{`PancakeSwap ${t('MM Linked Pool')}`}</Text>
+                <QuestionHelper
+                  text={
+                    <Flex flexDirection="column">
+                      <Text mr="5px">{t('Trade through the market makers if they provide better deal')}</Text>
+                      <Text mr="5px" mt="1em">
+                        {t(
+                          'If a trade is going through market makers, it will no longer route through any traditional AMM DEX pools.',
+                        )}
+                      </Text>
+                    </Flex>
+                  }
+                  placement="top"
+                  ml="4px"
+                />
+              </Flex>
+              <Toggle
+                id="toggle-disable-mm-button"
+                checked={isMMLinkedPoolByDefault}
+                onChange={(e) => setIsMMLinkedPoolByDefault(e.target.checked)}
+                scale="sm"
               />
             </Flex>
-            <Toggle
-              id="toggle-disable-mm-button"
-              checked={isMMLinkedPoolByDefault}
-              onChange={(e) => setIsMMLinkedPoolByDefault(e.target.checked)}
-              scale="md"
-            />
-          </Flex>
+          </BorderLayout>
           {onlyOneAMMSourceEnabled && (
             <Message variant="warning">
               <MessageText>
@@ -485,66 +504,70 @@ function RoutingSettings() {
         </AtomBox>
         <AtomBox>
           <PreTitle mb="24px">{t('Routing preference')}</PreTitle>
-          <AutoRow alignItems="center" mb="24px">
-            <RowFixed as="label" gap="16px">
-              <Checkbox
-                id="toggle-disable-multihop-button"
-                checked={!singleHopOnly}
-                scale="sm"
-                onChange={() => {
-                  setSingleHopOnly((s) => !s)
-                }}
+          <BorderLayout>
+            <AutoRow alignItems="center" mb="24px">
+              <RowFixed as="label" gap="16px">
+                <Checkbox
+                  id="toggle-disable-multihop-button"
+                  checked={!singleHopOnly}
+                  scale="sm"
+                  onChange={() => {
+                    setSingleHopOnly((s) => !s)
+                  }}
+                />
+                <Text>{t('Allow Multihops')}</Text>
+              </RowFixed>
+              <QuestionHelper
+                text={
+                  <Flex flexDirection="column">
+                    <Text mr="5px">
+                      {t(
+                        'Multihops enables token swaps through multiple hops between several pools to achieve the best deal.',
+                      )}
+                    </Text>
+                    <Text mr="5px" mt="1em">
+                      {t(
+                        'Turning this off will only allow direct swap, which may cause higher slippage or even fund loss.',
+                      )}
+                    </Text>
+                  </Flex>
+                }
+                placement="top"
+                ml="4px"
               />
-              <Text>{t('Allow Multihops')}</Text>
-            </RowFixed>
-            <QuestionHelper
-              text={
-                <Flex flexDirection="column">
-                  <Text mr="5px">
-                    {t(
-                      'Multihops enables token swaps through multiple hops between several pools to achieve the best deal.',
-                    )}
-                  </Text>
-                  <Text mr="5px" mt="1em">
-                    {t(
-                      'Turning this off will only allow direct swap, which may cause higher slippage or even fund loss.',
-                    )}
-                  </Text>
-                </Flex>
-              }
-              placement="top"
-              ml="4px"
-            />
-          </AutoRow>
-          <AutoRow alignItems="center" mb="24px">
-            <RowFixed alignItems="center" as="label" gap="16px">
-              <Checkbox
-                id="toggle-disable-multihop-button"
-                checked={split}
-                scale="sm"
-                onChange={() => {
-                  setSplit((s) => !s)
-                }}
+            </AutoRow>
+            <AutoRow alignItems="center">
+              <RowFixed alignItems="center" as="label" gap="16px">
+                <Checkbox
+                  id="toggle-disable-multihop-button"
+                  checked={split}
+                  scale="sm"
+                  onChange={() => {
+                    setSplit((s) => !s)
+                  }}
+                />
+                <Text>{t('Allow Split Routing')}</Text>
+              </RowFixed>
+              <QuestionHelper
+                text={
+                  <Flex flexDirection="column">
+                    <Text mr="5px">
+                      {t(
+                        'Split routing enables token swaps to be broken into multiple routes to achieve the best deal.',
+                      )}
+                    </Text>
+                    <Text mr="5px" mt="1em">
+                      {t(
+                        'Turning this off will only allow a single route, which may result in low efficiency or higher slippage.',
+                      )}
+                    </Text>
+                  </Flex>
+                }
+                placement="top"
+                ml="4px"
               />
-              <Text>{t('Allow Split Routing')}</Text>
-            </RowFixed>
-            <QuestionHelper
-              text={
-                <Flex flexDirection="column">
-                  <Text mr="5px">
-                    {t('Split routing enables token swaps to be broken into multiple routes to achieve the best deal.')}
-                  </Text>
-                  <Text mr="5px" mt="1em">
-                    {t(
-                      'Turning this off will only allow a single route, which may result in low efficiency or higher slippage.',
-                    )}
-                  </Text>
-                </Flex>
-              }
-              placement="top"
-              ml="4px"
-            />
-          </AutoRow>
+            </AutoRow>
+          </BorderLayout>
         </AtomBox>
       </AutoColumn>
     </Modal>

@@ -333,7 +333,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   if (noRoute && userHasSpecifiedInputOutput && !tradeLoading) {
     return (
       <AutoColumn gap="12px">
-        <GreyCard style={{ textAlign: 'center', padding: '0.75rem' }}>
+        <GreyCard style={{ textAlign: 'center', padding: '0.75rem', borderRadius: '8px' }}>
           <Text color="textSubtle">{t('Insufficient liquidity for this trade.')}</Text>
         </GreyCard>
         {isRoutingSettingChange && (
@@ -376,6 +376,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
         id="swap-button"
         width="100%"
         variant={isValid && priceImpactSeverity > 2 ? 'danger' : 'primary'}
+        className={isValid && priceImpactSeverity > 2 ? '' : 'button-hover'}
         disabled={
           !isValid ||
           (priceImpactSeverity > 3 && !isExpertMode) ||

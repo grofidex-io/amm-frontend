@@ -1,9 +1,9 @@
 import React, { MouseEvent } from "react";
 import { styled } from "styled-components";
-import Flex from "../../components/Box/Flex";
 import { MotionBox } from "../../components/Box";
-import { ArrowBackIcon, CloseIcon } from "../../components/Svg";
+import Flex from "../../components/Box/Flex";
 import { IconButton } from "../../components/Button";
+import { ArrowBackIcon, CloseIcon } from "../../components/Svg";
 import { ModalProps } from "./types";
 
 export const mobileFooterHeight = 73;
@@ -11,7 +11,6 @@ export const mobileFooterHeight = 73;
 export const ModalHeader = styled(Flex)<{ background?: string; headerBorderColor?: string }>`
   align-items: center;
   background: transparent;
-  border-bottom: 1px solid ${({ theme, headerBorderColor }) => headerBorderColor || theme.colors.cardBorder};
   display: flex;
   padding: 12px 24px;
 
@@ -47,8 +46,11 @@ export const ModalCloseButton: React.FC<React.PropsWithChildren<{ onDismiss: Mod
         onDismiss?.();
       }}
       aria-label="Close the dialog"
+      p="0"
+      height="36px"
+      scale="xs"
     >
-      <CloseIcon color="primary" />
+      <CloseIcon p="4px" width="36px" height="36px" className="button-hover br-4 border-2" />
     </IconButton>
   );
 };
@@ -64,9 +66,9 @@ export const ModalBackButton: React.FC<React.PropsWithChildren<{ onBack: ModalPr
 export const ModalContainer = styled(MotionBox)`
   overflow: hidden;
   background: ${({ theme }) => theme.modal.background};
-  box-shadow: 0px 20px 36px -8px rgba(14, 14, 44, 0.1), 0px 1px 1px rgba(0, 0, 0, 0.05);
-  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  border-radius: 32px 32px 0px 0px;
+  box-shadow: 4px 4px 0 0 ${({ theme }) => theme.colors.cardShadow};
+  border: 2px solid ${({ theme }) => theme.colors.cardBorder};
+  border-radius: 8px;
   width: 100%;
   max-height: calc(var(--vh, 1vh) * 100);
   z-index: ${({ theme }) => theme.zIndices.modal};
@@ -79,7 +81,7 @@ export const ModalContainer = styled(MotionBox)`
     width: auto;
     position: auto;
     bottom: auto;
-    border-radius: 32px;
+    border-radius: 8px;
     max-height: 100vh;
   }
 ` as typeof MotionBox;

@@ -25,6 +25,12 @@ const InputRow = styled.div<{ selected: boolean }>`
 const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })`
   padding: 0px;
 `
+const CurrencySymbol = styled.div`
+  font-size: 16px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.textSubtle};
+  margin-bottom: 8px;
+`
 
 interface CurrencyInputPanelProps {
   value: string | undefined
@@ -155,7 +161,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
       loading={inputLoading}
       top={
         <>
-          {`${title} ${currency?.symbol ? `(${currency?.symbol})` : ''}`}
+          <CurrencySymbol>{`${title} ${currency?.symbol ? `(${currency?.symbol})` : ''}`}</CurrencySymbol>
           {/* <Flex alignItems="center">
             {beforeButton}
             <CurrencySelectButton
@@ -284,7 +290,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                         scale="xs"
                         mr="5px"
                         variant={isAtCurrentPercent ? 'primary' : 'secondary'}
-                        style={{ textTransform: 'uppercase' }}
+                        style={{ textTransform: 'uppercase', borderRadius: '4px' }}
                       >
                         {percent}%
                       </Button>
@@ -300,7 +306,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                     }}
                     scale="xs"
                     variant={isAtPercentMax ? 'primary' : 'secondary'}
-                    style={{ textTransform: 'uppercase' }}
+                    style={{ textTransform: 'uppercase', borderRadius: '4px' }}
                   >
                     {t('Max')}
                   </Button>

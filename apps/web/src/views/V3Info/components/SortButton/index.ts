@@ -1,6 +1,6 @@
 import { Button } from '@pancakeswap/uikit'
-import { styled } from 'styled-components'
 import { useCallback } from 'react'
+import { styled } from 'styled-components'
 
 export const useSortFieldClassName = (sortField: string, sortDirection: boolean) =>
   useCallback(
@@ -13,17 +13,18 @@ export const useSortFieldClassName = (sortField: string, sortDirection: boolean)
 
 export const SortButton = styled(Button)`
   padding: 4px 8px;
-  border-radius: 8px;
+  border-radius: 4px;
   width: 25px;
   height: 25px;
   margin-left: 3px;
-  border-color: ${({ theme }) => theme.colors.cardBorder};
-  background: ${({ theme }) => (theme.isDark ? theme.colors.backgroundDisabled : theme.colors.input)};
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  background: ${({ theme }) => theme.colors.backgroundItem};
   path {
-    fill: ${({ theme }) => (theme.isDark ? 'rgba(255, 255, 255, 0.2)' : '#B4ACCF')};
+    fill: ${({ theme }) => theme.colors.textSubtle};
   }
   &.is-asc {
-    background: ${({ theme }) => (theme.isDark ? theme.colors.input : theme.colors.textSubtle)};
+    box-shadow: ${({ theme }) => theme.shadows.input};
+    background: ${({ theme }) => theme.colors.input};
     path:first-child {
       fill: rgba(255, 255, 255, 1);
     }
@@ -32,7 +33,8 @@ export const SortButton = styled(Button)`
     }
   }
   &.is-desc {
-    background: ${({ theme }) => (theme.isDark ? theme.colors.input : theme.colors.textSubtle)};
+    box-shadow: ${({ theme }) => theme.shadows.input};
+    background: ${({ theme }) => theme.colors.input};
     path:first-child {
       fill: rgba(255, 255, 255, 0.3);
     }

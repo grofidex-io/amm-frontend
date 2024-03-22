@@ -1,6 +1,6 @@
 import shouldForwardProp from "@styled-system/should-forward-prop";
-import { styled, DefaultTheme } from "styled-components";
-import { space, variant, typography } from "styled-system";
+import { DefaultTheme, styled } from "styled-components";
+import { space, typography, variant } from "styled-system";
 import { Colors } from "../../theme/types";
 import { scaleVariants, styleVariants } from "./theme";
 import { TagProps, variants } from "./types";
@@ -31,6 +31,7 @@ export const StyledTag = styled.div.withConfig({ shouldForwardProp })<ThemedProp
   display: inline-flex;
   font-weight: 400;
   white-space: nowrap;
+  width: fit-content;
 
   & > svg {
     fill: currentColor;

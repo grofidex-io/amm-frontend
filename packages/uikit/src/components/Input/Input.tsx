@@ -1,4 +1,4 @@
-import { styled, DefaultTheme } from "styled-components";
+import { DefaultTheme, styled } from "styled-components";
 import { InputProps, scales } from "./types";
 
 interface StyledInputProps extends InputProps {
@@ -8,16 +8,16 @@ interface StyledInputProps extends InputProps {
 /**
  * Priority: Warning --> Success
  */
-const getBoxShadow = ({ isSuccess = false, isWarning = false, theme }: StyledInputProps) => {
+const getColor = ({ isSuccess = false, isWarning = false, theme }: StyledInputProps) => {
   if (isWarning) {
-    return theme.shadows.warning;
+    return theme.colors.warning;
   }
 
   if (isSuccess) {
-    return theme.shadows.success;
+    return theme.colors.success;
   }
 
-  return theme.shadows.inset;
+  return theme.colors.cardBorder;
 };
 
 const getHeight = ({ scale = scales.MD }: StyledInputProps) => {
@@ -36,16 +36,16 @@ const Input = styled("input").withConfig({
   shouldForwardProp: (props) => !["scale", "isSuccess", "isWarning"].includes(props),
 })<InputProps>`
   background-color: ${({ theme }) => theme.colors.input};
-  border-radius: 16px;
-  box-shadow: ${getBoxShadow};
+  border-radius: 4px;
+  box-shadow: 2px 2px 0 0 ${getColor};
   color: ${({ theme }) => theme.colors.text};
   display: block;
   font-size: 16px;
   height: ${getHeight};
   outline: 0;
-  padding: 0 16px;
+  padding: 0 14px;
   width: 100%;
-  border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
+  border: 2px solid ${getColor};
 
   &::placeholder {
     color: ${({ theme }) => theme.colors.textSubtle};
@@ -59,15 +59,15 @@ const Input = styled("input").withConfig({
   }
 
   &:focus:not(:disabled) {
-    box-shadow: ${({ theme, isWarning, isSuccess }) => {
+    border-color: ${({ theme, isWarning, isSuccess }) => {
       if (isWarning) {
-        return theme.shadows.warning;
+        return theme.colors.warning;
       }
 
       if (isSuccess) {
-        return theme.shadows.success;
+        return theme.colors.success;
       }
-      return theme.shadows.focus;
+      return theme.colors.cardBorder;
     }};
   }
 `;

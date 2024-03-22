@@ -39,7 +39,7 @@ const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
 
   return (
     <>
-      <Button onClick={handleClick} {...props}>
+      <Button className="button-hover" onClick={handleClick} {...props}>
         {children || <Trans>Connect Wallet</Trans>}
       </Button>
       <style jsx global>{`

@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
-import { styled } from "styled-components";
 import throttle from "lodash/throttle";
+import { useCallback, useEffect, useState } from "react";
+import { styled } from "styled-components";
 import { Button } from "../Button";
 import { ArrowUpIcon } from "../Svg";
 
@@ -44,6 +44,7 @@ const ScrollToTopButtonV2 = () => {
         height={48}
         endIcon={<ArrowUpIcon color="invertedContrast" style={{ marginLeft: 0 }} />}
         onClick={scrollToTop}
+        className="button-hover"
       />
     </FixedContainer>
   );

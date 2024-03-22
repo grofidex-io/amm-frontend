@@ -11,6 +11,9 @@ export const shadows = {
   focus: "0px 0px 0px 1px #7645D9, 0px 0px 0px 4px rgba(118, 69, 217, 0.6)",
   inset: "inset 0px 2px 2px -1px rgba(74, 74, 104, 0.1)",
   tooltip: "0px 0px 2px rgba(0, 0, 0, 0.2), 0px 4px 12px -8px rgba(14, 14, 44, 0.1)",
+  card: "4px 4px 0 0 rgba(0, 0, 0, 1)",
+  input: "2px 2px 0 0 rgba(0, 0, 0, 1)",
+  button: "0 4px 0 0 rgba(0, 0, 0, 1)",
 };
 
 export const tokens = {
@@ -19,7 +22,7 @@ export const tokens = {
     dark: darkColors,
   },
   fonts: {
-    normal: "'Kanit', sans-serif",
+    normal: "'Urbanist', sans-serif",
     mono: "SFMono, ui-monospace, monospace",
   },
   space: {
@@ -53,6 +56,7 @@ export const tokens = {
     "32px": "32px",
     small: "4px",
     default: "16px",
+    big: "24px",
     card: "8px",
     circle: "50%",
   },

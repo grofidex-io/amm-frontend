@@ -1,7 +1,7 @@
-import { useTranslation } from "@pancakeswap/localization";
 import { useIsMounted } from "@pancakeswap/hooks";
+import { useTranslation } from "@pancakeswap/localization";
+import { AutoColumn, IconButton, PencilIcon, RowBetween, Text, TextProps } from "@pancakeswap/uikit";
 import { PropsWithChildren, ReactNode } from "react";
-import { AutoColumn, RowBetween, Text, TextProps, IconButton, PencilIcon } from "@pancakeswap/uikit";
 
 type SwapInfoType = {
   price: ReactNode;
@@ -19,7 +19,7 @@ export const SwapInfo = ({ allowedSlippage, price, onSlippageClick, allowedSlipp
   const isMounted = useIsMounted();
 
   return (
-    <AutoColumn gap="sm" py="0px" px="16px">
+    <AutoColumn py="0px" px="16px">
       <RowBetween alignItems="center">{price}</RowBetween>
       {typeof allowedSlippage === "number" && (
         <RowBetween alignItems="center">

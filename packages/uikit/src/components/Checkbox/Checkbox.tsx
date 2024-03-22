@@ -20,10 +20,10 @@ const Checkbox = styled.input.attrs({ type: "checkbox" })<CheckboxProps>`
   height: ${getScale};
   width: ${getScale};
   vertical-align: middle;
-  transition: background-color 0.2s ease-in-out;
-  border: ${({ theme }) => (theme.isDark ? `solid 1px ${theme.colors.disabled}` : "0")};
-  border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.cardBorder};
+  transition: all 0.3s ease-in-out;
+  border: 2px solid ${({ theme }) => theme.colors.cardBorder};
+  border-radius: 4px;
+  background-color: ${({ theme }) => theme.colors.backgroundItem};
   box-shadow: ${({ theme }) => theme.shadows.inset};
 
   &:after {
@@ -39,16 +39,15 @@ const Checkbox = styled.input.attrs({ type: "checkbox" })<CheckboxProps>`
     height: 25%;
     margin: auto;
     transform: rotate(-50deg);
-    transition: border-color 0.2s ease-in-out;
+    transition: border-color 0.3s ease-in-out;
   }
 
   &:hover:not(:disabled):not(:checked) {
-    box-shadow: ${({ theme }) => theme.shadows.focus};
+    box-shadow: ${({ theme }) => theme.shadows.input};
   }
 
   &:focus {
     outline: none;
-    box-shadow: ${({ theme }) => theme.shadows.focus};
   }
 
   &:checked {

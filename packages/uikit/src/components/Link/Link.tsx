@@ -6,11 +6,12 @@ import { LinkProps } from "./types";
 
 export const StyledLink = styled(Text)<LinkProps>`
   display: flex;
-  font-weight: 600;
+  font-weight: 500;
   align-items: center;
   width: fit-content;
   &:hover {
     text-decoration: underline;
+    color: ${({ theme }) => theme.colors.hover};
   }
 `;
 
