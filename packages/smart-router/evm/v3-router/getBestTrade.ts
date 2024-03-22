@@ -20,6 +20,7 @@ export async function getBestTrade(
     ...config,
     blockNumber,
   })
+
   if (!bestRoutes || bestRoutes.outputAmount.equalTo(ZERO)) {
     throw new Error('Cannot find a valid swap route')
   }
@@ -88,7 +89,6 @@ async function getBestRoutes(
     quoteCurrencyUsdPrice,
     nativeCurrencyUsdPrice,
   })
-  console.log('🚀 ~ gasModel:', gasModel)
 
   const routesWithValidQuote = await getRoutesWithValidQuote({
     amount,

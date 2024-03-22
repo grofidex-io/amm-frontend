@@ -255,6 +255,7 @@ function bestTradeHookFactory({
           nativeCurrencyUsdPrice,
           signal,
         })
+
         const duration = Math.floor(performance.now() - startTime)
 
         if (trackPerf) {

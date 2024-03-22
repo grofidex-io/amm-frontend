@@ -3,8 +3,8 @@ import { ERC20Token, Token, WNATIVE } from '@pancakeswap/sdk'
 import {
   BUSD,
   USDC,
-  USDC_U2U,
   USDT,
+  USDT_U2U,
   WBTC_ETH,
   arbSepoliaTokens,
   arbitrumGoerliTokens,
@@ -50,7 +50,7 @@ export const SMART_ROUTER_ADDRESSES = {
   [ChainId.SEPOLIA]: '0x678Aa4bF4E210cf2166753e054d5b7c31cc7fa86',
   [ChainId.ARBITRUM_SEPOLIA]: '0x678Aa4bF4E210cf2166753e054d5b7c31cc7fa86',
   [ChainId.BASE_SEPOLIA]: '0x678Aa4bF4E210cf2166753e054d5b7c31cc7fa86',
-  [ChainId.U2U_NEBULAS]: '0x334ba76FC38c9eD7bDdeb19dfBFcBb7622247141',
+  [ChainId.U2U_NEBULAS]: '0xcc9f7e6b3d2ce71a8e13c59f12a701405c59ccdb',
 } as const satisfies Record<ChainId, string>
 
 export const V2_ROUTER_ADDRESS: ChainMap<string> = {
@@ -131,7 +131,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [ChainId.SEPOLIA]: [sepoliaTokens.usdc, sepoliaTokens.weth],
   [ChainId.ARBITRUM_SEPOLIA]: [arbSepoliaTokens.usdc, arbSepoliaTokens.weth],
   [ChainId.BASE_SEPOLIA]: [baseSepoliaTokens.usdc, baseSepoliaTokens.weth],
-  [ChainId.U2U_NEBULAS]: [WNATIVE[ChainId.U2U_NEBULAS], USDC_U2U],
+  [ChainId.U2U_NEBULAS]: [WNATIVE[ChainId.U2U_NEBULAS], USDT_U2U],
 }
 
 const czusd = new ERC20Token(ChainId.BSC, '0xE68b79e51bf826534Ff37AA9CeE71a3842ee9c70', 18, 'CZUSD', 'CZUSD')

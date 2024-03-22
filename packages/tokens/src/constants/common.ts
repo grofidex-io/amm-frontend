@@ -37,6 +37,15 @@ export const USDC_U2U = new ERC20Token(
   '',
 )
 
+export const USDT_U2U = new ERC20Token(
+  ChainId.U2U_NEBULAS,
+  '0x5b14303c782635acfdcfc9ceab251b369ece68c9',
+  18,
+  'USDT',
+  'USDT Coin',
+  '',
+)
+
 export const USDC_TESTNET = new ERC20Token(
   ChainId.BSC_TESTNET,
   '0x64544969ed7EBf5f083679233325356EbE738930',
@@ -247,7 +256,7 @@ export const CAKE = {
   ),
   [ChainId.U2U_NEBULAS]: new ERC20Token(
     ChainId.U2U_NEBULAS,
-    '0xff24e5d40bd7e2236febdb2aee120a495bb8d6a1',
+    '0x5e1a11a45750395520e2c6c6e52bb3204c77e14d',
     18,
     'WU2U',
     'Wrapped U2U Token',
@@ -344,6 +353,7 @@ export const USDC = {
 }
 
 export const USDT = {
+  [ChainId.U2U_NEBULAS]: USDT_U2U,
   [ChainId.BSC]: USDT_BSC,
   [ChainId.ETHEREUM]: USDT_ETH,
   [ChainId.ARBITRUM_ONE]: new ERC20Token(
@@ -420,5 +430,5 @@ export const STABLE_COIN = {
   [ChainId.SEPOLIA]: USDC[ChainId.SEPOLIA],
   [ChainId.ARBITRUM_SEPOLIA]: USDC[ChainId.ARBITRUM_SEPOLIA],
   [ChainId.BASE_SEPOLIA]: USDC[ChainId.BASE_SEPOLIA],
-  [ChainId.U2U_NEBULAS]: USDC[ChainId.U2U_NEBULAS],
+  [ChainId.U2U_NEBULAS]: USDT[ChainId.U2U_NEBULAS],
 } satisfies Record<ChainId, ERC20Token>

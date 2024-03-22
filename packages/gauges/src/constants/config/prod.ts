@@ -3201,17 +3201,7 @@ export const CONFIG_PROD: GaugeConfig[] = [
     chainId: ChainId.U2U_NEBULAS,
     type: GaugeType.V3,
     token0Address: u2uNebulasTokens.wu2u.address,
-    token1Address: u2uNebulasTokens.usdc.address,
-    feeTier: FeeAmount.LOW,
-  },
-  {
-    gid: 320,
-    pairName: 'U2U-Cake',
-    address: '0xb7ff2cd12acfb9d175407d05066661b7b95dba51',
-    chainId: ChainId.U2U_NEBULAS,
-    type: GaugeType.V3,
-    token0Address: u2uNebulasTokens.usdc.address,
-    token1Address: u2uNebulasTokens.cake.address,
+    token1Address: u2uNebulasTokens.usdt.address,
     feeTier: FeeAmount.LOW,
   },
 ]

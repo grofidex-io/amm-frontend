@@ -12,9 +12,9 @@ export const farmsV3 = defineFarmV3Configs([
   // },
   {
     pid: 1,
-    lpAddress: '0xe63b700c87B8058f439189732C4e8a90BaF180aE',
+    lpAddress: '0x6b9a3ed386efe88754939ea344be168a6252bc66',
     token0: u2uNebulasTokens.wu2u,
-    token1: u2uNebulasTokens.usdc,
+    token1: u2uNebulasTokens.usdt,
     feeAmount: FeeAmount.LOW,
   },
   // {

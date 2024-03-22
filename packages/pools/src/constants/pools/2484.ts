@@ -7,8 +7,8 @@ export const livePools: SerializedPool[] = [
   {
     sousId: 0,
     stakingToken: u2uNebulasTokens.wu2u,
-    earningToken: u2uNebulasTokens.cake,
-    contractAddress: '0xf6B427A2Df6E24600e3e3c62634B7c478826619D',
+    earningToken: u2uNebulasTokens.usdt,
+    contractAddress: '0x6d096E37A7eC4f933fE66155c6F14Fb40556975C',
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '0.01',
     isFinished: false,

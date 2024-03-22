@@ -21,7 +21,7 @@ const scrollSepolia = {
   ...scrollSepolia_,
   contracts: {
     multicall3: {
-      address: '0x1689ec416daE726e4fb162b132b8250c153f6a5B',
+      address: '0xc50C2b173bD9E07c7e6E19FE4c85F98f5Ea7e75b',
       blockCreated: 9473,
     },
   },
@@ -48,7 +48,7 @@ export const opbnbTestnet = {
   },
   contracts: {
     multicall3: {
-      address: '0x1689ec416daE726e4fb162b132b8250c153f6a5B',
+      address: '0xc50C2b173bD9E07c7e6E19FE4c85F98f5Ea7e75b',
       blockCreated: 3705108,
     },
   },
@@ -86,7 +86,7 @@ export const linea = {
   },
   contracts: {
     multicall3: {
-      address: '0x1689ec416daE726e4fb162b132b8250c153f6a5B',
+      address: '0xc50C2b173bD9E07c7e6E19FE4c85F98f5Ea7e75b',
       blockCreated: 42,
     },
   },
