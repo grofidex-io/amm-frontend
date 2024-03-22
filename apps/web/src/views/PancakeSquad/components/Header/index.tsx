@@ -1,11 +1,11 @@
-import Link from 'next/link'
-import { Box, Flex, lightColors, Spinner, Text, Timeline } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { useBSCCakeBalance } from 'hooks/useTokenBalance'
+import { Box, Flex, lightColors, Spinner, Text, Timeline } from '@pancakeswap/uikit'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import useTheme from 'hooks/useTheme'
+import { useBSCCakeBalance } from 'hooks/useTokenBalance'
+import Link from 'next/link'
 import { StyledWaveContainer } from 'views/PancakeSquad/styles'
 import { UserStatusEnum } from 'views/PancakeSquad/types'
-import ConnectWalletButton from 'components/ConnectWalletButton'
 import HeaderBottomWave from '../../assets/HeaderBottomWave'
 import nftSaleConfigBuilder from '../../config'
 import CtaButtons from './CtaButtons'
@@ -84,7 +84,7 @@ const PancakeSquadHeader: React.FC<React.PropsWithChildren<PancakeSquadHeaderTyp
         {t('Max per wallet: %maxPerWallet%', { maxPerWallet: DEFAULT_MAX_TICKETS })}
       </Text>
       <Text color={lightColors.invertedContrast} textAlign="center">
-        {t('PancakeSwap’s first official generative NFT collection.')}
+        {t('U2Dex’s first official generative NFT collection.')}
       </Text>
       <Text color={lightColors.invertedContrast} mb={!displayEventBlock ? '80px' : '32px'} textAlign="center">
         {t('Join the squad.')}

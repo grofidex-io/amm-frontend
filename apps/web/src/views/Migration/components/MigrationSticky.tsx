@@ -1,9 +1,9 @@
+import { Trans, useTranslation } from '@pancakeswap/localization'
+import { Button, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import React from 'react'
 import { styled } from 'styled-components'
 import { useAccount } from 'wagmi'
-import { Trans, useTranslation } from '@pancakeswap/localization'
-import { Text, Button, useMatchBreakpoints } from '@pancakeswap/uikit'
-import ConnectWalletButton from 'components/ConnectWalletButton'
 
 const Container = styled.div`
   position: sticky;
@@ -81,7 +81,7 @@ export const TEXT = {
     ],
   },
   v3: {
-    title: <Trans>PancakeSwap v3 Migration</Trans>,
+    title: <Trans>U2Dex v3 Migration</Trans>,
     steps: [
       {
         title: <Trans>Unstaking from V2 Farms</Trans>,

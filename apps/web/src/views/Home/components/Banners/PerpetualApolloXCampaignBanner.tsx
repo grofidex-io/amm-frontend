@@ -1,9 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ArrowForwardIcon, Button, Link, Text, useMatchBreakpoints, useModal, Flex, Box } from '@pancakeswap/uikit'
+import { ArrowForwardIcon, Box, Button, Flex, Link, Text, useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
 import USCitizenConfirmModal from 'components/Modal/USCitizenConfirmModal'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useUserNotUsCitizenAcknowledgement, IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
+import { IdType, useUserNotUsCitizenAcknowledgement } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import Image from 'next/legacy/image'
 import { memo, useMemo } from 'react'
 import { styled, useTheme } from 'styled-components'
@@ -153,7 +153,7 @@ const PerpetualBanner = () => {
 
   const perpetualUrl = useMemo(() => getPerpetualUrl({ chainId, languageCode: code, isDark }), [chainId, code, isDark])
   const [onUSCitizenModalPresent] = useModal(
-    <USCitizenConfirmModal title={t('PancakeSwap Perpetuals')} id={IdType.PERPETUALS} />,
+    <USCitizenConfirmModal title={t('U2Dex Perpetuals')} id={IdType.PERPETUALS} />,
     true,
     false,
     'usCitizenConfirmModal',

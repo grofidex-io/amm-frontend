@@ -1,11 +1,11 @@
-import { Box, Flex, Text, Button, Link } from '@pancakeswap/uikit'
+import { Box, Button, Flex, Link, Text } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
 import { useTheme } from '@pancakeswap/hooks'
-import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
 import Image from 'next/image'
+import { styled } from 'styled-components'
+import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
 import bunnyImage from '../../../../public/images/trading-reward/trading-reward-banner-bunny.png'
 
 const Container = styled(Box)<{ backgroundColor: string }>`
@@ -158,7 +158,7 @@ const TradingRewardBanner = () => {
             </Text>
           </Flex>
           <Text bold mb="32px" maxWidth="404px" lineHeight="26.4px" fontSize={['16px', '16px', '16px', '24px']}>
-            {t('Earn CAKE while trading your favorite tokens on PancakeSwap.')}
+            {t('Earn CAKE while trading your favorite tokens on U2Dex.')}
           </Text>
           <Flex alignSelf={['center', 'center', 'center', 'auto']}>
             <NextLinkFromReactRouter to="/swap?showTradingReward=true">

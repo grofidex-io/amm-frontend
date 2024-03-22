@@ -3,26 +3,23 @@ import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { MethodParameters } from '@pancakeswap/v3-sdk'
 import invariant from 'tiny-invariant'
 import { encodeFunctionData, toHex } from 'viem'
-import { PancakeSwapTrade } from './entities/protocols/pancakeswap'
+import { UniversalRouterABI } from './abis/UniversalRouter'
+import { U2DexTrade } from './entities/protocols/pancakeswap'
+import { SwapRouterConfig, U2DexOptions } from './entities/types'
 import { encodePermit } from './utils/inputTokens'
 import { RoutePlanner } from './utils/routerCommands'
-import { PancakeSwapOptions, SwapRouterConfig } from './entities/types'
-import { UniversalRouterABI } from './abis/UniversalRouter'
 
-export abstract class PancakeSwapUniversalRouter {
+export abstract class U2DexUniversalRouter {
   /**
    * Produces the on-chain method name to call and the hex encoded parameters to pass as arguments for a given trade.
    * @param trades to produce call parameters for
    * @param options options for the call parameters
    */
-  public static swapERC20CallParameters(
-    trade: SmartRouterTrade<TradeType>,
-    options: PancakeSwapOptions,
-  ): MethodParameters {
+  public static swapERC20CallParameters(trade: SmartRouterTrade<TradeType>, options: U2DexOptions): MethodParameters {
     // TODO: use permit if signature included in swapOptions
     const planner = new RoutePlanner()
 
-    const tradeCommand: PancakeSwapTrade = new PancakeSwapTrade(trade, options)
+    const tradeCommand: U2DexTrade = new U2DexTrade(trade, options)
 
     const inputCurrency = tradeCommand.trade.inputAmount.currency
     invariant(!(inputCurrency.isNative && !!options.inputTokenPermit), 'NATIVE_INPUT_PERMIT')
@@ -37,7 +34,7 @@ export abstract class PancakeSwapUniversalRouter {
       : 0n
 
     tradeCommand.encode(planner)
-    return PancakeSwapUniversalRouter.encodePlan(planner, nativeCurrencyValue, {
+    return U2DexUniversalRouter.encodePlan(planner, nativeCurrencyValue, {
       deadline: options.deadlineOrPreviousBlockhash
         ? BigInt(options.deadlineOrPreviousBlockhash.toString())
         : undefined,

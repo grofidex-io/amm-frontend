@@ -14,15 +14,15 @@ import { CONTRACT_BALANCE, ROUTER_AS_RECIPIENT, SENDER_AS_RECIPIENT } from '../.
 import { encodeFeeBips } from '../../utils/numbers'
 import { ABIParametersType, CommandType, RoutePlanner } from '../../utils/routerCommands'
 import { Command, RouterTradeType } from '../Command'
-import { PancakeSwapOptions } from '../types'
+import { U2DexOptions } from '../types'
 
 // Wrapper for pancakeswap router-sdk trade entity to encode swaps for Universal Router
-export class PancakeSwapTrade implements Command {
-  readonly tradeType: RouterTradeType = RouterTradeType.PancakeSwapTrade
+export class U2DexTrade implements Command {
+  readonly tradeType: RouterTradeType = RouterTradeType.U2DexTrade
 
   readonly type: TradeType
 
-  constructor(public trade: SmartRouterTrade<TradeType>, public options: PancakeSwapOptions) {
+  constructor(public trade: SmartRouterTrade<TradeType>, public options: U2DexOptions) {
     this.type = this.trade.tradeType
     if (options.fee && options.flatFee) {
       throw new Error('Cannot specify both fee and flatFee')
@@ -139,7 +139,7 @@ export class PancakeSwapTrade implements Command {
 function addV2Swap(
   planner: RoutePlanner,
   trade: SmartRouterTrade<TradeType>,
-  options: PancakeSwapOptions,
+  options: U2DexOptions,
   routerMustCustody: boolean,
   payerIsUser: boolean,
 ): void {
@@ -176,7 +176,7 @@ function addV2Swap(
 function addV3Swap(
   planner: RoutePlanner,
   trade: SmartRouterTrade<TradeType>,
-  options: PancakeSwapOptions,
+  options: U2DexOptions,
   routerMustCustody: boolean,
   payerIsUser: boolean,
 ): void {
@@ -223,7 +223,7 @@ function addV3Swap(
 function addStableSwap(
   planner: RoutePlanner,
   trade: SmartRouterTrade<TradeType>,
-  options: PancakeSwapOptions,
+  options: U2DexOptions,
   routerMustCustody: boolean,
   // @notice: stable swap inputToken will never be nativeToken
   payerIsUser = false,
@@ -272,7 +272,7 @@ function addStableSwap(
 function addMixedSwap(
   planner: RoutePlanner,
   trade: SmartRouterTrade<TradeType>,
-  options: PancakeSwapOptions,
+  options: U2DexOptions,
   payerIsUser: boolean,
   routerMustCustody: boolean,
 ): void {

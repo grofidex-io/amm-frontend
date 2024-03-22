@@ -15,8 +15,8 @@
       "chainId": 2484,
       "decimals": 18,
       "logoURI": "https://raw.githubusercontent.com/u2u-eco/default-token-list/master/logos/network/2484/0x7915b1b149c6f12b6de001bdf4da36a1276e376a.png",
-      "name": "WTRX",
-      "symbol": "TRX"
+      "name": "Tron Token on U2U",
+      "symbol": "WTRX"
     },
     {
       "name": "USDT Token on U2U",

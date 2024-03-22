@@ -1,5 +1,5 @@
-import { ERC20Token, WBNB } from '@pancakeswap/sdk'
 import { ChainId } from '@pancakeswap/chains'
+import { ERC20Token, WBNB } from '@pancakeswap/sdk'
 
 import { BUSD_TESTNET, CAKE_TESTNET } from './common'
 
@@ -40,7 +40,7 @@ export const bscTestnetTokens = {
     '0x8d008B313C1d6C7fE2982F62d32Da7507cF43551',
     18,
     'CAKE2',
-    'PancakeSwap Token',
+    'U2Dex Token',
     'https://pancakeswap.finance/',
   ),
 }

@@ -1,6 +1,6 @@
 import { Language } from "../LangSelector/types";
+import { DiscordIcon, GithubIcon, InstagramIcon, RedditIcon, TelegramIcon, TwitterIcon, YoutubeIcon } from "../Svg";
 import { FooterLinkType } from "./types";
-import { TwitterIcon, TelegramIcon, RedditIcon, InstagramIcon, GithubIcon, DiscordIcon, YoutubeIcon } from "../Svg";
 
 export const footerLinks: FooterLinkType[] = [
   {
@@ -100,7 +100,7 @@ export const socials = [
       },
       {
         label: "Tiếng Việt",
-        href: "https://t.me/PancakeSwapVN",
+        href: "https://t.me/U2DexVN",
       },
       {
         label: "Italiano",
@@ -148,7 +148,7 @@ export const socials = [
       },
       {
         label: "Announcements",
-        href: "https://t.me/PancakeSwapAnn",
+        href: "https://t.me/U2DexAnn",
       },
     ],
   },

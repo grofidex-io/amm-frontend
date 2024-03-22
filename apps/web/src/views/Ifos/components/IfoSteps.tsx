@@ -1,5 +1,4 @@
-import { styled } from 'styled-components'
-import every from 'lodash/every'
+import { ChainId, Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import {
   Balance,
   Box,
@@ -19,15 +18,16 @@ import {
   Stepper,
   Text,
 } from '@pancakeswap/uikit'
-import { NextLinkFromReactRouter as RouterLink, Ifo } from '@pancakeswap/widgets-internal'
-import { ChainId, CurrencyAmount, Currency } from '@pancakeswap/sdk'
+import { Ifo, NextLinkFromReactRouter as RouterLink } from '@pancakeswap/widgets-internal'
+import every from 'lodash/every'
+import { ReactNode, useMemo } from 'react'
+import { styled } from 'styled-components'
 import { Address, useAccount } from 'wagmi'
-import { useMemo, ReactNode } from 'react'
 
 import { useTranslation } from '@pancakeswap/localization'
-import { useProfile } from 'state/profile/hooks'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useCakePrice } from 'hooks/useCakePrice'
+import { useProfile } from 'state/profile/hooks'
 
 import { useChainName } from '../hooks/useChainNames'
 
@@ -302,7 +302,7 @@ const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
               {t('Activate your Profile')}
             </Heading>
             <Text color="textSubtle" small mb="16px">
-              {t('You’ll need an active PancakeSwap Profile to take part in an IFO!')}
+              {t('You’ll need an active U2Dex Profile to take part in an IFO!')}
             </Text>
             {renderAccountStatus()}
           </CardBody>
