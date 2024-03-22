@@ -162,6 +162,7 @@ function CurrencySearch({
   const filteredSortedTokens: Token[] = useMemo(() => {
     return onRampFlow ? [...filteredQueryTokens] : [...filteredQueryTokens].sort(tokenComparator)
   }, [filteredQueryTokens, tokenComparator, onRampFlow])
+
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
       if (isSelectMulti) {
