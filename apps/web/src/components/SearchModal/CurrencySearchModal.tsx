@@ -62,6 +62,7 @@ export interface CurrencySearchModalProps extends InjectedModalProps {
   showSearchInput?: boolean
   tokensToShow?: Token[]
   mode?: string
+  isSelectMulti?: boolean
 }
 
 export default function CurrencySearchModal({
@@ -75,6 +76,7 @@ export default function CurrencySearchModal({
   tokensToShow,
   mode,
   onMultiCurrencySelect,
+  isSelectMulti,
 }: CurrencySearchModalProps) {
   const [modalView, setModalView] = useState<CurrencyModalView>(CurrencyModalView.search)
   const { pathname } = useRouter()
@@ -187,6 +189,7 @@ export default function CurrencySearchModal({
             tokensToShow={tokensToShow}
             mode={mode}
             onRampFlow={onRampFlow}
+            isSelectMulti={isSelectMulti}
           />
         ) : modalView === CurrencyModalView.importToken && importToken ? (
           <ImportToken tokens={[importToken]} handleCurrencySelect={handleCurrencySelect} />

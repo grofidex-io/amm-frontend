@@ -1,6 +1,6 @@
 import { Currency } from '@pancakeswap/sdk'
-import { useContext, memo } from 'react'
 import { Box } from '@pancakeswap/uikit'
+import { memo, useContext } from 'react'
 
 import AccessRisk from 'components/AccessRisk'
 

@@ -3,7 +3,7 @@ import { supportedChainId } from '@pancakeswap/farms'
 
 export const SUPPORT_ONLY_BSC = [ChainId.BSC]
 export const SUPPORT_FARMS = supportedChainId
-export const SUPPORT_BUY_CRYPTO = [ChainId.U2U_NEBULAS]
+export const SUPPORT_BUY_CRYPTO = []
 
 export const LIQUID_STAKING_SUPPORTED_CHAINS = [
   ChainId.BSC,

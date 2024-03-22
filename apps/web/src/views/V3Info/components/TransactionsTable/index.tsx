@@ -8,6 +8,7 @@ import {
   ScanLink,
   SortArrowIcon,
   Text,
+  Toggle,
 } from '@pancakeswap/uikit'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { ChainLinkSupportChains, multiChainId } from 'state/info/constant'
@@ -31,7 +32,7 @@ const ResponsiveGrid = styled.div`
   grid-gap: 1em;
   align-items: center;
 
-  grid-template-columns: 1.5fr repeat(5, 1fr);
+  grid-template-columns: 0.5fr repeat(5, 1fr);
   padding: 0 24px;
   @media screen and (max-width: 940px) {
     grid-template-columns: 1.5fr repeat(4, 1fr);
@@ -153,10 +154,14 @@ export default function TransactionTable({
   transactions,
   maxItems = 10,
   type,
+  filterFn,
+  toggleFilter,
 }: {
   transactions: Transaction[]
   maxItems?: number
   type?: string
+  filterFn?: () => void
+  toggleFilter?: boolean
 }) {
   const { t } = useTranslation()
 
@@ -225,98 +230,105 @@ export default function TransactionTable({
 
   return (
     <TableWrapper>
+      <Flex justifyContent="space-between" alignItems="center" style={{ padding: '0 20px' }}>
+        <RowFixed>
+          <SortText
+            onClick={() => {
+              setTxFilter(undefined)
+            }}
+            active={txFilter === undefined}
+          >
+            {t('All')}
+          </SortText>
+          <SortText
+            onClick={() => {
+              setTxFilter(TransactionType.SWAP)
+            }}
+            active={txFilter === TransactionType.SWAP}
+          >
+            {t('Swaps')}
+          </SortText>
+          <SortText
+            onClick={() => {
+              setTxFilter(TransactionType.MINT)
+            }}
+            active={txFilter === TransactionType.MINT}
+          >
+            {t('Adds')}
+          </SortText>
+          <SortText
+            onClick={() => {
+              setTxFilter(TransactionType.BURN)
+            }}
+            active={txFilter === TransactionType.BURN}
+          >
+            {t('Removes')}
+          </SortText>
+        </RowFixed>
+        <Flex alignItems="center">
+          <Toggle scale="md" checked={toggleFilter} onChange={filterFn} />
+          <Text ml="8px">{t('Only my transactions')}</Text>
+        </Flex>
+      </Flex>
+      <ResponsiveGrid>
+        <RowFixed />
+        <ClickableColumnHeader color="secondary">
+          {t('Total Value')}
+          <SortButton
+            scale="sm"
+            variant="subtle"
+            onClick={() => handleSort(SORT_FIELD.amountUSD)}
+            className={getSortFieldClassName(SORT_FIELD.amountUSD)}
+          >
+            <SortArrowIcon />
+          </SortButton>
+        </ClickableColumnHeader>
+        <ClickableColumnHeader color="secondary">
+          {t('Token%index% Amount', { index: '0' })}
+          <SortButton
+            scale="sm"
+            variant="subtle"
+            onClick={() => handleSort(SORT_FIELD.amountToken0)}
+            className={getSortFieldClassName(SORT_FIELD.amountToken0)}
+          >
+            <SortArrowIcon />
+          </SortButton>
+        </ClickableColumnHeader>
+        <ClickableColumnHeader color="secondary">
+          {t('Token%index% Amount', { index: '1' })}
+          <SortButton
+            scale="sm"
+            variant="subtle"
+            onClick={() => handleSort(SORT_FIELD.amountToken1)}
+            className={getSortFieldClassName(SORT_FIELD.amountToken1)}
+          >
+            <SortArrowIcon />
+          </SortButton>
+        </ClickableColumnHeader>
+        <ClickableColumnHeader color="secondary">
+          {t('Account')}
+          <SortButton
+            scale="sm"
+            variant="subtle"
+            onClick={() => handleSort(SORT_FIELD.sender)}
+            className={getSortFieldClassName(SORT_FIELD.sender)}
+          >
+            <SortArrowIcon />
+          </SortButton>
+        </ClickableColumnHeader>
+        <ClickableColumnHeader color="secondary">
+          {`${t('Time')} `}
+          <SortButton
+            scale="sm"
+            variant="subtle"
+            onClick={() => handleSort(SORT_FIELD.timestamp)}
+            className={getSortFieldClassName(SORT_FIELD.timestamp)}
+          >
+            <SortArrowIcon />
+          </SortButton>
+        </ClickableColumnHeader>
+      </ResponsiveGrid>
       <AutoColumn gap="16px">
-        <ResponsiveGrid>
-          <RowFixed>
-            <SortText
-              onClick={() => {
-                setTxFilter(undefined)
-              }}
-              active={txFilter === undefined}
-            >
-              {t('All')}
-            </SortText>
-            <SortText
-              onClick={() => {
-                setTxFilter(TransactionType.SWAP)
-              }}
-              active={txFilter === TransactionType.SWAP}
-            >
-              {t('Swaps')}
-            </SortText>
-            <SortText
-              onClick={() => {
-                setTxFilter(TransactionType.MINT)
-              }}
-              active={txFilter === TransactionType.MINT}
-            >
-              {t('Adds')}
-            </SortText>
-            <SortText
-              onClick={() => {
-                setTxFilter(TransactionType.BURN)
-              }}
-              active={txFilter === TransactionType.BURN}
-            >
-              {t('Removes')}
-            </SortText>
-          </RowFixed>
-          <ClickableColumnHeader color="secondary">
-            {t('Total Value')}
-            <SortButton
-              scale="sm"
-              variant="subtle"
-              onClick={() => handleSort(SORT_FIELD.amountUSD)}
-              className={getSortFieldClassName(SORT_FIELD.amountUSD)}
-            >
-              <SortArrowIcon />
-            </SortButton>
-          </ClickableColumnHeader>
-          <ClickableColumnHeader color="secondary">
-            {t('Token%index% Amount', { index: '0' })}
-            <SortButton
-              scale="sm"
-              variant="subtle"
-              onClick={() => handleSort(SORT_FIELD.amountToken0)}
-              className={getSortFieldClassName(SORT_FIELD.amountToken0)}
-            >
-              <SortArrowIcon />
-            </SortButton>
-          </ClickableColumnHeader>
-          <ClickableColumnHeader color="secondary">
-            {t('Token%index% Amount', { index: '1' })}
-            <SortButton
-              scale="sm"
-              variant="subtle"
-              onClick={() => handleSort(SORT_FIELD.amountToken1)}
-              className={getSortFieldClassName(SORT_FIELD.amountToken1)}
-            >
-              <SortArrowIcon />
-            </SortButton>
-          </ClickableColumnHeader>
-          <ClickableColumnHeader color="secondary">
-            {t('Account')}
-            <SortButton
-              scale="sm"
-              variant="subtle"
-              onClick={() => handleSort(SORT_FIELD.sender)}
-              className={getSortFieldClassName(SORT_FIELD.sender)}
-            >
-              <SortArrowIcon />
-            </SortButton>
-          </ClickableColumnHeader>
-          <ClickableColumnHeader color="secondary">
-            {`${t('Time')} `}
-            <SortButton
-              scale="sm"
-              variant="subtle"
-              onClick={() => handleSort(SORT_FIELD.timestamp)}
-              className={getSortFieldClassName(SORT_FIELD.timestamp)}
-            >
-              <SortArrowIcon />
-            </SortButton>
-          </ClickableColumnHeader>
-        </ResponsiveGrid>
         <Break />
 
         {sortedTransactions.map((d, index) => {

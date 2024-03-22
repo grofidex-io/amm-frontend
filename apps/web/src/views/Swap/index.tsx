@@ -1,9 +1,19 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { BottomDrawer, Flex, Heading, Modal, ModalV2, useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
+import {
+  BottomDrawer,
+  Box,
+  Flex,
+  Modal,
+  ModalV2,
+  Tab,
+  TabMenu,
+  useMatchBreakpoints,
+  useModal,
+} from '@pancakeswap/uikit'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { AppBody } from 'components/App'
-import { useCallback, useContext, useMemo } from 'react'
+import { useCallback, useContext, useMemo, useState } from 'react'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { currencyId } from 'utils/currencyId'
 
@@ -17,6 +27,7 @@ import { Field } from 'state/swap/actions'
 import { useDefaultsFromURLSearch, useSingleTokenSwapInfo, useSwapState } from 'state/swap/hooks'
 import TransactionsTable from 'views/V3Info/components/TransactionsTable'
 import { useProtocolTransactionDataWidthPair, useTopPoolsData } from 'views/V3Info/hooks'
+import { useAccount } from 'wagmi'
 import Page from '../Page'
 import { SwapFeaturesContext } from './SwapFeaturesContext'
 import { V3SwapForm } from './V3Swap'
@@ -38,6 +49,9 @@ export default function Swap() {
   } = useContext(SwapFeaturesContext)
   const [isSwapHotTokenDisplay, setIsSwapHotTokenDisplay] = useSwapHotTokenDisplay()
   const { t } = useTranslation()
+  const { address: account } = useAccount()
+  const [isOnlyMyTransaction, setOnlyMyTransaction] = useState<boolean>(false)
+  const [tab, setTab] = useState<number>(0)
   // const [firstTime, setFirstTime] = useState(true)
 
   // useEffect(() => {
@@ -66,6 +80,7 @@ export default function Swap() {
   const transactionData = useProtocolTransactionDataWidthPair({
     token0: inputCurrency?.wrapped.address?.toLowerCase() || '',
     token1: outputCurrency?.wrapped.address?.toLowerCase() || '',
+    origin: isOnlyMyTransaction && account ? account : null,
   })
 
   const { onSelectPair } = useSwapActionHandlers()
@@ -90,10 +105,11 @@ export default function Swap() {
       onSelectPair(_inputCurrencyId, _outputCurrencyId)
       replaceBrowserHistory('inputCurrency', _inputCurrencyId)
       replaceBrowserHistory('outputCurrencyId', _outputCurrencyId)
-      // setValue(`${getSymbol(input)}/${getSymbol(output)}`)
     }
   }
-  const [onPresentCurrencyModal] = useModal(<CurrencySearchModal onMultiCurrencySelect={handleSelectCurrency} />)
+  const [onPresentCurrencyModal] = useModal(
+    <CurrencySearchModal onMultiCurrencySelect={handleSelectCurrency} isSelectMulti />,
+  )
   const onCurrencySelectClick = useCallback(() => {
     onPresentCurrencyModal()
   }, [onPresentCurrencyModal])
@@ -134,6 +150,10 @@ export default function Swap() {
         .filter((p) => !isUndefinedOrNull(p))
     return []
   }, [topPoolsData])
+
+  const handleFilter = () => {
+    setOnlyMyTransaction(!isOnlyMyTransaction)
+  }
 
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
@@ -195,10 +215,23 @@ export default function Swap() {
               />
             </Modal>
           </ModalV2>
-          <Heading scale="lg" mt="40px" mb="16px">
+          <Box pb="10px" pl="0" pr="0">
+            <TabMenu activeIndex={tab} onItemClick={setTab} isShowBorderBottom={false}>
+              <Tab>{t('Transactions')}</Tab>
+              <Tab>{t('Holders')}</Tab>
+            </TabMenu>
+          </Box>
+          {/* <Heading scale="lg" mt="40px" mb="16px">
             {t('Transactions')}
-          </Heading>
-          {transactionData ? <TransactionsTable transactions={transactionData} type="SWAP_TRANSACTION" /> : null}
+          </Heading> */}
+          {transactionData && tab === 0 && (
+            <TransactionsTable
+              transactions={transactionData}
+              type="SWAP_TRANSACTION"
+              filterFn={handleFilter}
+              toggleFilter={isOnlyMyTransaction}
+            />
+          )}
         </Flex>
         <Flex flexDirection="column">
           <StyledSwapContainer $isChartExpanded={isChartExpanded}>

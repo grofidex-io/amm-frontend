@@ -87,16 +87,17 @@ export const useProtocolTransactionData = (): Transaction[] | undefined => {
 export const useProtocolTransactionDataWidthPair = (params: {
   token0: string
   token1: string
+  origin: string | null
 }): Transaction[] | undefined => {
   const chainName = useChainNameByQuery()
   const chainId = multiChainId[chainName]
   const { data } = useQuery({
-    queryKey: [`v3/info/pool/poolTransaction/${chainId}/${params.token0}/${params.token1}`, chainId],
-    queryFn: () => fetchPoolTransactionsWithPair(v3InfoClients[chainId], params.token0, params.token1),
+    queryKey: [`v3/info/pool/poolTransaction/${chainId}/${params.token0}/${params.token1}/${params.origin}`, chainId],
+    queryFn: () => fetchPoolTransactionsWithPair(v3InfoClients[chainId], params.token0, params.token1, params.origin),
     enabled: Boolean(chainId && params.token0 && params.token1),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
-  return useMemo(() => data?.data?.filter((d) => d.amountUSD > 0) ?? undefined, [data])
+  return useMemo(() => data?.data?.filter((d) => d.amountUSD > 0) ?? [], [data])
 }
 
 export const useTokenPriceChartData = (

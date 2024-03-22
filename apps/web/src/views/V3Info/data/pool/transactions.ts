@@ -142,6 +142,84 @@ const TRANSACTIONS_WITH_PAIR = gql`
   }
 `
 
+const TRANSACTIONS_WITH_PAIR_ORIGIN = gql`
+  query transactions($token0: String, $token1: String, $origin: String) {
+    mints(
+      first: 100
+      orderBy: timestamp
+      orderDirection: desc
+      where: { token0_: { id: $token0 }, token1_: { id: $token1 }, origin: $origin }
+    ) {
+      timestamp
+      transaction {
+        id
+      }
+
+      token0 {
+        id
+        symbol
+      }
+      token1 {
+        id
+        symbol
+      }
+      owner
+      sender
+      origin
+      amount0
+      amount1
+      amountUSD
+    }
+    swaps(
+      first: 100
+      orderBy: timestamp
+      orderDirection: desc
+      where: { token0_: { id: $token0 }, token1_: { id: $token1 }, origin: $origin }
+    ) {
+      timestamp
+      transaction {
+        id
+      }
+      token0 {
+        id
+        symbol
+      }
+      token1 {
+        id
+        symbol
+      }
+      origin
+      amount0
+      amount1
+      amountUSD
+    }
+    burns(
+      first: 100
+      orderBy: timestamp
+      orderDirection: desc
+      where: { token0_: { id: $token0 }, token1_: { id: $token1 }, origin: $origin }
+    ) {
+      timestamp
+      transaction {
+        id
+      }
+      token0 {
+        id
+        symbol
+      }
+      token1 {
+        id
+        symbol
+      }
+      owner
+      origin
+      amount0
+      amount1
+      amountUSD
+    }
+  }
+`
+
 interface TransactionResults {
   mints: {
     timestamp: string
@@ -275,9 +353,9 @@ export async function fetchPoolTransactionsWithPair(
   client: GraphQLClient,
   token0: string,
   token1: string,
+  origin: string | null,
 ): Promise<{ data: Transaction[] | undefined; error: boolean }> {
-  return getTransaction(client, TRANSACTIONS_WITH_PAIR, {
-    token0,
-    token1,
-  })
+  const query = origin ? TRANSACTIONS_WITH_PAIR_ORIGIN : TRANSACTIONS_WITH_PAIR
+  const params = origin ? { token0, token1, origin } : { token0, token1 }
+  return getTransaction(client, query, params)
 }
