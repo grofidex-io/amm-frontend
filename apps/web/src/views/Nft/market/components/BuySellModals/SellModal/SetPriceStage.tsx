@@ -1,12 +1,12 @@
-import { useEffect, useRef } from 'react'
-import { Flex, Grid, Box, Text, Button, BinanceIcon, ErrorIcon, useTooltip, Skeleton } from '@pancakeswap/uikit'
-import { escapeRegExp } from 'utils'
 import { useTranslation } from '@pancakeswap/localization'
-import { NftToken } from 'state/nftMarket/types'
-import { useGetCollection } from 'state/nftMarket/hooks'
+import { BinanceIcon, Box, Button, ErrorIcon, Flex, Grid, Skeleton, Text, useTooltip } from '@pancakeswap/uikit'
 import { useBNBPrice } from 'hooks/useBNBPrice'
+import { useEffect, useRef } from 'react'
+import { useGetCollection } from 'state/nftMarket/hooks'
+import { NftToken } from 'state/nftMarket/types'
+import { escapeRegExp } from 'utils'
 import { Divider } from '../shared/styles'
-import { GreyedOutContainer, BnbAmountCell, RightAlignedInput, FeeAmountCell } from './styles'
+import { BnbAmountCell, FeeAmountCell, GreyedOutContainer, RightAlignedInput } from './styles'
 
 interface SetPriceStageProps {
   nftToSell: NftToken
@@ -175,7 +175,7 @@ const SetPriceStage: React.FC<React.PropsWithChildren<SetPriceStageProps>> = ({
             {t('The NFT will be removed from your wallet and put on sale at this price.')}
           </Text>
           <Text small color="textSubtle">
-            {t('Sales are in WBNB. You can swap WBNB to BNB 1:1 for free with PancakeSwap.')}
+            {t('Sales are in WBNB. You can swap WBNB to BNB 1:1 for free with U2Dex.')}
           </Text>
         </Box>
       </Grid>

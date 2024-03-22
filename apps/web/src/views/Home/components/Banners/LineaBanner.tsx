@@ -1,12 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Link, OpenNewIcon, Text, useMatchBreakpoints, Button, Svg } from '@pancakeswap/uikit'
+import { Button, Flex, Link, OpenNewIcon, Svg, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/legacy/image'
 import { memo } from 'react'
 import { styled } from 'styled-components'
 import * as S from './Styled'
-import { lineaBunny, lineaBgMobile, lineaBunnyMobile, lineaBg, lineaLogo } from './images'
 import { flyingAnim } from './animations'
+import { lineaBg, lineaBgMobile, lineaBunny, lineaBunnyMobile, lineaLogo } from './images'
 
 const pancakeSwapLogo = `${ASSET_CDN}/web/banners/ethXpancakeswap.png`
 
@@ -123,7 +123,7 @@ const LineaBanner = () => {
             <CrossSVG />
             <Image src={lineaLogo} alt="lineaLogo" width={isMobile ? 54 : 70} height={isMobile ? 15 : 20} />
           </Flex>
-          <Header>{isMobile ? t('Linea is LIVE!') : t('PancakeSwap Now Live on Linea!')}</Header>
+          <Header>{isMobile ? t('Linea is LIVE!') : t('U2Dex Now Live on Linea!')}</Header>
           {!isMobile && <SubTitle>{t('Swap and Provide Liquidity on Linea now')}</SubTitle>}
           <Link
             style={{ textDecoration: 'none' }}

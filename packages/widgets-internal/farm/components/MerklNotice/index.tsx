@@ -31,14 +31,14 @@ export const MerklNoticeContent: React.FC<MerklNoticeContentProps> = ({
             <br />
             <p>
               {t(
-                "To earn Merkl rewards, continue seeding liquidity on PancakeSwap but DO NOT stake your LP token in the Farm. Claim your rewards directly on "
+                "To earn Merkl rewards, continue seeding liquidity on U2Dex but DO NOT stake your LP token in the Farm. Claim your rewards directly on "
               )}
               <InlineLink color={linkColor} external display="inline" href={merklLink}>
                 {t("Merkl")}
               </InlineLink>
             </p>
             <br />
-            {t("To earn Farm rewards, continue seeding liquidity on PancakeSwap and stake your LP token in the Farm.")}
+            {t("To earn Farm rewards, continue seeding liquidity on U2Dex and stake your LP token in the Farm.")}
           </Text>
         </Box>
       </>
@@ -56,7 +56,7 @@ export const MerklNoticeContent: React.FC<MerklNoticeContentProps> = ({
           </p>
           <br />
           {t(
-            "To earn Merkl rewards, continue seeding liquidity on PancakeSwap, but DO NOT stake your LP token in the Farm. Otherwise, you will not accrue rewards."
+            "To earn Merkl rewards, continue seeding liquidity on U2Dex, but DO NOT stake your LP token in the Farm. Otherwise, you will not accrue rewards."
           )}
         </Text>
       </Box>

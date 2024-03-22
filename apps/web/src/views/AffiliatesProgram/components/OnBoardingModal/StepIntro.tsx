@@ -1,15 +1,15 @@
-import { styled } from 'styled-components'
 import { Trans } from '@pancakeswap/localization'
-import { Heading, Text, Flex, Box, useMatchBreakpoints, ChevronLeftIcon, ChevronRightIcon } from '@pancakeswap/uikit'
-import Image from 'next/image'
+import { Box, ChevronLeftIcon, ChevronRightIcon, Flex, Heading, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
-import { useState, useCallback } from 'react'
+import Image from 'next/image'
+import { useCallback, useState } from 'react'
+import { styled } from 'styled-components'
 import 'swiper/css'
 import 'swiper/css/autoplay'
 import 'swiper/css/navigation'
+import { Autoplay, Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import type { Swiper as SwiperClass } from 'swiper/types'
-import { Autoplay, Navigation } from 'swiper/modules'
 
 const MobileNavigation = styled('div')`
   position: absolute;
@@ -38,8 +38,7 @@ const IntroSteps = [
     icon: '/images/affiliates-program/slider/3.png',
     description: (
       <Trans>
-        Earn CAKE tokens on most trades made on PancakeSwap. Stake for more rewards or use them in our Lottery and
-        Pottery
+        Earn CAKE tokens on most trades made on U2Dex. Stake for more rewards or use them in our Lottery and Pottery
       </Trans>
     ),
   },

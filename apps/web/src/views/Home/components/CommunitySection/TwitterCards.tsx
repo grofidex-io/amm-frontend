@@ -72,10 +72,10 @@ export const useTweetsData = () => {
   return useMemo(() => {
     return [
       {
-        tweet: `🐲 Step into the Dragon Lunar Lottery at PancakeSwap! Chase a treasure of 16,000 CAKE & an additional $3,880 in USDT prizes! ✨
+        tweet: `🐲 Step into the Dragon Lunar Lottery at U2Dex! Chase a treasure of 16,000 CAKE & an additional $3,880 in USDT prizes! ✨
 🧧 Join the celebration: https://app.questn.com/event/869387113325449247
 `,
-        link: 'https://x.com/PancakeSwap/status/1755252804086628435?s=20',
+        link: 'https://x.com/U2Dex/status/1755252804086628435?s=20',
         date: 'Feb 7',
         like: '1.1k',
         impression: '99.2k',
@@ -118,13 +118,13 @@ export const TwitterCards: React.FC = () => {
       </LogoBox>
       <Flex alignItems="center">
         <Text mt="10px" fontSize={14} bold>
-          PancakeSwap🥞Ev3ryone&#39;s Favourite D3X
+          U2Dex🥞Ev3ryone&#39;s Favourite D3X
         </Text>
         <VerifiedIcon ml="3px" mt="9px" color={theme.colors.secondary} />
       </Flex>
       <Flex style={{ gap: 0 }} alignItems="center" justifyContent="center">
         <StyledText fontSize={14} color={theme.colors.textSubtle}>
-          @PancakeSwap
+          @U2Dex
         </StyledText>
         <Divider />
         <Text fontSize={14} color={theme.colors.textSubtle}>

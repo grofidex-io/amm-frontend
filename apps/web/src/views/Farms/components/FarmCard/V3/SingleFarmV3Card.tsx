@@ -31,7 +31,6 @@ import { styled, useTheme } from 'styled-components'
 import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import useFarmV3Actions from 'views/Farms/hooks/v3/useFarmV3Actions'
-import { BCakeV3CardView } from '../../YieldBooster/components/bCakeV3/CardView'
 import {
   useBakeV3farmCanBoost,
   useIsBoostedPool,
@@ -244,7 +243,7 @@ const SingleFarmV3Card: React.FunctionComponent<
                         <>
                           {t('Inactive positions will')}
                           <b> {t('NOT')} </b>
-                          {t('earn CAKE rewards from farm.')}
+                          {t('earn U2U rewards from farm.')}
                         </>
                       ) : (
                         t('You may add or remove liquidity on the position detail page without unstake')
@@ -344,13 +343,13 @@ const SingleFarmV3Card: React.FunctionComponent<
               }}
               style={{ borderLeft: dividerBorderStyle, borderTop: dividerBorderStyle }}
             />
-            <RowBetween flexDirection="column" alignItems="flex-start" flex={1} width="100%">
+            {/* <RowBetween flexDirection="column" alignItems="flex-start" flex={1} width="100%">
               <BCakeV3CardView
                 tokenId={position.tokenId.toString()}
                 pid={farm.pid}
                 isFarmStaking={positionType === 'staked'}
               />
-            </RowBetween>
+            </RowBetween> */}
           </>
         )}
       </ActionContainer>

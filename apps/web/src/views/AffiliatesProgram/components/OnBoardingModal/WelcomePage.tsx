@@ -1,11 +1,11 @@
-import { Flex, Box, Text, Button, LogoRoundIcon, Checkbox, Link } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { useRouter } from 'next/router'
-import { useState, useMemo } from 'react'
+import { Box, Button, Checkbox, Flex, Link, LogoRoundIcon, Text } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { useAccount } from 'wagmi'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { useRouter } from 'next/router'
+import { useMemo, useState } from 'react'
 import useUserExist from 'views/AffiliatesProgram/hooks/useUserExist'
+import { useAccount } from 'wagmi'
 
 interface WelcomePageProps {
   isLoading: boolean
@@ -36,13 +36,13 @@ const WelcomePage: React.FC<React.PropsWithChildren<WelcomePageProps>> = ({ isLo
       </Box>
       <Box>
         <Text fontSize={['24px']} bold m="12px 0">
-          {t('Welcome to PancakeSwap!')}
+          {t('Welcome to U2Dex!')}
         </Text>
         <Text textTransform="uppercase" color="secondary" bold mb="8px">
           {user?.toString()?.replaceAll('_', ' ')}
         </Text>
         <Text color="textSubtle" fontSize="14px" mb="24px">
-          {t('has referred you to start trading on PancakeSwap')}
+          {t('has referred you to start trading on U2Dex')}
         </Text>
         {isDiscountZero && noPerps ? null : (
           <Text color="textSubtle" mb="24px">

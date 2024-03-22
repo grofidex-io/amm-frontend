@@ -1,14 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
+  BackgroundGraphic,
   BannerContainer,
   BannerGraphics,
   BannerMain,
   BannerTitle,
   FloatingGraphic,
-  LinkExternalAction,
-  PancakeSwapBadge,
-  BackgroundGraphic,
   GraphicDetail,
+  LinkExternalAction,
 } from '@pancakeswap/widgets-internal'
 
 import { ASSET_CDN } from 'config/constants/endpoints'
@@ -34,7 +33,7 @@ export function TopTraderBanner() {
   return (
     <BannerContainer background="radial-gradient(112.67% 197.53% at 30.75% 3.72%, #9AEDFF 0%, #CCC2FE 76.19%, #C6A3FF 100%), linear-gradient(180deg, rgba(231, 253, 255, 0.2) 0%, rgba(242, 241, 255, 0.2) 100%)">
       <BannerMain
-        badges={<PancakeSwapBadge />}
+        // badges={<U2DexBadge />}
         title={
           <BannerTitle variant="purple">{t('Be Our Top 100 Traders and Earn a 3% Trading Fee Rebate!')}</BannerTitle>
         }

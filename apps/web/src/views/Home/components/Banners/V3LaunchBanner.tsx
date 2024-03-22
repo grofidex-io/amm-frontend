@@ -4,7 +4,7 @@ import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
 import { ASSET_CDN } from 'config/constants/endpoints'
 import Image from 'next/legacy/image'
-import { styled, css, keyframes } from 'styled-components'
+import { css, keyframes, styled } from 'styled-components'
 import * as S from './Styled'
 
 const { v3LaunchBg, v3LaunchBgMobile, v3LaunchBunny, v3LaunchBunnyMobile, v3LaunchBnb, v3LaunchEth, v3LaunchFlag } = {
@@ -235,7 +235,7 @@ const V3LaunchBanner = () => {
               {t(`Ev3ryone's Favourite D3X`)}
             </StyledSubheading>
             <TitleWrapper alignItems="center" style={{ gap: 5 }}>
-              <LogoIcon /> <Title>{t('PancakeSwap v3 is live!')}</Title>
+              <LogoIcon /> <Title>{t('U2Dex v3 is live!')}</Title>
             </TitleWrapper>
           </TextBox>
           <NextLinkFromReactRouter

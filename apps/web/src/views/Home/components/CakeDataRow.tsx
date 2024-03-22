@@ -1,20 +1,20 @@
+import { ChainId } from '@pancakeswap/chains'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/chains'
+import { cakeVaultV2ABI } from '@pancakeswap/pools'
 import { bscTokens } from '@pancakeswap/tokens'
 import { Balance, Flex, Heading, Skeleton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { formatBigInt, formatLocalisedCompactNumber, formatNumber } from '@pancakeswap/utils/formatBalance'
-import { cakeVaultV2ABI } from '@pancakeswap/pools'
+import { useQuery } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
-import { useEffect, useState } from 'react'
+import addresses from 'config/constants/contracts'
 import { useCakePrice } from 'hooks/useCakePrice'
+import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 import { getCakeVaultAddress } from 'utils/addressHelpers'
 import { publicClient } from 'utils/wagmi'
 import { useCakeEmissionPerBlock } from 'views/Home/hooks/useCakeEmissionPerBlock'
 import { erc20ABI } from 'wagmi'
-import { useQuery } from '@tanstack/react-query'
-import addresses from 'config/constants/contracts'
 
 const StyledColumn = styled(Flex)<{ noMobileBorder?: boolean; noDesktopBorder?: boolean }>`
   flex-direction: column;
@@ -63,7 +63,7 @@ const StyledWrapper = styled(Flex)`
  * but the contract was written in such a way that when we performed the migration from Masterchef v1 to v2, the tokens were stuck.
  * These stuck tokens are forever gone (see their medium post) and can be considered out of circulation."
  * https://planetfinanceio.medium.com/pancakeswap-works-with-planet-to-help-cake-holders-f0d253b435af
- * https://twitter.com/PancakeSwap/status/1523913527626702849
+ * https://twitter.com/U2Dex/status/1523913527626702849
  * https://bscscan.com/tx/0xd5ffea4d9925d2f79249a4ce05efd4459ed179152ea5072a2df73cd4b9e88ba7
  */
 const planetFinanceBurnedTokensWei = 637407922445268000000000n
