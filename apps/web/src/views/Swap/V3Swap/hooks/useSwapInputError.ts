@@ -1,12 +1,13 @@
+import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
-import { useTranslation } from '@pancakeswap/localization'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 
-import { safeGetAddress } from 'utils'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
+import { safeGetAddress } from 'utils'
 
+import { TYPE_SWAP } from 'state/swap/reducer'
 import { useAccount } from 'wagmi'
 import { useSlippageAdjustedAmounts } from './useSlippageAdjustedAmounts'
 
@@ -35,12 +36,15 @@ const BAD_RECIPIENT_ADDRESSES: string[] = [
 export function useSwapInputError(
   trade: SmartRouterTrade<TradeType> | null | undefined,
   currencyBalances: Balances,
+  typeSwap: number,
 ): string {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { independentField, typedValue } = useSwapState()
   const inputCurrency = currencyBalances[Field.INPUT]?.currency
   const outputCurrency = currencyBalances[Field.OUTPUT]?.currency
+  console.log('🚀 ~ inputCurrency:', inputCurrency, outputCurrency, currencyBalances, Field.INPUT)
+
   const slippageAdjustedAmounts = useSlippageAdjustedAmounts(trade)
 
   const to: string | null = account || null
@@ -70,8 +74,9 @@ export function useSwapInputError(
   }
 
   // compare input balance to max input based on version
+  const keyBalanceIn = typeSwap === TYPE_SWAP.BUY ? Field.OUTPUT : Field.INPUT
   const [balanceIn, amountIn] = [
-    currencyBalances[Field.INPUT],
+    currencyBalances[keyBalanceIn],
     slippageAdjustedAmounts ? slippageAdjustedAmounts[Field.INPUT] : null,
   ]
 
