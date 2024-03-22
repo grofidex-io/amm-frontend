@@ -288,7 +288,7 @@ export const WU2U = {
     ChainId.U2U_NEBULAS,
     '0x33dbb072e53cf0dd0fd55b19ffdb4e794364d666',
     18,
-    'U2U',
+    'WU2U',
     'Wrapped U2U',
     'https://www.uniultra.xyz'
   ),
