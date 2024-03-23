@@ -50,7 +50,9 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
   const outputCurrency = useCurrency(outputCurrencyId)
   const { onCurrencySelection, onUserInput } = useSwapActionHandlers()
   const [inputBalance] = useCurrencyBalances(account, [inputCurrency, outputCurrency])
+  const [outputBalance] = useCurrencyBalances(account, [outputCurrency, inputCurrency])
   const maxAmountInput = useMemo(() => maxAmountSpend(inputBalance), [inputBalance])
+  const maxAmountOutput = useMemo(() => maxAmountSpend(outputBalance), [outputBalance])
   const loadedUrlParams = useDefaultsFromURLSearch()
 
   const handleTypeInput = useCallback((value: string) => onUserInput(Field.INPUT, value), [onUserInput])
@@ -58,11 +60,15 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
 
   const handlePercentInput = useCallback(
     (percent: number) => {
-      if (maxAmountInput) {
-        onUserInput(Field.INPUT, maxAmountInput.multiply(new Percent(percent, 100)).toExact())
+      if (maxAmountInput || maxAmountOutput) {
+        const amountAmount = typeSwap === TYPE_SWAP.BUY ? maxAmountOutput : maxAmountInput
+        onUserInput(
+          typeSwap === TYPE_SWAP.BUY ? Field.OUTPUT : Field.INPUT,
+          amountAmount.multiply(new Percent(percent, 100)).toExact(),
+        )
       }
     },
-    [maxAmountInput, onUserInput],
+    [maxAmountInput, maxAmountOutput, onUserInput, typeSwap],
   )
 
   const handleMaxInput = useCallback(() => {
@@ -70,6 +76,12 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
       onUserInput(Field.INPUT, maxAmountInput.toExact())
     }
   }, [maxAmountInput, onUserInput])
+
+  const handleMaxOutput = useCallback(() => {
+    if (maxAmountOutput) {
+      onUserInput(Field.OUTPUT, maxAmountOutput.toExact())
+    }
+  }, [maxAmountOutput, onUserInput])
 
   const handleCurrencySelect = useCallback(
     (newCurrency: Currency, field: Field, currentInputCurrencyId: string, currentOutputCurrencyId: string) => {
@@ -127,14 +139,14 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
       <CurrencyInputPanel
         id="swap-currency-input"
         showUSDPrice
-        showMaxButton
+        showMaxButton={typeSwap === TYPE_SWAP.SELL}
         showCommonBases
         inputLoading={!isWrapping && inputLoading}
         currencyLoading={!loadedUrlParams}
         label={!isTypingInput && !isWrapping ? t('From (estimated)') : t('From')}
         value={isWrapping ? typedValue : inputValue}
         maxAmount={maxAmountInput}
-        showQuickInputButton
+        showQuickInputButton={typeSwap === TYPE_SWAP.SELL}
         currency={inputCurrency}
         onUserInput={handleTypeInput}
         onPercentInput={handlePercentInput}
@@ -150,13 +162,17 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
         id="swap-currency-output"
         showUSDPrice
         showCommonBases
-        showMaxButton={false}
+        showMaxButton={typeSwap === TYPE_SWAP.BUY}
+        maxAmount={maxAmountOutput}
+        showQuickInputButton={typeSwap === TYPE_SWAP.BUY}
         inputLoading={!isWrapping && outputLoading}
         currencyLoading={!loadedUrlParams}
         label={isTypingInput && !isWrapping ? t('To (estimated)') : t('To')}
         value={isWrapping ? typedValue : outputValue}
         currency={outputCurrency}
         onUserInput={handleTypeOutput}
+        onMax={handleMaxOutput}
+        onPercentInput={handlePercentInput}
         onCurrencySelect={handleOutputSelect}
         otherCurrency={outputCurrency}
         commonBasesType={CommonBasesType.SWAP_LIMITORDER}

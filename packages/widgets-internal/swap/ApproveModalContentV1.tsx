@@ -29,7 +29,7 @@ export const ApproveModalContentV1: React.FC<ApproveModalContentProps> = ({ titl
           <Text fontSize="14px">{t("Swapping thru:")}</Text>
           {isMM ? (
             <Text ml="4px" fontSize="14px">
-              {t("Pancakeswap MM")}
+              {t("U2Dex MM")}
             </Text>
           ) : isBonus ? (
             <Text ml="4px" fontSize="14px">
@@ -38,7 +38,7 @@ export const ApproveModalContentV1: React.FC<ApproveModalContentProps> = ({ titl
           ) : (
             <>
               <TooltipText ml="4px" fontSize="14px" color="textSubtle" ref={targetRef}>
-                {t("Pancakeswap AMM")}
+                {t("U2Dex AMM")}
               </TooltipText>
               {tooltipVisible && tooltip}
             </>

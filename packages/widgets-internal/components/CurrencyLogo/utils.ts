@@ -13,14 +13,15 @@ const mapping: { [key: number]: string } = {
   [ChainId.BASE]: "base",
   [ChainId.LINEA]: "linea",
   [ChainId.OPBNB]: "opbnb",
+  [ChainId.U2U_NEBULAS]: "u2u",
 };
 
 export const getTokenLogoURL = memoize(
   (token?: Token) => {
     if (token && mapping[token.chainId]) {
-      return `https://assets-cdn.trustwallet.com/blockchains/${mapping[token.chainId]}/assets/${getAddress(
-        token.address
-      )}/logo.png`;
+      return `https://raw.githubusercontent.com/u2u-eco/default-token-list/master/logos/network/${
+        token.chainId
+      }/${getAddress(token.address)?.toLocaleLowerCase()}.png`;
     }
     return null;
   },
