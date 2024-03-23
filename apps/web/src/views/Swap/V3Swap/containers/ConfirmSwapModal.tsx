@@ -23,6 +23,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ApprovalState } from 'hooks/useApproveCallback'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
+import { TYPE_SWAP } from 'state/swap/reducer'
 import { ConfirmModalStateV1, PendingConfirmModalStateV1 } from '../types'
 
 import ConfirmSwapModalContainer from '../../components/ConfirmSwapModalContainer'
@@ -72,7 +73,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
   const { chainId } = useActiveChainId()
   const { t } = useTranslation()
   const [allowedSlippage] = useUserSlippage()
-  const { recipient } = useSwapState()
+  const { recipient, typeSwap } = useSwapState()
   const [wallchainStatus] = useWallchainStatus()
   const isBonus = useDebounce(wallchainStatus === 'found', 500)
 
@@ -86,8 +87,14 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
   }, [customOnDismiss, onDismiss])
 
   const topModal = useMemo(() => {
-    const currencyA = currencyBalances.INPUT?.currency ?? trade?.inputAmount?.currency
-    const currencyB = currencyBalances.OUTPUT?.currency ?? trade?.outputAmount?.currency
+    const currencyA =
+      typeSwap === TYPE_SWAP.BUY
+        ? currencyBalances.OUTPUT?.currency
+        : currencyBalances.INPUT?.currency ?? trade?.inputAmount?.currency
+    const currencyB =
+      typeSwap === TYPE_SWAP.BUY
+        ? currencyBalances.INPUT?.currency
+        : currencyBalances.OUTPUT?.currency ?? trade?.outputAmount?.currency
     const amountA = formatAmount(trade?.inputAmount, 6) ?? ''
     const amountB = formatAmount(trade?.outputAmount, 6) ?? ''
 

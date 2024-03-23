@@ -71,7 +71,7 @@ export const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowPr
               <Text color="primary">{t('Why resetting approval')}</Text>
             </StyledLinkExternal>
           )}
-          {confirmModalState === ConfirmModalStateV1.APPROVING_TOKEN && (
+          {/* {confirmModalState === ConfirmModalStateV1.APPROVING_TOKEN && (
             <StyledLinkExternal
               external
               margin="16px auto auto auto"
@@ -84,7 +84,7 @@ export const ApproveStepFlow: React.FC<React.PropsWithChildren<ApproveStepFlowPr
               {tooltipVisible && tooltip}
               <Text color="primary">{t('this?')}</Text>
             </StyledLinkExternal>
-          )}
+          )} */}
         </>
       )}
     </Box>
