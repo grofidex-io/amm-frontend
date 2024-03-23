@@ -224,7 +224,7 @@ export const WETH9 = {
   ),
   [ChainId.U2U_NEBULAS]: new ERC20Token(
     ChainId.U2U_NEBULAS,
-    '0x0a3c7BAf490D9f5d77412051cbDF0A11aE7f6950',
+    '0x94504f356a267f3a128c2e6387281bccdbd821a0',
     18,
     'WETH',
     'Wrapped ETH',
@@ -275,7 +275,7 @@ export const WBNB = {
   ),
   [ChainId.U2U_NEBULAS]: new ERC20Token(
     ChainId.U2U_NEBULAS,
-    '0x2ab42AfC0e59faD4FaEBea40321479a9fB6440b9',
+    '0x7bd3dc0e0e1e1ccce1657a18cbe32f13f9fc9376',
     18,
     'WBNB',
     'Wrapped BNB',
@@ -286,7 +286,7 @@ export const WBNB = {
 export const WU2U = {
   [ChainId.U2U_NEBULAS]: new ERC20Token(
     ChainId.U2U_NEBULAS,
-    '0x33DbB072E53cF0dD0fD55B19FFdB4E794364d666',
+    '0xc5f15624b4256c1206e4bb93f2ccc9163a75b703',
     18,
     'WU2U',
     'Wrapped U2U',
