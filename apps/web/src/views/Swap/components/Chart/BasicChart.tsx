@@ -87,7 +87,6 @@ const BasicChart = ({
         flexDirection={['column', null, null, null, null, null, 'row']}
         alignItems={['flex-start', null, null, null, null, null, 'center']}
         justifyContent="space-between"
-        px="24px"
         flexWrap="wrap"
       >
         <Flex flexDirection="column" pt="12px">
@@ -113,7 +112,7 @@ const BasicChart = ({
           </ButtonMenu>
         </Box>
       </Flex>
-      <Box height={isMobile ? '100%' : chartHeight} p={isMobile ? '0px' : '16px'} width="100%">
+      <Box height={isMobile ? '100%' : chartHeight} p={isMobile ? '0px' : '16px 0'} width="100%">
         <SwapLineChart
           data={pairPrices}
           setHoverValue={setHoverValue}
