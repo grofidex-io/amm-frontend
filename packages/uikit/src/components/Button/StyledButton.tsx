@@ -33,6 +33,7 @@ const getDisabledStyles = ({ $isLoading, theme }: TransientButtonProps) => {
         background-color: ${theme.colors.backgroundDisabled};
         box-shadow: none;
         color: ${theme.colors.textDisabled};
+        border-color: ${theme.colors.backgroundDisabled};
       }
     }
   `;
