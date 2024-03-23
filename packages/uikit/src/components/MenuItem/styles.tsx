@@ -3,7 +3,7 @@ import { StyledMenuItemProps } from "./types";
 
 export const StyledMenuItemContainer = styled.div<StyledMenuItemProps>`
   position: relative;
-
+  padding: ${({ $isHeaderMenu }) => ($isHeaderMenu ? "12px 0" : "0")};
   ${({ $isActive, $variant, theme }) =>
     $isActive &&
     $variant === "subMenu" &&
@@ -44,12 +44,17 @@ const StyledMenuItem = styled.a<StyledMenuItemProps>`
     }
   `}
 
-  ${({ $variant }) =>
-    $variant === "default"
+  ${({ $variant, $isHeaderMenu }) =>
+    $variant === "default" && !$isHeaderMenu
       ? `
     padding: 0 16px;
     height: 48px;
   `
+      : $isHeaderMenu
+      ? `
+    height: 36px;
+    padding: 0 16px;
+    `
       : `
     padding-left: 4px;
     padding-right: 4px;
@@ -57,9 +62,27 @@ const StyledMenuItem = styled.a<StyledMenuItemProps>`
     height: 42px;
   `}
 
+  ${({ $isActive, $isHeaderMenu, theme }) =>
+    $isActive && $isHeaderMenu
+      ? `
+      color: ${theme.colors.black};
+      border: 2px solid ${theme.colors.cardBorder};
+      background: ${theme.colors.secondary};
+      border-radius: 8px;
+    `
+      : $isActive
+      ? `
+      color: ${theme.colors.secondary};
+    `
+      : `
+      color: ${theme.colors.textSubtle};
+    `}
+
   &:hover {
-    background: ${({ theme }) => theme.colors.tertiary};
-    ${({ $variant }) => $variant === "default" && "border-radius: 16px;"};
+    // background: ${({ theme }) => theme.colors.tertiary};
+    // ${({ $variant }) => $variant === "default" && "border-radius: 16px;"};
+    color: ${({ $isActive, $isHeaderMenu, theme }) =>
+      $isActive && $isHeaderMenu ? theme.colors.black : $isActive ? theme.colors.secondary : theme.colors.hover};
   }
 `;
 

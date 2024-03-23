@@ -1,4 +1,4 @@
-import { styled, DefaultTheme } from "styled-components";
+import { DefaultTheme, styled } from "styled-components";
 import { Colors } from "../../theme";
 import { Text } from "../Text";
 import { StyledDropdownMenuItemProps } from "./types";
@@ -11,7 +11,7 @@ const getTextColor = ({
   if (disabled) return theme.colors.textDisabled;
   if ($isActive) return theme.colors.secondary;
 
-  return theme.colors.textSubtle;
+  return theme.colors.text;
 };
 
 export const DropdownMenuItem = styled("button").withConfig({
@@ -67,9 +67,9 @@ export const DropdownMenuDivider = styled.hr`
 `;
 
 export const StyledDropdownMenu = styled.div<{ $isOpen: boolean; $isBottomNav: boolean }>`
-  background-color: ${({ theme }) => theme.card.background};
-  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  border-radius: 16px;
+  background-color: ${({ theme }) => theme.colors.dropdownBlur};
+  // border: 2px solid ${({ theme }) => theme.colors.cardBorder};
+  border-radius: 8px;
   padding-bottom: 4px;
   padding-top: 4px;
   pointer-events: auto;
@@ -77,6 +77,8 @@ export const StyledDropdownMenu = styled.div<{ $isOpen: boolean; $isBottomNav: b
   width: ${({ $isBottomNav }) => ($isBottomNav ? "calc(100% - 32px)" : "280px")};
   visibility: visible;
   z-index: 1001;
+  backdrop-filter: blur(8px) saturate(190%) contrast(70%) brightness(80%);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.6);
 
   ${({ $isOpen }) =>
     !$isOpen &&

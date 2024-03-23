@@ -32,6 +32,7 @@ const BorderLayout = styled.div`
   box-shadow: ${({ theme }) => theme.shadows.card};
   border-radius: 8px;
   padding: 16px;
+  background: ${({ theme }) => theme.colors.backgroundAlt};
 `
 
 const PriceChartContainer: React.FC<React.PropsWithChildren<PriceChartContainerProps>> = ({
@@ -64,12 +65,12 @@ const PriceChartContainer: React.FC<React.PropsWithChildren<PriceChartContainerP
     WNATIVE[outputCurrency.chainId].equals(outputCurrency.wrapped)
 
   return (
-    <>
-      <Flex justifyContent="space-between" mb="24px">
+    <BorderLayout>
+      <Flex justifyContent="space-between" mb="12px">
         <FlexPointer
           alignItems="center"
           className="border-neubrutal"
-          p="12px 16px"
+          p="8px 12px"
           borderRadius="8px"
           background="var(--colors-backgroundItem)"
           onClick={onCurrencySelectClick}
@@ -105,7 +106,7 @@ const PriceChartContainer: React.FC<React.PropsWithChildren<PriceChartContainerP
           currentSwapPrice={currentSwapPrice}
         />
       )}
-    </>
+    </BorderLayout>
   )
 }
 

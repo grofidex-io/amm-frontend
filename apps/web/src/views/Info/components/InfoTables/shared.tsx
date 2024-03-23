@@ -4,6 +4,7 @@ import { styled } from 'styled-components'
 export const ClickableColumnHeader = styled(Text)`
   cursor: pointer;
   display: flex;
+  align-items: center;
   justify-content: start;
   gap: 5px;
 `

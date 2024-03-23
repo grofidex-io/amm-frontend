@@ -3206,5 +3206,6 @@
   "This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.": "This Merkl campaign is NOT rewarding out-of-range liquidity. To earn rewards, adjust your position.",
   "This liquidity position is currently earning rewards on Merkl.": "This liquidity position is currently earning rewards on Merkl.",
   "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.": "This liquidity position will NOT earn any rewards on Merkl due to its total USD value being less than $20.",
-  "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "Giao dịch phê duyệt đã được lấp đầy, nhưng Phê duyệt vẫn chưa đủ để lấp đầy giao dịch hiện tại. Vui lòng thử lại."
+  "Approve transaction filled, but Approval still not enough to fill current trade. Please try again.": "Giao dịch phê duyệt đã được lấp đầy, nhưng Phê duyệt vẫn chưa đủ để lấp đầy giao dịch hiện tại. Vui lòng thử lại.",
+  "Only my transactions": "Chỉ các giao dịch của tôi"
 }
