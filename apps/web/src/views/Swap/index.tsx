@@ -98,7 +98,11 @@ export default function Swap() {
     if (listCurrency[0] && listCurrency[1]) {
       let input = listCurrency[0]
       let output = listCurrency[1]
-      if (!BigNumber.from(listCurrency[0].wrapped.address).lt(BigNumber.from(listCurrency[1].wrapped.address))) {
+
+      if (
+        !BigNumber.from(listCurrency[0].wrapped.address).lt(BigNumber.from(listCurrency[1].wrapped.address)) &&
+        output.wrapped?.address?.toLowerCase() !== input?.wrapped?.address?.toLowerCase()
+      ) {
         input = listCurrency[1]
         output = listCurrency[0]
       }
@@ -159,8 +163,8 @@ export default function Swap() {
 
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
-      <Flex justifyContent="center" position="relative" alignItems="flex-start">
-        <Flex flexDirection="column">
+      <Flex justifyContent="center" position="relative" alignItems="flex-start" width="100%">
+        <Flex flexDirection="column" flexGrow={2}>
           {isDesktop && isChartSupported && (
             <PriceChartContainer
               onCurrencySelectClick={onCurrencySelectClick}
@@ -236,7 +240,7 @@ export default function Swap() {
           )}
           {tab === 1 && <TopHolders />}
         </Flex>
-        <Flex flexDirection="column">
+        <Flex flexDirection="column" flexGrow={1}>
           <StyledSwapContainer $isChartExpanded={isChartExpanded}>
             <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
               <AppBody>

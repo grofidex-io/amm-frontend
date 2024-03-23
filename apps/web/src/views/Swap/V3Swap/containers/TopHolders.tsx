@@ -1,6 +1,6 @@
 import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { Card, Flex, Progress, ProgressBar, Tab, TabMenu, Table, Td, Text, Th } from '@pancakeswap/uikit'
+import { Card, Flex, Progress, ProgressBar, ScanLink, Tab, TabMenu, Table, Td, Text, Th } from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { formatAmount } from '@pancakeswap/utils/formatInfoNumbers'
 import truncateHash from '@pancakeswap/utils/truncateHash'
@@ -8,9 +8,12 @@ import { formatUnits } from 'ethers/lib/utils'
 import { useCurrency } from 'hooks/Tokens'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useMemo, useState } from 'react'
+import { ChainLinkSupportChains, multiChainId } from 'state/info/constant'
+import { useChainNameByQuery } from 'state/info/hooks'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import styled from 'styled-components'
+import { getBlockExploreLink } from 'utils'
 import { useGetHolders } from 'views/Swap/hooks/useGetHolders'
 
 interface TAB {
@@ -30,12 +33,11 @@ export function TopHolders() {
   const { theme } = useTheme()
   const { t } = useTranslation()
   const [active, setActive] = useState<number>(0)
-
   const native = useNativeCurrency()
 
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
-
+  const chainName = useChainNameByQuery()
   const tabs = useMemo(() => {
     const _tabs: Array<TAB> = []
     if (inputCurrency && outputCurrency) {
@@ -99,9 +101,12 @@ export function TopHolders() {
                   {data?.listHolders?.map((item) => (
                     <tr key={item.address}>
                       <Td>
-                        <Text color="primary" bold>
+                        <ScanLink
+                          useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
+                          href={getBlockExploreLink(item.address, 'address', multiChainId[chainName])}
+                        >
                           {truncateHash(item.address)}
-                        </Text>
+                        </ScanLink>
                       </Td>
                       <Td>
                         <Text bold>{formatAmount(getPercent(item.value))}%</Text>
