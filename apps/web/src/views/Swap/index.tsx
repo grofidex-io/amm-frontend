@@ -53,6 +53,7 @@ export default function Swap() {
   const { address: account } = useAccount()
   const [isOnlyMyTransaction, setOnlyMyTransaction] = useState<boolean>(false)
   const [tab, setTab] = useState<number>(0)
+  // const [timeFetchTransaction, updateTimeFetchTransaction] = useState<number>(0)
   // const [firstTime, setFirstTime] = useState(true)
 
   // useEffect(() => {

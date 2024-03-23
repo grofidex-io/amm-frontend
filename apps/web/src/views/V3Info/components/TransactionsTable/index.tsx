@@ -27,12 +27,13 @@ import Loader from '../Loader'
 import { RowFixed } from '../Row'
 import { SortButton, useSortFieldClassName } from '../SortButton'
 
-const ResponsiveGrid = styled.div`
+const ResponsiveGrid = styled.div<{ widthFirstCol: number }>`
   display: grid;
   grid-gap: 1em;
   align-items: center;
 
-  grid-template-columns: 0.5fr repeat(5, 1fr);
+  grid-template-columns: ${({ widthFirstCol }) =>
+    widthFirstCol ? `${widthFirstCol}fr repeat(5, 1fr)` : '0.5fr repeat(5, 1fr)'};
   padding: 0 24px;
   @media screen and (max-width: 940px) {
     grid-template-columns: 1.5fr repeat(4, 1fr);
@@ -99,7 +100,16 @@ const SORT_FIELD = {
   amountToken1: 'amountToken1',
 }
 
-const DataRow = ({ transaction, type }: { transaction: Transaction; color?: string; type?: string }) => {
+const DataRow = ({
+  transaction,
+  type,
+  filterFn,
+}: {
+  transaction: Transaction
+  color?: string
+  type?: string
+  filterFn?: () => void
+}) => {
   const abs0 = Math.abs(transaction.amountToken0)
   const abs1 = Math.abs(transaction.amountToken1)
   const chainName = useChainNameByQuery()
@@ -119,7 +129,7 @@ const DataRow = ({ transaction, type }: { transaction: Transaction; color?: stri
   }
 
   return (
-    <ResponsiveGrid>
+    <ResponsiveGrid widthFirstCol={filterFn ? 0.5 : 1.5}>
       <Flex justifyContent="center">
         <ScanLink
           useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
@@ -270,15 +280,17 @@ export default function TransactionTable({
             {t('Removes')}
           </SortText>
         </RowFixed>
-        <Flex alignItems="center">
-          <Toggle scale="sm" checked={toggleFilter} onChange={filterFn} />
-          <Text ml="16px" small color="textSubtle">
-            {t('Only my transactions')}
-          </Text>
-        </Flex>
+        {filterFn && (
+          <Flex alignItems="center">
+            <Toggle scale="sm" checked={toggleFilter} onChange={filterFn} />
+            <Text ml="16px" small color="textSubtle">
+              {t('Only my transactions')}
+            </Text>
+          </Flex>
+        )}
       </Flex>
       <TableWrapper>
-        <ResponsiveGrid>
+        <ResponsiveGrid widthFirstCol={filterFn ? 0.5 : 1.5}>
           <Text textAlign="center" color="textSubtle">
             {t('Type')}
           </Text>
@@ -346,7 +358,7 @@ export default function TransactionTable({
               return (
                 // eslint-disable-next-line react/no-array-index-key
                 <React.Fragment key={`${d.hash}/${d.timestamp}/${index}/transactionRecord`}>
-                  <DataRow transaction={d} type={type} />
+                  <DataRow transaction={d} type={type} filterFn={filterFn} />
                   <Break />
                 </React.Fragment>
               )
