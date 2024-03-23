@@ -270,7 +270,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
             </Flex>
           )}
           <InputRow selected={disableCurrencySelect}>
-            {account && currency && selectedCurrencyBalance?.greaterThan(0) && !disabled && label !== 'To' && (
+            {account && currency && selectedCurrencyBalance?.greaterThan(0) && !disabled && (
               <Flex alignItems="right" justifyContent="right">
                 {maxAmount?.greaterThan(0) &&
                   showQuickInputButton &&
