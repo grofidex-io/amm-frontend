@@ -79,8 +79,8 @@ const WalletModal: React.FC<React.PropsWithChildren<WalletModalProps>> = ({
         <ModalTitle>
           <Heading>{t('Your Wallet')}</Heading>
         </ModalTitle>
-        <IconButton variant="text" onClick={onDismiss}>
-          <CloseIcon width="24px" color="text" />
+        <IconButton variant="text" p="0" height="36px" scale="xs" onClick={onDismiss}>
+          <CloseIcon p="4px" width="36px" height="36px" color="text" className="button-hover br-4 border-2" />
         </IconButton>
       </ModalHeader>
       {view !== WalletView.WRONG_NETWORK && <TabsComponent view={view} handleClick={handleClick} />}

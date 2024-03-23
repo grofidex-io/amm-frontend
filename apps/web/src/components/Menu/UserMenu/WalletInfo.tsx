@@ -30,6 +30,7 @@ import { SUPPORT_BUY_CRYPTO } from 'config/constants/supportChains'
 import { useDomainNameForAddress } from 'hooks/useDomain'
 import { useState } from 'react'
 import { isMobile } from 'react-device-detect'
+import styled from 'styled-components'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import { Address, useBalance } from 'wagmi'
 
@@ -37,6 +38,13 @@ const COLORS = {
   ETH: '#627EEA',
   BNB: '#14151A',
 }
+
+const BorderLayout = styled.div`
+  border: 2px solid ${({ theme }) => theme.colors.cardBorder};
+  box-shadow: ${({ theme }) => theme.shadows.card};
+  border-radius: 8px;
+  padding: 16px;
+`
 
 interface WalletInfoProps {
   hasLowNativeBalance: boolean
@@ -122,124 +130,126 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
           </Box>
         </Message>
       )}
-      {!isBSC && chain && (
-        <Box mb="12px">
-          <Flex justifyContent="space-between" alignItems="center" mb="8px">
-            <Flex bg={COLORS.ETH} borderRadius="16px" pl="4px" pr="8px" py="2px">
-              <ChainLogo chainId={chain.id} />
-              <Text color="white" ml="4px">
-                {chain.name}
-              </Text>
-            </Flex>
-            <LinkExternal href={getBlockExploreLink(account, 'address', chainId)}>
-              {getBlockExploreName(chainId)}
-            </LinkExternal>
-          </Flex>
-          <Flex alignItems="center" justifyContent="space-between">
-            <Text color="textSubtle">
-              {native.symbol} {t('Balance')}
-            </Text>
-            {!nativeBalance.isFetched ? (
-              <Skeleton height="22px" width="60px" />
-            ) : (
-              <Flex>
-                <Text
-                  color={showNativeEntryPoint ? 'warning' : 'text'}
-                  fontWeight={showNativeEntryPoint ? 'bold' : 'normal'}
-                >
-                  {formatBigInt(nativeBalance?.data?.value ?? 0n, 6)}
+      <BorderLayout>
+        {!isBSC && chain && (
+          <Box mb="16px">
+            <Flex justifyContent="space-between" alignItems="center" mb="8px">
+              <Flex bg={COLORS.ETH} borderRadius="16px" pl="4px" pr="8px" py="2px">
+                <ChainLogo chainId={chain.id} />
+                <Text color="white" ml="4px">
+                  {chain.name}
                 </Text>
-                {showNativeEntryPoint ? (
-                  <TooltipText
-                    ref={buyCryptoTargetRef}
-                    onClick={() => setMobileTooltipShow(false)}
-                    display="flex"
-                    style={{ justifyContent: 'center' }}
-                  >
-                    <InfoFilledIcon pl="2px" fill="#000" color="#D67E0A" width="22px" />
-                  </TooltipText>
-                ) : null}
-                {buyCryptoTooltipVisible && (!isMobile || mobileTooltipShow) && buyCryptoTooltip}
               </Flex>
-            )}
-          </Flex>
-          {wNativeBalance && wNativeBalance.gt(0) && (
+              <LinkExternal href={getBlockExploreLink(account, 'address', chainId)}>
+                {getBlockExploreName(chainId)}
+              </LinkExternal>
+            </Flex>
             <Flex alignItems="center" justifyContent="space-between">
               <Text color="textSubtle">
-                {wNativeToken?.symbol} {t('Balance')}
+                {native.symbol} {t('Balance')}
               </Text>
-              {wNativeFetchStatus !== FetchStatus.Fetched ? (
+              {!nativeBalance.isFetched ? (
                 <Skeleton height="22px" width="60px" />
               ) : (
-                wNativeToken?.decimals && (
-                  <Text>{getFullDisplayBalance(wNativeBalance, wNativeToken?.decimals, 6)}</Text>
-                )
+                <Flex>
+                  <Text
+                    color={showNativeEntryPoint ? 'warning' : 'text'}
+                    fontWeight={showNativeEntryPoint ? 'bold' : 'normal'}
+                  >
+                    {formatBigInt(nativeBalance?.data?.value ?? 0n, 6)}
+                  </Text>
+                  {showNativeEntryPoint ? (
+                    <TooltipText
+                      ref={buyCryptoTargetRef}
+                      onClick={() => setMobileTooltipShow(false)}
+                      display="flex"
+                      style={{ justifyContent: 'center' }}
+                    >
+                      <InfoFilledIcon pl="2px" fill="#000" color="#D67E0A" width="22px" />
+                    </TooltipText>
+                  ) : null}
+                  {buyCryptoTooltipVisible && (!isMobile || mobileTooltipShow) && buyCryptoTooltip}
+                </Flex>
+              )}
+            </Flex>
+            {wNativeBalance && wNativeBalance.gt(0) && (
+              <Flex alignItems="center" justifyContent="space-between">
+                <Text color="textSubtle">
+                  {wNativeToken?.symbol} {t('Balance')}
+                </Text>
+                {wNativeFetchStatus !== FetchStatus.Fetched ? (
+                  <Skeleton height="22px" width="60px" />
+                ) : (
+                  wNativeToken?.decimals && (
+                    <Text>{getFullDisplayBalance(wNativeBalance, wNativeToken?.decimals, 6)}</Text>
+                  )
+                )}
+              </Flex>
+            )}
+          </Box>
+        )}
+
+        <Box>
+          <Flex justifyContent="space-between" alignItems="center" mb="8px">
+            <Flex bg={COLORS.BNB} borderRadius="16px" pl="4px" pr="8px" py="2px">
+              <ChainLogo chainId={ChainId.BSC} />
+              <Text color="white" ml="4px">
+                BNB Smart Chain
+              </Text>
+            </Flex>
+            <ScanLink useBscCoinFallback href={getBlockExploreLink(account, 'address', ChainId.BSC)}>
+              {getBlockExploreName(ChainId.BSC)}
+            </ScanLink>
+          </Flex>
+          {chainId === 56 ? (
+            <Flex alignItems="center" justifyContent="space-between">
+              <Text color="textSubtle">BNB {t('Balance')}</Text>
+              {!bnbBalance.isFetched ? (
+                <Skeleton height="22px" width="60px" />
+              ) : (
+                <Flex alignItems="center" justifyContent="center">
+                  <Text
+                    fontWeight={showBscEntryPoint ? 'bold' : 'normal'}
+                    color={showBscEntryPoint ? 'warning' : 'normal'}
+                  >
+                    {formatBigInt(bnbBalance?.data?.value ?? 0n, 6)}
+                  </Text>
+                  {showBscEntryPoint ? (
+                    <TooltipText
+                      ref={buyCryptoTargetRef}
+                      onClick={() => setMobileTooltipShow(false)}
+                      display="flex"
+                      style={{ justifyContent: 'center' }}
+                    >
+                      <InfoFilledIcon pl="2px" fill="#000" color="#D67E0A" width="22px" />
+                    </TooltipText>
+                  ) : null}
+                  {buyCryptoTooltipVisible && (!isMobile || mobileTooltipShow) && buyCryptoTooltip}
+                </Flex>
+              )}
+            </Flex>
+          ) : null}
+          {wBNBBalance.gt(0) && (
+            <Flex alignItems="center" justifyContent="space-between">
+              <Text color="textSubtle">WBNB {t('Balance')}</Text>
+              {wBNBFetchStatus !== FetchStatus.Fetched ? (
+                <Skeleton height="22px" width="60px" />
+              ) : (
+                <Text>{getFullDisplayBalance(wBNBBalance, wBNBToken.decimals, 6)}</Text>
               )}
             </Flex>
           )}
+          <Flex alignItems="center" justifyContent="space-between">
+            <Text color="textSubtle">{t('CAKE Balance')}</Text>
+            {cakeFetchStatus !== FetchStatus.Fetched ? (
+              <Skeleton height="22px" width="60px" />
+            ) : (
+              <Text>{formatBigInt(cakeBalance, 3)}</Text>
+            )}
+          </Flex>
         </Box>
-      )}
-
-      <Box mb="24px">
-        <Flex justifyContent="space-between" alignItems="center" mb="8px">
-          <Flex bg={COLORS.BNB} borderRadius="16px" pl="4px" pr="8px" py="2px">
-            <ChainLogo chainId={ChainId.BSC} />
-            <Text color="white" ml="4px">
-              BNB Smart Chain
-            </Text>
-          </Flex>
-          <ScanLink useBscCoinFallback href={getBlockExploreLink(account, 'address', ChainId.BSC)}>
-            {getBlockExploreName(ChainId.BSC)}
-          </ScanLink>
-        </Flex>
-        {chainId === 56 ? (
-          <Flex alignItems="center" justifyContent="space-between">
-            <Text color="textSubtle">BNB {t('Balance')}</Text>
-            {!bnbBalance.isFetched ? (
-              <Skeleton height="22px" width="60px" />
-            ) : (
-              <Flex alignItems="center" justifyContent="center">
-                <Text
-                  fontWeight={showBscEntryPoint ? 'bold' : 'normal'}
-                  color={showBscEntryPoint ? 'warning' : 'normal'}
-                >
-                  {formatBigInt(bnbBalance?.data?.value ?? 0n, 6)}
-                </Text>
-                {showBscEntryPoint ? (
-                  <TooltipText
-                    ref={buyCryptoTargetRef}
-                    onClick={() => setMobileTooltipShow(false)}
-                    display="flex"
-                    style={{ justifyContent: 'center' }}
-                  >
-                    <InfoFilledIcon pl="2px" fill="#000" color="#D67E0A" width="22px" />
-                  </TooltipText>
-                ) : null}
-                {buyCryptoTooltipVisible && (!isMobile || mobileTooltipShow) && buyCryptoTooltip}
-              </Flex>
-            )}
-          </Flex>
-        ) : null}
-        {wBNBBalance.gt(0) && (
-          <Flex alignItems="center" justifyContent="space-between">
-            <Text color="textSubtle">WBNB {t('Balance')}</Text>
-            {wBNBFetchStatus !== FetchStatus.Fetched ? (
-              <Skeleton height="22px" width="60px" />
-            ) : (
-              <Text>{getFullDisplayBalance(wBNBBalance, wBNBToken.decimals, 6)}</Text>
-            )}
-          </Flex>
-        )}
-        <Flex alignItems="center" justifyContent="space-between">
-          <Text color="textSubtle">{t('CAKE Balance')}</Text>
-          {cakeFetchStatus !== FetchStatus.Fetched ? (
-            <Skeleton height="22px" width="60px" />
-          ) : (
-            <Text>{formatBigInt(cakeBalance, 3)}</Text>
-          )}
-        </Flex>
-      </Box>
-      <Button variant="secondary" width="100%" minHeight={48} onClick={handleLogout}>
+      </BorderLayout>
+      <Button variant="secondary" mt="24px" className="button-hover" width="100%" minHeight={48} onClick={handleLogout}>
         {t('Disconnect Wallet')}
       </Button>
     </>

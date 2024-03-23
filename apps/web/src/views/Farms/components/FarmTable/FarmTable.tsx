@@ -28,10 +28,11 @@ export interface ITableProps {
 
 const Container = styled.div`
   width: 100%;
-  background: ${({ theme }) => theme.card.background};
-  border-radius: 32px;
+  background: ${({ theme }) => theme.colors.backgroundAlt};
+  border-radius: 8px;
   margin: 16px 0px;
-  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  border: 2px solid ${({ theme }) => theme.colors.cardBorder};
+  box-shadow: ${({ theme }) => theme.shadows.card};
 `
 
 const TableWrapper = styled.div`

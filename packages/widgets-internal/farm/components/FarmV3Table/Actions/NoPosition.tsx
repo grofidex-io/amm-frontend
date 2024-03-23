@@ -1,14 +1,14 @@
-import { ReactNode } from "react";
 import { useTranslation } from "@pancakeswap/localization";
+import { Button, Flex, Text } from "@pancakeswap/uikit";
+import { ReactNode } from "react";
 import { styled } from "styled-components";
-import { Text, Button, Flex } from "@pancakeswap/uikit";
 
-import { ActionTitles, ActionContent } from "./styles";
+import { ActionContent, ActionTitles } from "./styles";
 
 const ActionContainer = styled.div`
   padding: 16px;
-  border: 2px solid ${({ theme }) => theme.colors.input};
-  border-radius: 16px;
+  border: 2px solid ${({ theme }) => theme.colors.backgroundItem};
+  border-radius: 8px;
   flex-grow: 1;
   flex-basis: 0;
   margin-bottom: 16px;
@@ -56,7 +56,7 @@ const NoPosition: React.FunctionComponent<React.PropsWithChildren<WalletNotConne
           </ActionTitles>
           {!inactive && (
             <ActionContent>
-              <Button width="100%" onClick={onAddLiquidity}>
+              <Button width="100%" className="button-hover" onClick={onAddLiquidity}>
                 {t("Add Liquidity")}
               </Button>
             </ActionContent>

@@ -151,12 +151,13 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
           amountB={amountB}
         >
           <AddToWalletButton
-            mt="39px"
+            mt="36px"
             height="auto"
             variant="tertiary"
             width="fit-content"
             padding="6.5px 20px"
             marginTextBetweenLogo="6px"
+            className="button-hover"
             textOptions={AddToWalletTextOptions.TEXT_WITH_ASSET}
             tokenAddress={token?.address}
             tokenSymbol={currencyB?.symbol}
@@ -177,12 +178,13 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
             </Link>
           )}
           <AddToWalletButton
-            mt="39px"
+            mt="36px"
             height="auto"
             variant="tertiary"
             width="fit-content"
             padding="6.5px 20px"
             marginTextBetweenLogo="6px"
+            className="button-hover"
             textOptions={AddToWalletTextOptions.TEXT_WITH_ASSET}
             tokenAddress={token?.address}
             tokenSymbol={currencyB?.symbol}
