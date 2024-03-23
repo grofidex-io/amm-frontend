@@ -2,7 +2,15 @@ import { Currency } from '@pancakeswap/sdk'
 import { useAtom } from 'jotai'
 import { useCallback } from 'react'
 import { swapReducerAtom } from 'state/swap/reducer'
-import { Field, selectCurrency, selectPair, setRecipient, switchCurrencies, typeInput } from './actions'
+import {
+  Field,
+  selectCurrency,
+  selectPair,
+  setRecipient,
+  switchCurrencies,
+  typeInput,
+  updateTransactionHash,
+} from './actions'
 
 export function useSwapActionHandlers(): {
   onCurrencySelection: (field: Field, currency: Currency) => void
@@ -10,6 +18,7 @@ export function useSwapActionHandlers(): {
   onUserInput: (field: Field, typedValue: string) => void
   onChangeRecipient: (recipient: string | null) => void
   onSelectPair: (inputCurrencyId: string, outputCurrencyId: string) => void
+  onUpdateTransactionHash: (hash: string) => void
 } {
   const [, dispatch] = useAtom(swapReducerAtom)
 
@@ -43,11 +52,17 @@ export function useSwapActionHandlers(): {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const onUpdateTransactionHash = useCallback((hash: string) => {
+    dispatch(updateTransactionHash({ hash }))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return {
     onSwitchTokens,
     onCurrencySelection,
     onUserInput,
     onChangeRecipient,
     onSelectPair,
+    onUpdateTransactionHash,
   }
 }
