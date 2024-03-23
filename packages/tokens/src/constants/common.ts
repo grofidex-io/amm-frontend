@@ -256,7 +256,7 @@ export const CAKE = {
   ),
   [ChainId.U2U_NEBULAS]: new ERC20Token(
     ChainId.U2U_NEBULAS,
-    '0x5e1a11a45750395520e2c6c6e52bb3204c77e14d',
+    '0xe9bbf9b40e2480ced61e7834f6cd6349e99116d4',
     18,
     'WU2U',
     'Wrapped U2U Token',
