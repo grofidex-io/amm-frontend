@@ -169,8 +169,15 @@ function CurrencySearch({
         if (step === 0) {
           setCurrency0(currency)
         }
-
-        if (currency0 && currency && step === 1 && onMultiCurrencySelect) {
+        if (
+          currency0 &&
+          currency &&
+          step === 1 &&
+          (currency?.wrapped?.address?.toLowerCase() !== currency0?.wrapped?.address?.toLowerCase() ||
+            (currency?.wrapped?.address?.toLowerCase() === native?.wrapped?.address?.toLowerCase() &&
+              currency0?.wrapped?.address?.toLowerCase() === native?.wrapped?.address?.toLowerCase())) &&
+          onMultiCurrencySelect
+        ) {
           onMultiCurrencySelect([currency0, currency])
         }
         swiperRef?.slideNext()
@@ -181,7 +188,7 @@ function CurrencySearch({
         getSwapSound().play()
       }
     },
-    [audioPlay, onMultiCurrencySelect, onCurrencySelect, isSelectMulti, swiperRef, step, currency0],
+    [audioPlay, onMultiCurrencySelect, onCurrencySelect, isSelectMulti, swiperRef, step, currency0, native],
   )
 
   const updateActiveIndex = ({ activeIndex }) => {

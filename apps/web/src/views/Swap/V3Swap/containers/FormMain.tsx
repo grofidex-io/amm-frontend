@@ -22,6 +22,7 @@ import { useAccount } from 'wagmi'
 import useWarningImport from '../../hooks/useWarningImport'
 import { FormContainer } from '../components'
 import { useIsWrapping } from '../hooks'
+import { FlipButton } from './FlipButton'
 import { Recipient } from './Recipient'
 import { RiskCheck } from './RiskCheck'
 
@@ -48,7 +49,7 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
   const isWrapping = useIsWrapping()
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
-  const { onCurrencySelection, onUserInput } = useSwapActionHandlers()
+  const { onCurrencySelection, onUserInput, onSwitchTokens } = useSwapActionHandlers()
   const [inputBalance] = useCurrencyBalances(account, [inputCurrency, outputCurrency])
   const [outputBalance] = useCurrencyBalances(account, [outputCurrency, inputCurrency])
   const maxAmountInput = useMemo(() => maxAmountSpend(inputBalance), [inputBalance])
@@ -130,12 +131,19 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
     dispatch(updateTypeSwap({ typeSwap: index }))
   }
 
+  if (isWrapping) {
+    dispatch(updateTypeSwap({ typeSwap: TYPE_SWAP.SELL }))
+  }
+
   return (
     <FormContainer>
-      <TabMenu activeIndex={tab} fullWidth isShowBorderBottom onItemClick={handleItemClick}>
-        <Tab>Buy</Tab>
-        <Tab>Sell</Tab>
-      </TabMenu>
+      {!isWrapping && (
+        <TabMenu activeIndex={tab} fullWidth isShowBorderBottom onItemClick={handleItemClick}>
+          <Tab>Buy</Tab>
+          <Tab>Sell</Tab>
+        </TabMenu>
+      )}
+
       <CurrencyInputPanel
         id="swap-currency-input"
         showUSDPrice
@@ -157,7 +165,7 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
         title="Amount"
       />
       <RiskCheck currency={inputCurrency} />
-      {/* <FlipButton /> */}
+      {isWrapping && <FlipButton />}
       <CurrencyInputPanel
         id="swap-currency-output"
         showUSDPrice
