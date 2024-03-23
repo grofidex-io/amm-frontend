@@ -12,8 +12,6 @@ import { IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import { useWebNotifications } from 'hooks/useWebNotifications'
 import { useRouter } from 'next/router'
 import { lazy, useMemo } from 'react'
-import GlobalSettings from './GlobalSettings'
-import { SettingsMode } from './GlobalSettings/types'
 import UserMenu from './UserMenu'
 import { useMenuItems } from './hooks/useMenuItems'
 import { getActiveMenuItem, getActiveSubMenuItem } from './utils'
@@ -59,7 +57,7 @@ const Menu = (props) => {
         linkComponent={LinkComponent}
         rightSide={
           <>
-            <GlobalSettings mode={SettingsMode.GLOBAL} />
+            {/* <GlobalSettings mode={SettingsMode.GLOBAL} /> */}
             {/* {enabled && (
               <Suspense fallback={null}>
                 <Notifications />
@@ -79,7 +77,7 @@ const Menu = (props) => {
         // cakePriceUsd={cakePrice.eq(BIG_ZERO) ? undefined : cakePrice}
         links={menuItems}
         subLinks={activeMenuItem?.hideSubNav || activeSubMenuItem?.hideSubNav ? [] : activeMenuItem?.items}
-        footerLinks={getFooterLinks}
+        // footerLinks={getFooterLinks}
         activeItem={activeMenuItem?.href}
         activeSubItem={activeSubMenuItem?.href}
         // buyCakeLabel={t('Buy U2U')}

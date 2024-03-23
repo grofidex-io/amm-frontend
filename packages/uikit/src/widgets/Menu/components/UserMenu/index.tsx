@@ -3,31 +3,32 @@ import { usePopper } from "react-popper";
 import { styled } from "styled-components";
 import { Box, Flex } from "../../../../components/Box";
 import { ChevronDownIcon } from "../../../../components/Svg";
-import { UserMenuProps, variants } from "./types";
 import MenuIcon from "./MenuIcon";
 import { UserMenuItem } from "./styles";
+import { UserMenuProps, variants } from "./types";
 
 export const StyledUserMenu = styled(Flex)`
   align-items: center;
-  background-color: ${({ theme }) => theme.colors.tertiary};
-  border-radius: 16px;
-  box-shadow: inset 0px -2px 0px rgba(0, 0, 0, 0.1);
+  background-color: ${({ theme }) => theme.colors.backgroundItem};
+  border-radius: 8px;
+  border: 2px solid ${({ theme }) => theme.colors.cardBorder};
   cursor: pointer;
   display: inline-flex;
-  height: 32px;
-  padding-left: 32px;
-  padding-right: 8px;
+  padding: 8px 8px 8px 32px;
   position: relative;
+  height: 36px;
 
   &:hover {
-    opacity: 0.65;
+    box-shadow: ${({ theme }) => theme.shadows.button};
+    color: ${({ theme }) => theme.colors.black};
+    opacity: 0.8;
   }
 `;
 
 export const LabelText = styled.div`
   color: ${({ theme }) => theme.colors.text};
   display: none;
-  font-weight: 600;
+  font-size: 15px;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     display: block;
@@ -37,16 +38,17 @@ export const LabelText = styled.div`
 `;
 
 const Menu = styled.div<{ $isOpen: boolean }>`
-  background-color: ${({ theme }) => theme.card.background};
-  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  border-radius: 16px;
+  background-color: ${({ theme }) => theme.colors.dropdownBlur};
+  // border: 2px solid ${({ theme }) => theme.colors.cardBorder};
+  border-radius: 8px;
   padding-bottom: 4px;
   padding-top: 4px;
   pointer-events: auto;
   width: 280px;
   visibility: visible;
   z-index: 1001;
-
+  backdrop-filter: blur(8px) saturate(190%) contrast(70%) brightness(80%);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.6);
   ${({ $isOpen }) =>
     !$isOpen &&
     `

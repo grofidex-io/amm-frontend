@@ -1,9 +1,9 @@
 import shouldForwardProp from "@styled-system/should-forward-prop";
-import React, { useEffect, useState } from "react";
 import throttle from "lodash/throttle";
-import { styled, css } from "styled-components";
-import { DropdownProps, PositionProps, Position } from "./types";
+import React, { useEffect, useState } from "react";
+import { css, styled } from "styled-components";
 import { useMatchBreakpoints } from "../../contexts";
+import { DropdownProps, Position, PositionProps } from "./types";
 
 const getLeft = ({ position }: PositionProps) => {
   if (position === "top-right") {
@@ -29,17 +29,18 @@ const DropdownContent = styled.div.withConfig({
   transform: translate(-50%, 0);
   left: ${getLeft};
   bottom: ${getBottom};
-  background-color: ${({ theme }) => theme.nav.background};
-  box-shadow: ${({ theme }) => theme.shadows.level1};
+  background-color: ${({ theme }) => theme.colors.dropdownBlur};
   padding: 16px;
   max-height: 0px;
   overflow: hidden;
   z-index: ${({ theme }) => theme.zIndices.dropdown};
-  border-radius: ${({ theme }) => theme.radii.small};
+  border-radius: ${({ theme }) => theme.radii.card};
   opacity: 0;
   transition: max-height 0s 0.3s, opacity 0.3s ease-in-out;
   will-change: opacity;
   pointer-events: none;
+  backdrop-filter: blur(8px) saturate(190%) contrast(70%) brightness(80%);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.6);
 `;
 
 const Container = styled.div<{ $scrolling: boolean }>`

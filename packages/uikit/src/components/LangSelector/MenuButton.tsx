@@ -3,8 +3,12 @@ import Button from "../Button/Button";
 
 const MenuButton = styled(Button)`
   color: ${({ theme }) => theme.colors.text};
-  padding: 0 8px;
-  border-radius: 8px;
+  padding: 0 16px;
+  border-radius: 4px;
+  &:hover {
+    background: ${({ theme }) => theme.colors.hover};
+    color: ${({ theme }) => theme.colors.black};
+  }
 `;
 MenuButton.defaultProps = {
   variant: "text",
