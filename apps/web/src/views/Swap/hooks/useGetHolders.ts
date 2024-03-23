@@ -1,8 +1,8 @@
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
 export function useGetHolders({ contractaddress }) {
   return useQuery({
-    queryKey: ['getHolders'],
+    queryKey: [`getHolders/${contractaddress}`],
     queryFn: async () => {
       const res = await Promise.all([
         fetch(`https://testnet.u2uscan.xyz/api?module=token&action=getToken&contractaddress=${contractaddress}`),
@@ -18,6 +18,7 @@ export function useGetHolders({ contractaddress }) {
       }
     },
     enabled: Boolean(contractaddress),
-    placeholderData: keepPreviousData,
+    retry: 3,
+    retryDelay: 3000,
   })
 }
