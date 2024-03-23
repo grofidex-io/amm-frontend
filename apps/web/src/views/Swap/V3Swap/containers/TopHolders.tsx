@@ -40,10 +40,10 @@ export function TopHolders() {
     const _tabs: Array<TAB> = []
     if (inputCurrency && outputCurrency) {
       if (inputCurrency?.wrapped?.address !== native?.wrapped?.address) {
-        _tabs.push({ symbol: inputCurrency?.symbol, address: inputCurrency.address })
+        _tabs.push({ symbol: inputCurrency?.symbol, address: inputCurrency?.wrapped?.address })
       }
       if (outputCurrency?.wrapped?.address !== native?.wrapped?.address) {
-        _tabs.push({ symbol: outputCurrency?.symbol, address: outputCurrency?.address })
+        _tabs.push({ symbol: outputCurrency?.symbol, address: outputCurrency?.wrapped?.address })
       }
     }
     return _tabs
