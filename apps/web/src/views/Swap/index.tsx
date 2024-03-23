@@ -31,6 +31,7 @@ import { useAccount } from 'wagmi'
 import Page from '../Page'
 import { SwapFeaturesContext } from './SwapFeaturesContext'
 import { V3SwapForm } from './V3Swap'
+import { TopHolders } from './V3Swap/containers/TopHolders'
 import PriceChartContainer from './components/Chart/PriceChartContainer'
 import HotTokenList from './components/HotTokenList'
 import useWarningImport from './hooks/useWarningImport'
@@ -104,7 +105,7 @@ export default function Swap() {
       const _outputCurrencyId = _inputCurrencyId === 'U2U' ? output.wrapped?.address : getAddress(output) || ''
       onSelectPair(_inputCurrencyId, _outputCurrencyId)
       replaceBrowserHistory('inputCurrency', _inputCurrencyId)
-      replaceBrowserHistory('outputCurrencyId', _outputCurrencyId)
+      replaceBrowserHistory('outputCurrency', _outputCurrencyId)
     }
   }
   const [onPresentCurrencyModal] = useModal(
@@ -232,6 +233,7 @@ export default function Swap() {
               toggleFilter={isOnlyMyTransaction}
             />
           )}
+          {tab === 1 && <TopHolders />}
         </Flex>
         <Flex flexDirection="column">
           <StyledSwapContainer $isChartExpanded={isChartExpanded}>

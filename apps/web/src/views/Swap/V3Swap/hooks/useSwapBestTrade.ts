@@ -33,6 +33,7 @@ export function useSwapBestTrade({ maxHops }: Options = {}) {
   const independentCurrency = isExactIn ? inputCurrency : outputCurrency
   const dependentCurrency = isExactIn ? outputCurrency : inputCurrency
   let tradeType = isExactIn ? TradeType.EXACT_INPUT : TradeType.EXACT_OUTPUT
+
   const amount = tryParseAmount(typedValue, independentCurrency ?? undefined)
   if (typeSwap === TYPE_SWAP.BUY) {
     tradeType = isExactIn ? TradeType.EXACT_OUTPUT : TradeType.EXACT_INPUT

@@ -63,7 +63,7 @@ export const SUBGRAPH_START_BLOCK = {
   [ChainId.LINEA]: 1444,
   [ChainId.BASE]: 2912007,
   [ChainId.OPBNB]: 1721753,
-  [ChainId.U2U_NEBULAS]: 19566623,
+  [ChainId.U2U_NEBULAS]: 19589487,
 }
 
 export const NODE_REAL_ADDRESS_LIMIT = 50
