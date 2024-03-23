@@ -96,6 +96,7 @@ export const useProtocolTransactionDataWidthPair = (params: {
     queryFn: () => fetchPoolTransactionsWithPair(v3InfoClients[chainId], params.token0, params.token1, params.origin),
     enabled: Boolean(chainId && params.token0 && params.token1),
     ...QUERY_SETTINGS_IMMUTABLE,
+    refetchInterval: 3000,
   })
   return useMemo(() => data?.data?.filter((d) => d.amountUSD > 0) ?? [], [data])
 }
@@ -443,7 +444,7 @@ export const usePoolTransactions = (address: string): Transaction[] | undefined 
     enabled: Boolean(chainId && address),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
-  return useMemo(() => data?.data?.filter((d) => d.amountUSD > 0) ?? undefined, [data])
+  return useMemo(() => data?.data?.filter((d) => true) ?? undefined, [data])
 }
 
 export const usePoolChartData = (address: string): PoolChartEntry[] | undefined => {

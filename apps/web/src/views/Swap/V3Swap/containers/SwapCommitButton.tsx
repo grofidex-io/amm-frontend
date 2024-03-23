@@ -68,7 +68,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
   const swapIsUnsupported = useIsTransactionUnsupported(inputCurrency, outputCurrency)
-  const { onUserInput } = useSwapActionHandlers()
+  const { onUserInput, onUpdateTransactionHash } = useSwapActionHandlers()
   const {
     wrapType,
     execute: onWrap,
@@ -172,6 +172,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
       .then((res) => {
         setWallchainSecondaryStatus('not-found')
         setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: res.hash })
+        onUpdateTransactionHash(res.hash)
       })
       .catch((error) => {
         setWallchainSecondaryStatus('not-found')
@@ -194,7 +195,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
           txHash: undefined,
         })
       })
-  }, [priceImpactWithoutFee, t, swapCallback, tradeToConfirm, revertReason])
+  }, [priceImpactWithoutFee, t, swapCallback, tradeToConfirm, revertReason, onUpdateTransactionHash])
 
   const handleAcceptChanges = useCallback(() => {
     setSwapState({ tradeToConfirm: trade, swapErrorMessage, txHash, attemptingTxn })
@@ -325,12 +326,10 @@ export const SwapCommitButton = memo(function SwapCommitButton({
   }
 
   const noRoute = !((trade?.routes?.length ?? 0) > 0) || tradeError
-  console.log('🚀 ~ trade:', trade, tradeError)
 
   const userHasSpecifiedInputOutput = Boolean(
     inputCurrency && outputCurrency && parsedIndepentFieldAmount?.greaterThan(BIG_INT_ZERO),
   )
-  console.log('🚀 ~ wrapInputError:', noRoute, userHasSpecifiedInputOutput)
 
   if (noRoute && userHasSpecifiedInputOutput && !tradeLoading) {
     return (

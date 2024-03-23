@@ -34,3 +34,7 @@ export const selectPair = createAction<{
   inputCurrencyId: string
   outputCurrencyId: string
 }>('swap/selectPair')
+
+export const updateTransactionHash = createAction<{
+  hash: string
+}>('swap/updateTransactionHash')
