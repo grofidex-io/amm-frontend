@@ -1,8 +1,8 @@
-import React, { useContext, useRef, useEffect } from "react";
+import React, { useContext, useEffect, useRef } from "react";
+import { useMatchBreakpoints } from "../../contexts";
 import { MenuContext } from "../../widgets/Menu/context";
 import StyledMenuItem, { StyledMenuItemContainer } from "./styles";
 import { MenuItemProps } from "./types";
-import { useMatchBreakpoints } from "../../contexts";
 
 const MenuItem: React.FC<React.PropsWithChildren<MenuItemProps>> = ({
   children,
@@ -12,6 +12,7 @@ const MenuItem: React.FC<React.PropsWithChildren<MenuItemProps>> = ({
   variant = "default",
   scrollLayerRef,
   statusColor,
+  isHeaderMenu = false,
   ...props
 }) => {
   const { isMobile } = useMatchBreakpoints();
@@ -43,6 +44,7 @@ const MenuItem: React.FC<React.PropsWithChildren<MenuItemProps>> = ({
         {...itemLinkProps}
         $isActive={isActive}
         $isDisabled={isDisabled}
+        $isHeaderMenu={isHeaderMenu}
         $variant={variant}
         $statusColor={statusColor}
         {...props}

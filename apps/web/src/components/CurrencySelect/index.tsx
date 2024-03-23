@@ -17,9 +17,9 @@ const DropDownHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 0px 16px;
-  box-shadow: ${({ theme }) => theme.shadows.inset};
-  border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
-  border-radius: 16px;
+  box-shadow: ${({ theme }) => theme.shadows.input};
+  border: 2px solid ${({ theme }) => theme.colors.cardBorder};
+  border-radius: 4px;
   background: ${({ theme }) => theme.colors.input};
   transition: border-radius 0.15s;
 `
@@ -29,11 +29,12 @@ const DropDownContainer = styled(Button)`
   width: 100%;
   position: relative;
   background: ${({ theme }) => theme.colors.input};
-  border-radius: 16px;
+  border-radius: 4px;
   height: 40px;
   min-width: 136px;
   user-select: none;
   z-index: 20;
+  border: 0;
 
   ${({ theme }) => theme.mediaQueries.sm} {
     min-width: 168px;

@@ -1,4 +1,3 @@
-import { ExpandIcon, Flex, IconButton, ShrinkIcon } from '@pancakeswap/uikit'
 // import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import BasicChart from './BasicChart'
 import { StyledPriceChart } from './styles'
@@ -25,13 +24,6 @@ const PriceChart = ({
       $isExpanded={isChartExpanded}
       $isFullWidthContainer={isFullWidthContainer}
     >
-      {!isMobile && (
-        <Flex>
-          <IconButton variant="text" onClick={toggleExpanded}>
-            {isChartExpanded ? <ShrinkIcon color="text" /> : <ExpandIcon color="text" />}
-          </IconButton>
-        </Flex>
-      )}
       <BasicChart
         token0Address={token0Address}
         token1Address={token1Address}
