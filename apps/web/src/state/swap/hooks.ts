@@ -224,8 +224,6 @@ export function queryParametersToSwapState(
     typeof parsedQs.outputCurrency === 'string'
       ? safeGetAddress(parsedQs.outputCurrency) || nativeSymbol
       : defaultOutputCurrency
-  console.log('🚀 ~ outputCurrency:', parsedQs, safeGetAddress(parsedQs.outputCurrency), inputCurrency, outputCurrency)
-
   if (inputCurrency === outputCurrency) {
     if (typeof parsedQs.outputCurrency === 'string') {
       inputCurrency = ''

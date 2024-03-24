@@ -14,7 +14,7 @@ const PriceChart = ({
   token1Address,
   currentSwapPrice,
 }) => {
-  const toggleExpanded = () => setIsChartExpanded((currentIsExpanded) => !currentIsExpanded)
+  // const toggleExpanded = () => setIsChartExpanded((currentIsExpanded) => !currentIsExpanded)
 
   return (
     <StyledPriceChart

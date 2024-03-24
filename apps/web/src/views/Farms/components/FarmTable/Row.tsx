@@ -61,6 +61,7 @@ type RowPropsWithLoading = {
 } & RowProps
 
 const cells = {
+  reward: Apr,
   apr: Apr,
   farm: FarmCell,
   earned: Earned,
