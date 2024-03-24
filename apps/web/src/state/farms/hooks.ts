@@ -9,7 +9,11 @@ import { useAppDispatch } from 'state'
 import { getMasterChefContract } from 'utils/contractHelpers'
 import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 
+import { U2U_REWARD } from '@pancakeswap/sdk'
+import { formatUnits } from '@pancakeswap/utils/viem/formatUnits'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useTokenContract } from 'hooks/useContract'
+import { useAccount } from 'wagmi'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync } from '.'
 import {
   farmSelector,
@@ -29,6 +33,25 @@ export function useFarmsLength() {
     },
 
     enabled: Boolean(chainId && supportedChainIdV2.includes(chainId)),
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+  })
+}
+
+export function useRewardBalance() {
+  const { address: account } = useAccount()
+  const wRewardContract = useTokenContract(U2U_REWARD.address)
+
+  return useQuery({
+    queryKey: ['rewardBalance', account],
+
+    queryFn: async () => {
+      const balance = await wRewardContract?.read.balanceOf([account])
+      return formatUnits(balance, U2U_REWARD.decimals)
+    },
+
+    enabled: Boolean(account),
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
