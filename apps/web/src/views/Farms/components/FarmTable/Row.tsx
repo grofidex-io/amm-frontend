@@ -38,6 +38,9 @@ export type CommunityRowProps = Omit<V2RowProps, 'type'> & {
 
 export type V3RowProps = {
   type: 'v3'
+  reward: {
+    value: string
+  }
   apr: {
     value: string
     pid: number
@@ -61,6 +64,7 @@ type RowPropsWithLoading = {
 } & RowProps
 
 const cells = {
+  reward: Apr,
   apr: Apr,
   farm: FarmCell,
   earned: Earned,

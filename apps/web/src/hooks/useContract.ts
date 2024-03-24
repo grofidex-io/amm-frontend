@@ -284,6 +284,10 @@ export function useWNativeContract() {
   const { chainId } = useActiveChainId()
   return useContract(chainId ? WNATIVE[chainId]?.address : undefined, wethABI)
 }
+export function useWNativeContractByAddress(address: string) {
+  const { chainId } = useActiveChainId()
+  return useContract(address || (chainId ? WNATIVE[chainId]?.address : undefined), wethABI)
+}
 
 export function useWBETHContract() {
   const { chainId } = useActiveChainId()

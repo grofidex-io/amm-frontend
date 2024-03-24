@@ -1,12 +1,12 @@
-import { Currency, WNATIVE } from '@pancakeswap/sdk'
-import { useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
+import { Currency, U2U_REWARD, WNATIVE } from '@pancakeswap/sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useMemo } from 'react'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useCurrencyBalance } from 'state/wallet/hooks'
-import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { useWNativeContract } from './useContract'
 import { useCallWithGasPrice } from './useCallWithGasPrice'
+import { useWNativeContractByAddress } from './useContract'
 
 export enum WrapType {
   NOT_APPLICABLE,
@@ -29,18 +29,25 @@ export default function useWrapCallback(
   const { t } = useTranslation()
   const { account, chainId } = useAccountActiveChain()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const wbnbContract = useWNativeContract()
   const balance = useCurrencyBalance(account ?? undefined, inputCurrency)
   // we can always parse the amount typed as the input currency, since wrapping is 1:1
   const inputAmount = useMemo(() => tryParseAmount(typedValue, inputCurrency), [inputCurrency, typedValue])
   const addTransaction = useTransactionAdder()
+  const address =
+    outputCurrency && inputCurrency && (U2U_REWARD?.equals(outputCurrency) || U2U_REWARD?.equals(inputCurrency))
+      ? U2U_REWARD.address
+      : undefined
+  const wbnbContract = useWNativeContractByAddress(address)
 
   return useMemo(() => {
     if (!wbnbContract || !chainId || !inputCurrency || !outputCurrency) return NOT_APPLICABLE
 
     const sufficientBalance = inputAmount && balance && !balance.lessThan(inputAmount)
-
-    if (inputCurrency?.isNative && WNATIVE[chainId]?.equals(outputCurrency)) {
+    const WRAP_TOKEN =
+      WNATIVE[chainId]?.equals(outputCurrency) || WNATIVE[chainId]?.equals(inputCurrency)
+        ? WNATIVE[chainId]
+        : U2U_REWARD
+    if (inputCurrency?.isNative && WRAP_TOKEN) {
       return {
         wrapType: WrapType.WRAP,
         execute:
@@ -52,7 +59,7 @@ export default function useWrapCallback(
                   })
                   const amount = inputAmount.toSignificant(6)
                   const native = inputCurrency.symbol
-                  const wrap = WNATIVE[chainId].symbol
+                  const wrap = WRAP_TOKEN.symbol
                   addTransaction(txReceipt, {
                     summary: `Wrap ${amount} ${native} to ${wrap}`,
                     translatableSummary: { text: 'Wrap %amount% %native% to %wrap%', data: { amount, native, wrap } },
@@ -68,7 +75,7 @@ export default function useWrapCallback(
           : t('Insufficient %symbol% balance', { symbol: inputCurrency.symbol }),
       }
     }
-    if (WNATIVE[chainId]?.equals(inputCurrency) && outputCurrency?.isNative) {
+    if (WRAP_TOKEN.equals(inputCurrency) && outputCurrency?.isNative) {
       return {
         wrapType: WrapType.UNWRAP,
         execute:
@@ -77,7 +84,7 @@ export default function useWrapCallback(
                 try {
                   const txReceipt = await callWithGasPrice(wbnbContract, 'withdraw', [inputAmount.quotient])
                   const amount = inputAmount.toSignificant(6)
-                  const wrap = WNATIVE[chainId].symbol
+                  const wrap = WRAP_TOKEN.symbol
                   const native = outputCurrency.symbol
                   addTransaction(txReceipt, {
                     summary: `Unwrap ${amount} ${wrap} to ${native}`,

@@ -1,4 +1,4 @@
-import { RowType } from '@pancakeswap/uikit'
+import { Flex, RowType, Text } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { formatBigInt, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import latinise from '@pancakeswap/utils/latinise'
@@ -12,6 +12,7 @@ import { getMerklLink } from 'utils/getMerklLink'
 import { V2Farm, V2StakeValueAndV3Farm } from 'views/Farms/FarmsV3'
 import { useFarmV2Multiplier } from 'views/Farms/hooks/useFarmV2Multiplier'
 import { useFarmV3Multiplier } from 'views/Farms/hooks/v3/useFarmV3Multiplier'
+import { FarmV3Reward } from '../FarmCard/V3/FarmV3Reward'
 import ProxyFarmContainer from '../YieldBooster/components/ProxyFarmContainer'
 import { getDisplayApr } from '../getDisplayApr'
 import Row, { RowProps } from './Row'
@@ -269,6 +270,12 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
   return (
     <Container id="farms-table">
       {header}
+      <Flex padding="10px 30px 5px 30px" alignItems="center" justifyContent="flex-end">
+        <Text paddingRight="5px" color="#9f9f9f">
+          Reward Available:
+        </Text>
+        <FarmV3Reward />
+      </Flex>
       <TableContainer id="table-container">
         <TableWrapper ref={tableWrapperEl}>
           <StyledTable>
