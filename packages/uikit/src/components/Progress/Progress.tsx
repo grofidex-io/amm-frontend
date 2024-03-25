@@ -1,8 +1,8 @@
 import React from "react";
-import StyledProgress, { Bar } from "./StyledProgress";
-import ProgressBunnyWrapper from "./ProgressBunnyWrapper";
 import { ProgressBunny } from "../Svg";
-import { ProgressProps, variants, scales } from "./types";
+import ProgressBunnyWrapper from "./ProgressBunnyWrapper";
+import StyledProgress, { Bar } from "./StyledProgress";
+import { ProgressProps, scales, variants } from "./types";
 
 const stepGuard = (step: number) => {
   if (step < 0) {

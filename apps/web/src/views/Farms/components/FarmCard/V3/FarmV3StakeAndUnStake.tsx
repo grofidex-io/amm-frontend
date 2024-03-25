@@ -1,18 +1,17 @@
-import { useMemo, useState } from 'react'
 import { PositionDetails } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/swap-sdk-core'
 import {
-  Box,
   AutoRow,
+  Balance,
+  Box,
+  Button,
+  ChevronRightIcon,
+  Link,
   QuestionHelper,
   RowBetween,
   SyncAltIcon,
-  Button,
-  Link,
-  ChevronRightIcon,
   Text,
-  Balance,
 } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { RangeTag } from 'components/RangeTag'
@@ -20,9 +19,10 @@ import { Bound } from 'config/constants/types'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
+import { useMemo, useState } from 'react'
 import { styled } from 'styled-components'
-import { V3Farm } from 'views/Farms/FarmsV3'
 import { unwrappedToken } from 'utils/wrappedCurrency'
+import { V3Farm } from 'views/Farms/FarmsV3'
 import { FarmV3ApyButton } from './FarmV3ApyButton'
 
 const StyledLink = styled(Link)`
@@ -249,11 +249,18 @@ const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<Far
           positionType={positionType}
         />
         {positionType === 'unstaked' ? (
-          <Button width={['120px']} style={{ alignSelf: 'center' }} disabled={isPending} onClick={handleStake}>
+          <Button
+            className="button-hover"
+            width={['120px']}
+            style={{ alignSelf: 'center' }}
+            disabled={isPending}
+            onClick={handleStake}
+          >
             {t('Stake')}
           </Button>
         ) : (
           <Button
+            className="button-hover"
             variant="secondary"
             width={['120px']}
             style={{ alignSelf: 'center' }}

@@ -20,7 +20,7 @@ const StyledButtonMenu = styled.div.withConfig({
   shouldForwardProp: (props) => !["fullWidth"].includes(props),
 })<StyledButtonMenuProps>`
   // background-color: ${getBackgroundColor};
-  border-radius: 16px;
+  border-radius: 8px;
   display: ${({ fullWidth }) => (fullWidth ? "flex" : "inline-flex")};
   // border: 1px solid ${getBorderColor};
   width: ${({ fullWidth }) => (fullWidth ? "100%" : "auto")};

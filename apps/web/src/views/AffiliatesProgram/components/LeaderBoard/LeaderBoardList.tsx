@@ -1,9 +1,9 @@
-import { useMemo } from 'react'
-import { Flex, Text, Card, Table, Td, Th } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import truncateHash from '@pancakeswap/utils/truncateHash'
-import { ListType } from 'views/AffiliatesProgram/hooks/useLeaderboard'
+import { Card, Flex, Table, Td, Text, Th } from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
+import truncateHash from '@pancakeswap/utils/truncateHash'
+import { useMemo } from 'react'
+import { ListType } from 'views/AffiliatesProgram/hooks/useLeaderboard'
 
 interface LeaderBoardListProps {
   isFetching: boolean
@@ -23,17 +23,17 @@ const LeaderBoardList: React.FC<React.PropsWithChildren<LeaderBoardListProps>> =
           <thead>
             <Th width="5%" />
             <Th>
-              <Text fontSize="12px" bold textTransform="uppercase" color="secondary" textAlign="left">
+              <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
                 {t('Affiliate')}
               </Text>
             </Th>
             <Th>
-              <Text fontSize="12px" bold textTransform="uppercase" color="secondary" textAlign="left">
+              <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
                 {t('New Users')}
               </Text>
             </Th>
             <Th>
-              <Text fontSize="12px" bold textTransform="uppercase" color="secondary" textAlign="left">
+              <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
                 {t('Total Volume')}
               </Text>
             </Th>

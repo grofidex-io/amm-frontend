@@ -233,7 +233,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                     CHAIN_QUERY_NAME[multiChainId[chainName]]
                   }`}
                 >
-                  <Button mr="8px" variant="secondary">
+                  <Button mr="8px" variant="secondary" className="button-hover">
                     {t('Add Liquidity')}
                   </Button>
                 </NextLinkFromReactRouter>
@@ -242,7 +242,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                     CHAIN_QUERY_NAME[multiChainId[chainName]]
                   }`}
                 >
-                  <Button>{t('Trade')}</Button>
+                  <Button className="button-hover">{t('Trade')}</Button>
                 </NextLinkFromReactRouter>
               </Flex>
             </Flex>
@@ -312,16 +312,16 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
             <Card>
               <TabToggleGroup>
                 <TabToggle isActive={view === ChartView.VOL} onClick={() => setView(ChartView.VOL)}>
-                  <Text>{t('Volume')}</Text>
+                  <Text color="inherit">{t('Volume')}</Text>
                 </TabToggle>
                 <TabToggle isActive={view === ChartView.DENSITY} onClick={() => setView(ChartView.DENSITY)}>
-                  <Text>{t('Liquidity')}</Text>
+                  <Text color="inherit">{t('Liquidity')}</Text>
                 </TabToggle>
                 <TabToggle isActive={view === ChartView.FEES} onClick={() => setView(ChartView.FEES)}>
-                  <Text>{t('Fees')}</Text>
+                  <Text color="inherit">{t('Fees')}</Text>
                 </TabToggle>
                 <TabToggle isActive={view === ChartView.TVL} onClick={() => setView(ChartView.TVL)}>
-                  <Text>{t('TVL')}</Text>
+                  <Text color="inherit">{t('TVL')}</Text>
                 </TabToggle>
               </TabToggleGroup>
               <Flex flexDirection="column" px="24px" pt="24px">

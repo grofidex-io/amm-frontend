@@ -47,7 +47,7 @@ const BasicChart = ({
       isChangePositive: isChangePositiveToCurrent,
     }
   }, [pairPrices, hoverValue, changePercentageToCurrent, changeValueToCurrent, isChangePositiveToCurrent])
-  const chartHeight = useMemo(() => (isChartExpanded ? 'calc(100vh - 220px)' : '320px'), [isChartExpanded])
+  const chartHeight = useMemo(() => (isChartExpanded ? 'calc(100vh - 220px)' : 'calc(100% - 77px)'), [isChartExpanded])
   const {
     t,
     currentLanguage: { locale },

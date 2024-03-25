@@ -38,7 +38,7 @@ export const DropdownMenuItem = styled("button").withConfig({
   }
 
   &:hover:not(:disabled) {
-    background-color: ${({ theme }) => theme.colors.tertiary};
+    background: ${({ theme }) => theme.colors.gradientHover};
   }
 
   &:active:not(:disabled) {
@@ -77,8 +77,8 @@ export const StyledDropdownMenu = styled.div<{ $isOpen: boolean; $isBottomNav: b
   width: ${({ $isBottomNav }) => ($isBottomNav ? "calc(100% - 32px)" : "280px")};
   visibility: visible;
   z-index: 1001;
-  backdrop-filter: blur(8px) saturate(190%) contrast(70%) brightness(80%);
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px) saturate(200%) contrast(80%) brightness(80%);
+  box-shadow: ${({ theme }) => theme.shadows.dropdown};
 
   ${({ $isOpen }) =>
     !$isOpen &&

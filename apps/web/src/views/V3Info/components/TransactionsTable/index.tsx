@@ -91,6 +91,14 @@ const SortText = styled.button<{ active: boolean }>`
   }
 `
 
+const StyledScanLink = styled(ScanLink)`
+  transition: 0.3s ease;
+  &:hover {
+    text-decoration: none;
+    opacity: 0.65;
+  }
+`
+
 const SORT_FIELD = {
   amountUSD: 'amountUSD',
   timestamp: 'timestamp',
@@ -144,18 +152,30 @@ const DataRow = ({
   return (
     <ResponsiveGrid widthFirstCol={filterFn ? 0.5 : 1.5}>
       <Flex justifyContent="center">
-        <ScanLink
+        <StyledScanLink
           useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
           href={getBlockExploreLink(transaction.hash, 'transaction', multiChainId[chainName])}
         >
-          <Text fontWeight={400}>
+          <Text
+            textTransform="uppercase"
+            fontWeight={400}
+            color={
+              transaction.type === TransactionType.MINT
+                ? '#00DEFF'
+                : transaction.type === TransactionType.SWAP
+                ? transaction.amountToken0 > 0
+                  ? '#FE5300'
+                  : '#00B58D'
+                : '#FFE500'
+            }
+          >
             {transaction.type === TransactionType.MINT
               ? typeMint
               : transaction.type === TransactionType.SWAP
               ? typeSwap
               : typeRemove}
           </Text>
-        </ScanLink>
+        </StyledScanLink>
       </Flex>
 
       <Text fontWeight={400}>{formatDollarAmount(transaction.amountUSD)}</Text>
