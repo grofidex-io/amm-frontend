@@ -1,6 +1,6 @@
 import { atoms } from '@pancakeswap/uikit/css/atoms'
 import { responsiveStyle } from '@pancakeswap/uikit/css/responsiveStyle'
-import { style, keyframes } from '@vanilla-extract/css'
+import { keyframes, style } from '@vanilla-extract/css'
 
 const promotedGradientKf = keyframes({
   '0%': {
@@ -37,7 +37,7 @@ export const modalWrapperClass = style([
       height: '490px',
     },
     lg: {
-      width: '792px',
+      width: '450px',
     },
   }),
 ])
@@ -48,10 +48,10 @@ export const desktopWalletSelectionClass = style(
       maxWidth: '100%',
     },
     sm: {
-      maxWidth: '360px',
+      maxWidth: '100%',
     },
     lg: {
-      maxWidth: '408px',
+      maxWidth: '100%',
     },
   }),
 )
@@ -69,7 +69,7 @@ export const walletSelectWrapperClass = style(
       gridTemplateColumns: '1fr 1fr',
     },
     lg: {
-      gridTemplateColumns: '1fr 1fr 1fr',
+      gridTemplateColumns: '1fr 1fr 1fr 1fr',
     },
   }),
 )

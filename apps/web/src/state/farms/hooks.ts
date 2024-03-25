@@ -22,6 +22,14 @@ import {
   makeUserFarmFromPidSelector,
 } from './selectors'
 
+const QUERY_SETTINGS_IMMUTABLE = {
+  retry: 3,
+  retryDelay: 3000,
+  keepPreviousData: true,
+  refetchOnMount: false,
+  refetchOnReconnect: false,
+  refetchOnWindowFocus: false,
+}
 export function useFarmsLength() {
   const { chainId } = useActiveChainId()
   return useQuery({
@@ -52,9 +60,8 @@ export function useRewardBalance() {
     },
 
     enabled: Boolean(account),
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
+    ...QUERY_SETTINGS_IMMUTABLE,
+    refetchInterval: 3000,
   })
 }
 
