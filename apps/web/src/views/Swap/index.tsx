@@ -1,16 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import {
-  BottomDrawer,
-  Box,
-  Flex,
-  Modal,
-  ModalV2,
-  Tab,
-  TabMenu,
-  useMatchBreakpoints,
-  useModal,
-} from '@pancakeswap/uikit'
+import { Box, Flex, Tab, TabMenu, useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { AppBody } from 'components/App'
 import { useCallback, useContext, useMemo, useState } from 'react'
@@ -163,9 +153,20 @@ export default function Swap() {
 
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
-      <Flex justifyContent="center" position="relative" alignItems="flex-start" width="100%">
-        <Flex flexDirection="column" flexGrow={2}>
-          {isDesktop && isChartSupported && (
+      <Flex
+        flexDirection={['column', 'column', 'column', 'column', 'row']}
+        justifyContent="center"
+        position="relative"
+        alignItems="flex-start"
+        width="100%"
+      >
+        <Flex
+          flexDirection="column"
+          order={['2', '2', '2', '2', '1']}
+          width={['100%', '100%', '100%', '100%', 'auto']}
+          flexGrow={2}
+        >
+          {isChartSupported && (
             <PriceChartContainer
               onCurrencySelectClick={onCurrencySelectClick}
               inputCurrencyId={inputCurrencyId}
@@ -179,7 +180,7 @@ export default function Swap() {
               poolDatas={poolDatas}
             />
           )}
-          {!isDesktop && isChartSupported && (
+          {/* {!isDesktop && isChartSupported && (
             <BottomDrawer
               content={
                 <PriceChartContainer
@@ -199,11 +200,9 @@ export default function Swap() {
               isOpen={isChartDisplayed}
               setIsOpen={(isOpen) => setIsChartDisplayed?.(isOpen)}
             />
-          )}
-          {isDesktop && isSwapHotTokenDisplay && isHotTokenSupported && (
-            <HotTokenList handleOutputSelect={handleOutputSelect} />
-          )}
-          <ModalV2
+          )} */}
+          {isSwapHotTokenDisplay && isHotTokenSupported && <HotTokenList handleOutputSelect={handleOutputSelect} />}
+          {/* <ModalV2
             isOpen={!isDesktop && isSwapHotTokenDisplay && isHotTokenSupported}
             onDismiss={() => setIsSwapHotTokenDisplay(false)}
           >
@@ -220,8 +219,8 @@ export default function Swap() {
                 }}
               />
             </Modal>
-          </ModalV2>
-          <Box mt="48px">
+          </ModalV2> */}
+          <Box mt={['30px', '30px', '36px', '40px', '48px']}>
             <TabMenu activeIndex={tab} onItemClick={setTab} customWidth isShowBorderBottom={false}>
               <Tab>{t('Transactions')}</Tab>
               <Tab>{t('Holders')}</Tab>
@@ -240,8 +239,14 @@ export default function Swap() {
           )}
           {tab === 1 && <TopHolders />}
         </Flex>
-        <Flex flexDirection="column" flexGrow={1}>
-          <StyledSwapContainer $isChartExpanded={isChartExpanded}>
+        <Flex
+          flexDirection="column"
+          order={['1', '1', '1', '1', '2']}
+          width={['100%', '100%', '100%', '100%', 'auto']}
+          flexGrow={1}
+          mb={['30px', '30px', '36px', '40px', '0']}
+        >
+          <StyledSwapContainer $isChartExpanded={isChartExpanded} margin={['auto', 'auto', 'auto', 'auto', 'unset']}>
             <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
               <AppBody>
                 <V3SwapForm />

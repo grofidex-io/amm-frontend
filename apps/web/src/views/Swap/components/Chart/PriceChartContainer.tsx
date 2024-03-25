@@ -61,10 +61,15 @@ const PriceChartContainer: React.FC<React.PropsWithChildren<PriceChartContainerP
   const isWrap =
     inputCurrency &&
     outputCurrency &&
-    ((WNATIVE[inputCurrency.chainId].equals(inputCurrency.wrapped) &&
-      WNATIVE[outputCurrency.chainId].equals(outputCurrency.wrapped)) ||
-      U2U_REWARD.equals(inputCurrency.wrapped) ||
-      U2U_REWARD.equals(outputCurrency.wrapped))
+    WNATIVE[inputCurrency.chainId].equals(inputCurrency.wrapped) &&
+    WNATIVE[outputCurrency.chainId].equals(outputCurrency.wrapped)
+
+  const isRewardWrap =
+    inputCurrency &&
+    outputCurrency &&
+    (WNATIVE[inputCurrency.chainId].equals(inputCurrency.wrapped) ||
+      WNATIVE[outputCurrency.chainId].equals(outputCurrency.wrapped)) &&
+    (U2U_REWARD.equals(inputCurrency.wrapped) || U2U_REWARD.equals(outputCurrency.wrapped))
 
   return (
     <BorderLayout>
@@ -92,7 +97,7 @@ const PriceChartContainer: React.FC<React.PropsWithChildren<PriceChartContainerP
           </IconButton>
         </FlexPointer>
       </Flex>
-      {isWrap ? (
+      {isWrap || isRewardWrap ? (
         <BnbWbnbNotice isDark={isDark} isChartExpanded />
       ) : (
         <PriceChart

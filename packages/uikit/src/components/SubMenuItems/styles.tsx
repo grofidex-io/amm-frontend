@@ -1,5 +1,5 @@
-import { styled, css } from "styled-components";
-import { Flex, Box } from "../Box";
+import { css, styled } from "styled-components";
+import { Box, Flex } from "../Box";
 
 export const SubMenuItemWrapper = styled(Flex)<{ $isMobileOnly: boolean }>`
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -21,7 +21,7 @@ const StyledSubMenuItems = styled(Flex)`
     display: flex;
   }
   flex-grow: 1;
-  background-color: ${({ theme }) => `${theme.colors.backgroundAlt2}`};
+  background: ${({ theme }) => `${theme.colors.gradientCardHeader}`};
   box-shadow: inset 0px -2px 0px -8px rgba(133, 133, 133, 0.1);
   overflow-x: scroll;
   scrollbar-width: none;

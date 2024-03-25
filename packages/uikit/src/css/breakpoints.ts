@@ -1,10 +1,10 @@
 export const breakpoints = {
-  xs: 370,
+  xs: 375,
   sm: 576,
-  md: 852,
-  lg: 968,
-  xl: 1080,
-  xxl: 1200,
+  md: 768,
+  lg: 992,
+  xl: 1200,
+  xxl: 1440,
 } as const;
 
 export const mediaQueries = {
