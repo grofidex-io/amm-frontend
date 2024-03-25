@@ -1,23 +1,27 @@
 import { U2U_REWARD } from '@pancakeswap/sdk'
-import { Balance, Link, OpenNewIcon, Skeleton } from '@pancakeswap/uikit'
+import { Balance, Button, Flex } from '@pancakeswap/uikit'
+import { useRouter } from 'next/router'
 import { useRewardBalance } from 'state/farms/hooks'
-import styled, { useTheme } from 'styled-components'
+import styled from 'styled-components'
 
 const BalanceWrap = styled(Balance)`
   color: ${({ theme }) => theme.colors.primary};
 `
 
 export function FarmV3Reward() {
-  const theme = useTheme()
-  const { data: balance, isFetching } = useRewardBalance()
-
-  if (isFetching) {
-    return <Skeleton width={60} />
+  const router = useRouter()
+  const { data: balance } = useRewardBalance()
+  const handleCollect = () => {
+    router.push(`/swap?outputCurrency=U2U&inputCurrency=${U2U_REWARD.address.toLowerCase()}`)
   }
+
   return (
-    <Link ml="4px" href={`/swap?inputCurrency=U2U&outputCurrency=${U2U_REWARD.address.toLowerCase()}`}>
+    <Flex alignItems="center">
       <BalanceWrap value={Number(balance)} decimals={2} fontWeight={600} fontSize={20} marginRight={1} />
-      <OpenNewIcon color={theme.colors.primary} />
-    </Link>
+      <Button size="sm" onClick={handleCollect}>
+        {' '}
+        Collect U2U
+      </Button>
+    </Flex>
   )
 }
