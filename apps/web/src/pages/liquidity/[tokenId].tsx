@@ -85,10 +85,16 @@ import Page from 'views/Page'
 import { useSendTransaction, useWalletClient } from 'wagmi'
 
 export const BodyWrapper = styled(Card)`
-  border-radius: 24px;
+  border-radius: 8px;
   max-width: 858px;
   width: 100%;
   z-index: 1;
+`
+
+const StyledLightGreyCard = styled(LightGreyCard)`
+  border: 2px solid ${({ theme }) => theme.colors.cardBorder};
+  border-radius: 8px;
+  box-shadow: ${({ theme }) => theme.shadows.card};
 `
 
 const useInverter = ({
@@ -440,7 +446,7 @@ export default function PoolPage() {
 
   const modalHeader = () => (
     <>
-      <LightGreyCard mb="16px">
+      <StyledLightGreyCard mb="16px">
         <AutoRow justifyContent="space-between" mb="8px">
           <Flex>
             <CurrencyLogo currency={feeValueUpper?.currency} size="24px" />
@@ -459,7 +465,7 @@ export default function PoolPage() {
           </Flex>
           <Text>{feeValueLower ? formatCurrencyAmount(feeValueLower, 4, locale) : '-'}</Text>
         </AutoRow>
-      </LightGreyCard>
+      </StyledLightGreyCard>
       <Text mb="16px" px="16px">
         {t('Collecting fees will withdraw currently available fees for you')}
       </Text>
@@ -477,7 +483,7 @@ export default function PoolPage() {
         <ConfirmationModalContent
           topContent={modalHeader}
           bottomContent={() => (
-            <Button width="100%" onClick={collect}>
+            <Button className="button-hover" width="100%" onClick={collect}>
               {t('Collect')}
             </Button>
           )}
@@ -583,13 +589,13 @@ export default function PoolPage() {
                     <NextLinkFromReactRouter
                       to={`/increase/${currencyId(currency0)}/${currencyId(currency1)}/${feeAmount}/${tokenId}`}
                     >
-                      <Button disabled={!isOwnNFT} width="100%">
+                      <Button className="button-hover" disabled={!isOwnNFT} width="100%">
                         {t('Add')}
                       </Button>
                     </NextLinkFromReactRouter>
                     {!removed && (
                       <NextLinkFromReactRouter to={`/remove/${tokenId}`}>
-                        <Button disabled={!isOwnNFT} ml="4px" variant="secondary" width="100%">
+                        <Button className="button-hover" disabled={!isOwnNFT} ml="4px" variant="secondary" width="100%">
                           {t('Remove')}
                         </Button>
                       </NextLinkFromReactRouter>
@@ -604,13 +610,13 @@ export default function PoolPage() {
                   <NextLinkFromReactRouter
                     to={`/increase/${currencyId(currency0)}/${currencyId(currency1)}/${feeAmount}/${tokenId}`}
                   >
-                    <Button disabled={!isOwnNFT} width="100%" mb="8px">
+                    <Button className="button-hover" disabled={!isOwnNFT} width="100%" mb="8px">
                       {t('Add')}
                     </Button>
                   </NextLinkFromReactRouter>
                   {!removed && (
                     <NextLinkFromReactRouter to={`/remove/${tokenId}`}>
-                      <Button disabled={!isOwnNFT} variant="secondary" width="100%" mb="8px">
+                      <Button className="button-hover" disabled={!isOwnNFT} variant="secondary" width="100%" mb="8px">
                         {t('Remove')}
                       </Button>
                     </NextLinkFromReactRouter>
@@ -651,7 +657,7 @@ export default function PoolPage() {
                         ? fiatValueOfLiquidity.toFixed(2, { groupSeparator: ',' })
                         : '-'}
                     </Text>
-                    <LightGreyCard
+                    <StyledLightGreyCard
                       mr="4px"
                       style={{
                         padding: '16px 8px',
@@ -701,7 +707,7 @@ export default function PoolPage() {
                           </Text>
                         </RowBetween>
                       </AutoRow>
-                    </LightGreyCard>
+                    </StyledLightGreyCard>
                   </Box>
                   <Box width="100%">
                     <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
@@ -716,6 +722,7 @@ export default function PoolPage() {
                       </Text>
 
                       <Button
+                        className="button-hover"
                         scale="sm"
                         disabled={
                           !isOwnNFT ||
@@ -732,7 +739,7 @@ export default function PoolPage() {
                           : t('Collect')}
                       </Button>
                     </AutoRow>
-                    <LightGreyCard
+                    <StyledLightGreyCard
                       mr="4px"
                       style={{
                         padding: '16px 8px',
@@ -774,7 +781,7 @@ export default function PoolPage() {
                           </Text>
                         </RowBetween>
                       </AutoRow>
-                    </LightGreyCard>
+                    </StyledLightGreyCard>
                   </Box>
                 </Flex>
               </AutoRow>
@@ -949,9 +956,9 @@ function PositionHistory_({
       {isExpanded && (
         <AtomBox display="grid" gap="16px">
           <AtomBox display="grid" style={{ gridTemplateColumns: '1fr 1fr 1fr' }} alignItems="center">
-            <PreTitle>{t('Timestamp')}</PreTitle>
-            <PreTitle>{t('Action')}</PreTitle>
-            <PreTitle>{t('Token Transferred')}</PreTitle>
+            <PreTitle color="textSubtle">{t('Timestamp')}</PreTitle>
+            <PreTitle color="textSubtle">{t('Action')}</PreTitle>
+            <PreTitle color="textSubtle">{t('Token Transferred')}</PreTitle>
           </AtomBox>
 
           {data.map((d) => {

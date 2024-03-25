@@ -1,7 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { Text, Heading } from '@pancakeswap/uikit'
-import { LightGreyCard, LightCardProps } from 'components/Card'
+import { Heading, Text } from '@pancakeswap/uikit'
+import { LightCardProps, LightGreyCard } from 'components/Card'
+import styled from 'styled-components'
 
 interface RangePriceSectionProps extends LightCardProps {
   title: string
@@ -10,10 +11,16 @@ interface RangePriceSectionProps extends LightCardProps {
   price: string
 }
 
+const StyledLightGreyCard = styled(LightGreyCard)`
+  border: 2px solid ${({ theme }) => theme.colors.cardBorder};
+  border-radius: 8px;
+  box-shadow: ${({ theme }) => theme.shadows.card};
+`
+
 export const RangePriceSection = ({ title, currency0, currency1, price, ...props }: RangePriceSectionProps) => {
   const { t } = useTranslation()
   return (
-    <LightGreyCard
+    <StyledLightGreyCard
       {...props}
       style={{
         paddingTop: '8px',
@@ -31,6 +38,6 @@ export const RangePriceSection = ({ title, currency0, currency1, price, ...props
           assetB: currency1?.symbol ?? '',
         })}
       </Text>
-    </LightGreyCard>
+    </StyledLightGreyCard>
   )
 }

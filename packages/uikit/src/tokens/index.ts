@@ -14,6 +14,7 @@ export const shadows = {
   card: "4px 4px 0 0 rgba(0, 0, 0, 1)",
   input: "2px 2px 0 0 rgba(0, 0, 0, 1)",
   button: "0 4px 0 0 rgba(0, 0, 0, 1)",
+  dropdown: "0 3px 12px rgba(0, 0, 0, 0.6)",
 };
 
 export const tokens = {

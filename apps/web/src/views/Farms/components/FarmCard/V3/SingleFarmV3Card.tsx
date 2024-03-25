@@ -72,6 +72,12 @@ const Arrow = styled.div`
   }
 `
 
+const StyledLightCard = styled(LightCard)`
+  border: 2px solid ${({ theme }) => theme.colors.cardBorder};
+  border-radius: 8px;
+  box-shadow: ${({ theme }) => theme.shadows.card};
+`
+
 ActionContainer.defaultProps = {
   bg: 'dropdown',
 }
@@ -258,7 +264,7 @@ const SingleFarmV3Card: React.FunctionComponent<
                     />
                   </AtomBox>
                 </AtomBox>
-                <LightCard>
+                <StyledLightCard>
                   <AutoColumn gap="8px">
                     {outOfRange && (
                       <RangeTag outOfRange ml={0} style={{ alignItems: 'center', width: 'fit-content' }}>
@@ -283,22 +289,24 @@ const SingleFarmV3Card: React.FunctionComponent<
                           as="a"
                           href={liquidityUrl}
                           style={{ whiteSpace: 'nowrap' }}
+                          className="button-hover"
                         >
                           {t('View Position')}
                         </Button>
                       ) : (
-                        <Button variant="tertiary" width="100%" as="a">
+                        <Button className="button-hover" variant="tertiary" width="100%" as="a">
                           {t('Manage Position')}
                         </Button>
                       )}
                     </NextLink>
                   </AutoColumn>
-                </LightCard>
+                </StyledLightCard>
                 <Button
                   variant={outOfRangeUnstaked ? 'subtle' : 'primary'}
                   onClick={outOfRangeUnstaked ? handleStake : handleUnStake}
                   disabled={attemptingTxn || harvesting}
                   width="100%"
+                  className="button-hover"
                 >
                   {outOfRangeUnstaked ? t('Continue Staking') : t('Unstake')}
                 </Button>
