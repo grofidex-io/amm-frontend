@@ -3,7 +3,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
-import { ReactNode, useCallback, useMemo, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
 
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { CommonBasesType } from 'components/SearchModal/types'
@@ -131,9 +131,15 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
     dispatch(updateTypeSwap({ typeSwap: index }))
   }
 
-  if (isWrapping) {
-    dispatch(updateTypeSwap({ typeSwap: TYPE_SWAP.SELL }))
-  }
+  useEffect(() => {
+    if (inputCurrency && outputCurrency) {
+      if (isWrapping) {
+        dispatch(updateTypeSwap({ typeSwap: TYPE_SWAP.SELL }))
+      } else {
+        dispatch(updateTypeSwap({ typeSwap: tab }))
+      }
+    }
+  }, [inputCurrency, outputCurrency, isWrapping])
 
   return (
     <FormContainer>
