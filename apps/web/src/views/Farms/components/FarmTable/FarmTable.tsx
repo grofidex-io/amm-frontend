@@ -270,7 +270,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
   return (
     <Container id="farms-table">
       {header}
-      <Flex padding="10px 30px 5px 30px" alignItems="center" justifyContent="flex-end">
+      <Flex padding="10px 30px" alignItems="center" justifyContent="flex-end">
         <Text paddingRight="5px" color="#9f9f9f">
           Reward Available:
         </Text>

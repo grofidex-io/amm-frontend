@@ -45,11 +45,12 @@ const { FarmV3HarvestAction } = FarmWidget.FarmV3Table
 
 export const ActionContainer = styled(Flex)`
   width: 100%;
-  border: 2px solid ${({ theme }) => theme.colors.input};
-  border-radius: 16px;
+  border: 2px solid ${({ theme }) => theme.colors.cardBorder};
+  border-radius: 8px;
+  box-shadow: ${({ theme }) => theme.shadows.card};
   flex-grow: 1;
   flex-basis: 0;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   flex-wrap: wrap;
   padding: 16px;
   gap: 24px;
