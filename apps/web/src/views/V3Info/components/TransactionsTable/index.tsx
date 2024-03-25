@@ -278,41 +278,43 @@ export default function TransactionTable({
 
   return (
     <>
-      <Flex justifyContent="space-between" alignItems="center" my="16px">
-        <RowFixed>
-          <SortText
-            onClick={() => {
-              setTxFilter(undefined)
-            }}
-            active={txFilter === undefined}
-          >
-            {t('All')}
-          </SortText>
-          <SortText
-            onClick={() => {
-              setTxFilter(TransactionType.SWAP)
-            }}
-            active={txFilter === TransactionType.SWAP}
-          >
-            {t('Swaps')}
-          </SortText>
-          <SortText
-            onClick={() => {
-              setTxFilter(TransactionType.MINT)
-            }}
-            active={txFilter === TransactionType.MINT}
-          >
-            {t('Adds')}
-          </SortText>
-          <SortText
-            onClick={() => {
-              setTxFilter(TransactionType.BURN)
-            }}
-            active={txFilter === TransactionType.BURN}
-          >
-            {t('Removes')}
-          </SortText>
-        </RowFixed>
+      <Flex justifyContent={type === 'SWAP_TRANSACTION' ? 'flex-end' : 'space-between'} alignItems="center" my="16px">
+        {type !== 'SWAP_TRANSACTION' && (
+          <RowFixed>
+            <SortText
+              onClick={() => {
+                setTxFilter(undefined)
+              }}
+              active={txFilter === undefined}
+            >
+              {t('All')}
+            </SortText>
+            <SortText
+              onClick={() => {
+                setTxFilter(TransactionType.SWAP)
+              }}
+              active={txFilter === TransactionType.SWAP}
+            >
+              {t('Swaps')}
+            </SortText>
+            <SortText
+              onClick={() => {
+                setTxFilter(TransactionType.MINT)
+              }}
+              active={txFilter === TransactionType.MINT}
+            >
+              {t('Adds')}
+            </SortText>
+            <SortText
+              onClick={() => {
+                setTxFilter(TransactionType.BURN)
+              }}
+              active={txFilter === TransactionType.BURN}
+            >
+              {t('Removes')}
+            </SortText>
+          </RowFixed>
+        )}
         {filterFn && (
           <Flex alignItems="center">
             <Toggle scale="sm" checked={toggleFilter} onChange={filterFn} />

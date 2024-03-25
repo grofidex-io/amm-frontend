@@ -131,11 +131,11 @@ const config = {
   },
   async redirects() {
     return [
-      {
-        source: '/',
-        destination: '/swap',
-        permanent: true,
-      },
+      // {
+      //   source: '/',
+      //   destination: '/info',
+      //   permanent: true,
+      // },
       {
         source: '/send',
         destination: '/swap',

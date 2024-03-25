@@ -1,17 +1,17 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
-import { styled } from 'styled-components'
 import { Token } from '@pancakeswap/sdk'
-import { Flex, Box, SwapVertIcon, IconButton } from '@pancakeswap/uikit'
+import { Box, Flex, IconButton, SwapVertIcon } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { styled } from 'styled-components'
 
-import { useTranslation } from '@pancakeswap/localization'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
-import useGetTopFarmsByApr from 'views/Home/hooks/useGetTopFarmsByApr'
-import useGetTopPoolsByApr from 'views/Home/hooks/useGetTopPoolsByApr'
+import { useTranslation } from '@pancakeswap/localization'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { useVaultApy } from 'hooks/useVaultApy'
-import TopFarmPool from './TopFarmPool'
+import useGetTopFarmsByApr from 'views/Home/hooks/useGetTopFarmsByApr'
+import useGetTopPoolsByApr from 'views/Home/hooks/useGetTopPoolsByApr'
 import RowHeading from './RowHeading'
+import TopFarmPool from './TopFarmPool'
 
 const Grid = styled.div`
   display: grid;

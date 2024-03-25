@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 import { useDebounce, useSortedTokensByQuery } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, Token } from '@pancakeswap/sdk'
+import { ChainId, Currency, Token, U2U_REWARD, WNATIVE } from '@pancakeswap/sdk'
 import { WrappedTokenInfo, createFilterToken } from '@pancakeswap/token-lists'
 import {
   ArrowBackIcon,
@@ -155,13 +155,34 @@ function CurrencySearch({
     return mode === 'onramp-input'
       ? queryTokens.filter((curr) => whiteListedFiatCurrenciesMap[chainId].includes(curr.symbol))
       : queryTokens
-  }, [mode, queryTokens, chainId])
+  }, [chainId, queryTokens, mode])
 
   const tokenComparator = useTokenComparator(invertSearchOrder)
 
   const filteredSortedTokens: Token[] = useMemo(() => {
     return onRampFlow ? [...filteredQueryTokens] : [...filteredQueryTokens].sort(tokenComparator)
   }, [filteredQueryTokens, tokenComparator, onRampFlow])
+
+  const filteredSortedTokensList2: Token[] = useMemo(() => {
+    const _filteredQueryTokens = [...filteredQueryTokens]
+    if (
+      isSelectMulti &&
+      step === 1 &&
+      currency0?.wrapped?.address.toLowerCase() === U2U_REWARD?.address.toLowerCase()
+    ) {
+      return [WNATIVE[ChainId.U2U_NEBULAS]]
+    }
+    if (
+      isSelectMulti &&
+      currency0?.symbol &&
+      WNATIVE[ChainId.U2U_NEBULAS].address?.toLowerCase() !== currency0?.wrapped.address.toLowerCase()
+    ) {
+      return _filteredQueryTokens.filter(
+        (item) => item?.wrapped.address.toLowerCase() !== U2U_REWARD?.wrapped.address?.toLowerCase(),
+      )
+    }
+    return _filteredQueryTokens
+  }, [currency0?.symbol, filteredQueryTokens, isSelectMulti, step])
 
   const handleCurrencySelect = useCallback(
     (currency: Currency) => {
@@ -286,7 +307,7 @@ function CurrencySearch({
             <CurrencyList
               height={isMobile ? (showCommonBases ? height || 250 : height ? height + 80 : 350) : 390}
               showNative={showNative}
-              currencies={filteredSortedTokens}
+              currencies={isSelectMulti ? filteredSortedTokensList2 : filteredSortedTokens}
               inactiveCurrencies={mode === 'onramp-input' ? [] : filteredInactiveTokens}
               breakIndex={
                 Boolean(filteredInactiveTokens?.length) && filteredSortedTokens
