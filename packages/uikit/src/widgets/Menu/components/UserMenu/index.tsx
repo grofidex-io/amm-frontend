@@ -47,8 +47,8 @@ const Menu = styled.div<{ $isOpen: boolean }>`
   width: 280px;
   visibility: visible;
   z-index: 1001;
-  backdrop-filter: blur(8px) saturate(190%) contrast(70%) brightness(80%);
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px) saturate(200%) contrast(80%) brightness(80%);
+  box-shadow: ${({ theme }) => theme.shadows.dropdown};
   ${({ $isOpen }) =>
     !$isOpen &&
     `

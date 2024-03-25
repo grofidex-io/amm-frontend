@@ -188,8 +188,8 @@ export default function TokenTable({
       {sortedTokens.length > 0 ? (
         <AutoColumn gap="16px">
           <ResponsiveGrid>
-            <Text color="secondary">#</Text>
-            <ClickableColumnHeader color="secondary">
+            <Text color="textSubtle">#</Text>
+            <ClickableColumnHeader color="textSubtle">
               {t('Name')}
               <SortButton
                 scale="sm"
@@ -200,7 +200,7 @@ export default function TokenTable({
                 <SortArrowIcon />
               </SortButton>
             </ClickableColumnHeader>
-            <ClickableColumnHeader color="secondary">
+            <ClickableColumnHeader color="textSubtle">
               {t('Price')}
               <SortButton
                 scale="sm"
@@ -211,7 +211,7 @@ export default function TokenTable({
                 <SortArrowIcon />
               </SortButton>
             </ClickableColumnHeader>
-            <ClickableColumnHeader color="secondary">
+            <ClickableColumnHeader color="textSubtle">
               {t('Price Change')}
               <SortButton
                 scale="sm"
@@ -225,7 +225,7 @@ export default function TokenTable({
             {/* <ClickableText onClick={() => handleSort(SORT_FIELD.priceUSDChangeWeek)}>
             7d {arrow(SORT_FIELD.priceUSDChangeWeek)}
           </ClickableText> */}
-            <ClickableColumnHeader color="secondary">
+            <ClickableColumnHeader color="textSubtle">
               {t('Volume 24H')}
               <SortButton
                 scale="sm"
@@ -236,7 +236,7 @@ export default function TokenTable({
                 <SortArrowIcon />
               </SortButton>
             </ClickableColumnHeader>
-            <ClickableColumnHeader color="secondary">
+            <ClickableColumnHeader color="textSubtle">
               {t('TVL')}
               <SortButton
                 scale="sm"

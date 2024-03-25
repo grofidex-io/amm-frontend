@@ -1,11 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
-import partition_ from 'lodash/partition'
 import { AutoRenewIcon, AutoRow, Box, Button, Flex, PreTitle, Text } from '@pancakeswap/uikit'
 import { isPositionOutOfRange } from '@pancakeswap/utils/isPositionOutOfRange'
 import { usePool } from 'hooks/v3/usePools'
-import SingleFarmV3Card from 'views/Farms/components/FarmCard/V3/SingleFarmV3Card'
-import { V3Farm } from 'views/Farms/FarmsV3'
+import partition_ from 'lodash/partition'
 import { useCallback } from 'react'
+import { V3Farm } from 'views/Farms/FarmsV3'
+import SingleFarmV3Card from 'views/Farms/components/FarmCard/V3/SingleFarmV3Card'
 import { useFarmsV3BatchHarvest } from 'views/Farms/hooks/v3/useFarmV3Actions'
 
 interface FarmV3CardListProps {
@@ -33,7 +33,7 @@ const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3Card
   }, [onHarvestAll, stakedPositions])
 
   return (
-    <Box width="100%">
+    <Box width="100%" py="20px">
       {multiplier !== '0X' && unstakedPositions.length > 0 && (
         <Flex flexDirection="column" width="100%" mb="24px" id={`${farm.pid}-farm-v3-available`}>
           <PreTitle fontSize="12px" color="textSubtle" m="0 0 8px 0">
@@ -100,6 +100,7 @@ const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3Card
                 endIcon={v3BatchHarvesting ? <AutoRenewIcon spin color="currentColor" /> : null}
                 disabled={v3BatchHarvesting}
                 onClick={harvestAllFarms}
+                className="button-hover"
               >
                 <Text color="invertedContrast" bold>
                   {v3BatchHarvesting ? t('Harvesting') : t('Harvest all')}

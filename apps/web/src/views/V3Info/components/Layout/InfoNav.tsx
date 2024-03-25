@@ -24,7 +24,7 @@ import { v3InfoPath } from '../../constants'
 import Search from '../Search'
 
 const NavWrapper = styled(Flex)`
-  background: ${({ theme }) => theme.colors.gradientCardHeader};
+  background: ${({ theme }) => theme.colors.backgroundPage};
   justify-content: space-between;
   padding: 20px 16px;
   flex-direction: column;

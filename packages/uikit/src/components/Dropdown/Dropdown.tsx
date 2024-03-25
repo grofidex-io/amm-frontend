@@ -39,8 +39,8 @@ const DropdownContent = styled.div.withConfig({
   transition: max-height 0s 0.3s, opacity 0.3s ease-in-out;
   will-change: opacity;
   pointer-events: none;
-  backdrop-filter: blur(8px) saturate(190%) contrast(70%) brightness(80%);
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px) saturate(200%) contrast(80%) brightness(80%);
+  box-shadow: ${({ theme }) => theme.shadows.dropdown};
 `;
 
 const Container = styled.div<{ $scrolling: boolean }>`

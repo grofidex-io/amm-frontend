@@ -5,8 +5,8 @@ import { styled } from 'styled-components'
 
 const RateToggleButton = styled(Button)`
   border-radius: 8px;
-  padding-left: 4px;
-  padding-right: 4px;
+  padding-left: 8px;
+  padding-right: 8px;
 `
 
 export default function RateToggle({
@@ -24,10 +24,10 @@ export default function RateToggle({
         {t('View prices in')}
       </Text>
       <RateToggleButton
-        variant="secondary"
+        className="button-hover"
         scale="sm"
         onClick={handleRateToggle}
-        startIcon={<SyncAltIcon color="primary" />}
+        startIcon={<SyncAltIcon color="inherit" />}
       >
         {currencyA?.symbol}
       </RateToggleButton>

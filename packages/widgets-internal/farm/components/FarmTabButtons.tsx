@@ -1,8 +1,8 @@
+import { useTranslation } from "@pancakeswap/localization";
+import { ButtonMenu, ButtonMenuItem, Flex, NotificationDot, Text } from "@pancakeswap/uikit";
+import { useRouter } from "next/router";
 import React from "react";
 import { styled } from "styled-components";
-import { useRouter } from "next/router";
-import { useTranslation } from "@pancakeswap/localization";
-import { NotificationDot, ButtonMenu, ButtonMenuItem, Text, Flex } from "@pancakeswap/uikit";
 import { NextLinkFromReactRouter } from "../../components/NextLink";
 
 const Wrapper = styled.div`
@@ -13,6 +13,10 @@ const Wrapper = styled.div`
   ${({ theme }) => theme.mediaQueries.sm} {
     margin-left: 16px;
   }
+`;
+
+const StyledButtonMenu = styled(ButtonMenu)`
+  background: ${({ theme }) => theme.colors.backgroundItem};
 `;
 
 interface FarmTabButtonsProps {
@@ -48,7 +52,7 @@ export const FarmTabButtons: React.FC<React.PropsWithChildren<FarmTabButtonsProp
         <Text textTransform="uppercase" color="textSubtle" fontSize="12px" bold>
           {t("Filter by")}
         </Text>
-        <ButtonMenu activeIndex={activeIndex} scale="sm" variant="subtle">
+        <StyledButtonMenu activeIndex={activeIndex} scale="sm" variant="subtle">
           <ButtonMenuItem as={NextLinkFromReactRouter} to="/farms">
             {t("Live")}
           </ButtonMenuItem>
@@ -57,7 +61,7 @@ export const FarmTabButtons: React.FC<React.PropsWithChildren<FarmTabButtonsProp
               {t("Finished")}
             </ButtonMenuItem>
           </NotificationDot>
-        </ButtonMenu>
+        </StyledButtonMenu>
       </Flex>
     </Wrapper>
   );

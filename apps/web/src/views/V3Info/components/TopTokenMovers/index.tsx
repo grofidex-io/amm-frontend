@@ -2,31 +2,34 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Card, Flex, Text } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useEffect, useMemo, useRef } from 'react'
 import { useChainNameByQuery, useMultiChainPath } from 'state/info/hooks'
 import { styled } from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import Percent from 'views/Info/components/Percent'
-import { v3InfoPath, TOKEN_HIDE } from '../../constants'
+import { TOKEN_HIDE, v3InfoPath } from '../../constants'
 import { useTopTokensData } from '../../hooks'
 import { TokenData } from '../../types'
 
 const CardWrapper = styled(NextLinkFromReactRouter)`
   display: inline-block;
   min-width: 190px;
-  margin-left: 16px;
+  margin: 0 8px;
   &:hover {
     cursor: pointer;
-    opacity: 0.6;
   }
 `
 
 const TopMoverCard = styled(Box)`
-  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  border: 2px solid ${({ theme }) => theme.colors.cardBorder};
   border-radius: ${({ theme }) => theme.radii.card};
   padding: 16px;
+  &:hover {
+    box-shadow: ${({ theme }) => theme.shadows.card};
+    background: ${({ theme }) => theme.colors.backgroundItem};
+  }
 `
 
 export const ScrollableRow = styled.div`

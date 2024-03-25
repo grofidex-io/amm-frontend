@@ -22,8 +22,8 @@ interface TAB {
 }
 const StyledProgress = styled(Progress)`
   width: 100%;
-  border-radius: 15px;
-  height: 10px;
+  border-radius: 16px;
+  height: 12px;
 `
 export function TopHolders() {
   const {
@@ -63,23 +63,23 @@ export function TopHolders() {
           <Tab>{item.symbol}</Tab>
         ))}
       </TabMenu>
-      <Flex maxWidth={1120} padding="10px 0" margin="auto auto 100px auto">
+      <Flex padding="10px 0">
         <Card style={{ width: '100%' }}>
           <Table>
             <thead>
               <Th>
-                <Text fontSize="12px" bold textTransform="uppercase" color="secondary" textAlign="left">
+                <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
                   {t('Address')}
                 </Text>
               </Th>
               <Th>
-                <Text fontSize="12px" bold textTransform="uppercase" color="secondary" textAlign="left">
+                <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
                   {t('Supply')}
                 </Text>
               </Th>
               <Th width="30%" />
               <Th>
-                <Text fontSize="12px" bold textTransform="uppercase" color="secondary" textAlign="left">
+                <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
                   {t('Amount')}
                 </Text>
               </Th>

@@ -238,14 +238,14 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                 </Flex>
                 <Flex>
                   <NextLinkFromReactRouter to={`/add/${address}?chain=${CHAIN_QUERY_NAME[chainId!]}`}>
-                    <Button mr="8px" variant="secondary">
+                    <Button mr="8px" variant="secondary" className="button-hover">
                       {t('Add Liquidity')}
                     </Button>
                   </NextLinkFromReactRouter>
                   <NextLinkFromReactRouter
                     to={`/swap?outputCurrency=${address}&chain=${CHAIN_QUERY_NAME[multiChainId[chainName]]}`}
                   >
-                    <Button>{t('Trade')}</Button>
+                    <Button className="button-hover">{t('Trade')}</Button>
                   </NextLinkFromReactRouter>
                 </Flex>
               </Flex>
@@ -294,13 +294,13 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
               <Card>
                 <TabToggleGroup>
                   <TabToggle isActive={view === ChartView.VOL} onClick={() => setView(ChartView.VOL)}>
-                    <Text>{t('Volume')}</Text>
+                    <Text color="inherit">{t('Volume')}</Text>
                   </TabToggle>
                   <TabToggle isActive={view === ChartView.TVL} onClick={() => setView(ChartView.TVL)}>
-                    <Text>{t('Liquidity')}</Text>
+                    <Text color="inherit">{t('Liquidity')}</Text>
                   </TabToggle>
                   <TabToggle isActive={view === ChartView.PRICE} onClick={() => setView(ChartView.PRICE)}>
-                    <Text>{t('Price')}</Text>
+                    <Text color="inherit">{t('Price')}</Text>
                   </TabToggle>
                 </TabToggleGroup>
                 <Flex flexDirection="column" px="24px" pt="24px">

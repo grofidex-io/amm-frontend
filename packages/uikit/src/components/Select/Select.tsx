@@ -11,9 +11,9 @@ const DropDownHeader = styled.div`
   display: flex;
   align-items: center;
   padding: 0px 16px;
-  box-shadow: ${({ theme }) => theme.shadows.inset};
-  border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
-  border-radius: 16px;
+  box-shadow: ${({ theme }) => theme.shadows.input};
+  border: 2px solid ${({ theme }) => theme.colors.cardBorder};
+  border-radius: 4px;
   background: ${({ theme }) => theme.colors.input};
   transition: border-radius 0.15s;
 `;
@@ -23,7 +23,8 @@ const DropDownListContainer = styled.div`
   height: 0;
   position: absolute;
   overflow: hidden;
-  background: ${({ theme }) => theme.colors.input};
+  background: ${({ theme }) => theme.colors.dropdownBlur};
+  backdrop-filter: blur(12px) saturate(200%) contrast(80%) brightness(80%);
   z-index: ${({ theme }) => theme.zIndices.dropdown};
   transition: transform 0.15s, opacity 0.15s;
   transform: scaleY(0);
@@ -36,30 +37,31 @@ const DropDownContainer = styled(Box)<{ isOpen: boolean }>`
   cursor: pointer;
   width: 100%;
   position: relative;
-  background: ${({ theme }) => theme.colors.input};
-  border-radius: 16px;
+
+  border-radius: 4px;
   height: 40px;
   min-width: 125px;
   user-select: none;
   z-index: 20;
+  ${({ isOpen, theme }) => (isOpen ? `background: ${theme.colors.input};` : "")}
 
   ${(props) =>
     props.isOpen &&
     css`
-      ${DropDownHeader} {
-        border-bottom: 1px solid ${({ theme }) => theme.colors.inputSecondary};
-        box-shadow: ${({ theme }) => theme.tooltip.boxShadow};
-        border-radius: 16px 16px 0 0;
-      }
+      // ${DropDownHeader} {
+      //   border-bottom: 1px solid ${({ theme }) => theme.colors.inputSecondary};
+      //   box-shadow: ${({ theme }) => theme.tooltip.boxShadow};
+      //   border-radius: 16px 16px 0 0;
+      // }
 
       ${DropDownListContainer} {
         height: auto;
         transform: scaleY(1);
         opacity: 1;
-        border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
+        border: 1px solid ${({ theme }) => theme.colors.dropdown};
         border-top-width: 0;
-        border-radius: 0 0 16px 16px;
-        box-shadow: ${({ theme }) => theme.tooltip.boxShadow};
+        border-radius: 0 0 4px 4px;
+        box-shadow: ${({ theme }) => theme.shadows.dropdown};
       }
     `}
 
@@ -83,7 +85,7 @@ const ListItem = styled.li`
   list-style: none;
   padding: 8px 16px;
   &:hover {
-    background: ${({ theme }) => theme.colors.inputSecondary};
+    background: ${({ theme }) => theme.colors.gradientHover};
   }
 `;
 

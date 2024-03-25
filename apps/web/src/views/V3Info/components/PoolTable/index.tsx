@@ -153,8 +153,8 @@ export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDat
       {sortedPools.length > 0 ? (
         <>
           <ResponsiveGrid>
-            <Text color="secondary">#</Text>
-            <ClickableColumnHeader color="secondary">
+            <Text color="textSubtle">#</Text>
+            <ClickableColumnHeader color="textSubtle">
               {t('Pair')}
               <SortButton
                 scale="sm"
@@ -165,7 +165,7 @@ export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDat
                 <SortArrowIcon />
               </SortButton>
             </ClickableColumnHeader>
-            <ClickableColumnHeader color="secondary">
+            <ClickableColumnHeader color="textSubtle">
               {t('TVL')}
               <SortButton
                 scale="sm"
@@ -176,7 +176,7 @@ export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDat
                 <SortArrowIcon />
               </SortButton>
             </ClickableColumnHeader>
-            <ClickableColumnHeader color="secondary">
+            <ClickableColumnHeader color="textSubtle">
               {t('Volume 24H')}
               <SortButton
                 scale="sm"
@@ -187,7 +187,7 @@ export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDat
                 <SortArrowIcon />
               </SortButton>
             </ClickableColumnHeader>
-            <ClickableColumnHeader color="secondary">
+            <ClickableColumnHeader color="textSubtle">
               {t('Volume 7D')}
               <SortButton
                 scale="sm"
