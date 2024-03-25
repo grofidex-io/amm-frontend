@@ -20,7 +20,6 @@ import { getTokenSymbolAlias } from 'utils/getTokenAlias'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import { Transaction, TransactionType } from '../../types'
 import { shortenAddress } from '../../utils'
-import { unixToDate } from '../../utils/date'
 import { formatDollarAmount } from '../../utils/numbers'
 import HoverInlineText from '../HoverInlineText'
 import Loader from '../Loader'
@@ -114,7 +113,9 @@ const DataRow = ({
   const abs1 = Math.abs(transaction.amountToken1)
   const chainName = useChainNameByQuery()
   const chainId = useChainIdByQuery()
-
+  const {
+    currentLanguage: { locale },
+  } = useTranslation()
   const token0Symbol = getTokenSymbolAlias(transaction.token0Address, chainId, transaction.token0Symbol)
   const token1Symbol = getTokenSymbolAlias(transaction.token1Address, chainId, transaction.token1Symbol)
   const outputTokenSymbol = transaction.amountToken0 < 0 ? token0Symbol : token1Symbol
@@ -126,6 +127,18 @@ const DataRow = ({
     typeSwap = transaction.amountToken0 > 0 ? 'Sell' : 'Buy'
     typeMint = 'Add'
     typeRemove = 'Remove'
+  }
+
+  const convertDate = (date: number) => {
+    const now = new Date(date * 1000)
+    return now.toLocaleString(locale, {
+      timeZone: 'UTC',
+      year: 'numeric',
+      month: 'short',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+    })
   }
 
   return (
@@ -160,7 +173,7 @@ const DataRow = ({
           {shortenAddress(transaction.sender)}
         </ScanLink>
       </Text>
-      <Text fontWeight={400}>{unixToDate(Number(transaction.timestamp), 'YYYY-DD-MM HH:mm:ss')}</Text>
+      <Text fontWeight={400}>{convertDate(Number(transaction.timestamp))}</Text>
     </ResponsiveGrid>
   )
 }
