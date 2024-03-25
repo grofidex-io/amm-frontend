@@ -11,7 +11,6 @@ import {
   InjectedModalProps,
   LinkExternal,
   Message,
-  ScanLink,
   Skeleton,
   Text,
   TooltipText,
@@ -22,7 +21,7 @@ import { FetchStatus } from 'config/constants/types'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useAuth from 'hooks/useAuth'
 import useNativeCurrency from 'hooks/useNativeCurrency'
-import useTokenBalance, { useBSCCakeBalance } from 'hooks/useTokenBalance'
+import useTokenBalance from 'hooks/useTokenBalance'
 
 import { formatBigInt, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import InternalLink from 'components/Links'
@@ -61,10 +60,10 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
   const nativeBalance = useBalance({ address: account ?? undefined, enabled: !isBSC })
   const native = useNativeCurrency()
   const wNativeToken = !isBSC ? WNATIVE[chainId as ChainId] : null
-  const wBNBToken = WNATIVE[ChainId.BSC]
+  // const wBNBToken = WNATIVE[ChainId.BSC]
   const { balance: wNativeBalance, fetchStatus: wNativeFetchStatus } = useTokenBalance(wNativeToken?.address as Address)
-  const { balance: wBNBBalance, fetchStatus: wBNBFetchStatus } = useTokenBalance(wBNBToken?.address, true)
-  const { balance: cakeBalance, fetchStatus: cakeFetchStatus } = useBSCCakeBalance()
+  // const { balance: wBNBBalance, fetchStatus: wBNBFetchStatus } = useTokenBalance(wBNBToken?.address, true)
+  // const { balance: cakeBalance, fetchStatus: cakeFetchStatus } = useBSCCakeBalance()
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
   const { logout } = useAuth()
 
@@ -189,7 +188,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
           </Box>
         )}
 
-        <Box>
+        {/* <Box>
           <Flex justifyContent="space-between" alignItems="center" mb="8px">
             <Flex bg={COLORS.BNB} borderRadius="16px" pl="4px" pr="8px" py="2px">
               <ChainLogo chainId={ChainId.BSC} />
@@ -247,7 +246,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
               <Text>{formatBigInt(cakeBalance, 3)}</Text>
             )}
           </Flex>
-        </Box>
+        </Box> */}
       </BorderLayout>
       <Button variant="secondary" mt="24px" className="button-hover" width="100%" minHeight={48} onClick={handleLogout}>
         {t('Disconnect Wallet')}

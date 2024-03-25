@@ -1,4 +1,4 @@
-import { Currency, WNATIVE } from '@pancakeswap/sdk'
+import { Currency, U2U_REWARD, WNATIVE } from '@pancakeswap/sdk'
 import { Flex, IconButton, SyncAltIcon, Text } from '@pancakeswap/uikit'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 import useTheme from 'hooks/useTheme'
@@ -61,8 +61,10 @@ const PriceChartContainer: React.FC<React.PropsWithChildren<PriceChartContainerP
   const isWrap =
     inputCurrency &&
     outputCurrency &&
-    WNATIVE[inputCurrency.chainId].equals(inputCurrency.wrapped) &&
-    WNATIVE[outputCurrency.chainId].equals(outputCurrency.wrapped)
+    ((WNATIVE[inputCurrency.chainId].equals(inputCurrency.wrapped) &&
+      WNATIVE[outputCurrency.chainId].equals(outputCurrency.wrapped)) ||
+      U2U_REWARD.equals(inputCurrency.wrapped) ||
+      U2U_REWARD.equals(outputCurrency.wrapped))
 
   return (
     <BorderLayout>
