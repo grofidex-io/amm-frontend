@@ -47,7 +47,8 @@ export default function useWrapCallback(
       WNATIVE[chainId]?.equals(outputCurrency) || WNATIVE[chainId]?.equals(inputCurrency)
         ? WNATIVE[chainId]
         : U2U_REWARD
-    if (inputCurrency?.isNative && WRAP_TOKEN) {
+
+    if (inputCurrency?.isNative && (WNATIVE[chainId]?.equals(outputCurrency) || U2U_REWARD?.equals(outputCurrency))) {
       return {
         wrapType: WrapType.WRAP,
         execute:
@@ -75,7 +76,7 @@ export default function useWrapCallback(
           : t('Insufficient %symbol% balance', { symbol: inputCurrency.symbol }),
       }
     }
-    if (WRAP_TOKEN.equals(inputCurrency) && outputCurrency?.isNative) {
+    if ((WNATIVE[chainId]?.equals(inputCurrency) || U2U_REWARD?.equals(inputCurrency)) && outputCurrency?.isNative) {
       return {
         wrapType: WrapType.UNWRAP,
         execute:
