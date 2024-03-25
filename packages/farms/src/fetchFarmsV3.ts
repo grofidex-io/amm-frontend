@@ -1,6 +1,5 @@
 import { getLlamaChainName } from '@pancakeswap/chains'
-import { Currency, ERC20Token } from '@pancakeswap/sdk'
-import { CAKE } from '@pancakeswap/tokens'
+import { Currency, ERC20Token, WU2U } from '@pancakeswap/sdk'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { tickToPrice } from '@pancakeswap/v3-sdk'
 import BN from 'bignumber.js'
@@ -39,7 +38,7 @@ export async function farmV3FetchFarms({
 }) {
   const [poolInfos, cakePrice, v3PoolData] = await Promise.all([
     fetchPoolInfos(farms, chainId, provider, masterChefAddress),
-    '0.001',
+    '0.01',
     fetchV3Pools(farms, chainId, provider),
   ])
 
@@ -472,23 +471,23 @@ export function getFarmsPrices(
     // try price via CAKE
     if (
       tokenPriceBusd.isZero() &&
-      farm.token.chainId in CAKE &&
-      farm.token.equals(CAKE[farm.token.chainId as keyof typeof CAKE])
+      farm.token.chainId in WU2U &&
+      farm.token.equals(WU2U[farm.token.chainId as keyof typeof WU2U])
     ) {
       tokenPriceBusd = new BN(cakePriceUSD)
     }
     if (
       quoteTokenPriceBusd.isZero() &&
-      farm.quoteToken.chainId in CAKE &&
-      farm.quoteToken.equals(CAKE[farm.quoteToken.chainId as keyof typeof CAKE])
+      farm.quoteToken.chainId in WU2U &&
+      farm.quoteToken.equals(WU2U[farm.quoteToken.chainId as keyof typeof WU2U])
     ) {
       quoteTokenPriceBusd = new BN(cakePriceUSD)
     }
-
     // try to get price via token price vs quote
     if (tokenPriceBusd.isZero() && !quoteTokenPriceBusd.isZero() && farm.tokenPriceVsQuote) {
       tokenPriceBusd = quoteTokenPriceBusd.times(farm.tokenPriceVsQuote)
     }
+    console.log(quoteTokenPriceBusd.isZero() && !tokenPriceBusd.isZero() && farm.tokenPriceVsQuote)
     if (quoteTokenPriceBusd.isZero() && !tokenPriceBusd.isZero() && farm.tokenPriceVsQuote) {
       quoteTokenPriceBusd = tokenPriceBusd.div(farm.tokenPriceVsQuote)
     }

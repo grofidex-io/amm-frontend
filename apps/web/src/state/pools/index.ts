@@ -32,7 +32,6 @@ import keyBy from 'lodash/keyBy'
 import orderBy from 'lodash/orderBy'
 
 import { getPoolsPriceHelperLpFiles } from 'config/constants/priceHelperLps'
-import { getCakePriceFromOracle } from 'hooks/useCakePrice'
 import { farmV3ApiFetch } from 'state/farmsV3/hooks'
 import {
   PoolsState,
@@ -50,6 +49,7 @@ import { getViemClients } from 'utils/viem'
 import { publicClient } from 'utils/wagmi'
 import { Address, erc20ABI } from 'wagmi'
 
+import { useETHPriceData } from 'views/V3Info/hooks'
 import fetchFarms from '../farms/fetchFarms'
 import { nativeStableLpMap } from '../farms/getFarmsPrices'
 import { resetUserState } from '../global/actions'
@@ -97,8 +97,8 @@ const initialState: PoolsState = {
 }
 
 export const fetchCakePoolPublicDataAsync = () => async (dispatch) => {
-  const cakePrice = parseFloat(await getCakePriceFromOracle())
-
+  // const cakePrice = parseFloat(await getCakePriceFromOracle())
+  const cakePrice = useETHPriceData()
   const stakingTokenPrice = cakePrice
   const earningTokenPrice = cakePrice
 

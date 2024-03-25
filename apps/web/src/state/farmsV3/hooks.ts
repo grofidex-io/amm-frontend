@@ -20,7 +20,6 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { FAST_INTERVAL } from 'config/constants'
 import { FARMS_API } from 'config/constants/endpoints'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useCakePrice } from 'hooks/useCakePrice'
 import { useBCakeFarmBoosterVeCakeContract, useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import { useV3PositionsFromTokenIds, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import toLower from 'lodash/toLower'
@@ -29,6 +28,7 @@ import fetchWithTimeout from 'utils/fetchWithTimeout'
 import { getViemClients } from 'utils/viem'
 import { publicClient } from 'utils/wagmi'
 import { Hex, decodeFunctionResult, encodeFunctionData } from 'viem'
+import { useETHPriceData } from 'views/V3Info/hooks'
 import { useAccount } from 'wagmi'
 
 export const farmV3ApiFetch = (chainId: number): Promise<FarmsV3Response> =>
@@ -110,7 +110,8 @@ export const useFarmsV3 = ({ mockApr = false }: UseFarmsOptions = {}) => {
 
   const farmV3 = useFarmsV3Public()
 
-  const cakePrice = useCakePrice()
+  // const cakePrice = useCakePrice()
+  const cakePrice = useETHPriceData()
 
   const { data } = useQuery({
     queryKey: [chainId, 'cake-apr-tvl'],

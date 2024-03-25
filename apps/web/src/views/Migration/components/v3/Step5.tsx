@@ -1,11 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Heading, AtomBox } from '@pancakeswap/uikit'
+import { AtomBox, Heading } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
-import { useCakePrice } from 'hooks/useCakePrice'
 import { useFarmsV3WithPositionsAndBooster } from 'state/farmsV3/hooks'
-import FarmTable from 'views/Farms/components/FarmTable/FarmTable'
 import { useCakeVaultUserData } from 'state/pools/hooks'
 import { V3FarmWithoutStakedValue } from 'views/Farms/FarmsV3'
+import FarmTable from 'views/Farms/components/FarmTable/FarmTable'
+import { useETHPriceData } from 'views/V3Info/hooks'
 import { useAccount } from 'wagmi'
 
 export function Step5() {
@@ -17,8 +17,8 @@ export function Step5() {
   const userDataReady = !account || (!!account && v3UserDataLoaded)
   useCakeVaultUserData()
 
-  const cakePrice = useCakePrice()
-
+  // const cakePrice = useCakePrice()
+  const cakePrice = useETHPriceData()
   const { t } = useTranslation()
 
   return (

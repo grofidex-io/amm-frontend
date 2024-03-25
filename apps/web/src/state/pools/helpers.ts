@@ -173,6 +173,7 @@ export const getTokenPricesFromFarm = (
     if (tokenAddress && !prices[tokenAddress]) {
       prices[tokenAddress] = new BigNumber(farm.tokenPriceBusd).toNumber()
     }
+
     /* eslint-enable no-param-reassign */
     return prices
   }, {})

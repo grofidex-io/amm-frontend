@@ -23,7 +23,6 @@ import { LightCard } from 'components/Card'
 import { RangeTag } from 'components/RangeTag'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useCakePrice } from 'hooks/useCakePrice'
 import Image from 'next/image'
 import NextLink from 'next/link'
 import { useCallback, useMemo } from 'react'
@@ -31,6 +30,7 @@ import { styled, useTheme } from 'styled-components'
 import { logGTMClickStakeFarmEvent } from 'utils/customGTMEventTracking'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import useFarmV3Actions from 'views/Farms/hooks/v3/useFarmV3Actions'
+import { useETHPriceData } from 'views/V3Info/hooks'
 import {
   useBakeV3farmCanBoost,
   useIsBoostedPool,
@@ -117,7 +117,8 @@ const SingleFarmV3Card: React.FunctionComponent<
 }) => {
   const { chainId } = useActiveChainId()
   const { t } = useTranslation()
-  const cakePrice = useCakePrice()
+  // const cakePrice = useCakePrice()
+  const cakePrice = useETHPriceData()
   const { tokenId } = position
   const { isDark, colors } = useTheme()
 

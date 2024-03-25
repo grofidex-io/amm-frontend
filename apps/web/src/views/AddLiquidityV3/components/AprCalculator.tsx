@@ -10,7 +10,6 @@ import {
   useAmountsByUsdValue,
   useRoi,
 } from '@pancakeswap/widgets-internal/roi'
-import { useCakePrice } from 'hooks/useCakePrice'
 import { useRouter } from 'next/router'
 import { useCallback, useMemo, useState } from 'react'
 import { styled } from 'styled-components'
@@ -30,6 +29,7 @@ import currencyId from 'utils/currencyId'
 
 import { useUserPositionInfo } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBCakeV3Info'
 import { BoostStatus, useBoostStatus } from 'views/Farms/components/YieldBooster/hooks/bCakeV3/useBoostStatus'
+import { useETHPriceData } from 'views/V3Info/hooks'
 import { useV3MintActionHandlers } from '../formViews/V3FormView/form/hooks/useV3MintActionHandlers'
 import { useV3FormState } from '../formViews/V3FormView/form/reducer'
 
@@ -74,7 +74,8 @@ export function AprCalculator({
   const [isOpen, setOpen] = useState(false)
   const [priceSpan, setPriceSpan] = useState(0)
   const { data: farm } = useFarm({ currencyA: baseCurrency, currencyB: quoteCurrency, feeAmount })
-  const cakePrice = useCakePrice()
+  const cakePrice = useETHPriceData()
+  // const cakePrice = useCakePrice()
 
   const formState = useV3FormState()
 

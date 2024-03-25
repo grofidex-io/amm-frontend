@@ -1,6 +1,5 @@
 import { DeserializedFarm, FarmWithStakedValue } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
-import { useCakePrice } from 'hooks/useCakePrice'
 import BigNumber from 'bignumber.js'
 import { CAKE_PER_YEAR } from 'config'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -8,6 +7,7 @@ import React, { useCallback, useMemo } from 'react'
 import { useFarms, usePollFarmsWithUserData } from 'state/farms/hooks'
 import { useFarmsV3Public } from 'state/farmsV3/hooks'
 import { getFarmApr } from 'utils/apr'
+import { useETHPriceData } from 'views/V3Info/hooks'
 import { useAccount } from 'wagmi'
 import MigrationFarmTable from '../MigrationFarmTable'
 import { V3Step1DesktopColumnSchema } from '../types'
@@ -20,7 +20,8 @@ const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
   const {
     data: { farmsWithPrice },
   } = useFarmsV3Public()
-  const cakePrice = useCakePrice()
+  // const cakePrice = useCakePrice()
+  const cakePrice = useETHPriceData()
   const { chainId } = useActiveChainId()
 
   usePollFarmsWithUserData()

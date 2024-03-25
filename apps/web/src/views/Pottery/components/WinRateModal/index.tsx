@@ -1,18 +1,18 @@
-import { useRef, useEffect } from 'react'
-import { styled } from 'styled-components'
-import BigNumber from 'bignumber.js'
 import { useTranslation } from '@pancakeswap/localization'
-import { Modal, Text, Box, Flex, BalanceInput } from '@pancakeswap/uikit'
-import useWinRateCalculator from 'views/Pottery/hooks/useWinRateCalculator'
-import { useCakePrice } from 'hooks/useCakePrice'
+import { BalanceInput, Box, Flex, Modal, Text } from '@pancakeswap/uikit'
+import BigNumber from 'bignumber.js'
 import { useVaultApy } from 'hooks/useVaultApy'
+import { useEffect, useRef } from 'react'
+import { styled } from 'styled-components'
 import { weeksToSeconds } from 'views/Pools/components/utils/formatSecondsToWeeks'
+import useWinRateCalculator from 'views/Pottery/hooks/useWinRateCalculator'
+import { useETHPriceData } from 'views/V3Info/hooks'
 import { CalculatorMode, EditingCurrency } from '../../types'
-import ButtonMenu from './ButtonMenu'
-import WinRateTvl from './WinRateTvl'
 import AnimatedArrow from './AnimatedArrow'
+import ButtonMenu from './ButtonMenu'
 import WinRateCard from './WinRateCard'
 import WinRateFooter from './WinRateFooter'
+import WinRateTvl from './WinRateTvl'
 
 const StyledModal = styled(Modal)`
   & > :nth-child(2) {
@@ -47,7 +47,8 @@ const WinRateModal: React.FC<React.PropsWithChildren<WinRateModalProps>> = ({
   totalSupply,
 }) => {
   const { t } = useTranslation()
-  const cakePrice = useCakePrice()
+  // const cakePrice = useCakePrice()
+  const cakePrice = useETHPriceData()
   const { getLockedApy } = useVaultApy()
   const balanceInputRef = useRef<HTMLInputElement | null>(null)
   const apy = getLockedApy(weeksToSeconds(10))

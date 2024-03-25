@@ -10,8 +10,8 @@ import { SendTransactionResult } from 'wagmi/actions'
 import { Token } from '@pancakeswap/sdk'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
-import { useCakePrice } from 'hooks/useCakePrice'
 import MultiChainHarvestModal from 'views/Farms/components/MultiChainHarvestModal'
+import { useETHPriceData } from 'views/V3Info/hooks'
 
 interface FarmCardActionsProps {
   pid?: number
@@ -40,7 +40,8 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { t } = useTranslation()
-  const cakePrice = useCakePrice()
+  const cakePrice = useETHPriceData()
+  // const cakePrice = useCakePrice()
   const rawEarningsBalance = account ? getBalanceAmount(earnings) : BIG_ZERO
   const displayBalance = rawEarningsBalance.toFixed(5, BigNumber.ROUND_DOWN)
   const earningsBusd = rawEarningsBalance ? rawEarningsBalance.multipliedBy(cakePrice).toNumber() : 0

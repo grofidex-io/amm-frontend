@@ -1,8 +1,8 @@
-import BigNumber from 'bignumber.js'
 import { ChainId } from '@pancakeswap/chains'
+import BigNumber from 'bignumber.js'
 import { BLOCKS_PER_YEAR } from 'config'
-import lpAprs56 from 'config/constants/lpAprs/56.json'
 import lpAprs1 from 'config/constants/lpAprs/1.json'
+import lpAprs56 from 'config/constants/lpAprs/56.json'
 
 const getLpApr = (chainId?: number) => {
   switch (chainId) {
@@ -62,6 +62,7 @@ export const getFarmApr = (
   const yearlyCakeRewardAllocation = poolWeight
     ? poolWeight.times(BLOCKS_PER_YEAR * regularCakePerBlock)
     : new BigNumber(NaN)
+
   const cakeRewardsApr = yearlyCakeRewardAllocation
     .times(cakePriceUsd || BIG_NUMBER_NAN)
     .div(poolLiquidityUsd || BIG_NUMBER_NAN)

@@ -3,11 +3,11 @@ import { Currency, CurrencyAmount, Price, TradeType } from '@pancakeswap/sdk'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { CAKE, STABLE_COIN } from '@pancakeswap/tokens'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
-import { useCakePrice } from 'hooks/useCakePrice'
 import { useMemo } from 'react'
 import { warningSeverity } from 'utils/exchange'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { computeTradePriceBreakdown } from 'views/Swap/V3Swap/utils/exchange'
+import { useETHPriceData } from 'views/V3Info/hooks'
 import { useActiveChainId } from './useActiveChainId'
 import { useBestAMMTrade } from './useBestAMMTrade'
 import { useCurrencyUsdPrice } from './useCurrencyUsdPrice'
@@ -29,7 +29,8 @@ export function useStablecoinPrice(
   const chainId = currency?.chainId
   const { enabled, hideIfPriceImpactTooHigh } = { ...DEFAULT_CONFIG, ...config }
 
-  const cakePrice = useCakePrice()
+  // const cakePrice = useCakePrice()
+  const cakePrice = useETHPriceData()
   const stableCoin = chainId && chainId in ChainId ? STABLE_COIN[chainId as ChainId] : undefined
   const isCake = chainId && currency && CAKE[chainId] && currency.wrapped.equals(CAKE[chainId])
 

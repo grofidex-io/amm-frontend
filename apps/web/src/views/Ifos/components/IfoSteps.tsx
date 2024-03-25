@@ -26,9 +26,9 @@ import { Address, useAccount } from 'wagmi'
 
 import { useTranslation } from '@pancakeswap/localization'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { useCakePrice } from 'hooks/useCakePrice'
 import { useProfile } from 'state/profile/hooks'
 
+import { useETHPriceData } from 'views/V3Info/hooks'
 import { useChainName } from '../hooks/useChainNames'
 
 interface TypeProps {
@@ -106,7 +106,8 @@ const Step1 = ({
   sourceChainIfoCredit?: CurrencyAmount<Currency>
 }) => {
   const { t } = useTranslation()
-  const cakePrice = useCakePrice()
+  // const cakePrice = useCakePrice()
+  const cakePrice = useETHPriceData()
   const balanceNumber = useMemo(
     () => sourceChainIfoCredit && Number(sourceChainIfoCredit.toExact()),
     [sourceChainIfoCredit],

@@ -11,7 +11,6 @@ import WalletModal, { WalletView } from 'components/Menu/UserMenu/WalletModal'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { useCakePrice } from 'hooks/useCakePrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useRouter } from 'next/router'
@@ -24,6 +23,7 @@ import { useNonBscFarmPendingTransaction, useTransactionAdder } from 'state/tran
 import { styled } from 'styled-components'
 import { useIsBloctoETH } from 'views/Farms'
 import BCakeCalculator from 'views/Farms/components/YieldBooster/components/BCakeCalculator'
+import { useETHPriceData } from 'views/V3Info/hooks'
 import { SendTransactionResult } from 'wagmi/actions'
 import { useFirstTimeCrossFarming } from '../../hooks/useFirstTimeCrossFarming'
 import { YieldBoosterStateContext } from '../YieldBooster/components/ProxyFarmContainer'
@@ -77,7 +77,8 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const { account, chainId } = useAccountActiveChain()
   const native = useNativeCurrency()
   const { tokenBalance, stakedBalance, allowance } = userData || {}
-  const cakePrice = useCakePrice()
+  // const cakePrice = useCakePrice()
+  const cakePrice = useETHPriceData()
   const router = useRouter()
   const { lpTokenStakedAmount } = useFarmFromPid(pid)
   const { toastSuccess } = useToast()

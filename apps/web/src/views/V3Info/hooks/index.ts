@@ -10,6 +10,7 @@ import { v3InfoClients } from 'utils/graphql'
 import { useBlockFromTimeStampQuery } from 'views/Info/hooks/useBlocksFromTimestamps'
 
 import { useQuery } from '@tanstack/react-query'
+import BigNumber from 'bignumber.js'
 import { DURATION_INTERVAL, SUBGRAPH_START_BLOCK } from '../constants'
 import { fetchPoolChartData } from '../data/pool/chartData'
 import { fetchPoolDatas } from '../data/pool/poolData'
@@ -22,7 +23,7 @@ import { fetchTopTransactions } from '../data/protocol/transactions'
 import { fetchSearchResults } from '../data/search'
 import { fetchTokenChartData } from '../data/token/chartData'
 import { fetchPoolsForToken } from '../data/token/poolsForToken'
-import { fetchPairPriceChartTokenData, fetchTokenPriceData } from '../data/token/priceData'
+import { fetchETHPriceData, fetchPairPriceChartTokenData, fetchTokenPriceData } from '../data/token/priceData'
 import { fetchedTokenDatas } from '../data/token/tokenData'
 import { fetchTopTokenAddresses } from '../data/token/topTokens'
 import { fetchTokenTransactions } from '../data/token/transactions'
@@ -307,6 +308,19 @@ export const useTokenChartData = (address: string): TokenChartEntry[] | undefine
   return data?.data
 }
 
+export const useETHPriceData = () => {
+  const chainName = useChainNameByQuery()
+  const chainId = multiChainId[chainName]
+
+  const { data } = useQuery({
+    queryKey: [`v3/info/token/tokenETHData/${chainId}`, chainId],
+    queryFn: () => fetchETHPriceData(v3InfoClients[chainId]),
+    enabled: Boolean(chainId),
+    ...QUERY_SETTINGS_IMMUTABLE,
+  })
+  return new BigNumber(data?.data)
+}
+
 export const useTokenPriceData = (
   address: string,
   interval: number,
@@ -444,7 +458,7 @@ export const usePoolTransactions = (address: string): Transaction[] | undefined 
     enabled: Boolean(chainId && address),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
-  return useMemo(() => data?.data?.filter((d) => true) ?? undefined, [data])
+  return useMemo(() => data?.data?.filter((_) => true) ?? undefined, [data])
 }
 
 export const usePoolChartData = (address: string): PoolChartEntry[] | undefined => {

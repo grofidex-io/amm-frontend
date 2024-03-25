@@ -11,6 +11,18 @@ import { PriceChartEntry } from '../../types'
 dayjs.extend(utc)
 dayjs.extend(weekOfYear)
 
+export const PRICE_ETH = () => {
+  const queryString = `query ethPrice {
+      bundle(id:"1") {
+        ethPriceUSD
+      }
+    } 
+  `
+  return gql`
+    ${queryString}
+  `
+}
+
 export const PRICES_BY_BLOCK = (tokenAddress: string, blocks: any) => {
   let queryString = 'query blocks {'
   queryString += blocks.map(
@@ -174,8 +186,29 @@ interface PriceResults {
   tokenHourDatas: TokenHourDatas[]
 }
 
+interface EthPriceResult {
+  bundle: {
+    ethPriceUSD: string
+  }
+}
+
 type PriceResultsForPairPriceChartResult = Record<string, TokenHourDatas[]>
 type PairPriceMinMAxResults = Record<string, TokenHourDatas>
+
+export async function fetchETHPriceData(dataClient: GraphQLClient): Promise<{
+  data: any
+  error?: boolean
+}> {
+  // start and end bounds
+  try {
+    const priceData = await dataClient.request<EthPriceResult>(PRICE_ETH())
+    return {
+      data: priceData.bundle.ethPriceUSD,
+    }
+  } catch (e) {
+    return { data: 0, error: true }
+  }
+}
 
 export async function fetchTokenPriceData(
   address: string,

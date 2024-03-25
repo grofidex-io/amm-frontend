@@ -12,7 +12,6 @@ import WalletModal, { WalletView } from 'components/Menu/UserMenu/WalletModal'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { BASE_ADD_LIQUIDITY_URL, DEFAULT_TOKEN_DECIMAL } from 'config'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
-import { useCakePrice } from 'hooks/useCakePrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useERC20 } from 'hooks/useContract'
 import useNativeCurrency from 'hooks/useNativeCurrency'
@@ -28,6 +27,7 @@ import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { Hash } from 'viem'
 import { useIsBloctoETH } from 'views/Farms'
 import BCakeCalculator from 'views/Farms/components/YieldBooster/components/BCakeCalculator'
+import { useETHPriceData } from 'views/V3Info/hooks'
 import { useAccount } from 'wagmi'
 import useApproveFarm from '../../../hooks/useApproveFarm'
 import { useFirstTimeCrossFarming } from '../../../hooks/useFirstTimeCrossFarming'
@@ -154,7 +154,8 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const { tokenBalance, stakedBalance, allowance } = userData || {}
 
   const router = useRouter()
-  const cakePrice = useCakePrice()
+  // const cakePrice = useCakePrice()
+  const cakePrice = useETHPriceData()
   const [bCakeMultiplier, setBCakeMultiplier] = useState<number | null>(() => null)
 
   const liquidityUrlPathParts = getLiquidityUrlPathParts({

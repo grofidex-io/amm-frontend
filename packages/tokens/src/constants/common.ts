@@ -39,7 +39,7 @@ export const USDC_U2U = new ERC20Token(
 
 export const USDT_U2U = new ERC20Token(
   ChainId.U2U_NEBULAS,
-  '0x5b14303c782635acfdcfc9ceab251b369ece68c9',
+  '0xdfae88f8610a038afcdf47a5bc77c0963c65087c',
   18,
   'USDT',
   'USDT Coin',
@@ -256,10 +256,10 @@ export const CAKE = {
   ),
   [ChainId.U2U_NEBULAS]: new ERC20Token(
     ChainId.U2U_NEBULAS,
-    '0xe9bbf9b40e2480ced61e7834f6cd6349e99116d4',
+    '0xa5abcbaaf8f28ba40f9fed1f264f117ab966f41b',
     18,
-    'WU2U',
-    'Wrapped U2U Token',
+    'RU2U',
+    'U2U Reward',
     '',
   ),
 }

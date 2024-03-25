@@ -1,5 +1,4 @@
 import { SUPPORT_FARMS } from 'config/constants/supportChains'
-import { useCakePrice } from 'hooks/useCakePrice'
 import { useContext } from 'react'
 import { FarmsV3Context, FarmsV3PageLayout } from 'views/Farms'
 import FarmCard from 'views/Farms/components/FarmCard/FarmCard'
@@ -8,11 +7,13 @@ import ProxyFarmContainer, {
   YieldBoosterStateContext,
 } from 'views/Farms/components/YieldBooster/components/ProxyFarmContainer'
 import { getDisplayApr } from 'views/Farms/components/getDisplayApr'
+import { useETHPriceData } from 'views/V3Info/hooks'
 import { useAccount } from 'wagmi'
 
 export const ProxyFarmCardContainer = ({ farm }) => {
   const { address: account } = useAccount()
-  const cakePrice = useCakePrice()
+  // const cakePrice = useCakePrice()
+  const cakePrice = useETHPriceData()
 
   const { proxyFarm, shouldUseProxyFarm } = useContext(YieldBoosterStateContext)
   const finalFarm = shouldUseProxyFarm ? proxyFarm : farm
@@ -32,8 +33,8 @@ export const ProxyFarmCardContainer = ({ farm }) => {
 const FarmsPage = () => {
   const { address: account } = useAccount()
   const { chosenFarmsMemoized } = useContext(FarmsV3Context)
-  const cakePrice = useCakePrice()
-
+  // const cakePrice = useCakePrice()
+  const cakePrice = useETHPriceData()
   return (
     <>
       {chosenFarmsMemoized?.map((farm) => {
