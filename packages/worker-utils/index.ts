@@ -7,6 +7,8 @@ export const CORS_ALLOW = [
   'https://pancakeswap.games',
   'https://pancakeswap.com',
   /^http:\/\/localhost(:\d+)?$/,
+  'https://testnet.u2w.io',
+  'https://testnet.u2dex.io',
 ]
 
 function isString(s: any): s is string {

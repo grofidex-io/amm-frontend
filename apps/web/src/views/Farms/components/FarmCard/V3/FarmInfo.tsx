@@ -1,13 +1,13 @@
 import { Flex, ModalV2 } from '@pancakeswap/uikit'
-import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { formatBigInt } from '@pancakeswap/utils/formatBalance'
+import { FarmWidget } from '@pancakeswap/widgets-internal'
 import { BigNumber } from 'bignumber.js'
 import { TokenPairImage } from 'components/TokenImage'
 import { useMemo, useState } from 'react'
-import { useCakePrice } from 'hooks/useCakePrice'
-import FarmV3CardList from 'views/Farms/components/FarmCard/V3/FarmV3CardList'
 import { V3Farm } from 'views/Farms/FarmsV3'
+import FarmV3CardList from 'views/Farms/components/FarmCard/V3/FarmV3CardList'
 import { useFarmsV3BatchHarvest } from 'views/Farms/hooks/v3/useFarmV3Actions'
+import { useETHPriceData } from 'views/V3Info/hooks'
 
 const { AvailableFarming, TotalStakedBalance, ViewAllFarmModal } = FarmWidget.FarmV3Card
 
@@ -22,7 +22,8 @@ const FarmInfo: React.FunctionComponent<React.PropsWithChildren<FarmInfoProps>> 
   isReady,
   onAddLiquidity,
 }) => {
-  const cakePrice = useCakePrice()
+  // const cakePrice = useCakePrice()
+  const cakePrice = useETHPriceData()
   const [show, setShow] = useState(false)
 
   const inactive = farm.multiplier === '0X'

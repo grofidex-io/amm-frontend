@@ -123,6 +123,7 @@ export function createFarmFetcherV3(provider: ({ chainId }: { chainId: number })
     const [token0Price, token1Price] = farm.token.sortsBefore(farm.quoteToken)
       ? [farm.tokenPriceBusd, farm.quoteTokenPriceBusd]
       : [farm.quoteTokenPriceBusd, farm.tokenPriceBusd]
+
     const tvl = new BigNumber(token0Price).times(lpTVL.token0).plus(new BigNumber(token1Price).times(lpTVL.token1))
 
     const cakeApr = getCakeApr(farm.poolWeight, tvl, cakePrice, cakePerSecond)

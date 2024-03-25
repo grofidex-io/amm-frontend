@@ -18,9 +18,9 @@ import {
 import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { WEEK } from 'config/constants/veCake'
 import dayjs from 'dayjs'
-import { useCakePrice } from 'hooks/useCakePrice'
 import { useMemo } from 'react'
 import { formatTime } from 'utils/formatTime'
+import { useETHPriceData } from 'views/V3Info/hooks'
 import { useCakePoolLockInfo } from '../hooks/useCakePoolLockInfo'
 import { useWriteMigrateCallback } from '../hooks/useContractWrite/useWriteMigrateCallback'
 import { useCurrentBlockTimestamp } from '../hooks/useCurrentBlockTimestamp'
@@ -32,7 +32,8 @@ export const CakePoolLockInfo = () => {
   const roundedEndTime = useMemo(() => {
     return Math.floor(Number(lockEndTime) / WEEK) * WEEK
   }, [lockEndTime])
-  const cakePrice = useCakePrice()
+  // const cakePrice = useCakePrice()
+  const cakePrice = useETHPriceData()
   const cakeAmount = useMemo(() => Number(formatBigInt(lockedAmount)), [lockedAmount])
   const cakeAmountUsdValue = useMemo(() => {
     return cakePrice.times(cakeAmount).toNumber()
