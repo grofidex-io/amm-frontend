@@ -224,6 +224,12 @@ const config: (
       //   },
       // ].map((item) => addMenuItemSupported(item, chainId)),
     },
+    {
+      label: 'Pair',
+      href: '/pair',
+      icon: PoolIcon,
+      hideSubNav: true,
+    },
   ].map((item) => addMenuItemSupported(item, chainId))
 
 export default config
