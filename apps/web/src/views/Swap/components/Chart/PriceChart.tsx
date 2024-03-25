@@ -18,7 +18,7 @@ const PriceChart = ({
 
   return (
     <StyledPriceChart
-      height="70%"
+      height="80%"
       overflow="unset"
       $isDark={isDark}
       $isExpanded={isChartExpanded}

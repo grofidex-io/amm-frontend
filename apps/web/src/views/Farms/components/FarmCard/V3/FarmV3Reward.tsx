@@ -17,8 +17,8 @@ export function FarmV3Reward() {
 
   return (
     <Flex alignItems="center">
-      <BalanceWrap value={Number(balance)} decimals={2} fontWeight={600} fontSize={20} marginRight={1} />
-      <Button size="sm" onClick={handleCollect}>
+      <BalanceWrap value={Number(balance)} decimals={2} fontWeight={600} fontSize={20} marginRight={3} />
+      <Button className="button-hover" size="sm" onClick={handleCollect}>
         {' '}
         Collect U2U
       </Button>

@@ -9,14 +9,14 @@ export const StyledPriceChart = styled(Box)<{
   border: none;
   // border-radius: 32px;
   width: 100%;
-  padding-top: 36px;
+  padding-top: 12px;
   ${({ theme }) => theme.mediaQueries.sm} {
     padding-top: 8px;
     background: ${({ theme }) => theme.colors.backgroundAlt};
     // border: ${({ theme }) => `2px solid ${theme.colors.cardBorder}`};
     // border-radius: ${({ $isExpanded }) => ($isExpanded ? '0' : '8px')};
     width: ${({ $isExpanded, $isFullWidthContainer }) => ($isFullWidthContainer || $isExpanded ? '100%' : '50%')};
-    height: ${({ $isExpanded }) => ($isExpanded ? '100%' : '516px')};
+    height: ${({ $isExpanded }) => ($isExpanded ? '100%' : '506px')};
     // box-shadow: ${({ theme }) => theme.shadows.card};
   }
 `
