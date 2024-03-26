@@ -1,7 +1,9 @@
-name: Deploy Worker
+name: Worker
 on:
   push:
-    branches: [ staging, testnet, worker ]
+    branches: [ staging, testnet ]
+    release:
+      types: [ published ]
 jobs:
   deploy:
     runs-on: ubuntu-latest
