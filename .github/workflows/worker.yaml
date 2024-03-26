@@ -24,6 +24,17 @@ jobs:
       - name: Install dependencies
         run: pnpm build:packages
 
+      - name: Make envfile
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          envkey_CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          envkey_U2U_TESTNET_NODE: ${{ secrets.U2U_TESTNET_NODE }}        
+          
+          directory: .
+          file_name: apis/farms/.env
+          fail_on_empty: false
+
       - name: Build & Deploy Worker
         uses: cloudflare/wrangler-action@v3
         with:
