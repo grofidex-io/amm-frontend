@@ -1,4 +1,4 @@
-import { DeserializedFarmsState, DeserializedFarmUserData, supportedChainIdV2 } from '@pancakeswap/farms'
+import { DeserializedFarmsState, DeserializedFarmUserData } from '@pancakeswap/farms'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { useQuery } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
@@ -41,7 +41,7 @@ export function useFarmsLength() {
       return Number(await mc.read.poolLength())
     },
 
-    enabled: Boolean(chainId && supportedChainIdV2.includes(chainId)),
+    enabled: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
@@ -77,7 +77,7 @@ export function useFarmV2PublicAPI() {
         .then((res) => res.data)
     },
 
-    enabled: Boolean(chainId && supportedChainIdV2.includes(chainId)),
+    enabled: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
@@ -110,7 +110,7 @@ export const usePollFarmsWithUserData = () => {
       return null
     },
 
-    enabled: Boolean(chainId && supportedChainIdV2.includes(chainId)),
+    enabled: false,
     refetchInterval: SLOW_INTERVAL,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,

@@ -2,11 +2,9 @@ import { ChainId } from '@pancakeswap/chains'
 import { Address } from 'viem'
 import { FarmV3SupportedChainId } from '../../src'
 import { ComputedFarmConfigV3 } from '../../src/types'
-import { farmsV3 as bscFarms } from '../bsc'
 import { farmsV3 as u2uTestnetFarms } from '../u2uNebulas'
 
 export const farmsV3ConfigChainMap: Record<FarmV3SupportedChainId, ComputedFarmConfigV3[]> = {
-  [ChainId.BSC]: bscFarms,
   [ChainId.U2U_NEBULAS]: u2uTestnetFarms,
 }
 

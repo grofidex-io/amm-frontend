@@ -3,7 +3,6 @@ import BigNumber from 'bignumber.js'
 import { PublicClient, formatEther } from 'viem'
 import {
   FarmSupportedChainId,
-  FarmV2SupportedChainId,
   FarmV3SupportedChainId,
   bCakeSupportedChainId,
   masterChefAddresses,
@@ -33,17 +32,19 @@ export {
   type FarmV3SupportedChainId,
 }
 
-export function createFarmFetcher(provider: ({ chainId }: { chainId: FarmV2SupportedChainId }) => PublicClient) {
+export function createFarmFetcher(provider: ({ chainId }: { chainId: any }) => PublicClient) {
   const fetchFarms = async (
     params: {
       isTestnet: boolean
     } & Pick<FetchFarmsParams, 'chainId' | 'farms'>,
   ) => {
     const { isTestnet, farms, chainId } = params
-    const masterChefAddress = isTestnet ? masterChefAddresses[ChainId.BSC_TESTNET] : masterChefAddresses[ChainId.BSC]
+    const masterChefAddress = isTestnet
+      ? masterChefAddresses[ChainId.U2U_NEBULAS]
+      : masterChefAddresses[ChainId.U2U_NEBULAS]
     const { poolLength, totalRegularAllocPoint, totalSpecialAllocPoint, cakePerBlock } = await fetchMasterChefV2Data({
-      isTestnet,
       provider,
+      isTestnet,
       masterChefAddress,
     })
     const regularCakePerBlock = formatEther(cakePerBlock)
@@ -67,7 +68,7 @@ export function createFarmFetcher(provider: ({ chainId }: { chainId: FarmV2Suppo
 
   return {
     fetchFarms,
-    isChainSupported: (chainId: number) => supportedChainIdV2.includes(chainId),
+    isChainSupported: false,
     supportedChainId: supportedChainIdV2,
     isTestnet: (chainId: number) => ![ChainId.BSC, ChainId.ETHEREUM].includes(chainId),
   }

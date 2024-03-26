@@ -57,6 +57,5 @@ export const priceHelperTokens = {
 
 // for testing purposes
 export const DEFAULT_COMMON_PRICE: Record<FarmV3SupportedChainId, CommonPrice> = {
-  [ChainId.BSC]: {},
   [ChainId.U2U_NEBULAS]: {},
 }
