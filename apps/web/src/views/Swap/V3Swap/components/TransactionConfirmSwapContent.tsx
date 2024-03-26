@@ -3,6 +3,7 @@ import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { ConfirmationModalContent } from '@pancakeswap/widgets-internal'
 import { memo, useCallback, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
+import { TYPE_SWAP } from 'state/swap/reducer'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { MMSlippageTolerance } from 'views/Swap/MMLinkPools/components/MMSlippageTolerance'
 import {
@@ -44,6 +45,7 @@ interface TransactionConfirmSwapContentProps {
     INPUT?: CurrencyAmount<Currency>
     OUTPUT?: CurrencyAmount<Currency>
   }
+  typeSwap?: number
 }
 
 export const TransactionConfirmSwapContent = memo<TransactionConfirmSwapContentProps>(
@@ -57,6 +59,7 @@ export const TransactionConfirmSwapContent = memo<TransactionConfirmSwapContentP
     currencyBalances,
     onConfirm,
     onAcceptChanges,
+    typeSwap,
   }) {
     const showAcceptChanges = useMemo(
       () => Boolean(trade && originalTrade && tradeMeaningfullyDiffers(trade, originalTrade)),
@@ -77,7 +80,7 @@ export const TransactionConfirmSwapContent = memo<TransactionConfirmSwapContentP
     )
 
     const isEnoughInputBalance = useMemo(() => {
-      if (trade?.tradeType !== TradeType.EXACT_OUTPUT) return null
+      if (typeSwap !== TYPE_SWAP.SELL) return null
 
       const isInputBalanceExist = !!(currencyBalances && currencyBalances[Field.INPUT])
       const isInputBalanceBNB = isInputBalanceExist && currencyBalances[Field.INPUT]?.currency.isNative
@@ -90,7 +93,7 @@ export const TransactionConfirmSwapContent = memo<TransactionConfirmSwapContentP
         ? inputCurrencyAmount.greaterThan(slippageAdjustedAmounts[Field.INPUT]) ||
             inputCurrencyAmount.equalTo(slippageAdjustedAmounts[Field.INPUT])
         : false
-    }, [currencyBalances, trade, slippageAdjustedAmounts])
+    }, [typeSwap, currencyBalances, slippageAdjustedAmounts])
 
     const modalHeader = useCallback(() => {
       return trade ? (
@@ -106,6 +109,7 @@ export const TransactionConfirmSwapContent = memo<TransactionConfirmSwapContentP
           recipient={recipient ?? undefined}
           showAcceptChanges={showAcceptChanges}
           onAcceptChanges={onAcceptChanges}
+          typeSwap={typeSwap}
         />
       ) : null
     }, [
@@ -119,6 +123,7 @@ export const TransactionConfirmSwapContent = memo<TransactionConfirmSwapContentP
       trade,
       slippageAdjustedAmounts,
       isEnoughInputBalance,
+      typeSwap,
     ])
 
     const modalBottom = useCallback(() => {

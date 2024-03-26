@@ -206,6 +206,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
         currencyBalances={currencyBalances}
         onConfirm={startSwapFlow}
         onAcceptChanges={onAcceptChanges}
+        typeSwap={typeSwap}
       />
     )
   }, [
