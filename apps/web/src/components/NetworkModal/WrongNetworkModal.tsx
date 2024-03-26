@@ -43,7 +43,7 @@ export function WrongNetworkModal({ currentChain, onDismiss }: { currentChain: C
           </MessageText>
         </Message>
         {canSwitch ? (
-          <Button isLoading={isLoading} onClick={() => switchNetworkAsync(chainId)}>
+          <Button className="button-hover" isLoading={isLoading} onClick={() => switchNetworkAsync(chainId)}>
             {isLoading ? <Dots>{switchText}</Dots> : switchText}
           </Button>
         ) : (
@@ -53,6 +53,7 @@ export function WrongNetworkModal({ currentChain, onDismiss }: { currentChain: C
         )}
         {isConnected && (
           <Button
+            className="button-hover"
             onClick={() =>
               logout().then(() => {
                 setSessionChainId(chainId)
