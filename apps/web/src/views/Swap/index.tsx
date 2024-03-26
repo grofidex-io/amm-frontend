@@ -160,7 +160,13 @@ export default function Swap() {
         alignItems="flex-start"
         width="100%"
       >
-        <Flex flexDirection="column" order={['2', '2', '2', '2', '1']} width="100%" flexGrow={2}>
+        <Flex
+          flexDirection="column"
+          order={['2', '2', '2', '2', '1']}
+          width={['100%', '100%', '100%', '100%', 'auto']}
+          flexGrow={2}
+          style={{ minWidth: `calc(100vw - 510px)` }}
+        >
           {isChartSupported && (
             <PriceChartContainer
               onCurrencySelectClick={onCurrencySelectClick}
@@ -221,9 +227,6 @@ export default function Swap() {
               <Tab>{t('Holders')}</Tab>
             </TabMenu>
           </Box>
-          {/* <Heading scale="lg" mt="40px" mb="16px">
-            {t('Transactions')}
-          </Heading> */}
           {transactionData && tab === 0 && (
             <TransactionsTable
               transactions={transactionData}
