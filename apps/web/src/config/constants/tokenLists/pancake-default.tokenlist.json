@@ -1,6 +1,6 @@
 {
   "name": "U2UDex Menu",
-  "timestamp": "2024-03-23T09:00:30.909Z",
+  "timestamp": "2024-03-26T08:31:14.197Z",
   "version": {
     "major": 24,
     "minor": 30,
@@ -25,6 +25,14 @@
       "decimals": 18,
       "chainId": 2484,
       "logoURI": "https://raw.githubusercontent.com/u2u-eco/default-token-list/master/logos/network/2484/0xbeb74c0c2cc994c8fad7ba91fae15b5b748cd707.png"
+    },
+    {
+      "name": "Wrapped Binance Smart Chain",
+      "address": "0x7bd3dc0e0e1e1ccce1657a18cbe32f13f9fc9376",
+      "symbol": "WBNB",
+      "decimals": 18,
+      "chainId": 2484,
+      "logoURI": "https://raw.githubusercontent.com/u2u-eco/default-token-list/master/logos/network/2484/0x7bd3dc0e0e1e1ccce1657a18cbe32f13f9fc9376.png"
     },
     {
       "name": "BTC Token on U2U",

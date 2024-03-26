@@ -83,7 +83,7 @@ export const Overview = () => {
           </FlexGap>
         </BorderLayout>
         <Box mb={['30px', '40px', '50px', '60px']}>
-          <StylesInternalLink href="/buy-crypto">
+          <StylesInternalLink href="/add">
             <StyledButton>
               {t('I want to create a position')}
               <ImageIcon src="/images/pair/pair-icon.svg" />
