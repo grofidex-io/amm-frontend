@@ -4,7 +4,7 @@ import { Card, Flex, Progress, ProgressBar, ScanLink, Tab, TabMenu, Table, Td, T
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { formatAmount } from '@pancakeswap/utils/formatInfoNumbers'
 import truncateHash from '@pancakeswap/utils/truncateHash'
-import { formatUnits } from 'ethers/lib/utils'
+import { formatUnits, isAddress } from 'ethers/lib/utils'
 import { useCurrency } from 'hooks/Tokens'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useMemo, useState } from 'react'
@@ -101,12 +101,16 @@ export function TopHolders() {
                   {data?.listHolders?.map((item) => (
                     <tr key={item.address}>
                       <Td>
-                        <ScanLink
-                          useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
-                          href={getBlockExploreLink(item.address, 'address', multiChainId[chainName])}
-                        >
-                          {truncateHash(item.address)}
-                        </ScanLink>
+                        {isAddress(item.address) ? (
+                          <ScanLink
+                            useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
+                            href={getBlockExploreLink(item.address, 'address', multiChainId[chainName])}
+                          >
+                            {truncateHash(item.address)}
+                          </ScanLink>
+                        ) : (
+                          item.address
+                        )}
                       </Td>
                       <Td>
                         <Text bold>{formatAmount(getPercent(item.value))}%</Text>
