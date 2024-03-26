@@ -26,7 +26,7 @@ export const useSnapshotProposalsCount = (): number | undefined => {
       const count = await getSnapshotCount(SPACE_ID)
       return count
     },
-
+    enabled: false,
     placeholderData: keepPreviousData,
   })
 

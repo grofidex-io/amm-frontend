@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
-import { ProposalState, Proposal } from 'state/types'
-import request, { gql } from 'graphql-request'
 import { SNAPSHOT_API } from 'config/constants/endpoints'
-import { PANCAKE_SPACE, ADMINS } from 'views/Voting/config'
+import request, { gql } from 'graphql-request'
+import { Proposal, ProposalState } from 'state/types'
+import { ADMINS, PANCAKE_SPACE } from 'views/Voting/config'
 
 export const getCoreProposal = async (type: ProposalState): Promise<Proposal[]> => {
   const response = await request(
@@ -34,7 +34,7 @@ export const useVotingStatus = () => {
       }
       return null
     },
-
+    enabled: false,
     refetchOnMount: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,

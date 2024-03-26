@@ -1,8 +1,8 @@
 import { ChainId } from '@pancakeswap/chains'
 import uniq from 'lodash/uniq'
 
-export const supportedChainIdV2 = [ChainId.BSC] as const
-export const supportedChainIdV3 = [ChainId.BSC, ChainId.U2U_NEBULAS] as const
+export const supportedChainIdV2 = [] as const
+export const supportedChainIdV3 = [ChainId.U2U_NEBULAS] as const
 export const supportedChainId = uniq([...supportedChainIdV2, ...supportedChainIdV3])
 export const bCakeSupportedChainId = [ChainId.BSC, ChainId.U2U_NEBULAS] as const
 
@@ -20,7 +20,6 @@ export const masterChefAddresses = {
 } as const
 
 export const masterChefV3Addresses = {
-  [ChainId.BSC]: '0x556B9306565093C855AEA9AE92A594704c2Cd59e',
   [ChainId.U2U_NEBULAS]: '0x855b2d5142f6abd6ac691f4696050f563a212dcc',
 } as const satisfies Record<FarmV3SupportedChainId, string>
 

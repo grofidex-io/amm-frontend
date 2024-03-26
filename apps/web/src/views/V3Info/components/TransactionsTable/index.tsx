@@ -26,13 +26,13 @@ import Loader from '../Loader'
 import { RowFixed } from '../Row'
 import { SortButton, useSortFieldClassName } from '../SortButton'
 
-const ResponsiveGrid = styled.div<{ widthFirstCol: number }>`
+const ResponsiveGrid = styled.div<{ widthfirstcol?: number }>`
   display: grid;
   grid-gap: 1em;
   align-items: center;
 
-  grid-template-columns: ${({ widthFirstCol }) =>
-    widthFirstCol ? `${widthFirstCol}fr repeat(5, 1fr)` : '0.5fr repeat(5, 1fr)'};
+  grid-template-columns: ${({ widthfirstcol }) =>
+    widthfirstcol ? `${widthfirstcol}fr repeat(5, 1fr)` : '0.5fr repeat(5, 1fr)'};
   padding: 0 24px;
   @media screen and (max-width: 940px) {
     grid-template-columns: 1.5fr repeat(4, 1fr);
@@ -150,7 +150,7 @@ const DataRow = ({
   }
 
   return (
-    <ResponsiveGrid widthFirstCol={filterFn ? 0.5 : 1.5}>
+    <ResponsiveGrid widthfirstcol={filterFn ? 0.5 : 1.5}>
       <Flex justifyContent="center">
         <StyledScanLink
           useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
@@ -325,7 +325,7 @@ export default function TransactionTable({
         )}
       </Flex>
       <TableWrapper>
-        <ResponsiveGrid widthFirstCol={filterFn ? 0.5 : 1.5}>
+        <ResponsiveGrid widthfirstcol={filterFn ? 0.5 : 1.5}>
           <Text textAlign="center" color="textSubtle">
             {t('Type')}
           </Text>

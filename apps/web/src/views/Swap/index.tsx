@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { Box, Flex, Tab, TabMenu, useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
+import { Box, Flex, Tab, TabMenu, useModal } from '@pancakeswap/uikit'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { AppBody } from 'components/App'
 import { useCallback, useContext, useMemo, useState } from 'react'
@@ -29,7 +29,7 @@ import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 
 export default function Swap() {
   // const { query } = useRouter()
-  const { isDesktop } = useMatchBreakpoints()
+  // const { isDesktop } = useMatchBreakpoints()
   const {
     isChartExpanded,
     isChartDisplayed,
@@ -165,6 +165,7 @@ export default function Swap() {
           order={['2', '2', '2', '2', '1']}
           width={['100%', '100%', '100%', '100%', 'auto']}
           flexGrow={2}
+          style={{ minWidth: `calc(100vw - 510px)` }}
         >
           {isChartSupported && (
             <PriceChartContainer
@@ -226,9 +227,6 @@ export default function Swap() {
               <Tab>{t('Holders')}</Tab>
             </TabMenu>
           </Box>
-          {/* <Heading scale="lg" mt="40px" mb="16px">
-            {t('Transactions')}
-          </Heading> */}
           {transactionData && tab === 0 && (
             <TransactionsTable
               transactions={transactionData}

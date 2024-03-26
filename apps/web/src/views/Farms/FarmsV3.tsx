@@ -4,7 +4,6 @@ import {
   FarmV3DataWithPriceAndUserInfo,
   FarmWithStakedValue,
   filterFarmsByQuery,
-  supportedChainIdV2,
   supportedChainIdV3,
 } from '@pancakeswap/farms'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
@@ -242,7 +241,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const userDataReady =
     !account ||
     (!!account &&
-      (chainId && supportedChainIdV2.includes(chainId) ? v2UserDataLoaded : true) &&
+      (chainId && false ? v2UserDataLoaded : true) &&
       (chainId && supportedChainIdV3.includes(chainId) ? v3UserDataLoaded : true))
 
   const [stakedOnly, setStakedOnly] = useUserFarmStakedOnly(isActive)
@@ -279,10 +278,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
           return farm
         }
         const totalLiquidityFromLp = new BigNumber(farm?.lpTotalInQuoteToken ?? 0).times(farm.quoteTokenPriceBusd)
-        console.log(
-          '🚀 ~ constfarmsToDisplayWithAPR:any=farmsToDisplay.map ~ totalLiquidityFromLp:',
-          totalLiquidityFromLp,
-        )
         // Mock 1$ tvl if the farm doesn't have lp staked
         const totalLiquidity = totalLiquidityFromLp.eq(BIG_ZERO) && mockApr ? BIG_ONE : totalLiquidityFromLp
         const { cakeRewardsApr, lpRewardsApr } =

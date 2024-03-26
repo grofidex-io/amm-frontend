@@ -3,7 +3,7 @@ import { BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { CurrencyParams, getCurrencyKey, getCurrencyListUsdPrice } from '@pancakeswap/utils/getCurrencyPrice'
 import BN from 'bignumber.js'
 import { Address, PublicClient, formatUnits } from 'viem'
-import { FarmV2SupportedChainId, supportedChainIdV2 } from '../const'
+import { FarmV2SupportedChainId } from '../const'
 import { SerializedFarmConfig, isStableFarm } from '../types'
 import { getFarmLpTokenPrice, getFarmsPrices } from './farmPrices'
 import { fetchPublicFarmsData } from './fetchPublicFarmData'
@@ -48,7 +48,7 @@ export async function farmV2FetchFarms({
   totalRegularAllocPoint,
   totalSpecialAllocPoint,
 }: FetchFarmsParams) {
-  if (!supportedChainIdV2.includes(chainId)) {
+  if (!chainId) {
     return []
   }
 
@@ -258,7 +258,7 @@ export const fetchMasterChefV2Data = async ({
   masterChefAddress: Address
 }) => {
   try {
-    const chainId = isTestnet ? ChainId.BSC_TESTNET : ChainId.BSC
+    const chainId = isTestnet ? ChainId.U2U_NEBULAS : ChainId.U2U_NEBULAS
     const [poolLength, totalRegularAllocPoint, totalSpecialAllocPoint, cakePerBlock] = await provider({
       chainId,
     }).multicall({

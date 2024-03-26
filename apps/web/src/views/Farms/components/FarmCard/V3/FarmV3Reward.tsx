@@ -1,4 +1,5 @@
-import { U2U_REWARD } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/sdk'
+import { CAKE } from '@pancakeswap/tokens'
 import { Balance, Button, Flex } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
 import { useRewardBalance } from 'state/farms/hooks'
@@ -12,7 +13,7 @@ export function FarmV3Reward() {
   const router = useRouter()
   const { data: balance } = useRewardBalance()
   const handleCollect = () => {
-    router.push(`/swap?outputCurrency=U2U&inputCurrency=${U2U_REWARD.address.toLowerCase()}`)
+    router.push(`/swap?outputCurrency=U2U&inputCurrency=${CAKE[ChainId.U2U_NEBULAS].address.toLowerCase()}`)
   }
 
   return (

@@ -1,11 +1,11 @@
-import { InfoPageLayout } from 'views/Pair'
-import Pools from 'views/V3Info/views/PoolsPage'
+import { InfoPageLayout } from 'views/Pair/Layout'
+import { Overview } from 'views/Pair/Overview'
 
-const InfoPoolsPage = () => {
-  return <Pools />
+const InfoPage = () => {
+  return <Overview />
 }
 
-InfoPoolsPage.Layout = InfoPageLayout
-InfoPoolsPage.chains = [] // set all
+InfoPage.Layout = InfoPageLayout
+InfoPage.chains = [] // set all
 
-export default InfoPoolsPage
+export default InfoPage

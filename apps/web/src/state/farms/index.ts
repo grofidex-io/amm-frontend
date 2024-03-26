@@ -92,7 +92,7 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
       await dispatch(fetchInitialFarmsData({ chainId }))
     }
     const chain = chains.find((c) => c.id === chainId)
-    if (!chain || !farmFetcher.isChainSupported(chain.id)) throw new Error('chain not supported')
+    if (!chain || false) throw new Error('chain not supported')
     return fetchFarmPublicDataPkg({ pids, chainId, chain }).catch((error) => {
       console.error(error)
       throw error

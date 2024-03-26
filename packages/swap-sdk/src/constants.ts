@@ -224,7 +224,7 @@ export const WETH9 = {
   ),
   [ChainId.U2U_NEBULAS]: new ERC20Token(
     ChainId.U2U_NEBULAS,
-    '0x94504f356a267f3a128c2e6387281bccdbd821a0',
+    '0x94504F356a267f3a128C2e6387281bCCDbD821a0',
     18,
     'WETH',
     'Wrapped ETH',
@@ -275,7 +275,7 @@ export const WBNB = {
   ),
   [ChainId.U2U_NEBULAS]: new ERC20Token(
     ChainId.U2U_NEBULAS,
-    '0x7bd3dc0e0e1e1ccce1657a18cbe32f13f9fc9376',
+    '0x7Bd3dc0e0E1e1ccCE1657A18cBe32F13f9fC9376',
     18,
     'WBNB',
     'Wrapped BNB',
@@ -286,22 +286,13 @@ export const WBNB = {
 export const WU2U = {
   [ChainId.U2U_NEBULAS]: new ERC20Token(
     ChainId.U2U_NEBULAS,
-    '0xc5f15624b4256c1206e4bb93f2ccc9163a75b703',
+    '0xC5f15624b4256C1206e4BB93f2CCc9163A75b703',
     18,
     'WU2U',
     'Wrapped U2U',
     'https://www.uniultra.xyz'
   ),
 }
-
-export const U2U_REWARD = new ERC20Token(
-  ChainId.U2U_NEBULAS,
-  '0xe9bBF9b40e2480CEd61E7834f6Cd6349E99116d4',
-  18,
-  'U2U Reward',
-  'Reward U2U2',
-  'https://www.uniultra.xyz'
-)
 
 export const WNATIVE = {
   [ChainId.ETHEREUM]: WETH9[ChainId.ETHEREUM],

@@ -19,6 +19,6 @@ export function useCurrencyUsdPrice(currency: Currency | undefined | null, { ena
     },
     staleTime: SLOW_INTERVAL,
     refetchInterval: SLOW_INTERVAL,
-    enabled: Boolean(enabled && currency),
+    enabled: false && Boolean(enabled && currency),
   })
 }

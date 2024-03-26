@@ -1,4 +1,4 @@
-import { DeserializedFarmsState, DeserializedFarmUserData, supportedChainIdV2 } from '@pancakeswap/farms'
+import { DeserializedFarmsState, DeserializedFarmUserData } from '@pancakeswap/farms'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { useQuery } from '@tanstack/react-query'
 import { SLOW_INTERVAL } from 'config/constants'
@@ -9,7 +9,8 @@ import { useAppDispatch } from 'state'
 import { getMasterChefContract } from 'utils/contractHelpers'
 import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 
-import { U2U_REWARD } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/sdk'
+import { CAKE } from '@pancakeswap/tokens'
 import { formatUnits } from '@pancakeswap/utils/viem/formatUnits'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useTokenContract } from 'hooks/useContract'
@@ -40,7 +41,7 @@ export function useFarmsLength() {
       return Number(await mc.read.poolLength())
     },
 
-    enabled: Boolean(chainId && supportedChainIdV2.includes(chainId)),
+    enabled: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
@@ -49,14 +50,14 @@ export function useFarmsLength() {
 
 export function useRewardBalance() {
   const { address: account } = useAccount()
-  const wRewardContract = useTokenContract(U2U_REWARD.address)
+  const wRewardContract = useTokenContract(CAKE[ChainId.U2U_NEBULAS].address)
 
   return useQuery({
     queryKey: ['rewardBalance', account],
 
     queryFn: async () => {
       const balance = await wRewardContract?.read.balanceOf([account])
-      return formatUnits(balance, U2U_REWARD.decimals)
+      return formatUnits(balance, CAKE[ChainId.U2U_NEBULAS].decimals)
     },
 
     enabled: Boolean(account),
@@ -76,7 +77,7 @@ export function useFarmV2PublicAPI() {
         .then((res) => res.data)
     },
 
-    enabled: Boolean(chainId && supportedChainIdV2.includes(chainId)),
+    enabled: false,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
@@ -109,7 +110,7 @@ export const usePollFarmsWithUserData = () => {
       return null
     },
 
-    enabled: Boolean(chainId && supportedChainIdV2.includes(chainId)),
+    enabled: false,
     refetchInterval: SLOW_INTERVAL,
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
