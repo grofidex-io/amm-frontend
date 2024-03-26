@@ -38,7 +38,6 @@ export function useSwapBestTrade({ maxHops }: Options = {}) {
   if (typeSwap === TYPE_SWAP.BUY) {
     tradeType = isExactIn ? TradeType.EXACT_OUTPUT : TradeType.EXACT_INPUT
   }
-
   const [singleHopOnly] = useUserSingleHopOnly()
   const [split] = useUserSplitRouteEnable()
   const [v2Swap] = useUserV2SwapEnable()
