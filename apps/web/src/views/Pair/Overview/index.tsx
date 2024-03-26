@@ -43,11 +43,6 @@ const StylesInternalLink = styled(Link)`
     text-decoration: none;
   }
 `
-const StyledPools = styled(Pools)`
-  > * {
-    padding: 0;
-  }
-`
 
 export const Overview = () => {
   const { t } = useTranslation()
@@ -73,7 +68,7 @@ export const Overview = () => {
               <StyledHeading>{t('Put your funds to work by providing liquidity.')}</StyledHeading>
               <Text mt="20px" fontSize="18px" color="textSubtle">
                 {t(
-                  'When you add liquidity to a pool, you can receive a share of its trading volume and potentially snag extra rewards when there are incentives involved!',
+                  'When you add liquidity to a pair, you can receive a share of its trading volume and potentially snag extra rewards when there are incentives involved!',
                 )}
               </Text>
             </Box>
@@ -83,9 +78,9 @@ export const Overview = () => {
           </FlexGap>
         </BorderLayout>
         <Box mb={['30px', '40px', '50px', '60px']}>
-          <StylesInternalLink href="/buy-crypto">
+          <StylesInternalLink href="/add">
             <StyledButton>
-              {t('I want to create a position')}
+              {t('Add Liquidity')}
               <ImageIcon src="/images/pair/pair-icon.svg" />
             </StyledButton>
           </StylesInternalLink>
@@ -95,8 +90,8 @@ export const Overview = () => {
           <Tab>{t(`Your Liquidity`)}</Tab>
         </TabMenu>
       </Container>
-      {tab === 0 && <StyledPools />}
-      {tab === 1 && <Liquidity />}
+      {tab === 0 && <Pools />}
+      {tab === 1 && <Liquidity isPair />}
     </Box>
   )
 }

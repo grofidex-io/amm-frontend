@@ -1,55 +1,55 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { CurrencyAmount, WNATIVE } from '@pancakeswap/sdk'
 import {
-  AutoRow,
-  CardBody,
-  Heading,
-  Flex,
-  Slider,
-  Button,
-  Text,
-  ColumnCenter,
   ArrowDownIcon,
   AutoColumn,
-  useModal,
+  AutoRow,
+  Box,
+  Button,
+  CardBody,
+  ColumnCenter,
+  Flex,
+  Heading,
+  Message,
   RowBetween,
   RowFixed,
-  Toggle,
-  Box,
+  Slider,
   Tag,
-  Message,
+  Text,
+  Toggle,
+  useModal,
 } from '@pancakeswap/uikit'
 import { ConfirmationModalContent } from '@pancakeswap/widgets-internal'
 
-import { NonfungiblePositionManager, MasterChefV3 } from '@pancakeswap/v3-sdk'
+import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
+import { useUserSlippage } from '@pancakeswap/utils/user'
+import { MasterChefV3, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
 import { AppBody, AppHeader } from 'components/App'
+import { LightGreyCard } from 'components/Card'
+import FormattedCurrencyAmount from 'components/FormattedCurrencyAmount/FormattedCurrencyAmount'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
+import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
+import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
+import useNativeCurrency from 'hooks/useNativeCurrency'
+import { useStablecoinPrice } from 'hooks/useStablecoinPrice'
 import { useTransactionDeadline } from 'hooks/useTransactionDeadline'
 import { useDerivedV3BurnInfo } from 'hooks/v3/useDerivedV3BurnInfo'
 import { useV3PositionFromTokenId, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
-import { useStablecoinPrice } from 'hooks/useStablecoinPrice'
 import { useRouter } from 'next/router'
 import { useCallback, useMemo, useState } from 'react'
 import { useTransactionAdder } from 'state/transactions/hooks'
-import { useUserSlippage } from '@pancakeswap/utils/user'
+import { styled } from 'styled-components'
+import { hexToBigInt } from 'viem'
 import Page from 'views/Page'
 import { useSendTransaction, useWalletClient } from 'wagmi'
-import useLocalSelector from 'contexts/LocalRedux/useSelector'
-import { styled } from 'styled-components'
-import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
-import { LightGreyCard } from 'components/Card'
-import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
-import FormattedCurrencyAmount from 'components/FormattedCurrencyAmount/FormattedCurrencyAmount'
-import useNativeCurrency from 'hooks/useNativeCurrency'
-import { hexToBigInt } from 'viem'
 
-import { RangeTag } from 'components/RangeTag'
 import Divider from 'components/Divider'
-import { formatRawAmount } from 'utils/formatCurrencyAmount'
-import { basisPointsToPercent } from 'utils/exchange'
-import { getViemClients } from 'utils/viem'
+import { RangeTag } from 'components/RangeTag'
 import { calculateGasMargin } from 'utils'
+import { basisPointsToPercent } from 'utils/exchange'
+import { formatRawAmount } from 'utils/formatCurrencyAmount'
+import { getViemClients } from 'utils/viem'
 
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { isUserRejected } from 'utils/sentry'
@@ -57,9 +57,15 @@ import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToU
 import { useBurnV3ActionHandlers } from './form/hooks'
 
 const BorderCard = styled.div`
-  border: solid 1px ${({ theme }) => theme.colors.cardBorder};
-  border-radius: 16px;
+  border: solid 2px ${({ theme }) => theme.colors.cardBorder};
+  border-radius: 8px;
   padding: 16px;
+  box-shadow: ${({ theme }) => theme.shadows.card};
+`
+const StyledLightGreyCard = styled(LightGreyCard)`
+  border-width: 2px;
+  border-radius: 8px;
+  box-shadow: ${({ theme }) => theme.shadows.card};
 `
 
 // redirect invalid tokenIds
@@ -412,16 +418,16 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
               mb="16px"
             />
             <Flex flexWrap="wrap" justifyContent="space-evenly">
-              <Button variant="tertiary" scale="sm" onClick={() => onPercentSelect(25)}>
+              <Button variant="secondary" scale="sm" onClick={() => onPercentSelect(25)}>
                 25%
               </Button>
-              <Button variant="tertiary" scale="sm" onClick={() => onPercentSelect(50)}>
+              <Button variant="secondary" scale="sm" onClick={() => onPercentSelect(50)}>
                 50%
               </Button>
-              <Button variant="tertiary" scale="sm" onClick={() => onPercentSelect(75)}>
+              <Button variant="secondary" scale="sm" onClick={() => onPercentSelect(75)}>
                 75%
               </Button>
-              <Button variant="tertiary" scale="sm" onClick={() => onPercentSelect(100)}>
+              <Button variant="secondary" scale="sm" onClick={() => onPercentSelect(100)}>
                 {t('Max')}
               </Button>
             </Flex>
@@ -433,7 +439,7 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
             <Text bold color="secondary" fontSize="12px" textTransform="uppercase">
               {t('You will receive')}
             </Text>
-            <LightGreyCard>
+            <StyledLightGreyCard>
               <Flex justifyContent="space-between" as="label" alignItems="center">
                 <Flex alignItems="center">
                   <CurrencyLogo currency={liquidityValue0?.currency} />
@@ -515,7 +521,7 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
                     : ''}
                 </Text>
               </Flex>
-            </LightGreyCard>
+            </StyledLightGreyCard>
           </AutoColumn>
           {showCollectAsWNative && (
             <Flex justifyContent="space-between" alignItems="center" mb="16px">
@@ -542,6 +548,7 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
             disabled={attemptingTxn || removed || Boolean(error)}
             width="100%"
             onClick={onPresentRemoveLiquidityModal}
+            className="button-hover"
           >
             {removed ? t('Closed') : error ?? t('Remove')}
           </Button>

@@ -43,6 +43,10 @@ const ApyLabelContainer = styled(Flex)`
   }
 `
 
+const FlexInline = styled.div`
+  display: inline-flex;
+`
+
 type FarmV3ApyButtonProps = {
   farm: V3Farm
   existingPosition?: Position
@@ -217,13 +221,13 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
       </ul>
       <br />
       <Text>
-        {t('Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.')}
+        {t('Calculated using the total active liquidity staked versus the U2U reward emissions for the farm.')}
       </Text>
-      {canBoosted && (
+      {/* {canBoosted && (
         <Text mt="15px">
           {t('bCAKE only boosts Farm APR. Actual boost multiplier is subject to farm and pool conditions.')}
         </Text>
-      )}
+      )} */}
       <Text mt="15px">{t('APRs for individual positions may vary depending on the configs.')}</Text>
     </>,
   )
@@ -311,12 +315,31 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
                   <>
                     {isDesktop && <RocketIcon color="success" />}
                     <Text bold color="success" fontSize={16}>
-                      <>
-                        <Text bold color="success" fontSize={14} display="inline-block" mr="3px">
+                      <FlexInline>
+                        <Text
+                          bold
+                          color="success"
+                          fontSize={14}
+                          lineHeight="24px"
+                          display="inline-block"
+                          mr="3px"
+                          style={{ whiteSpace: 'nowrap' }}
+                        >
                           {t('Up to')}
                         </Text>
-                        {`${estimatedAPR}%`}
-                      </>
+                        <Text
+                          color="success"
+                          bold
+                          fontSize={15}
+                          style={{
+                            textDecoration: 'underline dotted',
+                            textDecorationColor: 'var(--colors-secondary)',
+                            textUnderlineOffset: '0.1em',
+                          }}
+                        >
+                          {`${estimatedAPR}%`}
+                        </Text>
+                      </FlexInline>
                     </Text>
                   </>
                 )}

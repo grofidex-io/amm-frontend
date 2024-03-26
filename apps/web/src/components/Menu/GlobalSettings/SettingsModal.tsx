@@ -9,8 +9,6 @@ import {
   Checkbox,
   Flex,
   InjectedModalProps,
-  Message,
-  MessageText,
   Modal,
   ModalV2,
   NotificationDot,
@@ -389,7 +387,7 @@ function RoutingSettings() {
         }}
         gap="16px"
       >
-        <AtomBox>
+        {/* <AtomBox>
           <PreTitle mb="24px">{t('Liquidity source')}</PreTitle>
           <BorderLayout>
             <Flex justifyContent="space-between" alignItems="center" mb="24px">
@@ -501,7 +499,7 @@ function RoutingSettings() {
               </MessageText>
             </Message>
           )}
-        </AtomBox>
+        </AtomBox> */}
         <AtomBox>
           <PreTitle mb="24px">{t('Routing preference')}</PreTitle>
           <BorderLayout>

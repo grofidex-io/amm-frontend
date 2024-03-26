@@ -1,16 +1,16 @@
-import { Button, Grid, Message, MessageText, Modal, Text } from '@pancakeswap/uikit'
-import { useLocalNetworkChain } from 'hooks/useActiveChainId'
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
+import { Button, Grid, Message, MessageText, Modal, Text } from '@pancakeswap/uikit'
+import { useMenuItems } from 'components/Menu/hooks/useMenuItems'
+import { getActiveMenuItem, getActiveSubMenuItem } from 'components/Menu/utils'
+import { useLocalNetworkChain } from 'hooks/useActiveChainId'
+import useAuth from 'hooks/useAuth'
 import { useSwitchNetwork, useSwitchNetworkLocal } from 'hooks/useSwitchNetwork'
 import Image from 'next/image'
-import useAuth from 'hooks/useAuth'
-import { useMenuItems } from 'components/Menu/hooks/useMenuItems'
 import { useRouter } from 'next/router'
-import { getActiveMenuItem, getActiveSubMenuItem } from 'components/Menu/utils'
-import { useAccount } from 'wagmi'
 import { useMemo } from 'react'
-import { ChainId } from '@pancakeswap/chains'
 import { viemClients } from 'utils/viem'
+import { useAccount } from 'wagmi'
 import Dots from '../Loader/Dots'
 
 // Where chain is not supported or page not supported
@@ -60,6 +60,7 @@ export function UnsupportedNetworkModal({ pageSupportedChains }: { pageSupported
         </Message>
         {canSwitch ? (
           <Button
+            className="button-hover"
             isLoading={isLoading}
             onClick={() => {
               if (supportedMainnetChains.map((c) => c?.id).includes(chainId)) {
@@ -84,6 +85,7 @@ export function UnsupportedNetworkModal({ pageSupportedChains }: { pageSupported
         )}
         {isConnected && (
           <Button
+            className="button-hover"
             variant="secondary"
             onClick={() =>
               logout().then(() => {

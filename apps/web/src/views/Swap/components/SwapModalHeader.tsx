@@ -7,6 +7,7 @@ import { RowBetween, RowFixed } from 'components/Layout/Row'
 import { CurrencyLogo } from 'components/Logo'
 import { ReactElement, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
+import { TYPE_SWAP } from 'state/swap/reducer'
 import styled from 'styled-components'
 import { basisPointsToPercent, warningSeverity } from 'utils/exchange'
 import { SlippageAdjustedAmounts } from '../V3Swap/utils/exchange'
@@ -31,6 +32,7 @@ export default function SwapModalHeader({
   showAcceptChanges,
   onAcceptChanges,
   allowedSlippage,
+  typeSwap,
 }: {
   inputAmount: CurrencyAmount<Currency>
   outputAmount: CurrencyAmount<Currency>
@@ -46,26 +48,26 @@ export default function SwapModalHeader({
   showAcceptChanges: boolean
   onAcceptChanges: () => void
   allowedSlippage: number | ReactElement
+  typeSwap?: number
 }) {
   const { t } = useTranslation()
 
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
-
   const inputTextColor =
-    showAcceptChanges && tradeType === TradeType.EXACT_OUTPUT && isEnoughInputBalance
+    showAcceptChanges && typeSwap === TYPE_SWAP.SELL && isEnoughInputBalance
       ? 'primary'
-      : tradeType === TradeType.EXACT_OUTPUT && !isEnoughInputBalance
+      : typeSwap === TYPE_SWAP.SELL && !isEnoughInputBalance
       ? 'failure'
       : 'text'
 
   const amount =
-    tradeType === TradeType.EXACT_INPUT
+    typeSwap === TYPE_SWAP.BUY
       ? formatAmount(slippageAdjustedAmounts?.[Field.OUTPUT], 6)
       : formatAmount(slippageAdjustedAmounts?.[Field.INPUT], 6)
-  const symbol = tradeType === TradeType.EXACT_INPUT ? outputAmount.currency.symbol : inputAmount.currency.symbol
+  const symbol = typeSwap === TYPE_SWAP.BUY ? outputAmount.currency.symbol : inputAmount.currency.symbol
 
   const tradeInfoText = useMemo(() => {
-    return tradeType === TradeType.EXACT_INPUT
+    return typeSwap === TYPE_SWAP.BUY
       ? t('Output is estimated. You will receive at least %amount% %symbol% or the transaction will revert.', {
           amount: `${amount}`,
           symbol,
@@ -74,7 +76,7 @@ export default function SwapModalHeader({
           amount: `${amount}`,
           symbol,
         })
-  }, [t, tradeType, amount, symbol])
+  }, [typeSwap, t, amount, symbol])
 
   const truncatedRecipient = recipient ? truncateHash(recipient) : ''
 
@@ -149,7 +151,7 @@ export default function SwapModalHeader({
               : allowedSlippage}
           </Text>
         </RowFixed>
-        {tradeType === TradeType.EXACT_OUTPUT && !isEnoughInputBalance && (
+        {typeSwap === TYPE_SWAP.SELL && !isEnoughInputBalance && (
           <Text fontSize={12} color="failure" textAlign="left" style={{ width: '100%' }}>
             {t('Insufficient input token balance. Your transaction may fail.')}
           </Text>

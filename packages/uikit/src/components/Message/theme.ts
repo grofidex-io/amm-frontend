@@ -12,7 +12,7 @@ const variants = {
     borderColor: "success",
   },
   primary: {
-    background: "rgba(118, 69, 217, 0.1)",
+    background: "rgba(166, 217, 69, 0.1)",
     borderColor: "secondary",
   },
 };
