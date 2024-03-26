@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/chains'
 import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { AtomBox, AutoColumn, Button, CircleLoader, Text } from '@pancakeswap/uikit'
+import { AtomBox, AutoColumn, CircleLoader, Text } from '@pancakeswap/uikit'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -220,11 +220,11 @@ export default function FeeSelector({
                 using state instead of replacing url to /v2 here
                 avoid pages keep in v2 when user change the tokens in selection
               */}
-              <Button variant="text" onClick={handleSelectV2}>
+              {/* <Button variant="text" onClick={handleSelectV2}>
                 <Text color="textSubtle" bold>
                   {t('Add V2 Liquidity')}
                 </Text>
-              </Button>
+              </Button> */}
             </AtomBox>
           )}
         </>

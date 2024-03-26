@@ -372,7 +372,7 @@ export function UniversalAddLiquidity({
 const SELECTOR_TYPE_T = {
   [SELECTOR_TYPE.STABLE]: <Trans>Add Stable Liquidity</Trans>,
   [SELECTOR_TYPE.V2]: <Trans>Add V2 Liquidity</Trans>,
-  [SELECTOR_TYPE.V3]: <Trans>Add V3 Liquidity</Trans>,
+  [SELECTOR_TYPE.V3]: <Trans>Add Liquidity</Trans>,
 } as const satisfies Record<SELECTOR_TYPE, ReactNode>
 
 export function AddLiquidityV3Layout({
@@ -410,7 +410,7 @@ export function AddLiquidityV3Layout({
       )
       return `/stable/${selectedLp?.lpAddress}`
     }
-    return '/liquidity'
+    return '/pair?tab=1'
   }, [lpTokens, baseCurrency, quoteCurrency, currencyIdA, currencyIdB, preferredSelectType])
 
   return (

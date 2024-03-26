@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Pair, Percent, Token } from '@pancakeswap/sdk'
-import { Box, Button, Flex, Loading, Text, useModal } from '@pancakeswap/uikit'
+import { ArrowDropDownIcon, Box, Button, CopyButton, Flex, Loading, Skeleton, Text, useModal } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { Swap as SwapUI } from '@pancakeswap/widgets-internal'
 import { memo, useCallback, useMemo } from 'react'
@@ -11,6 +11,10 @@ import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { useStablecoinPriceAmount } from 'hooks/useStablecoinPrice'
 import { StablePair } from 'views/AddLiquidity/AddStableLiquidity/hooks/useStableLPDerivedMintInfo'
 
+import { WrappedTokenInfo } from '@pancakeswap/token-lists'
+import AddToWalletButton from 'components/AddToWallet/AddToWalletButton'
+import { DoubleCurrencyLogo } from 'components/Logo'
+import CurrencyLogo, { FiatLogo } from 'components/Logo/CurrencyLogo'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { useAccount } from 'wagmi'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
@@ -62,6 +66,7 @@ interface CurrencyInputPanelProps {
   inputLoading?: boolean
   title?: React.ReactNode
   hideBalanceComp?: boolean
+  hideIcon?: boolean
 }
 const CurrencyInputPanel = memo(function CurrencyInputPanel({
   value,
@@ -93,6 +98,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
   inputLoading,
   title,
   hideBalanceComp,
+  hideIcon,
 }: CurrencyInputPanelProps) {
   const { address: account } = useAccount()
 
@@ -161,67 +167,68 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
       loading={inputLoading}
       top={
         <>
-          <CurrencySymbol>{`${title} ${currency?.symbol ? `(${currency?.symbol})` : ''}`}</CurrencySymbol>
-          {/* <Flex alignItems="center">
-            {beforeButton}
-            <CurrencySelectButton
-              className="open-currency-select-button"
-              data-dd-action-name="Select currency"
-              selected={!!currency}
-              onClick={onCurrencySelectClick}
-            >
-              <Flex alignItems="center" justifyContent="space-between">
-                {pair ? (
-                  <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={16} margin />
-                ) : currency ? (
-                  id === 'onramp-input' ? (
-                    <FiatLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
+          {title && <CurrencySymbol>{` ${title} ${currency?.symbol ? `(${currency?.symbol})` : ''}`}</CurrencySymbol>}
+          {!hideIcon && (
+            <Flex alignItems="center">
+              {beforeButton}
+              <CurrencySelectButton
+                className="open-currency-select-button"
+                data-dd-action-name="Select currency"
+                selected={!!currency}
+                onClick={onCurrencySelectClick}
+              >
+                <Flex alignItems="center" justifyContent="space-between">
+                  {pair ? (
+                    <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={16} margin />
+                  ) : currency ? (
+                    id === 'onramp-input' ? (
+                      <FiatLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
+                    ) : (
+                      <CurrencyLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
+                    )
+                  ) : currencyLoading ? (
+                    <Skeleton width="24px" height="24px" variant="circle" />
+                  ) : null}
+                  {currencyLoading ? null : pair ? (
+                    <Text id="pair" bold>
+                      {pair?.token0.symbol}:{pair?.token1.symbol}
+                    </Text>
                   ) : (
-                    <CurrencyLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
-                  )
-                ) : currencyLoading ? (
-                  <Skeleton width="24px" height="24px" variant="circle" />
-                ) : null}
-                {currencyLoading ? null : pair ? (
-                  <Text id="pair" bold>
-                    {pair?.token0.symbol}:{pair?.token1.symbol}
-                  </Text>
-                ) : (
-                  <Text id="pair" bold>
-                    {(currency && currency.symbol && currency.symbol.length > 10
-                      ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
-                          currency.symbol.length - 5,
-                          currency.symbol.length,
-                        )}`
-                      : currency?.symbol) || t('Select a currency')}
-                  </Text>
-                )}
-                {!currencyLoading && !disableCurrencySelect && <ArrowDropDownIcon />}
-              </Flex>
-            </CurrencySelectButton>
-            {token && tokenAddress ? (
-              <Flex style={{ gap: '4px' }} ml="4px" alignItems="center">
-                <CopyButton
-                  data-dd-action-name="Copy token address"
-                  width="16px"
-                  buttonColor="textSubtle"
-                  text={tokenAddress}
-                  tooltipMessage={t('Token address copied')}
-                />
-                <AddToWalletButton
-                  data-dd-action-name="Add to wallet"
-                  variant="text"
-                  p="0"
-                  height="auto"
-                  width="fit-content"
-                  tokenAddress={tokenAddress}
-                  tokenSymbol={token.symbol}
-                  tokenDecimals={token.decimals}
-                  tokenLogo={token instanceof WrappedTokenInfo ? token.logoURI : undefined}
-                />
-              </Flex>
-            ) : null}
-            {token && tokenAddress && token.equals(zksyncTokens.meow) ? (
+                    <Text id="pair" bold>
+                      {(currency && currency.symbol && currency.symbol.length > 10
+                        ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
+                            currency.symbol.length - 5,
+                            currency.symbol.length,
+                          )}`
+                        : currency?.symbol) || t('Select a currency')}
+                    </Text>
+                  )}
+                  {!currencyLoading && !disableCurrencySelect && <ArrowDropDownIcon />}
+                </Flex>
+              </CurrencySelectButton>
+              {token && tokenAddress ? (
+                <Flex style={{ gap: '4px' }} ml="4px" alignItems="center">
+                  <CopyButton
+                    data-dd-action-name="Copy token address"
+                    width="16px"
+                    buttonColor="textSubtle"
+                    text={tokenAddress}
+                    tooltipMessage={t('Token address copied')}
+                  />
+                  <AddToWalletButton
+                    data-dd-action-name="Add to wallet"
+                    variant="text"
+                    p="0"
+                    height="auto"
+                    width="fit-content"
+                    tokenAddress={tokenAddress}
+                    tokenSymbol={token.symbol}
+                    tokenDecimals={token.decimals}
+                    tokenLogo={token instanceof WrappedTokenInfo ? token.logoURI : undefined}
+                  />
+                </Flex>
+              ) : null}
+              {/* {token && tokenAddress && token.equals(zksyncTokens.meow) ? (
               <LinkExternal
                 ml="4px"
                 data-dd-action-name="Token campaign"
@@ -231,8 +238,9 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
               >
                 🎁
               </LinkExternal>
-            ) : null}
-          </Flex> */}
+            ) : null} */}
+            </Flex>
+          )}
           {account && !hideBalanceComp && (
             <Text
               data-dd-action-name="Token balance"
