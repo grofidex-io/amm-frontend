@@ -160,12 +160,7 @@ export default function Swap() {
         alignItems="flex-start"
         width="100%"
       >
-        <Flex
-          flexDirection="column"
-          order={['2', '2', '2', '2', '1']}
-          width={['100%', '100%', '100%', '100%', 'auto']}
-          flexGrow={2}
-        >
+        <Flex flexDirection="column" order={['2', '2', '2', '2', '1']} width="100%" flexGrow={2}>
           {isChartSupported && (
             <PriceChartContainer
               onCurrencySelectClick={onCurrencySelectClick}
