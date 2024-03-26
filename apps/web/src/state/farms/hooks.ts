@@ -9,7 +9,8 @@ import { useAppDispatch } from 'state'
 import { getMasterChefContract } from 'utils/contractHelpers'
 import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 
-import { U2U_REWARD } from '@pancakeswap/sdk'
+import { ChainId } from '@pancakeswap/sdk'
+import { CAKE } from '@pancakeswap/tokens'
 import { formatUnits } from '@pancakeswap/utils/viem/formatUnits'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useTokenContract } from 'hooks/useContract'
@@ -49,14 +50,14 @@ export function useFarmsLength() {
 
 export function useRewardBalance() {
   const { address: account } = useAccount()
-  const wRewardContract = useTokenContract(U2U_REWARD.address)
+  const wRewardContract = useTokenContract(CAKE[ChainId.U2U_NEBULAS].address)
 
   return useQuery({
     queryKey: ['rewardBalance', account],
 
     queryFn: async () => {
       const balance = await wRewardContract?.read.balanceOf([account])
-      return formatUnits(balance, U2U_REWARD.decimals)
+      return formatUnits(balance, CAKE[ChainId.U2U_NEBULAS].decimals)
     },
 
     enabled: Boolean(account),

@@ -1,9 +1,12 @@
 import { useTranslation } from "@pancakeswap/localization";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import { createChart, IChartApi, LineStyle, UTCTimestamp } from "lightweight-charts";
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTheme } from "styled-components";
 import LineChartLoader from "./LineChartLoaderSVG";
+
+dayjs.extend(utc);
 
 export enum PairDataTimeWindowEnum {
   DAY,
@@ -85,7 +88,7 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
         borderVisible: false,
         secondsVisible: false,
         tickMarkFormatter: (unixTime: number) => {
-          return dayjs.unix(unixTime).format(dateFormattingByTimewindow[timeWindow]);
+          return dayjs.unix(unixTime).utc().format(dateFormattingByTimewindow[timeWindow]);
         },
       },
       grid: {

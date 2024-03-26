@@ -9,9 +9,9 @@ import { bitQueryServerClient, infoServerClient } from 'utils/graphql'
 import { formatEther } from 'viem'
 import InfoPage from './info/v3/index'
 
-const IndexPage = () => {
-  return <InfoPage />
-}
+// const IndexPage = () => {
+//   return <InfoPage />
+// }
 
 // Values fetched from TheGraph and BitQuery jan 24, 2022
 const txCount = 54780336
@@ -124,6 +124,6 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 }
 
-IndexPage.chains = []
+// IndexPage.chains = []
 
-export default IndexPage
+export default InfoPage

@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, U2U_REWARD, WNATIVE } from '@pancakeswap/sdk'
+import { ChainId, Currency, WNATIVE } from '@pancakeswap/sdk'
+import { CAKE } from '@pancakeswap/tokens'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useMemo } from 'react'
@@ -34,8 +35,10 @@ export default function useWrapCallback(
   const inputAmount = useMemo(() => tryParseAmount(typedValue, inputCurrency), [inputCurrency, typedValue])
   const addTransaction = useTransactionAdder()
   const address =
-    outputCurrency && inputCurrency && (U2U_REWARD?.equals(outputCurrency) || U2U_REWARD?.equals(inputCurrency))
-      ? U2U_REWARD.address
+    outputCurrency &&
+    inputCurrency &&
+    (CAKE[ChainId.U2U_NEBULAS]?.equals(outputCurrency) || CAKE[ChainId.U2U_NEBULAS]?.equals(inputCurrency))
+      ? CAKE[ChainId.U2U_NEBULAS].address
       : undefined
   const wbnbContract = useWNativeContractByAddress(address)
 
@@ -46,9 +49,12 @@ export default function useWrapCallback(
     const WRAP_TOKEN =
       WNATIVE[chainId]?.equals(outputCurrency) || WNATIVE[chainId]?.equals(inputCurrency)
         ? WNATIVE[chainId]
-        : U2U_REWARD
+        : CAKE[ChainId.U2U_NEBULAS]
 
-    if (inputCurrency?.isNative && (WNATIVE[chainId]?.equals(outputCurrency) || U2U_REWARD?.equals(outputCurrency))) {
+    if (
+      inputCurrency?.isNative &&
+      (WNATIVE[chainId]?.equals(outputCurrency) || CAKE[ChainId.U2U_NEBULAS]?.equals(outputCurrency))
+    ) {
       return {
         wrapType: WrapType.WRAP,
         execute:
@@ -76,7 +82,10 @@ export default function useWrapCallback(
           : t('Insufficient %symbol% balance', { symbol: inputCurrency.symbol }),
       }
     }
-    if ((WNATIVE[chainId]?.equals(inputCurrency) || U2U_REWARD?.equals(inputCurrency)) && outputCurrency?.isNative) {
+    if (
+      (WNATIVE[chainId]?.equals(inputCurrency) || CAKE[ChainId.U2U_NEBULAS]?.equals(inputCurrency)) &&
+      outputCurrency?.isNative
+    ) {
       return {
         wrapType: WrapType.UNWRAP,
         execute:
