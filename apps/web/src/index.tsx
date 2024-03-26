@@ -51,7 +51,7 @@ export function Blocklist() {
         <Modal title={t('Blocked address')} hideCloseButton>
           <Grid style={{ gap: '16px' }} maxWidth={['100%', null, '400px']}>
             <Text style={{ wordBreak: 'break-word' }}>{address}</Text>
-            <Text>
+            {/* <Text>
               {t('We have detected that this address is associated with a Prohibited Activity')}{' '}
               <Link
                 style={{ display: 'inline-block' }}
@@ -60,11 +60,11 @@ export function Blocklist() {
               >
                 {t('Learn more')}
               </Link>
-            </Text>
+            </Text> */}
             <Text>
               {t('If you believe that your address has been misclassified, please email')}{' '}
-              <Link style={{ display: 'inline-block' }} href="mailto:info@pancakeswap.com">
-                info@pancakeswap.com
+              <Link style={{ display: 'inline-block' }} href="mailto:info@u2dex.io">
+                info@u2dex.io
               </Link>
             </Text>
           </Grid>

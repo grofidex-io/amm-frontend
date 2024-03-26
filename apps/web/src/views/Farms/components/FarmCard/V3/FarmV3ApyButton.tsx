@@ -217,13 +217,13 @@ function FarmV3ApyButton_({ farm, existingPosition, isPositionStaked, tokenId }:
       </ul>
       <br />
       <Text>
-        {t('Calculated using the total active liquidity staked versus the CAKE reward emissions for the farm.')}
+        {t('Calculated using the total active liquidity staked versus the U2U reward emissions for the farm.')}
       </Text>
-      {canBoosted && (
+      {/* {canBoosted && (
         <Text mt="15px">
           {t('bCAKE only boosts Farm APR. Actual boost multiplier is subject to farm and pool conditions.')}
         </Text>
-      )}
+      )} */}
       <Text mt="15px">{t('APRs for individual positions may vary depending on the configs.')}</Text>
     </>,
   )
