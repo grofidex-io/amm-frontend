@@ -279,10 +279,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
           return farm
         }
         const totalLiquidityFromLp = new BigNumber(farm?.lpTotalInQuoteToken ?? 0).times(farm.quoteTokenPriceBusd)
-        console.log(
-          '🚀 ~ constfarmsToDisplayWithAPR:any=farmsToDisplay.map ~ totalLiquidityFromLp:',
-          totalLiquidityFromLp,
-        )
         // Mock 1$ tvl if the farm doesn't have lp staked
         const totalLiquidity = totalLiquidityFromLp.eq(BIG_ZERO) && mockApr ? BIG_ONE : totalLiquidityFromLp
         const { cakeRewardsApr, lpRewardsApr } =

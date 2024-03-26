@@ -1,5 +1,5 @@
-import { styled } from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
+import { styled } from "styled-components";
 import { Link } from "../Link";
 import { Text } from "../Text";
 
@@ -26,7 +26,7 @@ export const FarmMultiplierInfo: React.FC<React.PropsWithChildren<FarmMultiplier
   return (
     <>
       <Text bold>
-        {t("Farm’s CAKE Per Second:")}
+        {t("Farm’s U2U-Reward Per Second:")}
         <InlineText marginLeft={2}>{farmCakePerSecond}</InlineText>
       </Text>
       <Text bold>

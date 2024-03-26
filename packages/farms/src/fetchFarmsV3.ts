@@ -487,7 +487,6 @@ export function getFarmsPrices(
     if (tokenPriceBusd.isZero() && !quoteTokenPriceBusd.isZero() && farm.tokenPriceVsQuote) {
       tokenPriceBusd = quoteTokenPriceBusd.times(farm.tokenPriceVsQuote)
     }
-    console.log(quoteTokenPriceBusd.isZero() && !tokenPriceBusd.isZero() && farm.tokenPriceVsQuote)
     if (quoteTokenPriceBusd.isZero() && !tokenPriceBusd.isZero() && farm.tokenPriceVsQuote) {
       quoteTokenPriceBusd = tokenPriceBusd.div(farm.tokenPriceVsQuote)
     }
