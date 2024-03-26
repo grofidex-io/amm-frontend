@@ -31,3 +31,5 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: 'apis/farms'
           packageManager: pnpm
+        env:
+          U2U_TESTNET_NODE: "https://rpc-nebulas-testnet.uniultra.xyz"
