@@ -11,6 +11,10 @@ jobs:
       - uses: pnpm/action-setup@v2
         with:
           version: 8
+          
+      - name: Install dependencies
+        run: pnpm build
+
       - name: Build & Deploy Worker
         uses: cloudflare/wrangler-action@v3
         with:
