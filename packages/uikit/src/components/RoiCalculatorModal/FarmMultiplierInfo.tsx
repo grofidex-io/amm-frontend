@@ -35,13 +35,15 @@ export const FarmMultiplierInfo: React.FC<React.PropsWithChildren<FarmMultiplier
       </Text>
       <Text my="24px">
         {t(
-          "The Farm Multiplier represents the proportion of CAKE rewards each farm receives as a proportion of its farm group."
+          "The Farm Multiplier represents the proportion of U2U rewards each farm receives as a proportion of its farm group."
         )}
       </Text>
       <Text my="24px">
-        {t("For example, if a 1x farm received 1 CAKE per block, a 40x farm would receive 40 CAKE per block.")}
+        {t(
+          "For example, if a 1x farm received 1 U2U Reward per block, a 40x farm would receive 40 U2U Reward per block."
+        )}
       </Text>
-      <Text>
+      {/* <Text>
         {t("Different farm groups have different sets of multipliers.")}
         <InlineLink
           mt="8px"
@@ -51,7 +53,7 @@ export const FarmMultiplierInfo: React.FC<React.PropsWithChildren<FarmMultiplier
         >
           {t("Learn More")}
         </InlineLink>
-      </Text>
+      </Text> */}
     </>
   );
 };

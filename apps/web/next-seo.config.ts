@@ -12,6 +12,6 @@ export const SEO: DefaultSeoProps = {
   openGraph: {
     title: "U2Dex - Everyone's Favorite DEX",
     description: 'Trade, earn, and own crypto on the all-in-one multichain DEX',
-    images: [{ url: 'https://assets.u2dex.io/web/og/v2/hero.jpg' }],
+    images: [{ url: '/thumbnail.png' }],
   },
 }

@@ -85,11 +85,12 @@ export const StyledInput = styled.input<StyledInputProps>`
 `;
 
 export const BarBackground = styled.div<DisabledProp>`
-  background-color: ${({ theme, disabled }) => theme.colors[disabled ? "textDisabled" : "inputSecondary"]};
-  height: 2px;
+  background-color: ${({ theme, disabled }) => theme.colors[disabled ? "textDisabled" : "backgroundItem"]};
+  height: 10px;
   position: absolute;
   top: 18px;
   width: 100%;
+  border-radius: 4px;
 `;
 
 export const BarProgress = styled.div<DisabledProp>`
