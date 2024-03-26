@@ -8,5 +8,5 @@ on:
 
 jobs:
   u2u-workflow:
-    uses: u2u-eco/u2sec-ci-templates/.github/workflows/default-template-dev.yaml@v1
+    uses: u2u-eco/u2sec-ci-templates/.github/workflows/default-template-testnet.yaml@v1
     secrets: inherit
