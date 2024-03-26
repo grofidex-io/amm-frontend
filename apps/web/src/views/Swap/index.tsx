@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { Box, Flex, Tab, TabMenu, useMatchBreakpoints, useModal } from '@pancakeswap/uikit'
+import { Box, Flex, Tab, TabMenu, useModal } from '@pancakeswap/uikit'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { AppBody } from 'components/App'
 import { useCallback, useContext, useMemo, useState } from 'react'
@@ -29,7 +29,7 @@ import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 
 export default function Swap() {
   // const { query } = useRouter()
-  const { isDesktop } = useMatchBreakpoints()
+  // const { isDesktop } = useMatchBreakpoints()
   const {
     isChartExpanded,
     isChartDisplayed,

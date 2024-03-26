@@ -1,8 +1,9 @@
 /* eslint-disable no-restricted-syntax */
 import { useDebounce, useSortedTokensByQuery } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId, Currency, Token, U2U_REWARD, WNATIVE } from '@pancakeswap/sdk'
+import { ChainId, Currency, Token, WNATIVE } from '@pancakeswap/sdk'
 import { WrappedTokenInfo, createFilterToken } from '@pancakeswap/token-lists'
+import { CAKE } from '@pancakeswap/tokens'
 import {
   ArrowBackIcon,
   AutoColumn,
@@ -168,7 +169,7 @@ function CurrencySearch({
     if (
       isSelectMulti &&
       step === 1 &&
-      currency0?.wrapped?.address.toLowerCase() === U2U_REWARD?.address.toLowerCase()
+      currency0?.wrapped?.address.toLowerCase() === CAKE[ChainId.U2U_NEBULAS]?.address.toLowerCase()
     ) {
       return [WNATIVE[ChainId.U2U_NEBULAS]]
     }
@@ -178,7 +179,7 @@ function CurrencySearch({
       WNATIVE[ChainId.U2U_NEBULAS].address?.toLowerCase() !== currency0?.wrapped.address.toLowerCase()
     ) {
       return _filteredQueryTokens.filter(
-        (item) => item?.wrapped.address.toLowerCase() !== U2U_REWARD?.wrapped.address?.toLowerCase(),
+        (item) => item?.wrapped.address.toLowerCase() !== CAKE[ChainId.U2U_NEBULAS]?.wrapped.address?.toLowerCase(),
       )
     }
     return _filteredQueryTokens
