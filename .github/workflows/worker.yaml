@@ -18,11 +18,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
 
-      # - name: Install dependencies
-      #   run: pnpm install
+      - name: Install dependencies
+        run: pnpm install
 
-      # - name: Install dependencies
-      #   run: pnpm build:packages
+      - name: Build packages
+        run: pnpm build:packages
 
       - name: Make envfile
         uses: SpicyPizza/create-envfile@v1.3
@@ -35,15 +35,7 @@ jobs:
           file_name: apis/farms/.env
           fail_on_empty: false
 
-      - name: Install dependencies
-        run: ls -la apis/farms/.env
-      - name: Install dependencies
-        run: cat apis/farms/.env
-
-      # - name: Build & Deploy Worker
-      #   uses: cloudflare/wrangler-action@v3
-      #   with:
-      #     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      #     accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-      #     workingDirectory: 'apis/farms'
-      #     packageManager: pnpm
+      - name: Build & Deploy Worker
+        run: |
+          cd apis/farms
+          npm run deploy
