@@ -12,7 +12,7 @@ const InactiveButton: PolymorphicComponent<InactiveButtonProps, "button"> = styl
   background-color: transparent;
   border-color: ${({ theme, variant }) =>
     variant === variants.PRIMARY ? theme.colors.transparent : theme.colors.cardBorder};
-  color: ${({ theme }) => theme.colors.textSubtle};
+  color: ${({ theme }) => theme.colors.text};
   &:hover:not(:disabled):not(:active) {
     background-color: transparent;
     color: ${({ theme }) => theme.colors.hover};

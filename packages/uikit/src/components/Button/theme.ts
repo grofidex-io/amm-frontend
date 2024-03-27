@@ -73,4 +73,8 @@ export const styleVariants = {
       background: vars.colors.disabled,
     },
   },
+  [variants.SILVER]: {
+    background: vars.colors.silver,
+    color: "black",
+  },
 };

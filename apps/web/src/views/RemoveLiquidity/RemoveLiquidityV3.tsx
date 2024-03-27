@@ -418,16 +418,16 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
               mb="16px"
             />
             <Flex flexWrap="wrap" justifyContent="space-evenly">
-              <Button variant="secondary" scale="sm" onClick={() => onPercentSelect(25)}>
+              <Button variant="tertiary" scale="sm" onClick={() => onPercentSelect(25)}>
                 25%
               </Button>
-              <Button variant="secondary" scale="sm" onClick={() => onPercentSelect(50)}>
+              <Button variant="tertiary" scale="sm" onClick={() => onPercentSelect(50)}>
                 50%
               </Button>
-              <Button variant="secondary" scale="sm" onClick={() => onPercentSelect(75)}>
+              <Button variant="tertiary" scale="sm" onClick={() => onPercentSelect(75)}>
                 75%
               </Button>
-              <Button variant="secondary" scale="sm" onClick={() => onPercentSelect(100)}>
+              <Button variant="tertiary" scale="sm" onClick={() => onPercentSelect(100)}>
                 {t('Max')}
               </Button>
             </Flex>

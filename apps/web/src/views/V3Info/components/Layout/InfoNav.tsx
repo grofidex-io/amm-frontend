@@ -24,7 +24,7 @@ import { v3InfoPath } from '../../constants'
 import Search from '../Search'
 
 const NavWrapper = styled(Flex)`
-  background: ${({ theme }) => theme.colors.gradientCardHeader};
+  background: ${({ theme }) => theme.colors.gradientHover};
   justify-content: space-between;
   padding: 20px 16px;
   flex-direction: column;
@@ -53,7 +53,7 @@ const InfoNav: React.FC<{ isStableSwap: boolean }> = ({ isStableSwap }) => {
     <NavWrapper>
       <Flex>
         <Box>
-          <ButtonMenu activeIndex={activeIndex} scale="sm" variant="subtle">
+          <ButtonMenu activeIndex={activeIndex} scale="sm" variant="tertiary">
             <ButtonMenuItem as={NextLinkFromReactRouter} to={`/${v3InfoPath}${chainPath}${stableSwapQuery}`}>
               {t('Overview')}
             </ButtonMenuItem>
