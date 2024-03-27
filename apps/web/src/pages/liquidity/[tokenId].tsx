@@ -533,7 +533,7 @@ export default function PoolPage() {
 
   return (
     <Page>
-      {!isLoading && <NextSeo title={`${currencyQuote?.symbol}-${currencyBase?.symbol} V3 LP #${tokenIdFromUrl}`} />}
+      {!isLoading && <NextSeo title={`${currencyQuote?.symbol}-${currencyBase?.symbol} LP #${tokenIdFromUrl}`} />}
       <BodyWrapper>
         {isLoading ? (
           <Flex width="100%" justifyContent="center" alignItems="center" minHeight="200px" mb="32px">
@@ -563,8 +563,7 @@ export default function PoolPage() {
                   </Flex>
                   <RowBetween gap="16px" flexWrap="nowrap">
                     <Text fontSize="14px" color="textSubtle" style={{ wordBreak: 'break-word' }}>
-                      V3 LP #{tokenIdFromUrl} / {new Percent(feeAmount || 0, 1_000_000).toSignificant()}%{' '}
-                      {t('fee tier')}
+                      LP #{tokenIdFromUrl} / {new Percent(feeAmount || 0, 1_000_000).toSignificant()}% {t('fee tier')}
                     </Text>
                     {isMobile && (
                       <Flex>

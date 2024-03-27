@@ -1,4 +1,4 @@
-# Contributing to the Pancake ecosystem 🥞
+# Contributing to the U2Dex ecosystem 🥞
 
 Thanks for taking the time to contribute !
 
