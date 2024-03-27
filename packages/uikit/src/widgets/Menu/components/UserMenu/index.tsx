@@ -14,7 +14,7 @@ export const StyledUserMenu = styled(Flex)`
   border: 2px solid ${({ theme }) => theme.colors.cardBorder};
   cursor: pointer;
   display: inline-flex;
-  padding: 8px 8px 8px 32px;
+  padding: 8px 8px 8px 24px;
   position: relative;
   height: 36px;
 
@@ -22,6 +22,9 @@ export const StyledUserMenu = styled(Flex)`
     box-shadow: ${({ theme }) => theme.shadows.button};
     color: ${({ theme }) => theme.colors.black};
     opacity: 0.8;
+  }
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 8px 8px 8px 32px;
   }
 `;
 
@@ -62,6 +65,12 @@ const Menu = styled.div<{ $isOpen: boolean }>`
 
   ${UserMenuItem}:last-child {
     border-radius: 0 0 8px 8px;
+  }
+`;
+const StyledArrowIcon = styled.div`
+  display: none;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    display: block;
   }
 `;
 
@@ -128,7 +137,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
         <LabelText title={typeof text === "string" ? text || account : account}>
           {text || (ellipsis ? accountEllipsis : account)}
         </LabelText>
-        {!disabled && <ChevronDownIcon color="text" width="24px" />}
+        <StyledArrowIcon>{!disabled && <ChevronDownIcon color="text" width="24px" />}</StyledArrowIcon>
       </StyledUserMenu>
       {!disabled && (
         <Menu style={styles.popper} ref={setTooltipRef} {...attributes.popper} $isOpen={isOpen}>

@@ -15,8 +15,8 @@ export const UserMenuItem = styled.button<UserMenuItemProps>`
   color: ${({ theme, disabled }) => theme.colors[disabled ? "textDisabled" : "text"]};
   cursor: pointer;
   display: flex;
-  font-size: 16px;
-  height: 48px;
+  font-size: 14px;
+  height: 40px;
   justify-content: space-between;
   outline: 0;
   padding-left: 16px;
@@ -34,5 +34,9 @@ export const UserMenuItem = styled.button<UserMenuItemProps>`
   &:active:not(:disabled) {
     opacity: 0.85;
     transform: translateY(1px);
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
+    font-size: 16px;
+    height: 48px;
   }
 `;
