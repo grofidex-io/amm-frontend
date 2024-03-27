@@ -4,8 +4,8 @@ import { ASSET_CDN } from './endpoints'
 import { PageMeta } from './types'
 
 export const DEFAULT_META: PageMeta = {
-  title: 'PancakeSwap',
-  description: 'Trade, earn, and own crypto on the all-in-one multichain DEX',
+  title: 'U2Dex',
+  description: 'Trade, earn, and own crypto.',
   image: `${ASSET_CDN}/web/og/hero.jpg`,
 }
 
@@ -38,24 +38,24 @@ const getPathList = (t: ContextApi['t']): PathList => {
       '/voting/proposal/create': { title: t('Make a Proposal') },
       '/info': {
         title: `${t('Overview')} - ${t('Info')}`,
-        description: 'View statistics for Pancakeswap exchanges.',
+        description: 'View statistics for U2Dex exchanges.',
       },
       '/info/pairs': {
         title: `${t('Pairs')} - ${t('Info')}`,
-        description: 'View statistics for Pancakeswap exchanges.',
+        description: 'View statistics for U2Dex exchanges.',
       },
       '/info/tokens': {
         title: `${t('Tokens')} - ${t('Info')}`,
-        description: 'View statistics for Pancakeswap exchanges.',
+        description: 'View statistics for U2Dex exchanges.',
       },
       '/nfts': { title: t('NFT Marketplace') },
       '/nfts/collections': { basePath: true, title: t('Collections') },
       '/nfts/activity': { title: t('Activity') },
       '/profile': { basePath: true, title: t('Profile') },
-      '/pancake-squad': { basePath: true, title: t('Pancake Squad') },
+      '/pancake-squad': { basePath: true, title: t('U2Dex Squad') },
       '/pottery': { basePath: true, title: t('Pottery') },
     },
-    defaultTitleSuffix: t('PancakeSwap'),
+    defaultTitleSuffix: t('U2Dex'),
   }
 }
 

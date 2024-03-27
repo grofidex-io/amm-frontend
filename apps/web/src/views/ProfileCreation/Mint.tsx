@@ -1,8 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { bscTokens } from '@pancakeswap/tokens'
 import { Card, CardBody, Heading, Text, useToast } from '@pancakeswap/uikit'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import { FetchStatus } from 'config/constants/types'
-import { formatUnits } from 'viem'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useBunnyFactory } from 'hooks/useContract'
@@ -11,12 +11,12 @@ import { useEffect, useState } from 'react'
 import { getNftsFromCollectionApi } from 'state/nftMarket/helpers'
 import { ApiSingleTokenData } from 'state/nftMarket/types'
 import { getBunnyFactoryAddress } from 'utils/addressHelpers'
-import { bscTokens } from '@pancakeswap/tokens'
+import { formatUnits } from 'viem'
 import { pancakeBunniesAddress } from 'views/Nft/market/constants'
-import { MINT_COST, STARTER_NFT_BUNNY_IDS } from './config'
-import useProfileCreation from './contexts/hook'
 import NextStepButton from './NextStepButton'
 import SelectionCard from './SelectionCard'
+import { MINT_COST, STARTER_NFT_BUNNY_IDS } from './config'
+import useProfileCreation from './contexts/hook'
 
 interface MintNftData extends ApiSingleTokenData {
   bunnyId?: string
@@ -81,7 +81,7 @@ const Mint: React.FC<React.PropsWithChildren> = () => {
       <Text as="p">{t('Every profile starts by making a “starter” collectible (NFT).')}</Text>
       <Text as="p">{t('This starter will also become your first profile picture.')}</Text>
       <Text as="p" mb="24px">
-        {t('You can change your profile pic later if you get another approved Pancake Collectible.')}
+        {t('You can change your profile pic later if you get another approved U2Dex Collectible.')}
       </Text>
       <Card mb="24px">
         <CardBody>

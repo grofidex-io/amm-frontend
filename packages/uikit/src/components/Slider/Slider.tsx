@@ -1,13 +1,13 @@
 import React, { ChangeEvent, useCallback } from "react";
 import { Box } from "../Box";
 import {
-  BunnySlider,
   BarBackground,
   BarProgress,
   BunnyButt,
-  StyledInput,
+  BunnySlider,
   SliderLabel,
   SliderLabelContainer,
+  StyledInput,
 } from "./styles";
 import SliderProps from "./types";
 
@@ -35,9 +35,9 @@ const Slider: React.FC<React.PropsWithChildren<SliderProps>> = ({
   if (progressPercentage <= 10) {
     progressWidth = `${progressPercentage + 0.5}%`;
   } else if (progressPercentage >= 90) {
-    progressWidth = `${progressPercentage - 4}%`;
+    progressWidth = `${progressPercentage - 2}%`;
   } else if (progressPercentage >= 60) {
-    progressWidth = `${progressPercentage - 2.5}%`;
+    progressWidth = `${progressPercentage - 2}%`;
   } else {
     progressWidth = `${progressPercentage}%`;
   }

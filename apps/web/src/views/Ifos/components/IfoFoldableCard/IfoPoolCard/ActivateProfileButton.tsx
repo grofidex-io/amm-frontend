@@ -44,7 +44,7 @@ export function ActivateProfileButton({ saleFinished }: Props) {
         isOpen={isOpen}
         supportedChains={PROFILE_SUPPORTED_CHAIN_IDS}
         title={t('Create Profile')}
-        description={t('Create your Pancake Profile on %chain%', {
+        description={t('Create your U2Dex Profile on %chain%', {
           chain: chainNames,
         })}
         buttonText={t('Switch chain to create profile')}

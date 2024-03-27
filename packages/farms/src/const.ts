@@ -20,7 +20,7 @@ export const masterChefAddresses = {
 } as const
 
 export const masterChefV3Addresses = {
-  [ChainId.U2U_NEBULAS]: '0x855b2d5142f6abd6ac691f4696050f563a212dcc',
+  [ChainId.U2U_NEBULAS]: '0x4a5f63c11fd5bd463e9595d52f155cdaf48d7edc',
 } as const satisfies Record<FarmV3SupportedChainId, string>
 
 export const nonBSCVaultAddresses = {

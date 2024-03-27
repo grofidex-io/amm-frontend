@@ -6,6 +6,7 @@ import { Colors } from "../../../../theme/types";
 import { Variant, variants } from "./types";
 
 const MenuIconWrapper = styled.div<{ borderColor: keyof Colors }>`
+  --size: 23px;
   align-items: center;
   background-color: ${({ theme }) => theme.colors.background};
   border-color: ${({ theme, borderColor }) => theme.colors[borderColor]};
@@ -13,14 +14,19 @@ const MenuIconWrapper = styled.div<{ borderColor: keyof Colors }>`
   border-style: solid;
   border-width: 2px;
   display: flex;
-  height: 26px;
+  height: var(--size);
   justify-content: center;
-  left: 8px;
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
-  width: 26px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--size);
   z-index: 102;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    --size: 25px;
+    left: 8px;
+    transform: translate(0, -50%);
+  }
 `;
 
 const ProfileIcon = styled(Image)`
@@ -31,11 +37,14 @@ const ProfileIcon = styled(Image)`
 
   & > img {
     border-radius: 50%;
-    height: 80%;
+    height: 70%;
     object-fit: contain;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    ${({ theme }) => theme.mediaQueries.md} {
+      height: 80%;
+    }
   }
 `;
 

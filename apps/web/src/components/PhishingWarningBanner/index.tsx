@@ -1,8 +1,8 @@
+import { useTranslation } from '@pancakeswap/localization'
+import { Box, CloseIcon, Flex, IconButton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { usePhishingBanner } from '@pancakeswap/utils/user'
 import { useMemo } from 'react'
 import { styled } from 'styled-components'
-import { Text, Flex, Box, CloseIcon, IconButton, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import { usePhishingBanner } from '@pancakeswap/utils/user'
 
 const Container = styled(Flex)`
   overflow: hidden;
@@ -40,7 +40,7 @@ const SpeechBubble = styled.div`
   }
 `
 
-const domain = 'https://pancakeswap.finance'
+const domain = 'https://testnet.u2dex.io/'
 
 const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
@@ -48,7 +48,7 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
   const { isMobile, isMd } = useMatchBreakpoints()
   const warningTextAsParts = useMemo(() => {
     const warningText = t("please make sure you're visiting %domain% - check the URL carefully.", { domain })
-    return warningText.split(/(https:\/\/pancakeswap.finance)/g)
+    return warningText.split(/(https:\/\/testnet.u2dex.io)/g)
   }, [t])
   const warningTextComponent = (
     <>

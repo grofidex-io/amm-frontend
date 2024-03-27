@@ -1,18 +1,18 @@
-import { useMemo } from 'react'
-import { Text, Flex, AccountIcon, TeamBattleIcon, Box, useTooltip, LinkExternal } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
+import { AccountIcon, Box, Flex, LinkExternal, TeamBattleIcon, Text, useTooltip } from '@pancakeswap/uikit'
+import { useMemo } from 'react'
+import { useAccount } from 'wagmi'
 
+import TransWithElement from '../../TransWithElement'
 import OkNFTIcon from './Icons/OkNFT'
 import OkProfilePointsIcon from './Icons/OkProfilePoints'
-import TransWithElement from '../../TransWithElement'
 
 const NotOkNFT = ({ admissionProfile }) => {
   const { t } = useTranslation()
 
   const keyword = '%Pancake Squad NFT%'
 
-  const rawText = t(`Set %Pancake Squad NFT% as Pancake Profile avatar`)
+  const rawText = t(`Set %Pancake Squad NFT% as U2Dex Profile avatar`)
 
   return (
     <TransWithElement
@@ -22,9 +22,9 @@ const NotOkNFT = ({ admissionProfile }) => {
         <>
           <LinkExternal
             style={{ display: 'inline' }}
-            href={`https://pancakeswap.finance/nfts/collections/${admissionProfile}`}
+            href={`https://testnet.u2dex.io/nfts/collections/${admissionProfile}`}
           >
-            {t('Pancake Squad NFT')}
+            {t('U2Dex Squad NFT')}
           </LinkExternal>
           <br />
         </>
@@ -52,7 +52,7 @@ const NotOkProfilePoints = ({ pointThreshold }) => {
             style={{ display: 'inline' }}
             href={`https://pancakeswap.finance/profile/${account}/achievements/`}
           >
-            {t('Pancake Profile')}
+            {t('U2Dex Profile')}
           </LinkExternal>
         </>
       }
@@ -66,7 +66,7 @@ const configCriterias = (pointThreshold: number, admissionProfile: string, t) =>
     okMsg: t('Eligible NFT avatar found!'),
     notOkMsg: <NotOkNFT admissionProfile={admissionProfile} />,
     NotOkIcon: AccountIcon,
-    name: t('Pancake Squad'),
+    name: t('U2Dex Squad'),
   },
   isQualifiedPoints: {
     OkIcon: OkProfilePointsIcon,

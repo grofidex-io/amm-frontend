@@ -1,7 +1,7 @@
-import React, { useState, createContext } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
-import { usePool } from 'state/pools/hooks'
 import _toString from 'lodash/toString'
+import React, { createContext, useState } from 'react'
+import { usePool } from 'state/pools/hooks'
 
 import { VaultRoiCalculatorModal } from '../../Vault/VaultRoiCalculatorModal'
 
@@ -21,7 +21,7 @@ const RoiCalculatorModalProvider: React.FC<
     return (
       <VaultRoiCalculatorModal
         pool={pool}
-        linkLabel={t('Get %symbol%', { symbol: 'CAKE' })}
+        linkLabel={t('Get %symbol%', { symbol: 'U2U' })}
         linkHref={stakingTokenAddress ? `/swap?outputCurrency=${stakingTokenAddress}` : '/swap'}
         stakingTokenBalance={pool?.userData?.stakingTokenBalance}
         onBack={() => setShowRoiCalculator(false)}

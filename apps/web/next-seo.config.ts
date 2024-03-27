@@ -3,7 +3,7 @@ import { DefaultSeoProps } from 'next-seo'
 export const SEO: DefaultSeoProps = {
   titleTemplate: '%s | U2Dex',
   defaultTitle: 'U2Dex',
-  description: 'Trade, earn, and own crypto on the all-in-one multichain DEX',
+  description: 'Trade, earn, and own crypto.',
   twitter: {
     cardType: 'summary_large_image',
     handle: '@U2Dex',
@@ -11,7 +11,7 @@ export const SEO: DefaultSeoProps = {
   },
   openGraph: {
     title: "U2Dex - Everyone's Favorite DEX",
-    description: 'Trade, earn, and own crypto on the all-in-one multichain DEX',
+    description: 'Trade, earn, and own crypto.',
     images: [{ url: '/thumbnail.png' }],
   },
 }

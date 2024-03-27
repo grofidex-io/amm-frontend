@@ -1,18 +1,18 @@
-import { useCallback } from 'react'
-import { useAccount } from 'wagmi'
+import { useTranslation } from '@pancakeswap/localization'
 import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
+import { useToast } from '@pancakeswap/uikit'
+import { ToastDescriptionWithTx } from 'components/Toast'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import useCakeApprovalStatus from 'hooks/useCakeApprovalStatus'
+import useCakeApprove from 'hooks/useCakeApprove'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
+import useCatchTxError from 'hooks/useCatchTxError'
+import { useERC20, useSousChef, useVaultPoolContract } from 'hooks/useContract'
+import { useCallback } from 'react'
 import { useAppDispatch } from 'state'
 import { updateUserAllowance } from 'state/actions'
 import { VaultKey } from 'state/types'
-import { useTranslation } from '@pancakeswap/localization'
-import { useERC20, useSousChef, useVaultPoolContract } from 'hooks/useContract'
-import { useToast } from '@pancakeswap/uikit'
-import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import useCatchTxError from 'hooks/useCatchTxError'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import useCakeApprovalStatus from 'hooks/useCakeApprovalStatus'
-import useCakeApprove from 'hooks/useCakeApprove'
-import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useAccount } from 'wagmi'
 
 export const useApprovePool = (lpContract: ReturnType<typeof useERC20>, sousId, earningTokenSymbol) => {
   const { toastSuccess } = useToast()
@@ -62,7 +62,7 @@ export const useVaultApprove = (vaultKey: VaultKey, setLastUpdated: () => void) 
   return useCakeApprove(
     setLastUpdated,
     vaultPoolContract?.address,
-    t('You can now stake in the %symbol% vault!', { symbol: 'CAKE' }),
+    t('You can now stake in the %symbol% vault!', { symbol: 'U2U' }),
   )
 }
 
