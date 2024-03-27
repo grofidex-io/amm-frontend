@@ -1,5 +1,5 @@
-import { Text } from '@pancakeswap/uikit'
 import { ContextApi } from '@pancakeswap/localization'
+import { Text } from '@pancakeswap/uikit'
 
 type FAQsType = {
   t: ContextApi['t']
@@ -18,7 +18,7 @@ const config = ({ t }: FAQsType) => [
     title: t('I can’t see my NFT’s picture!'),
     description: [
       t(
-        'Wait for the reveal! After all 10,000 members of the Pancake Squad have been minted, their images will remain hidden for a few days. Just be patient :)',
+        'Wait for the reveal! After all 10,000 members of the U2Dex Squad have been minted, their images will remain hidden for a few days. Just be patient :)',
       ),
     ],
   },
@@ -27,7 +27,7 @@ const config = ({ t }: FAQsType) => [
     description: [
       t('The max limit per wallet is 10 NFTs.'),
       t(
-        'Users holding Gen 0 Pancake Bunny NFTs at the snapshot may also purchase one additional Pancake Squad NFT in the presale for each Pancake Bunny they hold.',
+        'Users holding Gen 0 U2Dex Bunny NFTs at the snapshot may also purchase one additional U2Dex Squad NFT in the presale for each U2Dex Bunny they hold.',
       ),
       t(
         'For example, if you have 5 Gen 0 bunnies, you can buy 5 minting tickets in the presale, then max. 10 in the public sale.',
@@ -36,7 +36,7 @@ const config = ({ t }: FAQsType) => [
   },
   {
     title: t('Where do the fees go?'),
-    description: [t('100% of CAKE spent on Pancake Squad NFTs will be burned as part of our weekly CAKE burn.')],
+    description: [t('100% of CAKE spent on U2Dex Squad NFTs will be burned as part of our weekly CAKE burn.')],
   },
   {
     title: t('How are the NFTs randomly distributed?'),

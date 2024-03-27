@@ -12,9 +12,9 @@ import { NftLocation } from 'state/nftMarket/types'
 import { useProfile } from 'state/profile/hooks'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { getErc721Contract } from 'utils/contractHelpers'
+import { useNftsForAddress } from 'views/Nft/market/hooks/useNftsForAddress'
 import SelectionCard from 'views/ProfileCreation/SelectionCard'
 import { Address, useAccount, useWalletClient } from 'wagmi'
-import { useNftsForAddress } from 'views/Nft/market/hooks/useNftsForAddress'
 
 interface ChangeProfilePicPageProps extends InjectedModalProps {
   onSuccess?: () => void
@@ -121,7 +121,7 @@ const ChangeProfilePicPage: React.FC<React.PropsWithChildren<ChangeProfilePicPag
             {t('Sorry! You don’t have any eligible Collectibles in your wallet to use!')}
           </Text>
           <Text as="p" color="textSubtle" mb="24px">
-            {t('Make sure you have a Pancake Collectible in your wallet and try again!')}
+            {t('Make sure you have a U2Dex Collectible in your wallet and try again!')}
           </Text>
         </>
       )}

@@ -175,7 +175,7 @@ export default function FeeSelector({
         feeAmount ? (
           <AutoColumn gap="8px">
             <Text>
-              V3 LP - {FEE_AMOUNT_DETAIL[feeAmount].label}% {t('fee tier')}
+              LP - {FEE_AMOUNT_DETAIL[feeAmount].label}% {t('fee tier')}
             </Text>
             {distributions && (
               <FeeTierPercentageBadge
@@ -187,7 +187,7 @@ export default function FeeSelector({
           </AutoColumn>
         ) : (
           <>
-            <Text>V3 LP</Text>
+            <Text>LP</Text>
             {isPending && <CircleLoader />}
           </>
         )

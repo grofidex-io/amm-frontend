@@ -1,12 +1,12 @@
-import { useState } from 'react'
-import { Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { SelectButton } from 'components/SelectButton'
+import { Text } from '@pancakeswap/uikit'
 import { EvenWidthAutoRow } from 'components/Layout/EvenWidthAutoRow'
+import { SelectButton } from 'components/SelectButton'
 import { TOTAL_FEE } from 'config/constants/info'
+import { useState } from 'react'
 
-import HideShowSelectorSection from './HideShowSelectorSection'
 import { HandleFeePoolSelectFn, SELECTOR_TYPE } from '../types'
+import HideShowSelectorSection from './HideShowSelectorSection'
 
 export function V2Selector({
   isStable,
@@ -26,13 +26,13 @@ export function V2Selector({
       setShowOptions={setShowOptions}
       heading={
         selectorType === SELECTOR_TYPE.STABLE ? (
-          <Text>StableSwap LP</Text>
+          <Text>LP</Text>
         ) : selectorType === SELECTOR_TYPE.V2 ? (
           <Text>
-            V2 LP - {(TOTAL_FEE * 100).toFixed(2)} {t('fee tier')}
+            LP - {(TOTAL_FEE * 100).toFixed(2)} {t('fee tier')}
           </Text>
         ) : (
-          <Text>V3 LP</Text>
+          <Text>LP</Text>
         )
       }
       content={
@@ -42,21 +42,21 @@ export function V2Selector({
               isActive={selectorType === SELECTOR_TYPE.STABLE}
               onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.STABLE })}
             >
-              StableSwap LP
+              LP
             </SelectButton>
           ) : (
             <SelectButton
               isActive={selectorType === SELECTOR_TYPE.V3}
               onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.V3 })}
             >
-              V3 LP
+              LP
             </SelectButton>
           )}
           <SelectButton
             isActive={selectorType === SELECTOR_TYPE.V2}
             onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.V2 })}
           >
-            V2 LP
+            LP
           </SelectButton>
         </EvenWidthAutoRow>
       }

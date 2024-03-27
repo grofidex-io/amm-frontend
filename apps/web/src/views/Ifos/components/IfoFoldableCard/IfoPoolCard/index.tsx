@@ -1,29 +1,29 @@
+import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import { ContextApi, useTranslation } from '@pancakeswap/localization'
 import {
   Box,
   Card,
   CardBody,
+  CardFooter,
   CardHeader,
+  ExpandableLabel,
   Flex,
   HelpIcon,
   Text,
   useTooltip,
-  ExpandableLabel,
-  CardFooter,
 } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
-import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import { useMemo, useState } from 'react'
 import { useProfile } from 'state/profile/hooks'
 import { styled } from 'styled-components'
 import useCriterias from 'views/Ifos/hooks/v3/useCriterias'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
+import { useAccount } from 'wagmi'
+import { isBasicSale } from '../../../hooks/v7/helpers'
 import { CardConfigReturn, EnableStatus } from '../types'
 import IfoCardActions from './IfoCardActions'
 import IfoCardDetails from './IfoCardDetails'
 import IfoCardTokens from './IfoCardTokens'
 import IfoVestingCard from './IfoVestingCard'
-import { isBasicSale } from '../../../hooks/v7/helpers'
 
 const StyledCard = styled(Card)`
   width: 100%;
@@ -62,8 +62,8 @@ export const cardConfig = (
       // Sale type 2 is basic sale
       if (meta?.version >= 3.1 && !isBasicSale(meta?.saleType)) {
         const MSG_MAP = {
-          needQualifiedNFT: t('Set PancakeSquad NFT as Pancake Profile avatar.'),
-          needQualifiedPoints: t('Reach a certain Pancake Profile Points threshold.'),
+          needQualifiedNFT: t('Set PancakeSquad NFT as U2Dex Profile avatar.'),
+          needQualifiedPoints: t('Reach a certain U2Dex Profile Points threshold.'),
         }
 
         const msgs = Object.keys(meta)

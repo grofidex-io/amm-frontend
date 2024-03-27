@@ -279,7 +279,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                   onChange={handleExpertModeToggle}
                 />
               </Flex>
-              <Flex justifyContent="space-between" alignItems="center" mb="24px">
+              {/* <Flex justifyContent="space-between" alignItems="center" mb="24px">
                 <Flex alignItems="center">
                   <Text>{t('Flippy sounds')}</Text>
                   <QuestionHelper
@@ -294,7 +294,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                   onChange={() => setAudioMode((s) => !s)}
                   scale="sm"
                 />
-              </Flex>
+              </Flex> */}
               <Flex justifyContent="space-between" alignItems="center">
                 <Flex alignItems="center">
                   <Text>{t('Fast routing (BETA)')}</Text>

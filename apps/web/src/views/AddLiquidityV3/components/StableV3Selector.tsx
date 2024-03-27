@@ -97,7 +97,7 @@ export function StableV3Selector({
         ) : chainId && FEE_AMOUNT_DETAIL[FeeAmount.LOWEST]?.supportedChains.includes(chainId) ? (
           <AutoColumn>
             <Text>
-              V3 LP{' '}
+              LP{' '}
               {feeAmount && FEE_AMOUNT_DETAIL[feeAmount]?.label
                 ? `- ${FEE_AMOUNT_DETAIL[feeAmount]?.label}% ${t('fee tier')}`
                 : ''}
@@ -119,7 +119,7 @@ export function StableV3Selector({
                 isActive={selectorType === SELECTOR_TYPE.V3}
                 onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.V3 })}
               >
-                V3 LP
+                LP
               </SelectButton>
             )}
           </EvenWidthAutoRow>
