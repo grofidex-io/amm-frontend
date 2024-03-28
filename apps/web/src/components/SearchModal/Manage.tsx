@@ -1,15 +1,16 @@
-import { useState } from 'react'
-import { Token } from '@pancakeswap/sdk'
-import { ButtonMenu, ButtonMenuItem, ModalBody } from '@pancakeswap/uikit'
-import { styled } from 'styled-components'
-import { TokenList } from '@pancakeswap/token-lists'
 import { useTranslation } from '@pancakeswap/localization'
+import { Token } from '@pancakeswap/sdk'
+import { TokenList } from '@pancakeswap/token-lists'
+import { ButtonMenu, ButtonMenuItem, ModalBody } from '@pancakeswap/uikit'
+import { useState } from 'react'
+import { styled } from 'styled-components'
 import ManageLists from './ManageLists'
 import ManageTokens from './ManageTokens'
 import { CurrencyModalView } from './types'
 
 const StyledButtonMenu = styled(ButtonMenu)`
   width: 100%;
+  background: ${({ theme }) => theme.colors.backgroundItem};
 `
 
 export default function Manage({

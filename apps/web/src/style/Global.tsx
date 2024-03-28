@@ -7,6 +7,22 @@ declare module 'styled-components' {
 }
 
 const GlobalStyle = createGlobalStyle`
+
+  @font-face {
+    font-family: Metuo;
+    font-weight: 400;
+    src: url(/fonts/metuo-metuo-regular-400.ttf);
+  }
+  @font-face {
+    font-family: Metuo;
+    font-weight: 700;
+    src: url(/fonts/metuo-metuo-bold-700.ttf);
+  }
+  @font-face {
+    font-family: Metuo;
+    font-weight: 800;
+    src: url(/fonts/metuo-metuo-black-800.ttf);
+  }
   * {
     font-family: 'Urbanist', sans-serif;
   }

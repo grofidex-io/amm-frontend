@@ -12,7 +12,7 @@ const Card = styled(Box)<LightCardProps>`
   width: ${({ width }) => width ?? '100%'};
   padding: ${({ padding }) => padding ?? '1.25rem'};
   border: ${({ border }) => border};
-  border-radius: ${({ borderRadius }) => borderRadius ?? '16px'};
+  border-radius: ${({ borderRadius }) => borderRadius ?? '8px'};
   background-color: ${({ theme }) => theme.colors.background};
 `
 
@@ -51,5 +51,5 @@ export const LightTertiaryCard = styled(Card)<{ active: boolean }>`
 
 export const DisableCard = styled(Card)`
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  background-color: ${({ theme }) => theme.colors.disabled};
+  background-color: ${({ theme }) => theme.colors.backgroundDisabled};
 `

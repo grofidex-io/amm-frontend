@@ -47,13 +47,7 @@ export function UnsupportedNetworkModal({ pageSupportedChains }: { pageSupported
           {supportedMainnetChains?.map((c) => c?.name).join(', ')}
         </Text>
         <div style={{ textAlign: 'center' }}>
-          <Image
-            layout="fixed"
-            width={194}
-            height={175}
-            src="/images/check-your-network.png"
-            alt="check your network"
-          />
+          <Image layout="fixed" width={272} height={200} src="/images/check-network.svg" alt="check your network" />
         </div>
         <Message variant="warning">
           <MessageText>{t('Please switch your network to continue.')}</MessageText>
