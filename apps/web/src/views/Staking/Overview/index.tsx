@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, Flex, Heading, PageHeader, Text } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import styled from 'styled-components'
+import FormStaking from '../Components/FormStaking'
 
 const StakingH1 = styled(Heading)`
   font-size: 32px;
@@ -279,6 +280,7 @@ export const Overview: React.FC<React.PropsWithChildren> = ({ children }) => {
               <Text fontFamily="'Metuo', sans-serif" fontSize="24px" fontWeight="900" mb="36px">
                 {t('Staking')}
               </Text>
+              <FormStaking />
               <Button width="100%" className="button-hover">
                 {t('Stake')}
               </Button>
