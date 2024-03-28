@@ -244,4 +244,7 @@ export default {
     [ChainId.BSC]: '0x011f2a82846a4E9c62C2FC4Fd6fDbad19147D94A',
     [ChainId.BSC_TESTNET]: '0x946273012ED616410F698536F1BF2513417BF8Ec',
   },
+  staking: {
+    [ChainId.U2U_NEBULAS]: '0x83f0B3aBAe8513dD8f30B4575fA9492cf57b84d6',
+  },
 } as const satisfies Record<string, Record<number, `0x${string}`>>

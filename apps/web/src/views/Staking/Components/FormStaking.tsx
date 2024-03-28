@@ -1,9 +1,16 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { Rounding } from '@pancakeswap/swap-sdk-core'
 import { Box, Flex, Input, Text } from '@pancakeswap/uikit'
-import { useUserSlippage } from '@pancakeswap/utils/user'
-import { useState } from 'react'
+import { formatAmount } from '@pancakeswap/utils/formatFractions'
+import BigNumber from 'bignumber.js'
+import { useCurrency } from 'hooks/Tokens'
+import { useAtom } from 'jotai'
+import { replaceStakingState, updateSlippagePercent } from 'state/staking/actions'
+import { useStakingState } from 'state/staking/hooks'
+import { stakingReducerAtom } from 'state/staking/reducer'
+import { useCurrencyBalance } from 'state/wallet/hooks'
 import styled from 'styled-components'
-import { escapeRegExp } from 'utils'
+import { useAccount } from 'wagmi'
 
 const StyledButton = styled(Box)`
   cursor: pointer;
@@ -31,41 +38,80 @@ const StyledButton = styled(Box)`
   }
 `
 
-enum SlippageError {
-  InvalidInput = 'InvalidInput',
-}
-
-const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`) // match escaped "." characters via in a non-capturing group
+// const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`) // match escaped "." characters via in a non-capturing group
 
 const FormStaking = () => {
-  const [userSlippageTolerance, setUserSlippageTolerance] = useUserSlippage()
-  const [slippageInput, setSlippageInput] = useState('')
-
+  const [, dispatch] = useAtom(stakingReducerAtom)
+  const { currencyId, stakingAmount, stakingAmountError, slippagePercent } = useStakingState()
   const { t } = useTranslation()
 
-  const slippageInputIsValid =
-    slippageInput === '' || (userSlippageTolerance / 100).toFixed(2) === Number.parseFloat(slippageInput).toFixed(2)
+  const slippagePercents = [25, 50, 75, 100]
 
-  let slippageError: SlippageError | undefined
-  if (slippageInput !== '' && !slippageInputIsValid) {
-    slippageError = SlippageError.InvalidInput
-  } else {
-    slippageError = undefined
+  const currency = useCurrency(currencyId)
+  const { address: account } = useAccount()
+  const currencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
+  const rawBalance: BigNumber = new BigNumber(
+    currencyBalance?.asFraction
+      .divide(10n ** BigInt(currencyBalance?.currency.decimals))
+      .toFixed(6, { groupSeparator: '' }, Rounding.ROUND_DOWN) ?? '0',
+  )
+
+  const getAmountError = (value) => {
+    if (value === '') {
+      return t('Enter an amount')
+    }
+    if (BigNumber(value).gt(rawBalance)) {
+      return t('Insufficient %symbol% balance', { symbol: currencyId })
+    }
+    return ''
   }
 
-  const parseCustomSlippage = (value: string) => {
-    if (value === '' || inputRegex.test(escapeRegExp(value))) {
-      setSlippageInput(value)
+  const parseAmountChange = (event) => {
+    if (!event.currentTarget.validity.valid) return
+    const amount = event.target.value.replace(/,/g, '.')
+    dispatch(
+      replaceStakingState({
+        amount,
+        amountError: getAmountError(amount),
+        percent: undefined,
+      }),
+    )
+  }
 
-      try {
-        const valueAsIntFromRoundedFloat = Number.parseInt((Number.parseFloat(value) * 100).toString())
-        if (!Number.isNaN(valueAsIntFromRoundedFloat) && valueAsIntFromRoundedFloat < 5000) {
-          setUserSlippageTolerance(valueAsIntFromRoundedFloat)
-        }
-      } catch (error) {
-        console.error(error)
-      }
+  const parseSlippagePercentToAmount = (percent) => {
+    try {
+      const amount = rawBalance.multipliedBy(new BigNumber(percent / 100))
+      dispatch(
+        replaceStakingState({
+          amount: amount.toPrecision(6, BigNumber.ROUND_DOWN),
+          amountError: '',
+          percent,
+        }),
+      )
+    } catch (e) {
+      console.error(e)
     }
+  }
+
+  const buildSlippageSelection = () => {
+    return (
+      <Flex mt="12px">
+        {slippagePercents.map((percent) => {
+          return (
+            <StyledButton
+              onClick={() => {
+                dispatch(updateSlippagePercent(percent))
+                parseSlippagePercentToAmount(percent)
+              }}
+              className={slippagePercent === percent ? 'active' : ''}
+            >
+              <Box className="divider" />
+              {percent}%
+            </StyledButton>
+          )
+        })}
+      </Flex>
+    )
   }
 
   return (
@@ -80,10 +126,10 @@ const FormStaking = () => {
               {t('U2U Available')}
             </Text>
             <Text fontSize="12px" fontWeight="700" color="primary" ml="3px">
-              37236.928372
+              {formatAmount(currencyBalance, 6)}
             </Text>
             <Text fontSize="12px" ml="3px">
-              U2U
+              {currencyId}
             </Text>
           </Flex>
         </Flex>
@@ -91,70 +137,23 @@ const FormStaking = () => {
           <Input
             scale="lg"
             inputMode="decimal"
-            pattern="^[0-9]*[.,]?[0-9]{0,2}$"
-            placeholder={(userSlippageTolerance / 100).toFixed(2)}
-            value={slippageInput}
-            onBlur={() => {
-              parseCustomSlippage((userSlippageTolerance / 100).toFixed(2))
-            }}
-            onChange={(event) => {
-              if (event.currentTarget.validity.valid) {
-                parseCustomSlippage(event.target.value.replace(/,/g, '.'))
-              }
-            }}
-            isWarning={!slippageInputIsValid}
-            isSuccess={![25, 50, 75, 100].includes(userSlippageTolerance)}
+            pattern="^[0-9]*[.,]?[0-9]{0,6}$"
+            placeholder="0.00"
+            value={stakingAmount}
+            // onBlur={() => {
+            //   parseCustomSlippage((userSlippageTolerance / 100).toFixed(2))
+            // }}
+            onChange={parseAmountChange}
+            isWarning={!!stakingAmountError}
+            // isSuccess={![25, 50, 75, 100].includes(userSlippageTolerance)}
             style={{ textAlign: 'right' }}
           />
-          {!!slippageError && (
+          {!!stakingAmountError && (
             <Text fontSize="14px" color="warning" mt="8px">
-              {slippageError === SlippageError.InvalidInput
-                ? t('Enter a valid slippage percentage')
-                : t('Enter input for Stake')}
+              {stakingAmountError}
             </Text>
           )}
-          <Flex mt="12px">
-            <StyledButton
-              onClick={() => {
-                setSlippageInput('')
-                setUserSlippageTolerance(25)
-              }}
-              className={userSlippageTolerance === 25 ? 'active' : ''}
-            >
-              <Box className="divider" />
-              25%
-            </StyledButton>
-            <StyledButton
-              onClick={() => {
-                setSlippageInput('')
-                setUserSlippageTolerance(50)
-              }}
-              className={userSlippageTolerance === 50 ? 'active' : ''}
-            >
-              <Box className="divider" />
-              50%
-            </StyledButton>
-            <StyledButton
-              onClick={() => {
-                setSlippageInput('')
-                setUserSlippageTolerance(75)
-              }}
-              className={userSlippageTolerance === 75 ? 'active' : ''}
-            >
-              <Box className="divider" />
-              75%
-            </StyledButton>
-            <StyledButton
-              onClick={() => {
-                setSlippageInput('')
-                setUserSlippageTolerance(100)
-              }}
-              className={userSlippageTolerance === 100 ? 'active' : ''}
-            >
-              <Box className="divider" />
-              100%
-            </StyledButton>
-          </Flex>
+          {buildSlippageSelection()}
         </Box>
         <Box my="24px">
           <Flex alignItems="center" justifyContent="space-between" mb="8px">

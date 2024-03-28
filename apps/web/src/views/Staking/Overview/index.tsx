@@ -3,6 +3,7 @@ import { Box, Button, Flex, Heading, PageHeader, Text } from '@pancakeswap/uikit
 import Page from 'components/Layout/Page'
 import styled from 'styled-components'
 import FormStaking from '../Components/FormStaking'
+import FormStakingBtn from '../Components/FormStakingBtn'
 
 const StakingH1 = styled(Heading)`
   font-size: 32px;
@@ -71,7 +72,7 @@ const StyledTextTitle = styled(Text)`
   display: flex;
 `
 
-export const Overview: React.FC<React.PropsWithChildren> = ({ children }) => {
+export const Overview: React.FC<React.PropsWithChildren> = () => {
   const isTime = false
   const isWithdraw = true
   const { t } = useTranslation()
@@ -281,9 +282,7 @@ export const Overview: React.FC<React.PropsWithChildren> = ({ children }) => {
                 {t('Staking')}
               </Text>
               <FormStaking />
-              <Button width="100%" className="button-hover">
-                {t('Stake')}
-              </Button>
+              <FormStakingBtn />
             </BorderLayout>
           </Flex>
         </Flex>

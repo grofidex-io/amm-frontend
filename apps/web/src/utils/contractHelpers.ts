@@ -33,6 +33,7 @@ import {
   getRevenueSharingPoolGatewayAddress,
   getRevenueSharingVeCakeAddress,
   getStableSwapNativeHelperAddress,
+  getStakingAddress,
   getTradingCompetitionAddressEaster,
   getTradingCompetitionAddressFanToken,
   getTradingCompetitionAddressMoD,
@@ -89,6 +90,7 @@ import { potteryVaultABI } from 'config/abi/potteryVaultAbi'
 import { revenueSharingPoolABI } from 'config/abi/revenueSharingPool'
 import { revenueSharingPoolGatewayABI } from 'config/abi/revenueSharingPoolGateway'
 import { revenueSharingPoolProxyABI } from 'config/abi/revenueSharingPoolProxy'
+import { stakingAbi } from 'config/abi/stakingAbi'
 import { tradingCompetitionEasterABI } from 'config/abi/tradingCompetitionEaster'
 import { tradingCompetitionFanTokenABI } from 'config/abi/tradingCompetitionFanToken'
 import { tradingCompetitionMoDABI } from 'config/abi/tradingCompetitionMoD'
@@ -532,6 +534,15 @@ export const getRevenueSharingPoolGatewayContract = (signer?: WalletClient, chai
   return getContract({
     abi: revenueSharingPoolGatewayABI,
     address: getRevenueSharingPoolGatewayAddress(chainId) ?? getRevenueSharingPoolGatewayAddress(ChainId.BSC),
+    signer,
+    chainId,
+  })
+}
+
+export const getStakingContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: stakingAbi,
+    address: getStakingAddress(chainId),
     signer,
     chainId,
   })

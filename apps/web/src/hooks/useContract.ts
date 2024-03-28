@@ -49,6 +49,7 @@ import {
   getRevenueSharingVeCakeContract,
   getSidContract,
   getStableSwapNativeHelperContract,
+  getStakingContract,
   getTradingCompetitionContractEaster,
   getTradingCompetitionContractFanToken,
   getTradingCompetitionContractMoD,
@@ -130,6 +131,12 @@ export const useMasterchef = () => {
   const { chainId } = useActiveChainId()
   const { data: signer } = useWalletClient()
   return useMemo(() => getMasterChefContract(signer ?? undefined, chainId), [signer, chainId])
+}
+
+export const useStakingContract = () => {
+  const { chainId } = useActiveChainId()
+  const { data: signer } = useWalletClient()
+  return useMemo(() => getStakingContract(signer ?? undefined, chainId), [signer, chainId])
 }
 
 export const useSousChef = (id) => {
