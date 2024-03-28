@@ -17,11 +17,14 @@ const FeeOptionContainer = styled.div<{ active: boolean }>`
     css`
       background-image: ${({ theme }) => theme.colors.gradientBold};
     `}
-  border-radius: 16px;
+  border-radius: 8px;
   padding: 2px 2px 4px 2px;
   &:hover {
     opacity: 0.7;
   }
+`
+const StyledLightTertiaryCard = styled(LightTertiaryCard)`
+  border-radius: 8px;
 `
 
 interface FeeOptionProps {
@@ -45,7 +48,7 @@ export function FeeOption({
 }: FeeOptionProps) {
   return (
     <FeeOptionContainer active={active} onClick={onClick}>
-      <LightTertiaryCard active={active} padding={['4px', '4px', '8px']} height="100%">
+      <StyledLightTertiaryCard active={active} padding={['4px', '4px', '8px']} height="100%">
         <AutoColumn gap="sm" justify="flex-start" height="100%" justifyItems="center">
           <Text textAlign="center">
             {FEE_AMOUNT_DETAIL[feeAmount].label}% {feeAmount === largestUsageFeeTier && '🔥'}
@@ -56,7 +59,7 @@ export function FeeOption({
             <FeeTierPercentageBadge distributions={distributions} feeAmount={feeAmount} poolState={poolState} />
           ) : null}
         </AutoColumn>
-      </LightTertiaryCard>
+      </StyledLightTertiaryCard>
     </FeeOptionContainer>
   )
 }

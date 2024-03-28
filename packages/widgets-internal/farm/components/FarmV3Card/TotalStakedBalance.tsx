@@ -5,9 +5,9 @@ import { styled } from "styled-components";
 
 const LightGreyCard = styled("div")`
   padding: 0;
-  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  background-color: ${({ theme }) => theme.colors.dropdown};
+  border: 2px solid ${({ theme }) => theme.colors.cardBorder};
   border-radius: ${({ theme }) => theme.radii.card};
+  box-shadow: ${({ theme }) => theme.shadows.card};
 `;
 
 interface TotalStakedBalanceProps {
@@ -48,7 +48,11 @@ const TotalStakedBalance: React.FunctionComponent<React.PropsWithChildren<TotalS
               </Flex>
             </Box>
           </Flex>
-          <Button style={{ alignSelf: "center", whiteSpace: "nowrap" }} onClick={onClickViewAllButton}>
+          <Button
+            className="button-hover"
+            style={{ alignSelf: "center", whiteSpace: "nowrap" }}
+            onClick={onClickViewAllButton}
+          >
             {t("View All")}
           </Button>
         </Flex>

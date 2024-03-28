@@ -18,13 +18,13 @@ const ButtonWrapper = styled.div`
 
 const BaseWrapper = styled.div<{ disable?: boolean }>`
   border: 1px solid ${({ theme, disable }) => (disable ? 'transparent' : theme.colors.dropdown)};
-  border-radius: 10px;
+  border-radius: 6px;
   display: flex;
   padding: 6px;
   align-items: center;
   &:hover {
     cursor: ${({ disable }) => !disable && 'pointer'};
-    background-color: ${({ theme, disable }) => !disable && theme.colors.background};
+    background-color: ${({ theme, disable }) => !disable && theme.colors.backgroundItem};
   }
   background-color: ${({ theme, disable }) => disable && theme.colors.dropdown};
   opacity: ${({ disable }) => disable && '0.4'};

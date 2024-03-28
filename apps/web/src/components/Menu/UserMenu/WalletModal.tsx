@@ -40,6 +40,9 @@ const Tabs = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
   padding: 16px 24px;
 `
+const StyledButtonMenu = styled(ButtonMenu)`
+  background: ${({ theme }) => theme.colors.backgroundItem};
+`
 
 interface TabsComponentProps {
   view: WalletView
@@ -51,10 +54,10 @@ const TabsComponent: React.FC<React.PropsWithChildren<TabsComponentProps>> = ({ 
 
   return (
     <Tabs>
-      <ButtonMenu scale="sm" variant="subtle" onItemClick={handleClick} activeIndex={view} fullWidth>
+      <StyledButtonMenu scale="sm" variant="subtle" onItemClick={handleClick} activeIndex={view} fullWidth>
         <ButtonMenuItem>{t('Wallet')}</ButtonMenuItem>
         <ButtonMenuItem>{t('Transactions')}</ButtonMenuItem>
-      </ButtonMenu>
+      </StyledButtonMenu>
     </Tabs>
   )
 }
