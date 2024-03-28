@@ -1,6 +1,19 @@
 import { AutoRow, Button, ChevronDownIcon } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import { Dispatch, ReactNode, SetStateAction } from 'react'
+import styled from 'styled-components'
+
+const StyledLightGreyCard = styled(LightGreyCard)`
+  padding: 16px;
+  border-width: 2px;
+  border-radius: 8px;
+  box-shadow: ${({ theme }) => theme.shadows.card};
+`
+const StyledButton = styled(Button)`
+  &:hover {
+    color: ${({ theme }) => theme.colors.hover};
+  }
+`
 
 interface HideShowSelectorSectionPropsType {
   noHideButton?: boolean
@@ -18,11 +31,11 @@ export default function HideShowSelectorSection({
   content,
 }: HideShowSelectorSectionPropsType) {
   return (
-    <LightGreyCard padding="8px" style={{ height: 'fit-content' }}>
+    <StyledLightGreyCard style={{ height: 'fit-content' }}>
       <AutoRow justifyContent="space-between" marginBottom={showOptions ? '8px' : '0px'}>
         {heading ?? <div />}
         {noHideButton || (
-          <Button
+          <StyledButton
             scale="sm"
             onClick={() => setShowOptions((prev) => !prev)}
             variant="text"
@@ -38,10 +51,10 @@ export default function HideShowSelectorSection({
             }
           >
             {showOptions ? 'Hide' : 'More'}
-          </Button>
+          </StyledButton>
         )}
       </AutoRow>
       {showOptions && content}
-    </LightGreyCard>
+    </StyledLightGreyCard>
   )
 }

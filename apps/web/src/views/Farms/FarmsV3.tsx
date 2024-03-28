@@ -156,6 +156,20 @@ const FinishedTextLink = styled(Link)`
   white-space: nowrap;
   text-decoration: underline;
 `
+const FarmText = styled.p`
+  color: ${({ theme }) => theme.colors.text};
+  font-size: 16px;
+  font-weight: 600;
+  line-height: calc(28 / 20);
+  margin-bottom: 8px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    font-size: 20px;
+    margin-bottom: 18px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    font-size: 24px;
+  }
+`
 
 const NUMBER_OF_FARMS_VISIBLE = 12
 
@@ -425,9 +439,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
               <FarmH1 as="h1" scale="xxl" color="secondary" mb="24px">
                 {t('Farms')}
               </FarmH1>
-              <FarmH2 scale="lg" color="text">
-                {t('Stake LP tokens to earn.')}
-              </FarmH2>
+              <FarmText>{t('Stake LP tokens to earn.')}</FarmText>
               {/* <NextLinkFromReactRouter to="/farms/auction" prefetch={false}>
                 <Button p="0" variant="text">
                   <Text color="primary" bold fontSize="16px" mr="4px">

@@ -21,6 +21,7 @@ const extendedSpace = {
   auto: "auto",
   "fit-content": "fit-content",
   "420px": "420px",
+  screenXs: breakpoints.xs,
   screenSm: breakpoints.sm,
   screenMd: breakpoints.md,
   screenLg: breakpoints.lg,
