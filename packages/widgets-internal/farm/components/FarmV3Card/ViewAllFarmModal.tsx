@@ -1,23 +1,23 @@
-import { styled } from "styled-components";
-import { ReactNode } from "react";
 import { useTranslation } from "@pancakeswap/localization";
+import { ReactNode } from "react";
+import { styled } from "styled-components";
 //  should be ok to import type from sdk
-import type { FeeAmount } from "@pancakeswap/v3-sdk";
 import {
-  Text,
-  Button,
-  Flex,
-  ModalContainer,
-  ModalCloseButton,
-  ModalBody,
-  ModalActions,
-  ModalProps,
   AtomBox,
   AutoColumn,
   AutoRow,
+  Button,
+  Flex,
+  ModalActions,
+  ModalBody,
+  ModalCloseButton,
+  ModalContainer,
+  ModalProps,
   RowBetween,
   Tag,
+  Text,
 } from "@pancakeswap/uikit";
+import type { FeeAmount } from "@pancakeswap/v3-sdk";
 import Tags from "../Tags";
 
 const { BoostedTag, FarmAuctionTag, V3FeeTag } = Tags;
@@ -26,6 +26,9 @@ const ScrollableContainer = styled(Flex)`
   flex-direction: column;
   height: auto;
   max-height: 60vh;
+`;
+const StyledTag = styled(Tag)`
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 interface ViewAllFarmModalProps extends ModalProps {
@@ -68,9 +71,9 @@ const ViewAllFarmModal: React.FunctionComponent<React.PropsWithChildren<ViewAllF
             </Text>
             <AutoRow gap="4px" justifyContent="flex-start" flex={1}>
               {isReady && multiplier && (
-                <Tag mr="4px" variant="secondary">
+                <StyledTag mr="4px" variant="secondary">
                   {multiplier}
-                </Tag>
+                </StyledTag>
               )}
               {isReady && feeAmount && <V3FeeTag mr="4px" feeAmount={feeAmount} />}
               {isReady && boosted && <BoostedTag mr="4px" />}
@@ -85,7 +88,13 @@ const ViewAllFarmModal: React.FunctionComponent<React.PropsWithChildren<ViewAllF
         <AutoColumn px="24px" gap="16px">
           {onHarvestAll && (
             <ModalActions>
-              <Button width="100%" variant="primary" disabled={harvesting} onClick={onHarvestAll}>
+              <Button
+                className="button-hover"
+                width="100%"
+                variant="primary"
+                disabled={harvesting}
+                onClick={onHarvestAll}
+              >
                 {t("Harvest All")}
               </Button>
             </ModalActions>

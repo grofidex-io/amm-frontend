@@ -6,6 +6,13 @@ import { NumericalInput } from '@pancakeswap/widgets-internal'
 import { LightGreyCard } from 'components/Card'
 import { tryParsePrice } from 'hooks/v3/utils'
 import { ReactNode, useCallback, useEffect, useState } from 'react'
+import styled from 'styled-components'
+
+const StyledLightGreyCard = styled(LightGreyCard)`
+  border-width: 2px;
+  box-shadow: ${({ theme }) => theme.shadows.card};
+  color: ${({ theme }) => theme.colors.textSubtle};
+`
 
 interface StepCounterProps {
   value: string
@@ -86,7 +93,7 @@ const StepCounter = ({
   }, [localValue, useLocalValue, value])
 
   return (
-    <LightGreyCard padding="0">
+    <StyledLightGreyCard padding="0">
       <AutoColumn py="16px" textAlign="center" gap="8px" width="100%" onFocus={handleOnFocus} onBlur={handleOnBlur}>
         {title}
         <AutoRow>
@@ -125,7 +132,7 @@ const StepCounter = ({
         </AutoRow>
         {tokenA && tokenB && t('%assetA% per %assetB%', { assetA: tokenB?.symbol, assetB: tokenA?.symbol })}
       </AutoColumn>
-    </LightGreyCard>
+    </StyledLightGreyCard>
   )
 }
 

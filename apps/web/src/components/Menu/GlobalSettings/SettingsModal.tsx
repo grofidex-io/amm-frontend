@@ -372,6 +372,7 @@ function RoutingSettings() {
   return (
     <Modal
       title={t('Customize Routing')}
+      headerBackground="gradientCardHeader"
       headerRightSlot={
         isRoutingSettingChange && (
           <Button variant="text" scale="sm" onClick={reset}>
@@ -383,7 +384,7 @@ function RoutingSettings() {
       <AutoColumn
         width={{
           xs: '100%',
-          md: 'screenSm',
+          md: 'screenXs',
         }}
         gap="16px"
       >

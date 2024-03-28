@@ -1,17 +1,17 @@
-import { ReactElement } from "react";
+import { ChainId } from "@pancakeswap/chains";
 import { useTranslation } from "@pancakeswap/localization";
-import { styled } from "styled-components";
 import {
+  FarmMultiplierInfo,
   Flex,
+  HelpIcon,
   LinkExternal,
   ScanLink,
   Skeleton,
   Text,
-  HelpIcon,
   useTooltip,
-  FarmMultiplierInfo,
 } from "@pancakeswap/uikit";
-import { ChainId } from "@pancakeswap/chains";
+import { ReactElement } from "react";
+import { styled } from "styled-components";
 
 export interface ExpandableSectionProps {
   scanAddress?: { link: string; chainId?: number; icon?: ReactElement };
@@ -43,6 +43,7 @@ const StyledScanLink = styled(ScanLink)`
 
 const StyledText = styled(Text)`
   &:hover {
+    color: ${({ theme }) => theme.colors.hover};
     text-decoration: underline;
     cursor: pointer;
   }

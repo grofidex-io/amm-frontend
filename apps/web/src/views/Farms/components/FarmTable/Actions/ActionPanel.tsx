@@ -145,6 +145,7 @@ const ValueWrapper = styled.div`
 
 const StyledText = styled(Text)`
   &:hover {
+    color: ${({ theme }) => theme.colors.hover};
     text-decoration: underline;
     cursor: pointer;
   }

@@ -41,7 +41,9 @@ const StyledModalContainer = styled(ModalContainer)`
     min-height: auto;
   }
 `
-
+const StyledModalHeader = styled(ModalHeader)`
+  background: ${({ theme }) => theme.colors.gradientBubblegum};
+`
 const StyledModalBody = styled(ModalBody)`
   padding: 24px;
   overflow-y: auto;
@@ -166,13 +168,13 @@ export default function CurrencySearchModal({
       }}
       ref={wrapperRef}
     >
-      <ModalHeader>
+      <StyledModalHeader>
         <ModalTitle>
           {config[modalView].onBack && <ModalBackButton onBack={config[modalView].onBack} />}
           <Heading>{config[modalView].title}</Heading>
         </ModalTitle>
         <ModalCloseButton onDismiss={onDismiss} />
-      </ModalHeader>
+      </StyledModalHeader>
       <StyledModalBody>
         {modalView === CurrencyModalView.search ? (
           <CurrencySearch

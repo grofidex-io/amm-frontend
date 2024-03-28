@@ -621,13 +621,13 @@ export default function V3FormView({
                     justifyContent="center"
                     style={{ marginTop: '0.5rem' }}
                   >
-                    <Text fontWeight={500} textAlign="center" fontSize={12} color="text1">
+                    <Text fontWeight={500} textAlign="center" fontSize={12} color="textSubtle">
                       {t('Current Price')}:
                     </Text>
-                    <Text fontWeight={500} textAlign="center" fontSize={12} color="text1">
+                    <Text fontWeight={500} textAlign="center" fontSize={12} color="text">
                       {invertPrice ? price.invert().toSignificant(6) : price.toSignificant(6)}
                     </Text>
-                    <Text color="text2" fontSize={12}>
+                    <Text color="textSubtle" fontSize={12}>
                       {t('%assetA% per %assetB%', {
                         assetA: quoteCurrency?.symbol ?? '',
                         assetB: baseCurrency.symbol ?? '',

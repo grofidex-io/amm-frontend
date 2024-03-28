@@ -31,7 +31,7 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActi
           {t("Earned")}
         </Text>
       </ActionTitles>
-      <ActionContent style={{ height: "100%", alignItems: "flex-start" }}>
+      <ActionContent style={{ height: "100%" }}>
         <div>
           <Balance fontSize={20} bold decimals={2} value={earnings} />
           {earningsBusd > 0 && (
