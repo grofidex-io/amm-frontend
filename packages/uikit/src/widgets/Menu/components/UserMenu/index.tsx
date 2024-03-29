@@ -17,6 +17,7 @@ export const StyledUserMenu = styled(Flex)`
   padding: 8px 8px 8px 24px;
   position: relative;
   height: 36px;
+  white-space: nowrap;
 
   &:hover {
     box-shadow: ${({ theme }) => theme.shadows.button};
