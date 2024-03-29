@@ -146,7 +146,7 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
             <StyledNav>
               <Flex>
                 <Logo href={homeLink?.href ?? "/"} />
-                <AtomBox display={{ xs: "none", md: "block" }}>
+                <AtomBox display={{ xs: "none", lg: "block" }}>
                   <MenuItems items={links} activeItem={activeItem} activeSubItem={activeSubItem} headerMenu ml="24px" />
                 </AtomBox>
               </Flex>
@@ -206,7 +206,7 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
         buyCakeLink={buyCakeLink}
         mb={[`${MOBILE_MENU_HEIGHT}px`, null, "0px"]}
       /> */}
-      <AtomBox display={{ xs: "block", md: "none" }}>
+      <AtomBox display={{ xs: "block", lg: "none" }}>
         <BottomNav items={links} activeItem={activeItem} activeSubItem={activeSubItem} />
       </AtomBox>
     </MenuContext.Provider>
