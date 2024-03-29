@@ -33,7 +33,6 @@ export default function Swap() {
   const {
     isChartExpanded,
     isChartDisplayed,
-    setIsChartDisplayed,
     setIsChartExpanded,
     isChartSupported,
     isHotTokenSupported,
@@ -152,6 +151,7 @@ export default function Swap() {
   }
 
   return (
+    <>
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
       <Flex
         flexDirection={['column', 'column', 'column', 'column', 'row']}
@@ -254,5 +254,6 @@ export default function Swap() {
         </Flex>
       </Flex>
     </Page>
+    </>
   )
 }
