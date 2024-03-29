@@ -25,6 +25,10 @@ const Container = styled.div`
   width: 100%;
   min-width: 250px;
   margin-right: 20px;
+  display: none;
+  ${({ theme }) => theme.mediaQueries.md} {
+    display: block;
+  }
 `
 
 const StyledInput = styled(Input)`

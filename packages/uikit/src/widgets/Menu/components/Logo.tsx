@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { styled, keyframes } from "styled-components";
+import { keyframes, styled } from "styled-components";
 import Flex from "../../../components/Box/Flex";
 import { LogoIcon, LogoWithTextIcon } from "../../../components/Svg";
 import { MenuContext } from "../context";
@@ -16,15 +16,16 @@ const blink = keyframes`
 const StyledLink = styled("a")`
   display: flex;
   .mobile-icon {
-    width: 32px;
-    ${({ theme }) => theme.mediaQueries.lg} {
+    width: 36px;
+    height: 36px;
+    ${({ theme }) => theme.mediaQueries.xl} {
       display: none;
     }
   }
   .desktop-icon {
     width: 160px;
     display: none;
-    ${({ theme }) => theme.mediaQueries.lg} {
+    ${({ theme }) => theme.mediaQueries.xl} {
       display: block;
     }
   }

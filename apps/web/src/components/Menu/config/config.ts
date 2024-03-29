@@ -3,6 +3,8 @@ import {
   DropdownMenuItems,
   EarnFillIcon,
   EarnIcon,
+  InfoFilledIcon,
+  InfoIcon,
   MenuItemsType,
   PoolIcon,
   SwapFillIcon,
@@ -38,7 +40,8 @@ const config: (
     {
       label: 'Info',
       href: '/info/v3',
-      icon: PoolIcon,
+      icon: InfoIcon,
+      fillIcon: InfoFilledIcon,
       hideSubNav: true,
       // items: [
       //   {

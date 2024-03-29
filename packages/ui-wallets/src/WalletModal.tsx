@@ -199,7 +199,7 @@ function WalletSelect<T>({
       display="grid"
       overflowY="auto"
       overflowX="hidden"
-      px={{ xs: '16px', sm: '48px' }}
+      px={{ xs: '32px', sm: '56px' }}
       pb="12px"
       className={walletSelectWrapperClass}
     >
@@ -325,8 +325,8 @@ function DesktopModal<T>({
         borderRadius="card"
         className={desktopWalletSelectionClass}
       >
-        <AtomBox px="48px">
-          <Heading color="color" as="h4">
+        <AtomBox px={{ xs: '20px', sm: '32px' }}>
+          <Heading color="text" as="h2">
             {t('Connect Wallet')}
           </Heading>
           <Text color="textSubtle" small pt="24px" pb="32px">
