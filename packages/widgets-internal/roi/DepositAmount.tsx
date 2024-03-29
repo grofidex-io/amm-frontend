@@ -35,6 +35,7 @@ const StyledBalanceInput = styled(BalanceInput)`
 const StyledButton = styled(Button)`
   width: 100%;
   text-transform: uppercase;
+  border-radius: 4px;
 `;
 
 interface UsdAmountInputProps {
@@ -129,7 +130,7 @@ export const TokenAmountsDisplay = memo(function TokenAmountsDisplay({
 
   return (
     <Card>
-      <CardBody>
+      <CardBody p="16px">
         <Box mb="0.5em">
           <TokenDisplayRow amount={amountA} currency={currencyA} />
         </Box>

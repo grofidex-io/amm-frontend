@@ -1,31 +1,33 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { useCallback, useEffect, useState, useMemo, memo } from "react";
 import { Currency, CurrencyAmount, ONE_HUNDRED_PERCENT, ZERO_PERCENT } from "@pancakeswap/sdk";
-import { FeeCalculator, encodeSqrtRatioX96 } from "@pancakeswap/v3-sdk";
-import { styled } from "styled-components";
 import { CAKE } from "@pancakeswap/tokens";
-import { Box, Row, AutoColumn, Toggle, RowBetween, Message } from "@pancakeswap/uikit";
+import { AutoColumn, Box, Message, Row, RowBetween, Toggle } from "@pancakeswap/uikit";
+import { FeeCalculator, encodeSqrtRatioX96 } from "@pancakeswap/v3-sdk";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { styled } from "styled-components";
 import { DoubleCurrencyLogo } from "../components/CurrencyLogo";
 
-import { Section } from "./Section";
 import {
-  AssetCard,
   Asset,
-  CardSection,
-  SectionTitle,
-  InterestDisplay,
+  AssetCard,
   AssetRow,
-  CurrencyLogoDisplay,
+  CardSection,
   CardTag,
+  CurrencyLogoDisplay,
+  InterestDisplay,
+  SectionTitle,
 } from "./AssetCard";
-import { floatToPercent, toToken0Price } from "./utils";
-import { TwoColumns } from "./TwoColumns";
 import { EditableAssets } from "./EditableAssets";
+import { Section } from "./Section";
+import { TwoColumns } from "./TwoColumns";
+import { floatToPercent, toToken0Price } from "./utils";
 
 const Container = styled(Box)`
   background: ${({ theme }) => theme.colors.background};
   padding: 12px;
-  border-radius: 20px;
+  border-radius: 8px;
+  box-shadow: ${({ theme }) => theme.shadows.card};
+  border: 2px solid ${({ theme }) => theme.colors.cardBorder};
 `;
 
 interface Props {
@@ -350,7 +352,7 @@ export const ImpermanentLossCalculator = memo(function ImpermanentLossCalculator
     <Container>
       <Section title={t("Calculate impermanent loss")} mb="0">
         <Row mb={on ? "24px" : "0px"}>
-          <Toggle checked={on} onChange={toggle} scale="md" />
+          <Toggle checked={on} onChange={toggle} scale="sm" />
         </Row>
         {calculator}
       </Section>

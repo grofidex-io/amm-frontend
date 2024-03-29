@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { styled, keyframes } from "styled-components";
-import { Flex, ArrowDownIcon } from "@pancakeswap/uikit";
+import { ArrowDownIcon, Flex } from "@pancakeswap/uikit";
+import { useEffect, useState } from "react";
+import { keyframes, styled } from "styled-components";
 
 const rotate = keyframes`
   0% {
@@ -42,7 +42,7 @@ export const AnimatedArrow: React.FC<React.PropsWithChildren<AnimatedArrowProps>
 
   return (
     <ArrowContainer justifyContent="center" my="24px" key={key}>
-      <ArrowDownIcon width="24px" height="24px" color="textSubtle" />
+      <ArrowDownIcon width="24px" height="24px" color="hover" />
     </ArrowContainer>
   );
 };

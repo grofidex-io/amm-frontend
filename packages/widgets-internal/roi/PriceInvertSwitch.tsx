@@ -9,6 +9,14 @@ const StyledButton = styled(Button)`
   border-radius: 8px;
   padding: 0 0.5em;
   font-size: 12px;
+  svg {
+    fill: ${({ theme }) => theme.colors.primary};
+  }
+  &:hover {
+    svg {
+      fill: ${({ theme }) => theme.colors.black};
+    }
+  }
 `;
 
 interface Props {
@@ -32,7 +40,8 @@ export const PriceInvertSwitch = memo(function PriceInvertSwitch({ baseCurrency,
         variant="secondary"
         scale="sm"
         onClick={onSwitch}
-        startIcon={<SyncAltIcon color="primary" width="14px" />}
+        startIcon={<SyncAltIcon width="14px" />}
+        className="button-hover"
       >
         {baseCurrency.symbol}
       </StyledButton>

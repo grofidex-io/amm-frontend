@@ -1,8 +1,8 @@
 import { styled } from "styled-components";
 import Box from "../Box/Box";
+import IconButton from "../Button/IconButton";
 import Input from "../Input/Input";
 import Text from "../Text/Text";
-import IconButton from "../Button/IconButton";
 import { BalanceInputProps } from "./types";
 
 export const SwitchUnitsButton = styled(IconButton)`
@@ -18,9 +18,9 @@ export const UnitContainer = styled(Text)`
 
 export const StyledBalanceInput = styled(Box)<{ isWarning: BalanceInputProps["isWarning"] }>`
   background-color: ${({ theme }) => theme.colors.input};
-  border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
-  border-radius: 16px;
-  box-shadow: ${({ theme, isWarning }) => theme.shadows[isWarning ? "warning" : "inset"]};
+  border: 2px solid ${({ theme }) => theme.colors.cardBorder};
+  border-radius: 4px;
+  box-shadow: ${({ theme, isWarning }) => theme.shadows[isWarning ? "warning" : "input"]};
   padding: 8px 16px;
 `;
 

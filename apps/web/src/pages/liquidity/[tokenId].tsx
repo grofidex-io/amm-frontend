@@ -150,7 +150,7 @@ function PositionPriceSection({
           <RateToggle currencyA={currencyBase} handleRateToggle={() => setManuallyInverted(!manuallyInverted)} />
         )}
       </AutoRow>
-      <AutoRow mb="8px">
+      <AutoRow mb="12px">
         <Flex alignItems="center" justifyContent="space-between" width="100%" flexWrap={['wrap', 'wrap', 'nowrap']}>
           <RangePriceSection
             mr={['0', '0', '16px']}
