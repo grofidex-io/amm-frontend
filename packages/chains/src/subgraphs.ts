@@ -44,7 +44,7 @@ export function getV3Subgraphs({ noderealApiKey }: SubgraphParams) {
     [ChainId.SEPOLIA]: null,
     [ChainId.ARBITRUM_SEPOLIA]: null,
     [ChainId.BASE_SEPOLIA]: null,
-    [ChainId.U2U_NEBULAS]: 'https://subgraph-amm-dev.uniultra.xyz/subgraphs/name/u2u-amm/u2dex-v1',
+    [ChainId.U2U_NEBULAS]: 'https://subgraph-amm-dev.uniultra.xyz/subgraphs/name/u2u-amm/u2dex-v2',
   } satisfies Record<ChainId, string | null>
 }
 

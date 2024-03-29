@@ -1,5 +1,5 @@
-import BigNumber from 'bignumber.js'
 import dayjs from 'dayjs'
+import BigNumber from 'bignumber.js'
 import utc from 'dayjs/plugin/utc'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 
@@ -137,4 +137,3 @@ export async function fetchPoolChartData(address: string, client: GraphQLClient)
     error,
   }
 }
-
