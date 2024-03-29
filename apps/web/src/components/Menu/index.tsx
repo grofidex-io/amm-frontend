@@ -12,6 +12,7 @@ import { IdType } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import { useWebNotifications } from 'hooks/useWebNotifications'
 import { useRouter } from 'next/router'
 import { lazy, useMemo } from 'react'
+import Search from 'views/V3Info/components/Search'
 import UserMenu from './UserMenu'
 import { useMenuItems } from './hooks/useMenuItems'
 import { getActiveMenuItem, getActiveSubMenuItem } from './utils'
@@ -63,6 +64,7 @@ const Menu = (props) => {
                 <Notifications />
               </Suspense>
             )} */}
+            <Search />
             <NetworkSwitcher />
             <UserMenu />
           </>

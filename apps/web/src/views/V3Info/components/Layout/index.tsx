@@ -1,5 +1,3 @@
-import InfoNav from './InfoNav'
-
 export const InfoPageLayout = ({ children }) => {
   // const router = useRouter()
   // const chainName = useChainNameByQuery()
@@ -29,7 +27,7 @@ export const InfoPageLayout = ({ children }) => {
   return (
     <>
       {/* <SubMenuItems items={subMenuItems} activeItem={isV3 ? `/info/v3${chainPath}` : `/info${chainPath}`} /> */}
-      <InfoNav isStableSwap={false} />
+      {/* <InfoNav isStableSwap={false} /> */}
       {children}
     </>
   )

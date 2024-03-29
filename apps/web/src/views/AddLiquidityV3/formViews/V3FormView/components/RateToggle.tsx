@@ -7,6 +7,14 @@ const RateToggleButton = styled(Button)`
   border-radius: 8px;
   padding-left: 8px;
   padding-right: 8px;
+  svg {
+    fill: ${({ theme }) => theme.colors.primary};
+  }
+  &:hover {
+    svg {
+      fill: ${({ theme }) => theme.colors.black};
+    }
+  }
 `
 
 export default function RateToggle({
@@ -25,9 +33,10 @@ export default function RateToggle({
       </Text>
       <RateToggleButton
         className="button-hover"
+        variant="secondary"
         scale="sm"
         onClick={handleRateToggle}
-        startIcon={<SyncAltIcon color="inherit" />}
+        startIcon={<SyncAltIcon />}
       >
         {currencyA?.symbol}
       </RateToggleButton>
