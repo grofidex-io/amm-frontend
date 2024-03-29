@@ -40,8 +40,9 @@ const ScrollToTopButtonV2 = () => {
   return (
     <FixedContainer style={{ display: visible ? "inline" : "none" }}>
       <Button
-        width={48}
-        height={48}
+        width={["40px", "40px", "44px", "44px", "48px"]}
+        height={["40px", "40px", "44px", "44px", "48px"]}
+        p="0"
         endIcon={<ArrowUpIcon color="invertedContrast" style={{ marginLeft: 0 }} />}
         onClick={scrollToTop}
         className="button-hover"

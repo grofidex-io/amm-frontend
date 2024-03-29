@@ -1,22 +1,22 @@
-import { Route, SmartRouter } from '@pancakeswap/smart-router/evm'
 import { useTranslation } from '@pancakeswap/localization'
+import { Currency } from '@pancakeswap/sdk'
+import { Route, SmartRouter } from '@pancakeswap/smart-router/evm'
 import {
+  AtomBox,
+  AutoColumn,
+  Flex,
   Modal,
   ModalV2,
   QuestionHelper,
   Text,
-  Flex,
-  useTooltip,
-  AutoColumn,
   UseModalV2Props,
-  AtomBox,
+  useTooltip,
 } from '@pancakeswap/uikit'
 import { CurrencyLogo } from '@pancakeswap/widgets-internal'
-import { Currency } from '@pancakeswap/sdk'
-import { useMemo, memo } from 'react'
+import { memo, useMemo } from 'react'
 
 import { RoutingSettingsButton } from 'components/Menu/GlobalSettings/SettingsModal'
-import { RouterBox, RouterPoolBox, RouterTypeText, CurrencyLogoWrapper } from 'views/Swap/components/RouterViewer'
+import { CurrencyLogoWrapper, RouterBox, RouterPoolBox, RouterTypeText } from 'views/Swap/components/RouterViewer'
 import { v3FeeToPercent } from '../utils/exchange'
 
 type Pair = [Currency, Currency]
@@ -40,6 +40,7 @@ export const RouteDisplayModal = memo(function RouteDisplayModal({ isOpen, onDis
             />
           </Flex>
         }
+        headerBackground="gradientCardHeader"
         style={{ minHeight: '0' }}
         bodyPadding="24px"
       >

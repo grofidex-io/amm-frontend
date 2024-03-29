@@ -241,6 +241,7 @@ const SwapCommitButtonInner = memo(function SwapCommitButtonInner({
         variant={isValid && priceImpactSeverity > 2 && !errorMessage ? 'danger' : 'primary'}
         disabled={disabled}
         onClick={handleSwap}
+        className="button-hover"
       >
         {swapInputError ||
           (tradeLoading && <Dots>{t('Searching For The Best Price')}</Dots>) ||

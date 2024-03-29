@@ -10,9 +10,14 @@ import { useActiveHandle } from 'hooks/useEagerConnect.bmp.ts'
 
 import { ChainId } from '@pancakeswap/chains'
 import { useMemo, useState } from 'react'
+import styled from 'styled-components'
 import { logGTMWalletConnectEvent } from 'utils/customGTMEventTracking'
 import { useConnect } from 'wagmi'
 import Trans from './Trans'
+
+const StyledButton = styled(Button)`
+  white-space: nowrap;
+`
 
 const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
   const handleActive = useActiveHandle()
@@ -39,9 +44,9 @@ const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
 
   return (
     <>
-      <Button className="button-hover" onClick={handleClick} {...props}>
+      <StyledButton className="button-hover" onClick={handleClick} {...props}>
         {children || <Trans>Connect Wallet</Trans>}
-      </Button>
+      </StyledButton>
       <style jsx global>{`
         w3m-modal {
           position: relative;
