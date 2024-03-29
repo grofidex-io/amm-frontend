@@ -1,5 +1,5 @@
-import { useTranslation } from '@pancakeswap/localization'
 import { Box, FlexProps, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
 import Script from 'next/script'
 import { useEffect } from 'react'
 import { DefaultTheme, useTheme } from 'styled-components'
@@ -9,8 +9,8 @@ import { ChartByLabel } from './Chart/ChartbyLabel'
  * When the script tag is injected the TradingView object is not immediately
  * available on the window. So we listen for when it gets set
  */
-const tradingViewListener = async () => {
-  return new Promise<void>((resolve) =>
+const tradingViewListener = async () =>
+  new Promise<void>((resolve) =>
     Object.defineProperty(window, 'TradingView', {
       configurable: true,
       set(value) {
@@ -19,7 +19,6 @@ const tradingViewListener = async () => {
       },
     }),
   )
-}
 
 const initializeTradingView = (TradingViewObj: any, theme: DefaultTheme, localeCode: string, opts: any) => {
   let timezone = 'Etc/UTC'
@@ -71,6 +70,7 @@ const TradingView = ({ id, symbol }: TradingViewProps) => {
     if (isMobile) {
       opts.hide_side_toolbar = true
     }
+
     // @ts-ignore
     if (window.tv) {
       // @ts-ignore

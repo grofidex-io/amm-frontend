@@ -17,14 +17,12 @@ const PriceChart = ({
   // const toggleExpanded = () => setIsChartExpanded((currentIsExpanded) => !currentIsExpanded)
 
   return (
-    <>
     <StyledPriceChart
       height="80%"
       overflow="unset"
       $isDark={isDark}
       $isExpanded={isChartExpanded}
       $isFullWidthContainer={isFullWidthContainer}
-      position="relative"
     >
       <BasicChart
         token0Address={token0Address}
@@ -36,7 +34,6 @@ const PriceChart = ({
         currentSwapPrice={currentSwapPrice}
       />
     </StyledPriceChart>
-    </>
   )
 }
 
