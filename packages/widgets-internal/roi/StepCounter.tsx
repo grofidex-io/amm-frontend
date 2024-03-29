@@ -1,10 +1,17 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { FeeAmount } from "@pancakeswap/v3-sdk";
-import { ReactNode, useCallback, useEffect, useState, memo } from "react";
 import { AddCircleIcon, AutoColumn, AutoRow, IconButton, RemoveIcon } from "@pancakeswap/uikit";
+import { FeeAmount } from "@pancakeswap/v3-sdk";
+import { ReactNode, memo, useCallback, useEffect, useState } from "react";
 
+import styled from "styled-components";
 import { NumericalInput } from "../swap/NumericalInput";
 import { LightGreyCard } from "./Card";
+
+const StyledLightGreyCard = styled(LightGreyCard)`
+  color: ${({ theme }) => theme.colors.textSubtle};
+  border-radius: 8px;
+  box-shadow: ${({ theme }) => theme.shadows.card};
+`;
 
 interface StepCounterProps {
   value: string;
@@ -86,7 +93,7 @@ export const StepCounter = memo(
     }, [localValue, useLocalValue, value]);
 
     return (
-      <LightGreyCard padding="0">
+      <StyledLightGreyCard padding="0">
         <AutoColumn py="16px" textAlign="center" gap="8px" width="100%" onFocus={handleOnFocus} onBlur={handleOnBlur}>
           {title}
           <AutoRow>
@@ -127,7 +134,7 @@ export const StepCounter = memo(
           </AutoRow>
           {tokenA && tokenB && t("%assetA% per %assetB%", { assetA: tokenB, assetB: tokenA })}
         </AutoColumn>
-      </LightGreyCard>
+      </StyledLightGreyCard>
     );
   }
 );

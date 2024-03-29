@@ -107,6 +107,7 @@ export function V3SubmitButton({
           shouldShowApprovalGroup={shouldShowApprovalGroup}
         />
         <CommitButton
+          className="button-hover"
           variant={
             !isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B] ? 'danger' : 'primary'
           }

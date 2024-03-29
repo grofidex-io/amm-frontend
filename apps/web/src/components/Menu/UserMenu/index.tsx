@@ -119,10 +119,10 @@ const UserMenu = () => {
 
   return (
     <ConnectWalletButton scale="sm">
-      <Box display={['none', null, null, 'block']}>
+      <Box display={['none', null, null, null, 'block']}>
         <Trans>Connect Wallet</Trans>
       </Box>
-      <Box display={['block', null, null, 'none']}>
+      <Box display={['block', null, null, null, 'none']}>
         <Trans>Connect</Trans>
       </Box>
     </ConnectWalletButton>

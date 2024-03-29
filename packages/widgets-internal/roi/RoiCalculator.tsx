@@ -400,6 +400,7 @@ export function RoiCalculator({
           variant={priceRange?.fullRange ? "primary" : "secondary"}
           mb="16px"
           scale="sm"
+          className="button-hover"
         >
           {t("Full Range")}
         </Button>
@@ -483,7 +484,7 @@ export function RoiCalculator({
         <AnimatedArrow state={{}} />
         <RoiRate usdAmount={totalReward} roiPercent={totalRate} />
         {allowApply && (
-          <Button width="100%" mt="0.75em" onClick={handleApply}>
+          <Button className="button-hover" width="100%" mt="0.75em" onClick={handleApply}>
             {t("Apply Settings")}
           </Button>
         )}

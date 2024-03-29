@@ -3,8 +3,8 @@ import { Svg, SvgProps } from "../Svg";
 
 const BunnyKnownPlaceholder: React.FC<React.PropsWithChildren<SvgProps>> = (props) => {
   const theme = useTheme();
-  const primaryColor = theme.isDark ? "#3C3742" : "#e9eaeb";
-  const secondaryColor = theme.isDark ? "#666171" : "#bdc2c4";
+  const primaryColor = theme.isDark ? "#272727" : "#272727";
+  const secondaryColor = theme.isDark ? "#9f9f9f" : "#9f9f9f";
 
   return (
     <Svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
@@ -79,5 +79,4 @@ const BunnyKnownPlaceholder: React.FC<React.PropsWithChildren<SvgProps>> = (prop
     </Svg>
   );
 };
-
 export default BunnyKnownPlaceholder;

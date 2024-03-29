@@ -34,10 +34,8 @@ export const modalWrapperClass = style([
       marginBottom: 0,
     },
     md: {
-      height: '490px',
-    },
-    lg: {
-      width: '450px',
+      height: '360px',
+      width: '400px',
     },
   }),
 ])
@@ -59,7 +57,7 @@ export const desktopWalletSelectionClass = style(
 export const walletSelectWrapperClass = style(
   responsiveStyle({
     xs: {
-      gridTemplateColumns: '1fr 1fr 1fr 1fr',
+      gridTemplateColumns: '1fr 1fr',
       rowGap: '10px',
       columnGap: '8px',
     },
@@ -69,7 +67,7 @@ export const walletSelectWrapperClass = style(
       gridTemplateColumns: '1fr 1fr',
     },
     lg: {
-      gridTemplateColumns: '1fr 1fr 1fr 1fr',
+      gridTemplateColumns: '1fr 1fr',
     },
   }),
 )

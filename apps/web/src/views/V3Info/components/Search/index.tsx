@@ -23,9 +23,16 @@ const Container = styled.div`
   position: relative;
   z-index: 105;
   width: 100%;
+  min-width: 250px;
+  margin-right: 20px;
+  display: none;
+  ${({ theme }) => theme.mediaQueries.md} {
+    display: block;
+  }
 `
 
 const StyledInput = styled(Input)`
+  font-size: 15px;
   z-index: 9999;
   border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
 `

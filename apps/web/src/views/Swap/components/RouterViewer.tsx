@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
 import { LegacyRouter, LegacyPair as Pair } from '@pancakeswap/smart-router/legacy-router'
-import { Box, Flex, Text, useTooltip, AtomBox } from '@pancakeswap/uikit'
+import { AtomBox, Box, Flex, Text, useTooltip } from '@pancakeswap/uikit'
 import { CurrencyLogo } from 'components/Logo'
 import { styled } from 'styled-components'
 
@@ -47,7 +47,7 @@ export const RouterPoolBox = styled(Box)`
   }
   &.isStableSwap,
   &.highlight {
-    background-color: ${({ theme }) => theme.colors.secondary};
+    background-color: ${({ theme }) => theme.colors.tertiary};
   }
   ${({ theme }) => theme.mediaQueries.md} {
     padding: 4px 8px;
@@ -74,7 +74,7 @@ export const RouterTypeText = styled.div<{ fontWeight?: string }>`
 export const CurrencyLogoWrapper = styled(AtomBox)`
   position: relative;
   padding: 2px;
-  background: linear-gradient(180deg, #53dee9 0%, #7645d9 76.22%);
+  background: ${({ theme }) => theme.colors.gradientBubblegum};
   border-radius: 50%;
   z-index: 2;
 `
