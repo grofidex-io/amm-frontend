@@ -259,10 +259,10 @@ const SingleFarmV3Card: React.FunctionComponent<
                       <Arrow />
                     </StyledTooltip>
                     <Image
-                      src="/images/decorations/bulb-bunny.png"
-                      width={135}
-                      height={120}
-                      alt="bulb bunny reminds unstaking"
+                      src="/images/unstake-image.svg"
+                      width={106}
+                      height={124}
+                      alt=""
                     />
                   </AtomBox>
                 </AtomBox>

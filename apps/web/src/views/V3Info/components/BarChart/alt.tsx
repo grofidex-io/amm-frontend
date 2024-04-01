@@ -1,7 +1,7 @@
+import { RowBetween } from '@pancakeswap/uikit'
 import Card from 'components/Card'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
-import { RowBetween } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import React, { Dispatch, ReactNode, SetStateAction } from 'react'
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
@@ -23,6 +23,9 @@ const Wrapper = styled(Card)`
   > * {
     font-size: 1rem;
   }
+`
+const StyledLoadingRows = styled(LoadingRows)`
+  margin-top: 20px;
 `
 
 export type LineChartProps = {
@@ -88,11 +91,11 @@ const Chart = ({
         {topRight ?? null}
       </RowBetween>
       {data?.length === 0 ? (
-        <LoadingRows>
+        <StyledLoadingRows>
           <div />
           <div />
           <div />
-        </LoadingRows>
+        </StyledLoadingRows>
       ) : (
         <ResponsiveContainer width="100%" height="100%">
           <BarChart

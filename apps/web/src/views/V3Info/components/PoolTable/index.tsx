@@ -54,6 +54,10 @@ const LinkWrapper = styled(NextLink)`
   }
 `
 
+const StyledLoadingRows = styled(LoadingRows)`
+  margin: 0 16px;
+`
+
 const SORT_FIELD = {
   feeTier: 'feeTier',
   volumeUSD: 'volumeUSD',
@@ -234,7 +238,7 @@ export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDat
           </PageButtons>
         </>
       ) : (
-        <LoadingRows>
+        <StyledLoadingRows>
           <div />
           <div />
           <div />
@@ -247,7 +251,7 @@ export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDat
           <div />
           <div />
           <div />
-        </LoadingRows>
+        </StyledLoadingRows>
       )}
     </TableWrapper>
   )

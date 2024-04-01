@@ -1,12 +1,12 @@
-import { useMemo } from 'react'
-import { Card, Text, BunnyPlaceholderIcon, Box, IfoGenericIfoCard, BunnyKnownPlaceholder } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import styled from 'styled-components'
 import { PoolIds } from '@pancakeswap/ifos'
+import { useTranslation } from '@pancakeswap/localization'
+import { Box, BunnyKnownPlaceholder, BunnyPlaceholderIcon, Card, IfoGenericIfoCard, Text } from '@pancakeswap/uikit'
+import { useMemo } from 'react'
+import styled from 'styled-components'
 
 import { CardsWrapper } from './IfoCardStyles'
-import { StyledCardBody } from './IfoFoldableCard/index'
 import { cardConfig } from './IfoFoldableCard/IfoPoolCard'
+import { StyledCardBody } from './IfoFoldableCard/index'
 
 const CurveBox = styled(Box)`
   border-bottom-left-radius: 100% 40px;
@@ -59,7 +59,7 @@ export default function ComingSoonSection() {
             tooltip={unlimitedConfig?.tooltip}
             content={
               <>
-                <BunnyKnownPlaceholder width={80} mb="16px" />
+                <BunnyKnownPlaceholder width={140} height={140} mb="16px" />
                 <Text textAlign="center" fontWeight={600}>
                   {t('Follow our social channels to learn more about the next IFO.')}
                 </Text>
