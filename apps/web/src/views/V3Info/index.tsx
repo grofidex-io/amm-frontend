@@ -6,7 +6,7 @@ import dayjs from 'dayjs'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import { useEffect, useMemo, useState } from 'react'
-import BarChart from './components/BarChart/alt'
+import ComposedChart from './components/ComposedChart/alt'
 import LineChart from './components/LineChart/alt'
 import Percent from './components/Percent'
 import PoolTable from './components/PoolTable'
@@ -41,7 +41,7 @@ export default function Home() {
   const { chainId } = useActiveChainId()
   const { t } = useTranslation()
 
-  const [volumeHover, setVolumeHover] = useState<number | undefined>()
+  const [volumeHover, setVolumeHover] = useState<{value: number | undefined, feesUSD: number | undefined }>({value: undefined, feesUSD: undefined})
   const [liquidityHover, setLiquidityHover] = useState<number | undefined>()
   const [leftLabel, setLeftLabel] = useState<string | undefined>()
   const [rightLabel, setRightLabel] = useState<string | undefined>()
@@ -49,7 +49,7 @@ export default function Home() {
 
   useEffect(() => {
     setLiquidityHover(undefined)
-    setVolumeHover(undefined)
+    setVolumeHover({value: undefined, feesUSD: undefined})
   }, [chainId])
 
   useEffect(() => {
@@ -76,6 +76,7 @@ export default function Home() {
         return {
           time: unixToDate(day.date),
           value: day.volumeUSD,
+          feesUSD: day.feesUSD
         }
       })
     }
@@ -140,7 +141,7 @@ export default function Home() {
           />
         </Card>
         <Card>
-          <BarChart
+          <ComposedChart
             height={200}
             minHeight={332}
             data={
@@ -184,13 +185,21 @@ export default function Home() {
               </RowFixed>
             }
             topLeft={
-              <AutoColumn gap="4px">
-                <Text fontSize="16px">{t('Volume')}</Text>
+              <AutoColumn gap="4px" marginBottom="6px">
+                <Text fontSize="16px">{t('Volume - Fee')}</Text>
                 <Text fontSize="32px">
                   <MonoSpace>
-                    {volumeHover
-                      ? formatDollarAmount(volumeHover)
+                    {volumeHover.value
+                      ? formatDollarAmount(volumeHover.value)
                       : formatDollarAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value, 2)}
+                  </MonoSpace>
+                  <MonoSpace style={{margin: '0 3px'}}>
+                  -
+                  </MonoSpace>
+                  <MonoSpace>
+                    {volumeHover.feesUSD
+                      ? formatDollarAmount(volumeHover.feesUSD)
+                      : formatDollarAmount(formattedVolumeData[formattedVolumeData.length - 1]?.feesUSD, 2)}
                   </MonoSpace>
                 </Text>
                 <Text fontSize="12px" height="14px">
