@@ -20,10 +20,9 @@ export const useStreaming = () => {
       if (nextSeconds) {
         return barTime + nextSeconds * 1000
       } 
-        const date = new Date(barTime)
-        date.setMonth(date.getMonth() + 1)
-        return date.getTime()
-      
+      const date = new Date(barTime)
+      date.setMonth(date.getMonth() + 1)
+      return date.getTime()
     }
 
     let subscriptionItemCandle: any = null
@@ -63,7 +62,6 @@ export const useStreaming = () => {
         }
       }
       subscriptionItemCandle.lastDailyBar = bar
-
       // Send data to every subscriber of that symbol
       subscriptionItemCandle.handlers.forEach((handler: any) => handler.callback(bar))
     }

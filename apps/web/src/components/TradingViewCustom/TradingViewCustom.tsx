@@ -133,7 +133,9 @@ const TrandingViewCustom = ({ symbol, resolution }: TradingViewProps) => {
       chart.resetData()
       const _resolution: any = resolution
       chart.setResolution(_resolution)
-      handleLastTime()
+      setTimeout(() => {
+        handleLastTime()
+      }, 1000)
     }
   }, [resolution, isChartReady])
 
