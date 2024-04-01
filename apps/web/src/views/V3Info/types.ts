@@ -19,6 +19,7 @@ export interface ChartDayData {
   date: number
   volumeUSD: number
   tvlUSD: number
+  feesUSD: number
 }
 
 export enum VolumeWindow {
@@ -88,6 +89,7 @@ export interface TokenChartEntry {
   date: number
   volumeUSD: number
   totalValueLockedUSD: number
+  feesUSD?: number
 }
 
 export type PoolChartEntry = {
@@ -147,6 +149,7 @@ export interface PoolData {
 export interface GenericChartEntry {
   time: string
   value: number
+  feesUSD: number
 }
 
 export interface DensityChartEntry {

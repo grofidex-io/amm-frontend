@@ -18,6 +18,7 @@ const GLOBAL_CHART = gql`
       date
       volumeUSD
       tvlUSD
+      feesUSD
     }
   }
 `
@@ -27,6 +28,7 @@ interface ChartResults {
     date: number
     volumeUSD: string
     tvlUSD: string
+    feesUSD: string
   }[]
 }
 
@@ -35,6 +37,7 @@ export async function fetchChartData(client: GraphQLClient) {
     date: number
     volumeUSD: string
     tvlUSD: string
+    feesUSD: string
   }[] = []
   const startTimestamp = 1619170975
   const endTimestamp = dayjs.utc().unix()
@@ -60,6 +63,7 @@ export async function fetchChartData(client: GraphQLClient) {
         date: dayData.date,
         volumeUSD: parseFloat(dayData.volumeUSD),
         tvlUSD: parseFloat(dayData.tvlUSD),
+        feesUSD: parseFloat(dayData.feesUSD)
       }
       return accum
     }, {})
@@ -69,6 +73,7 @@ export async function fetchChartData(client: GraphQLClient) {
     // fill in empty days ( there will be no day datas if no trades made that day )
     let timestamp = firstEntry?.date ?? startTimestamp
     let latestTvl = firstEntry?.tvlUSD ?? 0
+    const latestFees = firstEntry?.feesUSD ?? 0
     while (timestamp < endTimestamp - ONE_DAY_UNIX) {
       const nextDay = timestamp + ONE_DAY_UNIX
       const currentDayIndex = parseInt((nextDay / ONE_DAY_UNIX).toFixed(0))
@@ -77,6 +82,7 @@ export async function fetchChartData(client: GraphQLClient) {
           date: nextDay,
           volumeUSD: 0,
           tvlUSD: latestTvl,
+          feesUSD: latestFees
         }
       } else {
         latestTvl = formattedExisting[currentDayIndex].tvlUSD
