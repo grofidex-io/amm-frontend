@@ -10,4 +10,4 @@ export const updateSlippagePercent = createAction<number | undefined>('staking/u
 
 export const updateStakingAmountError = createAction<string>('staking/updateStakingAmountError')
 
-export const resetStakingStake = createAction('staking/resetStakingStake')
+export const resetStakingState = createAction('staking/resetStakingState')

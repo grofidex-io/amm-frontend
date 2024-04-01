@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { atomWithReducer } from 'jotai/utils'
-import { replaceStakingState, resetStakingStake, updateSlippagePercent, updateStakingAmountError } from './actions'
+import { replaceStakingState, resetStakingState, updateSlippagePercent, updateStakingAmountError } from './actions'
 
 export interface StakingState {
   readonly currencyId: string
@@ -32,7 +32,7 @@ const reducer = createReducer<StakingState>(initialState, (builder) =>
     .addCase(updateStakingAmountError, (state, { payload: msg }) => {
       state.stakingAmountError = msg
     })
-    .addCase(resetStakingStake, () => initialState),
+    .addCase(resetStakingState, () => initialState),
 )
 
 export const stakingReducerAtom = atomWithReducer(initialState, reducer)

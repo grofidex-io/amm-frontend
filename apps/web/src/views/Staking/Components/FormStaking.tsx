@@ -5,7 +5,8 @@ import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import BigNumber from 'bignumber.js'
 import { useCurrency } from 'hooks/Tokens'
 import { useAtom } from 'jotai'
-import { replaceStakingState, updateSlippagePercent } from 'state/staking/actions'
+import { useEffect } from 'react'
+import { replaceStakingState, resetStakingState, updateSlippagePercent } from 'state/staking/actions'
 import { useStakingState } from 'state/staking/hooks'
 import { stakingReducerAtom } from 'state/staking/reducer'
 import { useCurrencyBalance } from 'state/wallet/hooks'
@@ -46,6 +47,10 @@ const FormStaking = () => {
   const { t } = useTranslation()
 
   const slippagePercents = [25, 50, 75, 100]
+
+  useEffect(() => {
+    dispatch(resetStakingState())
+  }, [])
 
   const currency = useCurrency(currencyId)
   const { address: account } = useAccount()

@@ -1,36 +1,5 @@
 export const stakingAbi = [
   {
-    inputs: [
-      {
-        internalType: 'string',
-        name: 'name',
-        type: 'string',
-      },
-      {
-        internalType: 'string',
-        name: 'symbol',
-        type: 'string',
-      },
-      {
-        internalType: 'address',
-        name: '_sfcContract',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: '_admin',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: '_validator',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'nonpayable',
-    type: 'constructor',
-  },
-  {
     anonymous: false,
     inputs: [
       {
@@ -122,6 +91,19 @@ export const stakingAbi = [
       },
     ],
     name: 'ClaimReward',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint8',
+        name: 'version',
+        type: 'uint8',
+      },
+    ],
+    name: 'Initialized',
     type: 'event',
   },
   {
@@ -394,6 +376,39 @@ export const stakingAbi = [
   {
     inputs: [
       {
+        internalType: 'string',
+        name: 'name',
+        type: 'string',
+      },
+      {
+        internalType: 'string',
+        name: 'symbol',
+        type: 'string',
+      },
+      {
+        internalType: 'address',
+        name: '_sfcContract',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: '_admin',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_validator',
+        type: 'uint256',
+      },
+    ],
+    name: 'initialize',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
         internalType: 'address',
         name: 'owner',
         type: 'address',
@@ -450,6 +465,25 @@ export const stakingAbi = [
   {
     inputs: [
       {
+        internalType: 'uint256',
+        name: '_tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'pendingReward',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
         internalType: 'address',
         name: 'from',
         type: 'address',
@@ -489,7 +523,7 @@ export const stakingAbi = [
       },
       {
         internalType: 'bytes',
-        name: '_data',
+        name: 'data',
         type: 'bytes',
       },
     ],
@@ -578,49 +612,6 @@ export const stakingAbi = [
     inputs: [
       {
         internalType: 'uint256',
-        name: 'index',
-        type: 'uint256',
-      },
-    ],
-    name: 'tokenByIndex',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'owner',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'index',
-        type: 'uint256',
-      },
-    ],
-    name: 'tokenOfOwnerByIndex',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
         name: '_tokenId',
         type: 'uint256',
       },
@@ -631,19 +622,6 @@ export const stakingAbi = [
         internalType: 'string',
         name: '',
         type: 'string',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'totalSupply',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
       },
     ],
     stateMutability: 'view',

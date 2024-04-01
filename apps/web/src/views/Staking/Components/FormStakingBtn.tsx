@@ -7,7 +7,7 @@ import { useCurrency } from 'hooks/Tokens'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useStakingContract } from 'hooks/useContract'
 import { useAtom } from 'jotai'
-import { resetStakingStake, updateStakingAmountError } from 'state/staking/actions'
+import { resetStakingState, updateStakingAmountError } from 'state/staking/actions'
 import { useStakingState } from 'state/staking/hooks'
 import { stakingReducerAtom } from 'state/staking/reducer'
 import { stake } from 'utils/calls/staking'
@@ -43,7 +43,7 @@ const FormStakingBtn = () => {
             {t('You have successfully staked.')}
           </ToastDescriptionWithTx>,
         )
-        dispatch(resetStakingStake())
+        dispatch(resetStakingState())
       }
     } catch (e) {
       console.error(e)
