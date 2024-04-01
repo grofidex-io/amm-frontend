@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, Box, Button, Card, Heading, Text } from '@pancakeswap/uikit'
+import { AutoColumn, Button, Card, Flex, Heading, Text } from '@pancakeswap/uikit'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import Page from 'components/Layout/Page'
 import dayjs from 'dayjs'
@@ -7,14 +7,13 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import { useEffect, useMemo, useState } from 'react'
 import BarChart from './components/BarChart/alt'
-import { DarkGreyCard } from './components/Card'
 import LineChart from './components/LineChart/alt'
 import Percent from './components/Percent'
 import PoolTable from './components/PoolTable'
-import { RowBetween, RowFixed } from './components/Row'
+import { RowFixed } from './components/Row'
 import TokenTable from './components/TokenTable'
 import TransactionsTable from './components/TransactionsTable'
-import { ChartCardsContainer, MonoSpace, ProtocolWrapper } from './components/shared'
+import { ChartCardsContainer, MonoSpace } from './components/shared'
 import {
   useProtocolChartData,
   useProtocolData,
@@ -24,7 +23,6 @@ import {
 } from './hooks'
 import { useTransformedVolumeData } from './hooks/chart'
 import { VolumeWindow } from './types'
-import { getPercentChange } from './utils/data'
 import { unixToDate } from './utils/date'
 import { formatDollarAmount } from './utils/numbers'
 
@@ -129,7 +127,10 @@ export default function Home() {
               <AutoColumn gap="4px">
                 <Text fontSize="16px">{t('TVL')}</Text>
                 <Text fontSize="32px">
-                  <MonoSpace>{tvlValue}</MonoSpace>
+                  <Flex>
+                    <MonoSpace>{tvlValue}</MonoSpace>
+                    <Percent fontSize='32px' value={protocolData?.tvlUSDChange} wrap />
+                  </Flex>
                 </Text>
                 <Text fontSize="12px" height="14px">
                   <MonoSpace>{leftLabel ?? now.format('MMM D, YYYY')} (UTC)</MonoSpace>
@@ -200,7 +201,7 @@ export default function Home() {
           />
         </Card>
       </ChartCardsContainer>
-      <ProtocolWrapper>
+      {/* <ProtocolWrapper>
         <DarkGreyCard>
           <RowBetween>
             <RowFixed>
@@ -230,7 +231,7 @@ export default function Home() {
             </RowFixed>
           </RowBetween>
         </DarkGreyCard>
-      </ProtocolWrapper>
+      </ProtocolWrapper> */}
       <Heading scale="lg" mt="40px" mb="16px">
         {t('Top Tokens')}
       </Heading>
