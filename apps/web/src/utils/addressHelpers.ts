@@ -186,3 +186,7 @@ export const getRevenueSharingVeCakeAddress = (chainId?: number) => {
 export const getRevenueSharingPoolGatewayAddress = (chainId?: number) => {
   return getAddressFromMap(addresses.revenueSharingPoolGateway, chainId)
 }
+
+export const getStakingAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.staking, chainId)
+}

@@ -233,6 +233,12 @@ const config: (
       icon: PoolIcon,
       hideSubNav: true,
     },
+    {
+      label: 'Staking',
+      href: '/staking',
+      icon: PoolIcon,
+      hideSubNav: true,
+    },
   ].map((item) => addMenuItemSupported(item, chainId))
 
 export default config
