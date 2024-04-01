@@ -15,19 +15,30 @@ enum CHART_TYPE {
   CANDLE = 2
 }
 const IconImage = styled.div`
-  border-radius: 8px;
-  padding: 10px 15px;
+  border-radius: 4px;
+  padding: 8px;
   cursor: pointer;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
+  color: ${({ theme }) => theme.colors.textSubtle};
+  + div {
+    margin-left: 12px;
+  }
+  &:hover {
+    color: ${({ theme }) => theme.colors.hover};
+  }
   &.active {
     border-color: #000;
     color: #000 !important;
     background: ${({ theme }) => theme.colors.primary};
   }
+  svg {
+    display: block;
+  }
 `
+
 const RESOLUTION_CANDLE = ['15M', '1H', '1D', '1W', '1M']
 const RESOLUTION_LINE = ['1D', '1W', '1M', '1Y' ]
 const BasicChart = ({

@@ -34,7 +34,7 @@ import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import { Address, useBalance } from 'wagmi'
 
 const COLORS = {
-  ETH: '#627EEA',
+  ETH: '#404040',
   BNB: '#14151A',
 }
 
@@ -133,7 +133,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
         {!isBSC && chain && (
           <Box mb="16px">
             <Flex justifyContent="space-between" alignItems="center" mb="8px">
-              <Flex bg={COLORS.ETH} borderRadius="16px" pl="4px" pr="8px" py="2px">
+              <Flex bg={COLORS.ETH} borderRadius="4px" pl="4px" pr="8px" py="2px">
                 <ChainLogo chainId={chain.id} />
                 <Text color="white" ml="4px">
                   {chain.name}

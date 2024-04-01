@@ -1,5 +1,5 @@
-import { Box } from '@pancakeswap/uikit'
-import { css, keyframes, styled } from 'styled-components'
+import { Box } from '@pancakeswap/uikit';
+import { css, keyframes, styled } from 'styled-components';
 
 const rotate = keyframes`
   from {
@@ -144,10 +144,10 @@ export const LoadingRows = styled.div`
       to left,
       ${({ theme }) => theme.colors.background} 25%,
       ${({ theme }) => theme.colors.backgroundAlt} 50%,
-      ${({ theme }) => theme.colors.backgroundAlt2} 75%
+      ${({ theme }) => theme.colors.backgroundItem} 75%
     );
     background-size: 400%;
-    border-radius: 12px;
+    border-radius: 6px;
     height: 2.4em;
     will-change: background-position;
   }

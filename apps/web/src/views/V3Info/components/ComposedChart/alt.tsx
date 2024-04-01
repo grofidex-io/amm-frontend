@@ -2,10 +2,10 @@ import { RowBetween } from '@pancakeswap/uikit'
 import Card from 'components/Card'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
-import useTheme from 'hooks/useTheme'
 import React, { Dispatch, ReactNode, SetStateAction } from 'react'
-import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
+import { Area, Bar, ComposedChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { styled } from 'styled-components'
+import { formatDollarAmount } from 'views/V3Info/utils/numbers'
 import { VolumeWindow } from '../../types'
 import { LoadingRows } from '../Loader'
 
@@ -24,18 +24,15 @@ const Wrapper = styled(Card)`
     font-size: 1rem;
   }
 `
-const StyledLoadingRows = styled(LoadingRows)`
-  margin-top: 20px;
-`
 
 export type LineChartProps = {
   data: any[]
   color?: string | undefined
   height?: number | undefined
   minHeight?: number
-  setValue?: Dispatch<SetStateAction<number | undefined>> // used for value on hover
+  setValue?: Dispatch<SetStateAction<{value: number | undefined, feesUSD: number | undefined}>> // used for value on hover
   setLabel?: Dispatch<SetStateAction<string | undefined>> // used for label of value
-  value?: number
+  value?: {value: number | undefined, feesUSD: number | undefined}
   label?: string
   activeWindow?: VolumeWindow
   topLeft?: ReactNode | undefined
@@ -79,7 +76,6 @@ const Chart = ({
   minHeight = DEFAULT_HEIGHT,
   ...rest
 }: LineChartProps) => {
-  const { theme } = useTheme()
   const parsedValue = value
 
   const now = dayjs()
@@ -91,14 +87,14 @@ const Chart = ({
         {topRight ?? null}
       </RowBetween>
       {data?.length === 0 ? (
-        <StyledLoadingRows>
+        <LoadingRows>
           <div />
           <div />
           <div />
-        </StyledLoadingRows>
+        </LoadingRows>
       ) : (
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart
+          <ComposedChart
             width={500}
             height={300}
             data={data}
@@ -110,9 +106,10 @@ const Chart = ({
             }}
             onMouseLeave={() => {
               if (setLabel) setLabel(undefined)
-              if (setValue) setValue(undefined)
+              if (setValue) setValue({value: undefined, feesUSD: undefined})
             }}
           >
+
             <XAxis
               dataKey="time"
               axisLine={false}
@@ -120,12 +117,15 @@ const Chart = ({
               tickFormatter={(time) => dayjs(time).format(activeWindow === VolumeWindow.monthly ? 'MMM' : 'DD')}
               minTickGap={10}
             />
+            <YAxis dataKey="feesUSD" yAxisId="left"  tickLine={false} axisLine={false}  /> 
+            <YAxis dataKey="value" yAxisId="right" orientation='right'  tickLine={false} axisLine={false} tickFormatter={(item) => formatDollarAmount(item)} /> 
+            {/* label={{value: 'Volume', angle: -90, position: "right", fill: 'white', dy: "5" }} */}
             <Tooltip
-              cursor={{ fill: theme.colors.backgroundAlt }}
+              cursor={false}
               contentStyle={{ display: 'none' }}
               formatter={(toolTipValue: number, name: string, props) => {
-                if (setValue && parsedValue !== props.payload.value) {
-                  setValue(props.payload.value)
+                if (setValue && parsedValue?.value !== props.payload.value && parsedValue?.feesUSD !== props.payload.feesUSD) {
+                  setValue(props.payload)
                 }
                 const formattedTime = dayjs(props.payload.time).format('MMM D')
                 const formattedTimeDaily = dayjs(props.payload.time).format('MMM D, YYYY')
@@ -156,12 +156,14 @@ const Chart = ({
             />
             <Bar
               dataKey="value"
+              yAxisId="right"
               fill={color}
               shape={(props) => {
                 return <CustomBar height={props.height} width={props.width} x={props.x} y={props.y} fill={color} />
               }}
             />
-          </BarChart>
+            <Area yAxisId="left" dataKey="feesUSD" type="monotone" stroke="#1FC7D4" fill="transparent" strokeWidth={2} />
+          </ComposedChart>
         </ResponsiveContainer>
       )}
       <RowBetween>
