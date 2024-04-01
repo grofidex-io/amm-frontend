@@ -150,7 +150,7 @@ export const  fetchPoolCandleByInterval = async (pairs: Array<string>, from: num
     '30': 'pool30MinuteCandleDatas',
     '60': 'poolHourCandleDatas',
     '1W': 'poolWeekCandleDatas',
-    '1D': 'poolDayDatas',
+    '1D': 'poolDayCandleDatas',
     '1M': 'poolMonthCandleDatas'
   }
   const res = await client.request<CandleResults>(query, {
