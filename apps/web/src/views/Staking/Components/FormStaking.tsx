@@ -88,7 +88,7 @@ const FormStaking = () => {
       const amount = rawBalance.multipliedBy(new BigNumber(percent / 100))
       dispatch(
         replaceStakingState({
-          amount: amount.toPrecision(6, BigNumber.ROUND_DOWN),
+          amount: Number(amount.toFixed(6, BigNumber.ROUND_DOWN)).toString(),
           amountError: '',
           percent,
         }),
