@@ -81,8 +81,8 @@ export function useStakingList() {
       })
       if (user == null) {
         return {
-          user: user,
-          periodTime: periodTime,
+          user,
+          periodTime,
         }
       }
       user.totalPackage = user.staked.length + user.unStake.length
@@ -113,8 +113,8 @@ export function useStakingList() {
       user.totalStakedDisplay = formatAmount(user.totalStakedAmount)
       user.totalRewardDisplay = formatAmount(user.totalReward)
       return {
-        user: user,
-        periodTime: periodTime,
+        user,
+        periodTime,
       }
     } catch (e) {
       console.error(e)
@@ -132,7 +132,7 @@ export function useStakingList() {
       return fetchStakingList(stakingContract?.account?.address?.toLowerCase())
     },
     enabled: Boolean(stakingContract?.account?.address),
-    refetchInterval: 7 * 60 * 1000, //milliseconds
+    refetchInterval: 7 * 60 * 1000, // milliseconds
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     retry: 3,

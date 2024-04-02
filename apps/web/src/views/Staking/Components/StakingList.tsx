@@ -61,7 +61,7 @@ function StakingList() {
         return <StakingItem stakedInfo={e} periodTime={periodTime ?? Number.NaN} isUnStake={false} key={`amm-staked-${e.id}`}/>
       })}
       {data?.unStake.map((e) => {
-        return <StakingItem stakedInfo={e} periodTime={periodTime ?? Number.NaN} isUnStake={true} key={`amm-un-staked-${e.id}`}/>
+        return <StakingItem stakedInfo={e} periodTime={periodTime ?? Number.NaN} isUnStake key={`amm-un-staked-${e.id}`}/>
       })}
     </>
   )

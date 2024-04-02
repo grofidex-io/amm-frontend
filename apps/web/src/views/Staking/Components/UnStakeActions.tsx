@@ -21,7 +21,10 @@ const useCountdown = (time) => {
       setCountDown(time - 1000);
     }, 1000);
 
-    return () => clearInterval(interval);
+    // eslint-disable-next-line consistent-return
+    return () => {
+       clearInterval(interval);
+    }
   }, [time])
 
   return {countDown}
