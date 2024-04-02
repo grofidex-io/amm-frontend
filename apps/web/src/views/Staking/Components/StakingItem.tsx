@@ -4,26 +4,51 @@ import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useStakingContract } from 'hooks/useContract'
-import { ReactNode } from 'react'
-import { claimReward } from 'utils/calls/staking'
-import { StakedInfo } from '../Hooks/useStakingList'
+import { useState } from 'react'
+import { claimReward, unStake, withdraw } from 'utils/calls/staking'
+import { StakedInfo, useStakingList } from '../Hooks/useStakingList'
 import { BorderLayout, StyledBox, StyledTextTitle } from '../style'
+import { UnStakeActions } from './UnStakeActions'
 
 type StakingProps = {
   stakedInfo: StakedInfo
-  children?: ReactNode
+  periodTime: number
+  isUnStake: boolean
 }
 
-const StakingItem = ({ stakedInfo, children }: StakingProps) => {
+const StakingItem = ({ stakedInfo, periodTime, isUnStake }: StakingProps) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError } = useCatchTxError()
 
+  const [ isClaiming, setIsClaiming ] = useState(false)
+  const [ isUnStaking, setIsUnStaking] = useState(false)
+  const [ isWithdrawing, setIsWithdrawing] = useState(false)
+
   const enableClaim = stakedInfo.reward.gt(BigNumber(0))
 
   const stakingContract = useStakingContract()
+  const { refresh } = useStakingList()
+
+  const handUnStake = async () => {
+    if (isUnStaking) return
+    setIsUnStaking(true)
+    const receipt = await fetchWithCatchTxError(() => unStake(stakingContract, stakedInfo.id))
+    if (receipt?.status) {
+      toastSuccess(
+        t('Success!'),
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('You have successfully unStaked.')}
+        </ToastDescriptionWithTx>,
+      )
+      refresh()
+    }
+    setIsUnStaking(false)
+  }
 
   async function handleClaim() {
+    if (isClaiming) return
+    setIsClaiming(true)
     const receipt = await fetchWithCatchTxError(() => claimReward(stakingContract, stakedInfo.id))
     if (receipt?.status) {
       toastSuccess(
@@ -32,7 +57,49 @@ const StakingItem = ({ stakedInfo, children }: StakingProps) => {
           {t('You have successfully claimed.')}
         </ToastDescriptionWithTx>,
       )
+      refresh()
     }
+    setIsClaiming(false)
+  }
+
+  async function handleWithdraw() {
+    if (isWithdrawing) return
+    setIsWithdrawing(true)
+    const receipt = await fetchWithCatchTxError(() => withdraw(stakingContract, stakedInfo.id))
+    if (receipt?.status) {
+      toastSuccess(
+        t('Success!'),
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('You have successfully withdrawn.')}
+        </ToastDescriptionWithTx>,
+      )
+      refresh()
+    }
+    setIsWithdrawing(false)
+  }
+
+  const renderAction = () => {
+    if (!isUnStake) {
+      return (
+        <Button
+          height="40px"
+          variant="secondary"
+          disabled={enableClaim}
+          className="button-hover"
+          onClick={handUnStake}
+        >
+          {isUnStaking ? t('Unstaking...') : t('Unstake')}
+        </Button>
+      )
+    }
+    return (
+      <UnStakeActions
+        title={isWithdrawing ? t('Withdrawing...') : t('Withdraw')}
+        data={stakedInfo}
+        periodTime={periodTime}
+        handleWithdraw={handleWithdraw}
+      />
+    )
   }
 
   return (
@@ -44,7 +111,7 @@ const StakingItem = ({ stakedInfo, children }: StakingProps) => {
             <Text fontSize="36px" lineHeight="1">
               {stakedInfo.amountDisplay}
             </Text>
-            {children}
+            {renderAction()}
           </Flex>
         </StyledBox>
         <StyledBox>
@@ -59,7 +126,7 @@ const StakingItem = ({ stakedInfo, children }: StakingProps) => {
               {stakedInfo.rewardDisplay}
             </Text>
             <Button height="42px" width="120px" disabled={!enableClaim} className="button-hover" onClick={handleClaim}>
-              {t('Claim')}
+              {isClaiming ? t('Claiming...'): t('Claim')}
             </Button>
           </Flex>
         </StyledBox>

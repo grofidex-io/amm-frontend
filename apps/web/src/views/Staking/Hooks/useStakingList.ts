@@ -1,12 +1,11 @@
 import { bigIntToBigNumber } from '@pancakeswap/utils/bigNumber'
+import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
 import { gql } from 'graphql-request'
 import { useCurrency } from 'hooks/Tokens'
 import { useStakingContract } from 'hooks/useContract'
-import { useEffect, useState } from 'react'
 import { pendingReward, withdrawalPeriodTime } from 'utils/calls/staking'
 import { ammStakingClients } from 'utils/graphql'
-import { useAccount } from 'wagmi'
 
 export interface StakedInfo {
   id: string
@@ -30,12 +29,7 @@ export interface StakingResponse {
 
 export function useStakingList() {
   const stakingContract = useStakingContract()
-
   const currency = useCurrency('U2U')
-  const { address: account } = useAccount()
-
-  const [periodTime, setPeriodTime] = useState<number>(Number.NaN)
-  const [data, setData] = useState<StakingResponse | null>(null)
 
   const formatAmount = (value: BigNumber) => {
     const rawValue: BigNumber = value.dividedBy(bigIntToBigNumber(10n ** BigInt(currency?.decimals ?? 18)))
@@ -44,23 +38,26 @@ export function useStakingList() {
 
   async function fetchWithdrawPeriodTime() {
     const value = await withdrawalPeriodTime(stakingContract)
-    setPeriodTime(Number(value))
+    return Number(value)
   }
 
   async function fetchRewards(dataList: StakedInfo[]) {
     const results: any[] = []
-
     for (const e of dataList) {
       results.push(pendingReward(stakingContract, e.id))
     }
-
     return Promise.all(results)
   }
 
   async function fetchStakingList(address: string | undefined) {
-    // `0x${string}`
-    await fetchWithdrawPeriodTime()
-    if (address == null) return
+    const periodTime = await fetchWithdrawPeriodTime()
+    if (address == null) {
+      return {
+        user: null,
+        periodTime: Number.NaN,
+        error: true
+      }
+    }
     try {
       const STAKING_LIST_QUERY = gql`
         query getStakingList($address: String!) {
@@ -83,8 +80,10 @@ export function useStakingList() {
         address,
       })
       if (user == null) {
-        setData(null)
-        return
+        return {
+          user: user,
+          periodTime: periodTime,
+        }
       }
       user.totalPackage = user.staked.length + user.unStake.length
       user.totalStakedAmount = BigNumber(0)
@@ -113,27 +112,40 @@ export function useStakingList() {
 
       user.totalStakedDisplay = formatAmount(user.totalStakedAmount)
       user.totalRewardDisplay = formatAmount(user.totalReward)
-      setData(user)
+      return {
+        user: user,
+        periodTime: periodTime,
+      }
     } catch (e) {
       console.error(e)
-      setData(null)
+      return {
+        user: null,
+        periodTime: Number.NaN,
+        error: true
+      }
     }
   }
 
-  // const { data, isPending } = useQuery({
-  //   queryKey: ['amm-subgraphs/staking/list'],
-  //   queryFn: async () => {
-  //     return await fetchStakingList('0x64fd03b33505519f704608f1c70e02e40fee2901')
-  //   },
-  //   // enabled: Boolean(client && tokenId),
-  //   refetchInterval: 60000,
-  //   refetchOnReconnect: false,
-  //   refetchOnWindowFocus: false,
-  // })
-
-  useEffect(() => {
-    fetchStakingList(account?.toLowerCase())
-  }, [stakingContract, account, currency])
-
-  return { data, periodTime }
+  const { data, refetch, isPending, isFetching, error } = useQuery({
+    queryKey: ['amm-subgraphs/staking/list', stakingContract.account?.address],
+    queryFn: async () => {
+      return fetchStakingList(stakingContract?.account?.address?.toLowerCase())
+    },
+    enabled: Boolean(stakingContract?.account?.address),
+    refetchInterval: 7 * 60 * 1000, //milliseconds
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    retry: 3,
+    retryDelay: 3000,
+    refetchOnMount: false,
+  })
+  
+  return {
+    refresh: refetch,
+    data: data?.user,
+    loading: isPending,
+    syncing: isFetching,
+    periodTime: data?.periodTime,
+    error,
+  }
 }

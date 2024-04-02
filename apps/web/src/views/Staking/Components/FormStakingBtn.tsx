@@ -7,10 +7,12 @@ import { useCurrency } from 'hooks/Tokens'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useStakingContract } from 'hooks/useContract'
 import { useAtom } from 'jotai'
+import { useState } from 'react'
 import { resetStakingState, updateStakingAmountError } from 'state/staking/actions'
 import { useStakingState } from 'state/staking/hooks'
 import { stakingReducerAtom } from 'state/staking/reducer'
 import { stake } from 'utils/calls/staking'
+import { useStakingList } from '../Hooks/useStakingList'
 
 const FormStakingBtn = () => {
   const { t } = useTranslation()
@@ -20,6 +22,8 @@ const FormStakingBtn = () => {
 
   const [, dispatch] = useAtom(stakingReducerAtom)
   const stakingContract = useStakingContract()
+  const { refresh } = useStakingList()
+  const [ isStaking, setIsStaking ] = useState(false)
 
   const { toastSuccess } = useToast()
   // const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
@@ -34,6 +38,7 @@ const FormStakingBtn = () => {
       if (stakingAmountError) {
         return
       }
+      setIsStaking(true)
       const value = BigNumber(stakingAmount).multipliedBy(bigIntToBigNumber(10n ** BigInt(currency?.decimals ?? 18)))
       const receipt = await fetchWithCatchTxError(() => stake(stakingContract, value.toFixed(0, BigNumber.ROUND_DOWN)))
       if (receipt?.status) {
@@ -44,10 +49,12 @@ const FormStakingBtn = () => {
           </ToastDescriptionWithTx>,
         )
         dispatch(resetStakingState())
-        // refresh staking list
+        refresh()
       }
+      setIsStaking(false)
     } catch (e) {
       console.error(e)
+      setIsStaking(false)
     }
   }
 
@@ -55,10 +62,10 @@ const FormStakingBtn = () => {
     <Button
       width="100%"
       className="button-hover"
-      // disabled={isPending}
+      disabled={isStaking}
       onClick={handleStake}
     >
-      {t('Stake')}
+      {isStaking ? t('Staking...') : t('Stake')}
     </Button>
   )
 }
