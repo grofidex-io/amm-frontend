@@ -2,11 +2,11 @@ import { TranslateFunction } from '@pancakeswap/localization'
 
 export const getOnBoardingDescriptionMessage = (isOnBoarded: boolean, t: TranslateFunction) => {
   let onBoardingDescription: string = t(
-    'Finally, subscribe to notifications to stay informed on the latest news and updates that U2Dex has to offer.',
+    'Finally, subscribe to notifications to stay informed on the latest news and updates that GroFi DEX has to offer.',
   )
   if (!isOnBoarded) {
     onBoardingDescription = t(
-      'Get started with notifications from U2Dex. First authorize notifications by signing in your wallet',
+      'Get started with notifications from GroFi DEX. First authorize notifications by signing in your wallet',
     )
   }
   return onBoardingDescription

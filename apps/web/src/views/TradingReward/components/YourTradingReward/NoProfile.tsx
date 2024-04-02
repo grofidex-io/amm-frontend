@@ -12,9 +12,9 @@ const NoProfile = () => {
   return (
     <>
       <Text bold mb="8px">
-        {t('You have no active U2Dex Profile.')}
+        {t('You have no active GroFi DEX Profile.')}
       </Text>
-      <Text mb="32px">{t('Create a U2Dex Profile to start earning from trades')}</Text>
+      <Text mb="32px">{t('Create a GroFi DEX Profile to start earning from trades')}</Text>
       <Box>
         <Image src="/images/trading-reward/create-profile.png" width={420} height={128} alt="create-profile" />
       </Box>
@@ -22,7 +22,7 @@ const NoProfile = () => {
         <Box maxWidth={365} mt="24px">
           <Message variant="primary">
             <MessageText>
-              {t('To create U2Dex Profile, you will need to switch your network to BNB Chain.')}
+              {t('To create GroFi DEX Profile, you will need to switch your network to BNB Chain.')}
             </MessageText>
           </Message>
         </Box>

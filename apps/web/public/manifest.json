@@ -1,7 +1,7 @@
 {
-  "short_name": "U2Dex",
-  "name": "U2Dex",
-  "description": "Farm U2U Reward with U2Dex LP Tokens",
+  "short_name": "GroFi DEX",
+  "name": "GroFi DEX",
+  "description": "Farm U2U Reward with GroFi DEX LP Tokens",
   "homepage_url": "https://testnet.u2dex.io/",
   "start_url": ".",
   "display": "standalone",

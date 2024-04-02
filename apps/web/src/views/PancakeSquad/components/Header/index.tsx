@@ -67,7 +67,7 @@ const PancakeSquadHeader: React.FC<React.PropsWithChildren<PancakeSquadHeaderTyp
         </Link>
       </Flex>
       <StyledSquadTitle my="32px" color={lightColors.invertedContrast} bold textAlign="center">
-        {t('U2Dex Squad')}
+        {t('GroFi DEX Squad')}
       </StyledSquadTitle>
       <Text color={lightColors.warning} textAlign="center" bold>
         {`${t('Presale:')} 04:00 UTC, Oct. 7`}

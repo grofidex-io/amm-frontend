@@ -51,11 +51,11 @@ export function transactionErrorToUserReadableMessage(error: any, t: TranslateFu
     case 'Too much requested':
     case 'STF':
       return t(
-        'This transaction will not succeed due to price movement. Try increasing your slippage tolerance. Note: fee on transfer and rebase tokens are incompatible with U2DEX.',
+        'This transaction will not succeed due to price movement. Try increasing your slippage tolerance. Note: fee on transfer and rebase tokens are incompatible with GroFi DEX.',
       )
     case 'TF':
       return t(
-        'The output token cannot be transferred. There may be an issue with the output token. Note: fee on transfer and rebase tokens are incompatible with U2DEX.',
+        'The output token cannot be transferred. There may be an issue with the output token. Note: fee on transfer and rebase tokens are incompatible with GroFi DEX.',
       )
     default:
       if (reason?.indexOf('undefined is not an object') !== -1) {

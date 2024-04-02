@@ -9,7 +9,7 @@ const config = (t: ContextApi['t']) => {
         t(
           'Trades are settled in WBNB, which is a wrapped version of BNB used on BNB Smart Chain. That means that when you sell an item, WBNB is sent to your wallet instead of BNB.',
         ),
-        t('You can instantly swap your WBNB for BNB with no trading fees on U2Dex.'),
+        t('You can instantly swap your WBNB for BNB with no trading fees on GroFi DEX.'),
       ],
     },
     {
@@ -26,7 +26,7 @@ const config = (t: ContextApi['t']) => {
       title: t('What are the fees?'),
       description: [
         t(
-          '100% of all platform fees taken by U2Dex from sales are used to buy back and BURN U2U tokens in our weekly U2U burns.',
+          '100% of all platform fees taken by GroFi DEX from sales are used to buy back and BURN U2U tokens in our weekly U2U burns.',
         ),
         t(
           'Platform fees: 2% is subtracted from NFT sales on the market. Subject to change.Collection fees: Additional fees may be taken by collection creators, once those collections are live. These will not contribute to the U2U burns.',

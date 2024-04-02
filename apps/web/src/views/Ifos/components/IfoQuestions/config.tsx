@@ -34,7 +34,7 @@ const config = [
       </Box>,
       <Box mt="1rem">
         <Trans>
-          In the Public Sale, everyone with an active U2Dex profile can commit. However the maximum amount of U2U users
+          In the Public Sale, everyone with an active GroFi DEX profile can commit. However the maximum amount of U2U users
           can commit, is equal to the number of iCAKE they have.
         </Trans>
       </Box>,
@@ -76,7 +76,7 @@ const config = [
       </Box>,
       <Box mt="1rem">
         <Trans>
-          Just remember: you need an active U2Dex Profile in order to participate in Private and Public Sales.
+          Just remember: you need an active GroFi DEX Profile in order to participate in Private and Public Sales.
         </Trans>
       </Box>,
     ],

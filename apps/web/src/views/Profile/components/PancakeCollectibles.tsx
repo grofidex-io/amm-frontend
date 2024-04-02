@@ -22,7 +22,7 @@ const PancakeCollectibles = () => {
     <>
       <PageHeader>
         <Heading as="h1" scale="xxl" color="secondary" data-test="nft-collections-title">
-          {t('U2Dex Collectibles')}
+          {t('GroFi DEX Collectibles')}
         </Heading>
       </PageHeader>
       <Page>

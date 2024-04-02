@@ -10,7 +10,7 @@ export const U2DexBadge: React.FC<React.PropsWithChildren<U2DexBadgeProps>> = ({
   return (
     <Badge
       logo={<BadgeLogo src={pancakeSwapLogo} alt="pancakeSwapLogo" />}
-      text={<BadgeText color={whiteText ? "#ffffff" : "#090909"}>U2Dex</BadgeText>}
+      text={<BadgeText color={whiteText ? "#ffffff" : "#090909"}>GroFi DEX</BadgeText>}
     />
   );
 };

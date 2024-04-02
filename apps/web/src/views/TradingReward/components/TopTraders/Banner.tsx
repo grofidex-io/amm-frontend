@@ -160,7 +160,7 @@ const TopTradersBanner = () => {
             </Text>
           </Flex>
           <Text bold mb="32px" maxWidth="520px" lineHeight="26.4px" fontSize={['16px', '16px', '16px', '24px']}>
-            {t('Earn U2U while trading your favorite tokens on U2Dex by being the top traders!')}
+            {t('Earn U2U while trading your favorite tokens on GroFi DEX by being the top traders!')}
           </Text>
           <Flex alignSelf={['center', 'center', 'center', 'auto']}>
             <Link href="/swap?showTradingReward=true" external>

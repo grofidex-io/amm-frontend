@@ -12,7 +12,7 @@ const NotOkNFT = ({ admissionProfile }) => {
 
   const keyword = '%Pancake Squad NFT%'
 
-  const rawText = t(`Set %Pancake Squad NFT% as U2Dex Profile avatar`)
+  const rawText = t(`Set %Pancake Squad NFT% as GroFi DEX Profile avatar`)
 
   return (
     <TransWithElement
@@ -24,7 +24,7 @@ const NotOkNFT = ({ admissionProfile }) => {
             style={{ display: 'inline' }}
             href={`https://testnet.u2dex.io/nfts/collections/${admissionProfile}`}
           >
-            {t('U2Dex Squad NFT')}
+            {t('GroFi DEX Squad NFT')}
           </LinkExternal>
           <br />
         </>
@@ -52,7 +52,7 @@ const NotOkProfilePoints = ({ pointThreshold }) => {
             style={{ display: 'inline' }}
             href={`https://pancakeswap.finance/profile/${account}/achievements/`}
           >
-            {t('U2Dex Profile')}
+            {t('GroFi DEX Profile')}
           </LinkExternal>
         </>
       }
@@ -66,7 +66,7 @@ const configCriterias = (pointThreshold: number, admissionProfile: string, t) =>
     okMsg: t('Eligible NFT avatar found!'),
     notOkMsg: <NotOkNFT admissionProfile={admissionProfile} />,
     NotOkIcon: AccountIcon,
-    name: t('U2Dex Squad'),
+    name: t('GroFi DEX Squad'),
   },
   isQualifiedPoints: {
     OkIcon: OkProfilePointsIcon,

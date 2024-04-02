@@ -65,7 +65,7 @@ export const BnbSnbnbFaq = () => [
           Helio
         </Link>
         <Trans>
-          U2Dex will be supporting new liquid staking strategies for users to maximise utility and yield on BnbChain
+          GroFi DEX will be supporting new liquid staking strategies for users to maximise utility and yield on BnbChain
         </Trans>
       </>
     ),
@@ -90,7 +90,7 @@ export const BnbSnbnbFaq = () => [
           https://www.synclub.io/en/liquid-staking/BNB
         </Link>
         <Trans>
-          to unstake your SnBNB. U2Dex is working to support a conversion contract on our liquid staking page to convert
+          to unstake your SnBNB. GroFi DEX is working to support a conversion contract on our liquid staking page to convert
           SnBNB back to BNB seamlessly.
         </Trans>
       </>

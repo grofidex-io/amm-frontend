@@ -123,7 +123,7 @@ const LineaBanner = () => {
             <CrossSVG />
             <Image src={lineaLogo} alt="lineaLogo" width={isMobile ? 54 : 70} height={isMobile ? 15 : 20} />
           </Flex>
-          <Header>{isMobile ? t('Linea is LIVE!') : t('U2Dex Now Live on Linea!')}</Header>
+          <Header>{isMobile ? t('Linea is LIVE!') : t('GroFi DEX Now Live on Linea!')}</Header>
           {!isMobile && <SubTitle>{t('Swap and Provide Liquidity on Linea now')}</SubTitle>}
           <Link
             style={{ textDecoration: 'none' }}

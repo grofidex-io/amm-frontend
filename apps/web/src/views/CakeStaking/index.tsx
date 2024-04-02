@@ -93,7 +93,7 @@ const CakeStaking = () => {
             headSlot={
               <QuestionHelper
                 size="20px"
-                text={t('Boost your U2Dex farming APR by up to 2.5x. Aquire more veCAKE to receive a higher boost.')}
+                text={t('Boost your GroFi DEX farming APR by up to 2.5x. Aquire more veCAKE to receive a higher boost.')}
                 placement="top"
                 ml="4px"
               />
@@ -120,7 +120,7 @@ const CakeStaking = () => {
               <QuestionHelper
                 size="20px"
                 text={t(
-                  'Use your veCAKE as your IFO Public Sales commit credits. Aquire more veCAKE to commit more in the next U2Dex IFOs.',
+                  'Use your veCAKE as your IFO Public Sales commit credits. Aquire more veCAKE to commit more in the next GroFi DEX IFOs.',
                 )}
                 placement="top"
                 ml="4px"

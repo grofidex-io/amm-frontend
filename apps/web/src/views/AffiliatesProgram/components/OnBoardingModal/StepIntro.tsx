@@ -38,7 +38,7 @@ const IntroSteps = [
     icon: '/images/affiliates-program/slider/3.png',
     description: (
       <Trans>
-        Earn U2U tokens on most trades made on U2Dex. Stake for more rewards or use them in our Lottery and Pottery
+        Earn U2U tokens on most trades made on GroFi DEX. Stake for more rewards or use them in our Lottery and Pottery
       </Trans>
     ),
   },

@@ -74,13 +74,13 @@ const FAQ = () => {
             <Text fontSize="14px" color="textSubtle">
               -{' '}
               {t(
-                'In the event of a disagreement concerning the final winning team or rank, U2Dex will have the final say.',
+                'In the event of a disagreement concerning the final winning team or rank, GroFi DEX will have the final say.',
               )}
             </Text>
             <Text fontSize="14px" color="textSubtle">
               -{' '}
               {t(
-                'U2Dex can and will disqualify any team or specific members that are proven to have taken malicious action or attempt to “cheat” in any way.',
+                'GroFi DEX can and will disqualify any team or specific members that are proven to have taken malicious action or attempt to “cheat” in any way.',
               )}
             </Text>
           </FoldableText>

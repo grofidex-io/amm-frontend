@@ -43,7 +43,7 @@ const LockedBenefits = () => {
 
   const bCakeTooltipComponent = () => (
     <>
-      <Text>{t('bCAKE allows you to boost your yield in U2Dex Farms by up to 2x.')}</Text>
+      <Text>{t('bCAKE allows you to boost your yield in GroFi DEX Farms by up to 2x.')}</Text>
       <NextLinkFromReactRouter to="/farms">
         <Text bold color="primary">
           {t('Learn More')}
@@ -55,7 +55,7 @@ const LockedBenefits = () => {
   const vCakeTooltipComponent = () => (
     <>
       <Text>
-        {t('vCAKE boosts your voting power to %totalScore% in the U2Dex voting governance.', {
+        {t('vCAKE boosts your voting power to %totalScore% in the GroFi DEX voting governance.', {
           totalScore: cakeBenefits?.vCake?.totalScore,
         })}
       </Text>

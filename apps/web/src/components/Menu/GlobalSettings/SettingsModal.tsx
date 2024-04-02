@@ -393,7 +393,7 @@ function RoutingSettings() {
           <BorderLayout>
             <Flex justifyContent="space-between" alignItems="center" mb="24px">
               <Flex alignItems="center">
-                <Text>U2Dex V3</Text>
+                <Text>GroFi DEX V3</Text>
                 <QuestionHelper
                   text={
                     <Flex>
@@ -417,7 +417,7 @@ function RoutingSettings() {
             </Flex>
             <Flex justifyContent="space-between" alignItems="center" mb="24px">
               <Flex alignItems="center">
-                <Text>U2Dex V2</Text>
+                <Text>GroFi DEX V2</Text>
                 <QuestionHelper
                   text={
                     <Flex flexDirection="column">
@@ -442,7 +442,7 @@ function RoutingSettings() {
             </Flex>
             <Flex justifyContent="space-between" alignItems="center" mb="24px">
               <Flex alignItems="center">
-                <Text>U2Dex {t('StableSwap')}</Text>
+                <Text>GroFi DEX {t('StableSwap')}</Text>
                 <QuestionHelper
                   text={
                     <Flex flexDirection="column">
@@ -469,7 +469,7 @@ function RoutingSettings() {
             </Flex>
             <Flex justifyContent="space-between" alignItems="center">
               <Flex alignItems="center">
-                <Text>{`U2Dex ${t('MM Linked Pool')}`}</Text>
+                <Text>{`GroFi DEX ${t('MM Linked Pool')}`}</Text>
                 <QuestionHelper
                   text={
                     <Flex flexDirection="column">

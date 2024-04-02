@@ -137,8 +137,8 @@ const GameBanner = () => {
               unoptimized
             />
           </Flex>
-          <Header data-text={isMobile ? t('Gaming Marketplace') : t('U2Dex Gaming Marketplace')}>
-            {isMobile ? t('Gaming Marketplace') : t('U2Dex Gaming Marketplace')}
+          <Header data-text={isMobile ? t('Gaming Marketplace') : t('GroFi DEX Gaming Marketplace')}>
+            {isMobile ? t('Gaming Marketplace') : t('GroFi DEX Gaming Marketplace')}
           </Header>
           <Box>
             {isDesktop ? (

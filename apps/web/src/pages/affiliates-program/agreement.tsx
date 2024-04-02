@@ -6,29 +6,29 @@ const Agreement = () => {
   return (
     <AffiliatesProgramLayout>
       <Container>
-        <Text as="h1">U2Dex Affiliate Program Agreement</Text>
+        <Text as="h1">GroFi DEX Affiliate Program Agreement</Text>
         <Text as="h3">Last modified: Sep 1, 2023</Text>
         <Text as="p">
-          This U2Dex Affiliate Program Agreement (“<strong>Agreement”</strong>) is a legal contract between you (“
-          <strong>Affiliate”</strong>) and U2Dex that applies to your participation in the U2Dex Affiliate Program
-          (“Program”). In this Agreement, “<strong>U2Dex</strong>,” “<strong>we</strong>” or “<strong>us</strong>” means
-          U2Dex. If you are participating or registering on behalf of a business, then the term “<strong>you</strong>”
+          This GroFi DEX Affiliate Program Agreement (“<strong>Agreement”</strong>) is a legal contract between you (“
+          <strong>Affiliate”</strong>) and GroFi DEX that applies to your participation in the GroFi DEX Affiliate Program
+          (“Program”). In this Agreement, “<strong>GroFi DEX</strong>,” “<strong>we</strong>” or “<strong>us</strong>” means
+          GroFi DEX. If you are participating or registering on behalf of a business, then the term “<strong>you</strong>”
           means such business, and you represent and warrant that you have authority to bind that business to this
           Agreement. By participating or registering to participate in the Program, or otherwise indicating your
           acceptance of this Agreement (such as by clicking a button or checking a box on a web page), you agree to this
-          Agreement which may be amended from time to time by U2Dex.
+          Agreement which may be amended from time to time by GroFi DEX.
         </Text>
 
         <Text as="h3">1. Program Overview</Text>
         <Text as="p">
           1.1 The Program offers you the opportunity to get paid different commission rates, by means of inviting new
-          users (“<strong>Referrals”</strong>) to register and trade on U2Dex, in accordance with the terms of this
+          users (“<strong>Referrals”</strong>) to register and trade on GroFi DEX, in accordance with the terms of this
           Agreement.
         </Text>
         <Text as="p">
-          1.2 A Referral must be a new user and must not have interacted or signed with the U2Dex platform or used any
-          of U2Dex’s services (including but not limited to V2, V3 swapping services, perpetual trading, Non-Fungible
-          Tokens and related services, initial farm offerings and similar offerings) (“U2Dex Services”).
+          1.2 A Referral must be a new user and must not have interacted or signed with the GroFi DEX platform or used any
+          of GroFi DEX’s services (including but not limited to V2, V3 swapping services, perpetual trading, Non-Fungible
+          Tokens and related services, initial farm offerings and similar offerings) (“GroFi DEX Services”).
         </Text>
 
         <Text as="h3">2. Commissions for swap trades</Text>
@@ -37,7 +37,7 @@ const Agreement = () => {
           rates on the following fees:
         </Text>
         <Text as="p">
-          (a) <strong>3</strong>% on trading fees paid by your Referrals on U2Dex, limited to swap trades on the BNB
+          (a) <strong>3</strong>% on trading fees paid by your Referrals on GroFi DEX, limited to swap trades on the BNB
           Smart Chain, Ethereum chain, Polygon zkEVM, zkSync Era, Arbitrum one, Linea, and Base chain only; and
         </Text>
         <Text as="p">
@@ -47,7 +47,7 @@ const Agreement = () => {
         <Text as="p">2.2 To be eligible for commissions, the swap trades must have:</Text>
         <Text as="p">(a) a token pair that:</Text>
         <Text as="p">
-          <Text as="span">(i) Is in the following U2Dex Swap token lists</Text>
+          <Text as="span">(i) Is in the following GroFi DEX Swap token lists</Text>
           <Text as="p">
             BNB Smart Chain:
             <Link href="https://tokenlists.org/token-list?url=https://tokens.pancakeswap.finance/pancakeswap-extended.json">
@@ -256,7 +256,7 @@ const Agreement = () => {
           all applicable copyright, trademark, and other laws.
         </Text>
         <Text as="p">
-          8.3 Any statements you make about U2Dex must reflect your honest opinions, beliefs, or experiences and must
+          8.3 Any statements you make about GroFi DEX must reflect your honest opinions, beliefs, or experiences and must
           not be false, misleading, or unsupported.
         </Text>
 
@@ -267,7 +267,7 @@ const Agreement = () => {
         </Text>
 
         <Text as="h3">10. Affiliate’s Warranties</Text>
-        <Text as="p">You warrant, represent, and undertake to U2Dex that:</Text>
+        <Text as="p">You warrant, represent, and undertake to GroFi DEX that:</Text>
         <Text as="p">(a) If you are contracting in your personal capacity, you are at least 18 years of age;</Text>
         <Text as="p">
           (b) You do not have any unspent criminal convictions of any kind, subsisting at the Effective Date of the
@@ -303,44 +303,44 @@ const Agreement = () => {
         <Text as="h3">12. Relationship of the Parties</Text>
         <Text as="p">
           You agree that this Agreement creates the relationship of service recipient and independent contractor, and
-          not that of employer and employee. You will not be treated as an employee of U2Dex for any purpose. Nothing in
+          not that of employer and employee. You will not be treated as an employee of GroFi DEX for any purpose. Nothing in
           this Agreement will create any, partnership, joint venture, agency, franchise, sales representative or
           employer-employee relationships between the Parties. You shall have no authority to make or accept any offers
-          or representations on behalf of U2Dex. You shall have no authority to bind U2Dex, and undertake not to hold
-          yourself out as an employee, agent or authorised representative of U2Dex.
+          or representations on behalf of GroFi DEX. You shall have no authority to bind GroFi DEX, and undertake not to hold
+          yourself out as an employee, agent or authorised representative of GroFi DEX.
         </Text>
 
         <Text as="h3">13. No Joint Publicity</Text>
         <Text as="p">
-          You may not claim that any materials are created jointly between you and U2Dex, or attribute any materials
-          created or issued by you (including press releases) to U2Dex.
+          You may not claim that any materials are created jointly between you and GroFi DEX, or attribute any materials
+          created or issued by you (including press releases) to GroFi DEX.
         </Text>
 
         <Text as="h3">14. Term and Termination</Text>
         <Text as="p">
-          14.1 U2Dex reserves the right to terminate this Agreement in its entirety with or without cause, effective
+          14.1 GroFi DEX reserves the right to terminate this Agreement in its entirety with or without cause, effective
           immediately with written notice of termination to you (for the avoidance of doubt, an email to the email
           address provided by you shall constitute written notice). Upon the termination of this Agreement for any
-          reason, you shall immediately cease use of (and remove from your site) all links to the U2Dex website and all
-          images of U2Dex and other materials provided under the Program.
+          reason, you shall immediately cease use of (and remove from your site) all links to the GroFi DEX website and all
+          images of GroFi DEX and other materials provided under the Program.
         </Text>
         <Text as="p">
-          14.2 U2Dex, in its sole discretion, reserves the right to suspend or terminate your account and refuse any and
-          all current or future use of the Program, or any other U2Dex service, for any reason and at any time. Such
+          14.2 GroFi DEX, in its sole discretion, reserves the right to suspend or terminate your account and refuse any and
+          all current or future use of the Program, or any other GroFi DEX service, for any reason and at any time. Such
           termination will result in the deactivation or deletion of your Affiliate Account.
         </Text>
-        <Text as="p">14.3 U2Dex reserves the right to refuse service to anyone for any reason at any time.</Text>
+        <Text as="p">14.3 GroFi DEX reserves the right to refuse service to anyone for any reason at any time.</Text>
 
         <Text as="h3">15. Indemnification</Text>
         <Text as="p">
-          You shall indemnify U2Dex from and against all claims, losses, liabilities, damages, administrative fines,
+          You shall indemnify GroFi DEX from and against all claims, losses, liabilities, damages, administrative fines,
           costs and expenses (including reasonable attorney’s fees) with respect to any third-party claim arising out of
           your breach of this Agreement.
         </Text>
 
         <Text as="h3">16. Limits of Liability</Text>
         <Text as="p">
-          U2Dex and any of U2Dex&apos;s officers, directors, employees, shareholders or agents of any of them, exclude
+          GroFi DEX and any of GroFi DEX&apos;s officers, directors, employees, shareholders or agents of any of them, exclude
           all liability and responsibility for any amount or kind of loss or damage that may result to you or a third
           party (including without limitation, any direct, indirect, punitive or consequential loss or damages, or any
           loss of income, profits, goodwill, data, contracts, use of money, or loss or damages arising from or connected
@@ -375,26 +375,26 @@ const Agreement = () => {
           referral link; and/or
         </Text>
         <Text as="p">
-          (e) directing or causing existing users or previous users of U2Dex Services to create new addresses to sign up
+          (e) directing or causing existing users or previous users of GroFi DEX Services to create new addresses to sign up
           with your referral link
         </Text>
 
         <Text as="h3">18. Marks</Text>
         <Text as="p">
-          U2Dex may provide you with trademarks and/or graphical images that can be used to promote U2Dex. You may not
-          modify these trademarks and/or images in any way. U2Dex reserves the right to change the trademarks and/or
+          GroFi DEX may provide you with trademarks and/or graphical images that can be used to promote GroFi DEX. You may not
+          modify these trademarks and/or images in any way. GroFi DEX reserves the right to change the trademarks and/or
           images at any time without notice.
         </Text>
 
         <Text as="h3">19. Disclosure of Affiliate relationship</Text>
         <Text as="p">
           You must include a clear and concise statement to any third parties that you market to that discloses your
-          relationship as an Affiliate which is promoting U2Dex. For example:
+          relationship as an Affiliate which is promoting GroFi DEX. For example:
         </Text>
         <Text as="p">
-          (a) If you promote U2Dex through a web page, podcast, blog post, or social media post as an endorsement or
-          review of U2Dex or incentivise others to do so, you must ensure that such post includes a clear disclosure
-          that it is an advertisement or was otherwise promoted by U2Dex; and
+          (a) If you promote GroFi DEX through a web page, podcast, blog post, or social media post as an endorsement or
+          review of GroFi DEX or incentivise others to do so, you must ensure that such post includes a clear disclosure
+          that it is an advertisement or was otherwise promoted by GroFi DEX; and
         </Text>
         <Text as="p">
           (b) Your disclosure must be as close as possible to the review or endorsement, be placed above the fold so it
@@ -444,7 +444,7 @@ const Agreement = () => {
           Papua New Guinea, Russia, Rwanda, Saint Helena, Samoa, Sao Tome & Principe, Senegal, Sierra Leone, Singapore,
           Solomon Islands, Somalia, Sudan, Suriname, Swaziland, Syria, Tajikistan, Tanzania, Togo, Tonga, Turkmenistan,
           Tuvalu, Ukraine, Uganda, Uzbekistan, Vanuatu, Venezuela, Wallis and Futuna, West Bank, Western Sahara, Yemen,
-          Zambia, Zimbabwe (or any additional country or jurisdiction added to this list by U2Dex from time to time, in
+          Zambia, Zimbabwe (or any additional country or jurisdiction added to this list by GroFi DEX from time to time, in
           its sole discretion, with notice to you).
         </Text>
       </Container>
