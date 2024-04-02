@@ -19,10 +19,10 @@ export function ProfileRequirementWarning({
         <MessageText>
           {notMeetRequired &&
             notMeetThreshold &&
-            t('This pool requires active U2Dex Profile and %amount% profile points.', {
+            t('This pool requires active GroFi DEX Profile and %amount% profile points.', {
               amount: profileRequirement?.thresholdPoints?.toNumber(),
             })}
-          {notMeetRequired && !notMeetThreshold && t('This pool requires active U2Dex Profile')}
+          {notMeetRequired && !notMeetThreshold && t('This pool requires active GroFi DEX Profile')}
           {!notMeetRequired &&
             notMeetThreshold &&
             t('This pool requires %amount% profile points.', {

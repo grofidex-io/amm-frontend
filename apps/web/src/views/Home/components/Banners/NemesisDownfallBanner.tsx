@@ -76,8 +76,8 @@ export const NemesisDownfallBanner = () => {
         title={
           <BannerTitle variant="orange">
             {isMobile || isTablet
-              ? t('Nemesis Downfall Now on U2Dex')
-              : t('Nemesis Downfall Now Live on U2Dex Gaming Marketplace')}
+              ? t('Nemesis Downfall Now on GroFi DEX')
+              : t('Nemesis Downfall Now Live on GroFi DEX Gaming Marketplace')}
           </BannerTitle>
         }
         actions={

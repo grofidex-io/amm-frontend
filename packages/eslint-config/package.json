@@ -1,7 +1,7 @@
 {
   "name": "@pancakeswap/eslint-config-pancake",
   "version": "1.2.0",
-  "description": "Eslint config for U2Dex",
+  "description": "Eslint config for GroFi DEX",
   "main": "lib/index.js",
   "files": [
     "lib"

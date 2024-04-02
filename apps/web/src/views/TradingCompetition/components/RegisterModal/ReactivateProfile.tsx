@@ -20,7 +20,7 @@ const ReactivateProfile: React.FC<React.PropsWithChildren<CompetitionProps>> = (
         {t('Reactivate your profile!')}
       </Heading>
       <Text color="textSubtle">
-        {t('It looks like you’ve disabled your account by removing your U2Dex Collectible (NFT) profile picture.')}
+        {t('It looks like you’ve disabled your account by removing your GroFi DEX Collectible (NFT) profile picture.')}
       </Text>
       <Text>
         {t('You need to reactivate your profile by replacing your profile picture in order to join the competition.')}

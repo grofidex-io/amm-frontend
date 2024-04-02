@@ -56,7 +56,7 @@ const PerpetualBanner = () => {
   const perpetualUrl = useMemo(() => getPerpetualUrl({ chainId, languageCode: code, isDark }), [chainId, code, isDark])
   const headerRef = useRef<HTMLDivElement>(null)
   const [onUSCitizenModalPresent] = useModal(
-    <USCitizenConfirmModal title={t('U2Dex Perpetuals')} id={IdType.PERPETUALS} />,
+    <USCitizenConfirmModal title={t('GroFi DEX Perpetuals')} id={IdType.PERPETUALS} />,
     true,
     false,
     'usCitizenConfirmModal',

@@ -1,4 +1,4 @@
-# Contributing to the U2Dex ecosystem 🥞
+# Contributing to the GroFi DEX ecosystem 🥞
 
 Thanks for taking the time to contribute !
 

@@ -76,7 +76,7 @@ const Stats = () => {
         fontSize={isMobile ? '20px' : '32px'}
         mb={isMobile ? '32px' : '48px'}
       >
-        {t('U2Dex’s Unstoppable Expansion')}
+        {t('GroFi DEX’s Unstoppable Expansion')}
       </Text>
       <Flex
         justifyContent="center"

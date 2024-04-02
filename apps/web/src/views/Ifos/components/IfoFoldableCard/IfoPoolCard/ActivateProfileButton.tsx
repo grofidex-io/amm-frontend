@@ -44,7 +44,7 @@ export function ActivateProfileButton({ saleFinished }: Props) {
         isOpen={isOpen}
         supportedChains={PROFILE_SUPPORTED_CHAIN_IDS}
         title={t('Create Profile')}
-        description={t('Create your U2Dex Profile on %chain%', {
+        description={t('Create your GroFi DEX Profile on %chain%', {
           chain: chainNames,
         })}
         buttonText={t('Switch chain to create profile')}
@@ -65,7 +65,7 @@ export function ActivateProfileButton({ saleFinished }: Props) {
       content={
         <ContentText>
           {saleFinished
-            ? t('Activate U2Dex Profile to take part in next IFO.')
+            ? t('Activate GroFi DEX Profile to take part in next IFO.')
             : t('You need to create a profile to participate in the IFO.')}
         </ContentText>
       }

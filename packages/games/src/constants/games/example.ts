@@ -6,7 +6,7 @@ export const example: GameType = {
   title: 'Pancake Protector',
   subTitle: 'Unlock the Power of CAKE and Perks for Pancake Squad and Bunnies Holders',
   description:
-    'U2Dex and Mobox joined forces to launch a tower-defense and PvP game tailored for GameFi players, as well as CAKE, Pancake Squad, and Bunnies holders.',
+    'GroFi DEX and Mobox joined forces to launch a tower-defense and PvP game tailored for GameFi players, as well as CAKE, Pancake Squad, and Bunnies holders.',
   publishDate: 1698044972,
   genre: GenreType.TowerDefense,
   trendingTags: [
@@ -81,7 +81,7 @@ export const example: GameType = {
     },
   ],
   socialMedia: {
-    telegram: 'https://t.me/U2Dex/2991960',
+    telegram: 'https://t.me/GroFi DEX/2991960',
     discord: 'https://discord.gg/pancakeswap',
   },
 }

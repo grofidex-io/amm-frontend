@@ -15,7 +15,7 @@ export const IfoPageLayout = ({ children }) => {
   const [userNotUsCitizenAcknowledgement] = useUserNotUsCitizenAcknowledgement(IdType.IFO)
   const [onUSCitizenModalPresent] = useModal(
     <USCitizenConfirmModal
-      title={t('U2Dex IFOs')}
+      title={t('GroFi DEX IFOs')}
       id={IdType.IFO}
       checks={[
         {

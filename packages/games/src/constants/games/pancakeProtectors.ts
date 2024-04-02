@@ -6,7 +6,7 @@ export const pancakeProtectors: GameType = {
   title: 'Pancake Protector',
   subTitle: 'Unlock the Power of CAKE and Perks for Pancake Squad and Bunnies Holders',
   description:
-    'U2Dex and Mobox joined forces to launch a tower-defense and PvP game tailored for GameFi players, as well as CAKE, Pancake Squad, and Bunnies holders.',
+    'GroFi DEX and Mobox joined forces to launch a tower-defense and PvP game tailored for GameFi players, as well as CAKE, Pancake Squad, and Bunnies holders.',
   publishDate: 1698044972,
   genre: GenreType.TowerDefense,
   trendingTags: [
@@ -62,7 +62,7 @@ export const pancakeProtectors: GameType = {
   playlist: [
     {
       videoId: '80j7QpNqKcI',
-      title: 'Unleashing the Power of Pancake Protectors: A Web3 Gaming Adventure on U2Dex',
+      title: 'Unleashing the Power of Pancake Protectors: A Web3 Gaming Adventure on GroFi DEX',
     },
     {
       videoId: '--UcFQ64sjY',
@@ -86,7 +86,7 @@ export const pancakeProtectors: GameType = {
     },
   ],
   socialMedia: {
-    telegram: 'https://t.me/U2Dex/2991960',
+    telegram: 'https://t.me/GroFi DEX/2991960',
     discord: 'https://discord.gg/pancakeswap',
   },
 }

@@ -61,6 +61,6 @@
 
 ### Patch Changes
 
-- 68440160d: ## U2Dex version spec
+- 68440160d: ## GroFi DEX version spec
   Add `schema` aptos to indentify aptos version of token list
   without schema will default be uniswap version evm validation

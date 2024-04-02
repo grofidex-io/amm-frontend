@@ -121,7 +121,7 @@ const ChangeProfilePicPage: React.FC<React.PropsWithChildren<ChangeProfilePicPag
             {t('Sorry! You don’t have any eligible Collectibles in your wallet to use!')}
           </Text>
           <Text as="p" color="textSubtle" mb="24px">
-            {t('Make sure you have a U2Dex Collectible in your wallet and try again!')}
+            {t('Make sure you have a GroFi DEX Collectible in your wallet and try again!')}
           </Text>
         </>
       )}

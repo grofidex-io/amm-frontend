@@ -475,7 +475,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
           </Flex>
         )}
         {poolLength && <div ref={observerRef} />}
-        <StyledImage src="/images/decorations/3dpan.png" alt="U2Dex illustration" width={120} height={103} />
+        <StyledImage src="/images/decorations/3dpan.png" alt="GroFi DEX illustration" width={120} height={103} />
       </Page>
     </FarmsContext.Provider>
   )

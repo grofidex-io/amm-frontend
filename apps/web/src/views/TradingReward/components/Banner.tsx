@@ -158,7 +158,7 @@ const TradingRewardBanner = () => {
             </Text>
           </Flex>
           <Text bold mb="32px" maxWidth="404px" lineHeight="26.4px" fontSize={['16px', '16px', '16px', '24px']}>
-            {t('Earn U2U while trading your favorite tokens on U2Dex.')}
+            {t('Earn U2U while trading your favorite tokens on GroFi DEX.')}
           </Text>
           <Flex alignSelf={['center', 'center', 'center', 'auto']}>
             <NextLinkFromReactRouter to="/swap?showTradingReward=true">

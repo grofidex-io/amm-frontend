@@ -81,7 +81,7 @@ export const cyberWalletConnector = isCyberWallet()
   ? new CyberWalletConnector({
       chains: chains as any,
       options: {
-        name: 'U2Dex',
+        name: 'GroFi DEX',
         appId: 'b825cd87-2db3-456d-b108-d61e74d89771',
       },
     })

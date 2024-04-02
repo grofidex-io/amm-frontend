@@ -81,7 +81,7 @@ export const TEXT = {
     ],
   },
   v3: {
-    title: <Trans>U2Dex v3 Migration</Trans>,
+    title: <Trans>GroFi DEX v3 Migration</Trans>,
     steps: [
       {
         title: <Trans>Unstaking from V2 Farms</Trans>,

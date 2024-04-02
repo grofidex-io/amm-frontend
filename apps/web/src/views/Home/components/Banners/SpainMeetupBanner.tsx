@@ -191,7 +191,7 @@ export const SpainMeetupBanner = memo(function SpainMeetupBanner() {
               height={isMobile ? 15 : 22}
               unoptimized
             />
-            <StyledHeading data-text={t('U2Dex Meetup')}>{t('U2Dex Meetup')}</StyledHeading>
+            <StyledHeading data-text={t('GroFi DEX Meetup')}>{t('GroFi DEX Meetup')}</StyledHeading>
             <Flex ml={isMobile ? 0 : '6rem'}>
               <HeadLine data-text={t('Spain')}>{t('Spain')}</HeadLine>
             </Flex>

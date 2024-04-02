@@ -235,7 +235,7 @@ const V3LaunchBanner = () => {
               {t(`Ev3ryone's Favourite D3X`)}
             </StyledSubheading>
             <TitleWrapper alignItems="center" style={{ gap: 5 }}>
-              <LogoIcon /> <Title>{t('U2Dex v3 is live!')}</Title>
+              <LogoIcon /> <Title>{t('GroFi DEX v3 is live!')}</Title>
             </TitleWrapper>
           </TextBox>
           <NextLinkFromReactRouter

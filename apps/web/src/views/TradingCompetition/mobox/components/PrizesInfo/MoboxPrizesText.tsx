@@ -39,7 +39,7 @@ const MoboxPrizesText = () => {
       <Flex>
         <NftIcon width="32px" mr="16px" color="textSubtle" />
         <Text mt="8px">
-          {t('300 Mobox Avatars NFT + 300 U2Dex newly designed NFT to the top 100 traders in each of the three teams.')}
+          {t('300 Mobox Avatars NFT + 300 GroFi DEX newly designed NFT to the top 100 traders in each of the three teams.')}
         </Text>
       </Flex>
       <Flex>

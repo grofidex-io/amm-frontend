@@ -44,7 +44,7 @@ const feeOptions = {
   fee: new Percent(TEST_FEE, 10000n),
 }
 
-describe('U2Dex Universal Router Trade', () => {
+describe('GroFi DEX Universal Router Trade', () => {
   const chainId = ChainId.ETHEREUM
   const liquidity = parseEther('1000')
 
@@ -1814,7 +1814,7 @@ describe('U2Dex Universal Router Trade', () => {
   })
 })
 
-describe('U2Dex StableSwap Through Universal Router, BSC Network Only', () => {
+describe('GroFi DEX StableSwap Through Universal Router, BSC Network Only', () => {
   const chainId = ChainId.BSC
   const liquidity = parseEther('1000')
 

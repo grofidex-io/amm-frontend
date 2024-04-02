@@ -519,7 +519,7 @@ export default function PoolPage() {
           <Text display="inline" bold mr="0.25em">{`${currencyQuote?.symbol}-${currencyBase?.symbol}`}</Text>
           <Text display="inline">
             {t(
-              'has an active U2Dex farm. Stake your position in the farm to start earning with the indicated APR with U2U farming.',
+              'has an active GroFi DEX farm. Stake your position in the farm to start earning with the indicated APR with U2U farming.',
             )}
           </Text>
           <NextLinkFromReactRouter to="/farms">

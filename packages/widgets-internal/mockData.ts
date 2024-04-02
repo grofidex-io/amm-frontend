@@ -7,7 +7,7 @@ export const cakeToken = new ERC20Token(
   "0x6d7ce523d59C59De27BB755A1981f4043e79C70E",
   18,
   "CAKE",
-  "U2Dex Token",
+  "GroFi DEX Token",
   "https://pancakeswap.finance/"
 );
 
