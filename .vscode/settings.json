@@ -47,5 +47,7 @@
     "WBETH",
     "wbnb",
     "ZKSYNC"
-  ]
+  ],
+  "editor.tabSize": 2,
+  "editor.indentSize": "tabSize"
 }
