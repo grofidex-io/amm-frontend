@@ -11,6 +11,16 @@ export const stake = async (stakingContract: ReturnType<typeof getStakingContrac
   })
 }
 
+export const unStake = async (stakingContract: ReturnType<typeof getStakingContract>, tokenId: string) => {
+  if (!stakingContract.account) return undefined
+  return stakingContract.write.unStake([tokenId.toString()])
+}
+
+export const withdraw = async (stakingContract: ReturnType<typeof getStakingContract>, tokenId: string) => {
+  if (!stakingContract.account) return undefined
+  return stakingContract.write.withdraw([tokenId.toString()])
+}
+
 export const claimReward = async (stakingContract: ReturnType<typeof getStakingContract>, tokenId: string) => {
   try {
     return stakingContract.write.claimReward([tokenId])

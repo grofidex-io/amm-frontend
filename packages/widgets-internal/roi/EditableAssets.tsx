@@ -1,8 +1,13 @@
-import { useRef, memo, useCallback, ReactNode } from "react";
 import { useTranslation } from "@pancakeswap/localization";
+import { ReactNode, memo, useCallback, useRef } from "react";
 
 import { Button, Flex } from "@pancakeswap/uikit";
-import { CardSection, SectionTitle, AssetCard, AssetCardProps } from "./AssetCard";
+import styled from "styled-components";
+import { AssetCard, AssetCardProps, CardSection, SectionTitle } from "./AssetCard";
+
+const StyledButton = styled(Button)`
+  border-radius: 4px;
+`
 
 interface Props extends AssetCardProps {
   title?: ReactNode;
@@ -23,12 +28,12 @@ export const EditableAssets = memo(function EditableAssets({ title, onReset, ...
         <>
           <SectionTitle>{title}</SectionTitle>
           <Flex>
-            <Button variant="secondary" scale="xs" mr="0.5em" onClick={onEdit} style={{ textTransform: "uppercase" }}>
+            <StyledButton className="button-hover" variant="secondary" scale="xs" mr="0.5em" onClick={onEdit} style={{ textTransform: "uppercase" }}>
               {t("Edit")}
-            </Button>
-            <Button variant="secondary" scale="xs" onClick={onReset} style={{ textTransform: "uppercase" }}>
+            </StyledButton>
+            <StyledButton className="button-hover" variant="secondary" scale="xs" onClick={onReset} style={{ textTransform: "uppercase" }}>
               {t("Reset")}
-            </Button>
+            </StyledButton>
           </Flex>
         </>
       }
