@@ -35,7 +35,7 @@ const StyledBalanceInput = styled(BalanceInput)`
 const StyledButton = styled(Button)`
   width: 100%;
   text-transform: uppercase;
-  border-radius: 4px;
+  border-radius: 2px;
 `;
 
 interface UsdAmountInputProps {
@@ -64,17 +64,17 @@ export const DepositUsdAmountInput = memo(function DepositUsdAmountInput({
       </Box>
       <Flex>
         <Flex flex="3" mr="0.25em">
-          <StyledButton variant={value === "100" ? "primary" : "tertiary"} scale="xs" onClick={() => onChange("100")}>
+          <StyledButton className='button-hover' variant={value === "100" ? "hover" : "tertiary"} scale="xs" onClick={() => onChange("100")}>
             $100
           </StyledButton>
         </Flex>
         <Flex flex="3" mr="0.25em">
-          <StyledButton variant={value === "1000" ? "primary" : "tertiary"} scale="xs" onClick={() => onChange("1000")}>
+          <StyledButton className='button-hover' variant={value === "1000" ? "hover" : "tertiary"} scale="xs" onClick={() => onChange("1000")}>
             $1,000
           </StyledButton>
         </Flex>
         <Flex flex="4">
-          <StyledButton variant={value === max ? "primary" : "tertiary"} scale="xs" mr="0.25em" onClick={onMax}>
+          <StyledButton className='button-hover' variant={value === max ? "hover" : "tertiary"} scale="xs" mr="0.25em" onClick={onMax}>
             {maxLabel || t("Max")}
           </StyledButton>
           <QuestionHelper

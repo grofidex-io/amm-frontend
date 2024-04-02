@@ -67,6 +67,9 @@ const StyledLightGreyCard = styled(LightGreyCard)`
   border-radius: 8px;
   box-shadow: ${({ theme }) => theme.shadows.card};
 `
+const StyledButton = styled(Button)`
+  border-radius: 4px !important;
+`
 
 // redirect invalid tokenIds
 export default function RemoveLiquidityV3() {
@@ -418,18 +421,18 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
               mb="16px"
             />
             <Flex flexWrap="wrap" justifyContent="space-evenly">
-              <Button variant="tertiary" scale="sm" onClick={() => onPercentSelect(25)}>
+              <StyledButton className='button-hover' variant={percentForSlider === 25 ? "hover" : "tertiary"} scale="sm" onClick={() => onPercentSelect(25)}>
                 25%
-              </Button>
-              <Button variant="tertiary" scale="sm" onClick={() => onPercentSelect(50)}>
+              </StyledButton>
+              <StyledButton className='button-hover' variant={percentForSlider === 50 ? "hover" : "tertiary"} scale="sm" onClick={() => onPercentSelect(50)}>
                 50%
-              </Button>
-              <Button variant="tertiary" scale="sm" onClick={() => onPercentSelect(75)}>
+              </StyledButton>
+              <StyledButton className='button-hover' variant={percentForSlider === 75 ? "hover" : "tertiary"} scale="sm" onClick={() => onPercentSelect(75)}>
                 75%
-              </Button>
-              <Button variant="tertiary" scale="sm" onClick={() => onPercentSelect(100)}>
+              </StyledButton>
+              <StyledButton className='button-hover' variant={percentForSlider === 100 ? "hover" : "tertiary"} scale="sm" onClick={() => onPercentSelect(100)}>
                 {t('Max')}
-              </Button>
+              </StyledButton>
             </Flex>
           </BorderCard>
           <ColumnCenter>
