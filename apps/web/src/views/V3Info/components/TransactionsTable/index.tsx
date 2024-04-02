@@ -30,42 +30,36 @@ const ResponsiveGrid = styled.div<{ widthfirstcol?: number }>`
   display: grid;
   grid-gap: 1em;
   align-items: center;
-
   grid-template-columns: ${({ widthfirstcol }) =>
     widthfirstcol ? `${widthfirstcol}fr repeat(5, 1fr)` : '0.5fr repeat(5, 1fr)'};
   padding: 0 24px;
-  @media screen and (max-width: 940px) {
-    grid-template-columns: 1.5fr repeat(4, 1fr);
+  @media screen and (max-width: 575px) {
+  }
+  > * {
+    min-width: 160px;
+    @media screen and (max-width: 767px) {
+      min-width: 140px;
+    }
+    @media screen and (max-width: 575px) {
+      min-width: 120px;
+    }
+  }
+  @media screen and (max-width: 991px) {
+    grid-template-columns: repeat(5, 1fr);
     & > *:nth-child(5) {
       display: none;
     }
   }
 
-  @media screen and (max-width: 800px) {
-    grid-template-columns: 1.5fr repeat(2, 1fr);
-    & > *:nth-child(5) {
-      display: none;
-    }
-    & > *:nth-child(3) {
-      display: none;
-    }
-    & > *:nth-child(4) {
-      display: none;
-    }
-  }
-
-  @media screen and (max-width: 500px) {
-    grid-template-columns: 1.5fr repeat(1, 1fr);
-    & > *:nth-child(5) {
-      display: none;
-    }
-    & > *:nth-child(3) {
-      display: none;
-    }
-    & > *:nth-child(4) {
-      display: none;
-    }
+  @media screen and (max-width: 767px) {
     & > *:nth-child(2) {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 575px) {
+    padding: 0 20px;
+    & > *:nth-child(5) {
       display: none;
     }
   }
@@ -83,8 +77,19 @@ const SortText = styled.button<{ active: boolean }>`
   color: ${({ active, theme }) => (active ? theme.colors.black : theme.colors.textSubtle)};
   border-color: ${({ active, theme }) => (active ? theme.colors.cardBorder : theme.colors.transparent)};
   outline: none;
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 991px) {
+    margin-right: 12px !important;
+  }
+  @media screen and (max-width: 767px) {
+    margin-right: 8px !important;
+  }
+  @media screen and (max-width: 575px) {
     font-size: 14px;
+    margin-right: 4px !important;
+  }
+  @media screen and (max-width: 374px) {
+    margin-right: 0 !important;
+    padding: 8px 12px;
   }
   &:hover {
     color: ${({ active, theme }) => (active ? theme.colors.black : theme.colors.hover)};
@@ -97,6 +102,22 @@ const StyledScanLink = styled(ScanLink)`
     text-decoration: none;
     opacity: 0.65;
   }
+  > div {
+    @media screen and (max-width: 575px) {
+      font-size: 14px;
+    }
+  }
+`
+
+const LayoutScroll = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-x: auto;
+`
+
+const Image = styled.img`
+  margin-bottom: 12px;
 `
 
 const SORT_FIELD = {
@@ -151,7 +172,7 @@ const DataRow = ({
 
   return (
     <ResponsiveGrid widthfirstcol={filterFn ? 0.5 : 1.5}>
-      <Flex justifyContent="center">
+      <Flex>
         <StyledScanLink
           useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
           href={getBlockExploreLink(transaction.hash, 'transaction', multiChainId[chainName])}
@@ -325,108 +346,112 @@ export default function TransactionTable({
         )}
       </Flex>
       <TableWrapper>
-        <ResponsiveGrid widthfirstcol={filterFn ? 0.5 : 1.5}>
-          <Text textAlign="center" color="textSubtle">
-            {t('Type')}
-          </Text>
-          <ClickableColumnHeader color="textSubtle">
-            {t('Total Value')}
-            <SortButton
-              scale="sm"
-              variant="subtle"
-              onClick={() => handleSort(SORT_FIELD.amountUSD)}
-              className={getSortFieldClassName(SORT_FIELD.amountUSD)}
-            >
-              <SortArrowIcon />
-            </SortButton>
-          </ClickableColumnHeader>
-          <ClickableColumnHeader color="textSubtle">
-            {t('Token%index% Amount', { index: '0' })}
-            <SortButton
-              scale="sm"
-              variant="subtle"
-              onClick={() => handleSort(SORT_FIELD.amountToken0)}
-              className={getSortFieldClassName(SORT_FIELD.amountToken0)}
-            >
-              <SortArrowIcon />
-            </SortButton>
-          </ClickableColumnHeader>
-          <ClickableColumnHeader color="textSubtle">
-            {t('Token%index% Amount', { index: '1' })}
-            <SortButton
-              scale="sm"
-              variant="subtle"
-              onClick={() => handleSort(SORT_FIELD.amountToken1)}
-              className={getSortFieldClassName(SORT_FIELD.amountToken1)}
-            >
-              <SortArrowIcon />
-            </SortButton>
-          </ClickableColumnHeader>
-          <ClickableColumnHeader color="textSubtle">
-            {t('Account')}
-            <SortButton
-              scale="sm"
-              variant="subtle"
-              onClick={() => handleSort(SORT_FIELD.sender)}
-              className={getSortFieldClassName(SORT_FIELD.sender)}
-            >
-              <SortArrowIcon />
-            </SortButton>
-          </ClickableColumnHeader>
-          <ClickableColumnHeader color="textSubtle">
-            {`${t('Time')} `}
-            <SortButton
-              scale="sm"
-              variant="subtle"
-              onClick={() => handleSort(SORT_FIELD.timestamp)}
-              className={getSortFieldClassName(SORT_FIELD.timestamp)}
-            >
-              <SortArrowIcon />
-            </SortButton>
-          </ClickableColumnHeader>
-        </ResponsiveGrid>
-        <AutoColumn gap="16px">
-          <Break />
+        <LayoutScroll>
+          <ResponsiveGrid widthfirstcol={filterFn ? 0.5 : 1.5}>
+            <Text color="textSubtle">
+              {t('Type')}
+            </Text>
+            <ClickableColumnHeader color="textSubtle">
+              {t('Total Value')}
+              <SortButton
+                scale="sm"
+                variant="subtle"
+                onClick={() => handleSort(SORT_FIELD.amountUSD)}
+                className={getSortFieldClassName(SORT_FIELD.amountUSD)}
+              >
+                <SortArrowIcon />
+              </SortButton>
+            </ClickableColumnHeader>
+            <ClickableColumnHeader color="textSubtle">
+              {t('Token%index% Amount', { index: '0' })}
+              <SortButton
+                scale="sm"
+                variant="subtle"
+                onClick={() => handleSort(SORT_FIELD.amountToken0)}
+                className={getSortFieldClassName(SORT_FIELD.amountToken0)}
+              >
+                <SortArrowIcon />
+              </SortButton>
+            </ClickableColumnHeader>
+            <ClickableColumnHeader color="textSubtle">
+              {t('Token%index% Amount', { index: '1' })}
+              <SortButton
+                scale="sm"
+                variant="subtle"
+                onClick={() => handleSort(SORT_FIELD.amountToken1)}
+                className={getSortFieldClassName(SORT_FIELD.amountToken1)}
+              >
+                <SortArrowIcon />
+              </SortButton>
+            </ClickableColumnHeader>
+            <ClickableColumnHeader color="textSubtle">
+              {t('Account')}
+              <SortButton
+                scale="sm"
+                variant="subtle"
+                onClick={() => handleSort(SORT_FIELD.sender)}
+                className={getSortFieldClassName(SORT_FIELD.sender)}
+              >
+                <SortArrowIcon />
+              </SortButton>
+            </ClickableColumnHeader>
+            <ClickableColumnHeader color="textSubtle">
+              {`${t('Time')} `}
+              <SortButton
+                scale="sm"
+                variant="subtle"
+                onClick={() => handleSort(SORT_FIELD.timestamp)}
+                className={getSortFieldClassName(SORT_FIELD.timestamp)}
+              >
+                <SortArrowIcon />
+              </SortButton>
+            </ClickableColumnHeader>
+          </ResponsiveGrid>
+          <AutoColumn gap="16px">
+            <Break />
 
-          {sortedTransactions.map((d, index) => {
-            if (d) {
-              return (
-                // eslint-disable-next-line react/no-array-index-key
-                <React.Fragment key={`${d.hash}/${d.timestamp}/${index}/transactionRecord`}>
-                  <DataRow transaction={d} type={type} filterFn={filterFn} />
-                  <Break />
-                </React.Fragment>
-              )
-            }
-            return null
-          })}
-          {sortedTransactions.length === 0 && (
-            <Flex justifyContent="center">
-              <Text>{t('No Transactions')}</Text>
-            </Flex>
-          )}
-          <PageButtons>
-            <Box
-              onClick={() => {
-                if (page > 1) setPage(page - 1)
-              }}
-            >
-              <Arrow>
-                <ArrowBackIcon color={page <= 1 ? 'textDisabled' : 'primary'} />
-              </Arrow>
-            </Box>
-            <Text>{`Page ${page} of ${maxPage}`}</Text>
-            <Box
-              onClick={() => {
-                if (page !== maxPage) setPage(page + 1)
-              }}
-            >
-              <Arrow>
-                <ArrowForwardIcon color={page === maxPage ? 'textDisabled' : 'primary'} />
-              </Arrow>
-            </Box>
-          </PageButtons>
-        </AutoColumn>
+            {sortedTransactions.map((d, index) => {
+              if (d) {
+                return (
+                  // eslint-disable-next-line react/no-array-index-key
+                  <React.Fragment key={`${d.hash}/${d.timestamp}/${index}/transactionRecord`}>
+                    <DataRow transaction={d} type={type} filterFn={filterFn} />
+                    <Break />
+                  </React.Fragment>
+                )
+              }
+              return null
+            })}
+            {sortedTransactions.length === 0 && (
+              <Flex mt="16px" mb="20px" flexDirection="column" alignItems="center" justifyContent="center">
+                <Image src='/images/no-data.svg' />
+                <Text>{t('No Transactions')}</Text>
+              </Flex>
+            )}
+
+          </AutoColumn>
+        </LayoutScroll>
+        <PageButtons>
+          <Box
+            onClick={() => {
+              if (page > 1) setPage(page - 1)
+            }}
+          >
+            <Arrow>
+              <ArrowBackIcon color={page <= 1 ? 'textDisabled' : 'primary'} />
+            </Arrow>
+          </Box>
+          <Text>{`Page ${page} of ${maxPage}`}</Text>
+          <Box
+            onClick={() => {
+              if (page !== maxPage) setPage(page + 1)
+            }}
+          >
+            <Arrow>
+              <ArrowForwardIcon color={page === maxPage ? 'textDisabled' : 'primary'} />
+            </Arrow>
+          </Box>
+        </PageButtons>
       </TableWrapper>
     </>
   )

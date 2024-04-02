@@ -12,8 +12,11 @@ export const ModalHeader = styled(Flex)<{ background?: string; headerBorderColor
   align-items: center;
   background: transparent;
   display: flex;
-  padding: 12px 24px;
+  padding: 12px 20px;
 
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 12px 24px;
+  }
   ${({ theme }) => theme.mediaQueries.md} {
     background: ${({ background }) => background || "transparent"};
   }
@@ -29,6 +32,11 @@ export const ModalBody = styled(Flex)`
   overflow-y: auto;
   overflow-x: hidden;
   max-height: calc(90vh - ${mobileFooterHeight}px);
+  padding: 12px 20px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 12px 24px;
+  }
   ${({ theme }) => theme.mediaQueries.md} {
     display: flex;
     max-height: 90vh;

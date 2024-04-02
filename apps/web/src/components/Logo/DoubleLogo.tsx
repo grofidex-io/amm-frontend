@@ -3,13 +3,19 @@ import { styled } from 'styled-components'
 import CurrencyLogo from './CurrencyLogo'
 
 const Wrapper = styled.div<{ margin: boolean }>`
+  --size: 36px;
+  --space: 12px;
   position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-right: ${({ margin }) => margin && '12px'};
-  width: 36px;
-  height: 36px;
+  margin-right: ${({ margin }) => margin && `var(--space)`};
+  width: var(--size);
+  height: var(--size);
+  @media screen and (max-width: 575px) {
+    --size: 32px;
+    --space: 8px;
+  }
 `
 
 interface DoubleCurrencyLogoProps {

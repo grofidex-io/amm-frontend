@@ -21,7 +21,13 @@ const Wrapper = styled(Card)`
   flex-direction: column;
   padding: 1rem;
   > * {
-    font-size: 1rem;
+    font-size: 16px;
+    @media screen and (max-width: 991px) {
+      font-size: 15px;
+    }
+    @media screen and (max-width: 575px) {
+      font-size: 14px;
+    }
   }
 `
 
@@ -82,7 +88,7 @@ const Chart = ({
 
   return (
     <Wrapper minHeight={minHeight} {...rest}>
-      <RowBetween style={{ alignItems: 'flex-start' }}>
+      <RowBetween style={{ alignItems: 'flex-start', marginBottom: '16px' }}>
         {topLeft ?? null}
         {topRight ?? null}
       </RowBetween>

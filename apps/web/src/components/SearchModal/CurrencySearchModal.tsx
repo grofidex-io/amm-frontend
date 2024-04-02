@@ -40,6 +40,10 @@ const StyledModalContainer = styled(ModalContainer)`
   ${({ theme }) => theme.mediaQueries.md} {
     min-height: auto;
   }
+  @media screen and (max-width: 424px) {
+    min-width: unset;
+    max-width: unset !important;
+  }
 `
 const StyledModalHeader = styled(ModalHeader)`
   background: ${({ theme }) => theme.colors.gradientBubblegum};

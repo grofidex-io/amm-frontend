@@ -16,9 +16,17 @@ interface TokenDisplayProps extends FlexGapProps {
 }
 
 const TextLabel = styled(Text)`
-  font-size: 32px;
+  font-size: 24px;
   line-height: 1.1;
-
+  ${({ theme }) => theme.mediaQueries.xs} {
+    font-size: 28px;
+  }
+  ${({ theme }) => theme.mediaQueries.sm} {
+    font-size: 32px;
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
+    font-size: 36px;
+  }
   ${({ theme }) => theme.mediaQueries.lg} {
     font-size: 40px;
   }
@@ -38,11 +46,11 @@ const PairPriceDisplay: React.FC<React.PropsWithChildren<TokenDisplayProps>> = (
         <TextLabel mr="8px" bold>
           {format ? formatAmount(typeof value === 'string' ? parseFloat(value) ?? 0 : value, formatOptions) : value}
         </TextLabel>
-        {inputSymbol && outputSymbol && (
+        {/* {inputSymbol && outputSymbol && (
           <Text color="textSubtle" fontSize="20px" bold lineHeight={1.1}>
             {`${inputSymbol}/${outputSymbol}`}
           </Text>
-        )}
+        )} */}
       </Flex>
       {children}
     </FlexGap>

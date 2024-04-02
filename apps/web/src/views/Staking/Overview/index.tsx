@@ -13,7 +13,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
       <PageHeader>
         <Box style={{ flex: '1 1 100%', maxWidth: '678px' }}>
           <StakingH1 as="h1" scale="xxl" color="secondary" mb="24px">
-            {t('Become a participant on our jorney')}
+            {t('Become a participant on our journey')}
           </StakingH1>
           <StakingText>
             {t(
