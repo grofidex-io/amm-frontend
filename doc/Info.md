@@ -1,6 +1,6 @@
 # Documentation: Info
 
-A brief overview how Info part of U2Dex website works.
+A brief overview how Info part of GroFi DEX website works.
 
 ## Code structure
 

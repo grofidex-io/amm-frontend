@@ -129,7 +129,7 @@ export const TradeSummary = memo(function TradeSummary({
                     </Text>
                     :{' '}
                     {t(
-                      'U2Dex does not charge any fees for trades. However, the market makers charge an implied fee of 0.05% - 0.25% (non-stablecoin) / 0.01% (stablecoin) factored into the quotes provided by them.',
+                      'GroFi DEX does not charge any fees for trades. However, the market makers charge an implied fee of 0.05% - 0.25% (non-stablecoin) / 0.01% (stablecoin) factored into the quotes provided by them.',
                     )}
                   </Text>
                 </>

@@ -138,8 +138,8 @@ const PancakeProtectorBanner = () => {
           <LogoBox>
             <Image src={pancakeSwapLogo} alt="pancakeSwapLogo" width={119} height={18} unoptimized />
           </LogoBox>
-          <Header>{t('Join U2Dex Protectors')}</Header>
-          <StyledSubheading>{isDesktop && t('Exclusive Perks for U2Dex Bunnies and Squads')}</StyledSubheading>
+          <Header>{t('Join GroFi DEX Protectors')}</Header>
+          <StyledSubheading>{isDesktop && t('Exclusive Perks for GroFi DEX Bunnies and Squads')}</StyledSubheading>
           <Flex alignItems="center" style={{ gap: isMobile ? 4 : 16 }}>
             <Link
               href="https://blog.u2dex.io/articles/pancake-protectors-is-here-discover-the-power-of-cake-and-perks-for-pancake-squads-and-bunnies"

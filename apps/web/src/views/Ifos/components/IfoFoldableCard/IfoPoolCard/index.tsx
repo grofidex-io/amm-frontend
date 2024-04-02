@@ -62,8 +62,8 @@ export const cardConfig = (
       // Sale type 2 is basic sale
       if (meta?.version >= 3.1 && !isBasicSale(meta?.saleType)) {
         const MSG_MAP = {
-          needQualifiedNFT: t('Set PancakeSquad NFT as U2Dex Profile avatar.'),
-          needQualifiedPoints: t('Reach a certain U2Dex Profile Points threshold.'),
+          needQualifiedNFT: t('Set PancakeSquad NFT as GroFi DEX Profile avatar.'),
+          needQualifiedPoints: t('Reach a certain GroFi DEX Profile Points threshold.'),
         }
 
         const msgs = Object.keys(meta)

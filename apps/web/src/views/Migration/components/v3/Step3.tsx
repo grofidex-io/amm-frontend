@@ -164,11 +164,11 @@ export function Step3() {
   return (
     <AtomBox textAlign="center">
       <Heading scale="lg" pb="16px">
-        {t('Quick Start')} - {t('U2Dex V3')}
+        {t('Quick Start')} - {t('GroFi DEX V3')}
       </Heading>
       <Text pb="48px">
         {t(
-          'In U2Dex Exchange V3, liquidity providers are able to customize the trading fee tier and concentrate their liquidity to a specific price range to maximize their capital efficiency.',
+          'In GroFi DEX Exchange V3, liquidity providers are able to customize the trading fee tier and concentrate their liquidity to a specific price range to maximize their capital efficiency.',
         )}
       </Text>
 

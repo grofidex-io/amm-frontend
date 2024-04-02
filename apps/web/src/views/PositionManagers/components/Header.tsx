@@ -20,7 +20,7 @@ export const Header = memo(function Header() {
             {t('Position Manager')}
           </Heading>
           <Heading scale="md" color="text">
-            {t('Automate your U2Dex V3 liquidity')}
+            {t('Automate your GroFi DEX V3 liquidity')}
           </Heading>
         </Flex>
         {isDesktop && (

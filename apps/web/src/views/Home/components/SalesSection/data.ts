@@ -27,7 +27,7 @@ export const swapSectionData = (t: TranslateFunction): SalesSectionProps => ({
 
 export const earnSectionData = (t: TranslateFunction): SalesSectionProps => ({
   headingText: t('Earn passive income with crypto.'),
-  bodyText: t('U2Dex makes it easy to make your crypto work for you.'),
+  bodyText: t('GroFi DEX makes it easy to make your crypto work for you.'),
   reverse: true,
   primaryButton: {
     to: '/farms',
@@ -52,7 +52,7 @@ export const earnSectionData = (t: TranslateFunction): SalesSectionProps => ({
 export const cakeSectionData = (t: TranslateFunction): SalesSectionProps => ({
   headingText: t('U2U makes our world go round.'),
   bodyText: t(
-    'U2U token is at the heart of the U2Dex ecosystem. Buy it, win it, farm it, spend it, stake it... heck, you can even vote with it!',
+    'U2U token is at the heart of the GroFi DEX ecosystem. Buy it, win it, farm it, spend it, stake it... heck, you can even vote with it!',
   ),
   reverse: false,
   primaryButton: {
