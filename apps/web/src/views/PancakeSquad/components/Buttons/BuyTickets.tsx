@@ -1,16 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
 import { ContextApi } from '@pancakeswap/localization'
+import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
+import { bscTokens } from '@pancakeswap/tokens'
 import { Button, useModal, useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useNftSaleContract } from 'hooks/useContract'
 import { useContext, useEffect, useState } from 'react'
-import { Address } from 'wagmi'
 import { DefaultTheme } from 'styled-components'
 import { PancakeSquadContext } from 'views/PancakeSquad/context'
-import { bscTokens } from '@pancakeswap/tokens'
+import { Address } from 'wagmi'
 import { SaleStatusEnum, UserStatusEnum } from '../../types'
 import ReadyText from '../Header/ReadyText'
 import BuyTicketsModal from '../Modals/BuyTickets'
@@ -110,7 +110,7 @@ const BuyTicketsButtons: React.FC<React.PropsWithChildren<BuyTicketsProps>> = ({
       isLoading={isApproving}
       headerBackground={theme.colors.gradientCardHeader}
       txHash={txHashEnablingResult}
-      loadingText={t('Please enable CAKE spending in your wallet')}
+      loadingText={t('Please enable U2U spending in your wallet')}
       loadingButtonLabel={t('Enabling...')}
       successButtonLabel={t('Close')}
       onConfirmClose={onConfirmClose}

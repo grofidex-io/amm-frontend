@@ -1,10 +1,10 @@
-import { BalanceInput, Button, Flex, Image, Slider, Text } from '@pancakeswap/uikit'
-import BigNumber from 'bignumber.js'
 import { useTranslation } from '@pancakeswap/localization'
-import { Dispatch, useMemo, memo, SetStateAction, useCallback } from 'react'
-import { styled } from 'styled-components'
+import { BalanceInput, Button, Flex, Image, Slider, Text } from '@pancakeswap/uikit'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
+import BigNumber from 'bignumber.js'
+import { Dispatch, SetStateAction, memo, useCallback, useMemo } from 'react'
+import { styled } from 'styled-components'
 import { useUserEnoughCakeValidator } from '../hooks/useUserEnoughCakeValidator'
 
 const StyledButton = styled(Button)`
@@ -72,7 +72,7 @@ const BalanceField: React.FC<React.PropsWithChildren<PropsType>> = ({
     <>
       <Flex alignItems="center" justifyContent="space-between" mb="8px">
         <Text color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-          {t('CAKE to lock')}
+          {t('U2U to lock')}
         </Text>
         <Flex alignItems="center" minWidth="70px">
           <Image src={`/images/tokens/${stakingAddress}.png`} width={24} height={24} alt={stakingSymbol} />

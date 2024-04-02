@@ -1,7 +1,7 @@
-import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/chains'
+import { useTranslation } from '@pancakeswap/localization'
+import { Box, Message, MessageText } from '@pancakeswap/uikit'
 import { useNetwork } from 'wagmi'
-import { Message, MessageText, Box } from '@pancakeswap/uikit'
 
 const ZkSyncWarning = () => {
   const { t } = useTranslation()
@@ -14,7 +14,7 @@ const ZkSyncWarning = () => {
           <Message variant="warning" m="24px 0 0 0">
             <MessageText>
               {t(
-                'When staking on zkSync Era, unstaking your CAKE shortly after staking could result in no rewards being earned.',
+                'When staking on zkSync Era, unstaking your U2U shortly after staking could result in no rewards being earned.',
               )}
             </MessageText>
           </Message>

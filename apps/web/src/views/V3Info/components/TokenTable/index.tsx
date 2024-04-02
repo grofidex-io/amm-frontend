@@ -76,6 +76,10 @@ const ResponsiveLogo = styled(CurrencyLogo)`
   }
 `
 
+const StyledLoadingRows = styled(LoadingRows)`
+  margin: 0 16px;
+`
+
 const DataRow = ({ tokenData, index, chainPath }: { tokenData: TokenData; index: number; chainPath: string }) => {
   const { theme } = useTheme()
   const chainName = useChainNameByQuery()
@@ -284,7 +288,7 @@ export default function TokenTable({
           </PageButtons>
         </AutoColumn>
       ) : (
-        <LoadingRows>
+        <StyledLoadingRows>
           <div />
           <div />
           <div />
@@ -297,7 +301,7 @@ export default function TokenTable({
           <div />
           <div />
           <div />
-        </LoadingRows>
+        </StyledLoadingRows>
       )}
     </TableWrapper>
   )

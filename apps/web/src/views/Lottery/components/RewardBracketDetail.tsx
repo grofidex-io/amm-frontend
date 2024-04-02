@@ -1,8 +1,8 @@
-import BigNumber from 'bignumber.js'
-import { Flex, Skeleton, Text, Balance } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { useCakePrice } from 'hooks/useCakePrice'
+import { Balance, Flex, Skeleton, Text } from '@pancakeswap/uikit'
 import { getBalanceNumber, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import BigNumber from 'bignumber.js'
+import { useCakePrice } from 'hooks/useCakePrice'
 
 interface RewardBracketDetailProps {
   cakeAmount: BigNumber
@@ -48,7 +48,7 @@ const RewardBracketDetail: React.FC<React.PropsWithChildren<RewardBracketDetailP
         {isLoading || cakeAmount.isNaN() ? (
           <Skeleton my="4px" mr="10px" height={20} width={110} />
         ) : (
-          <Balance fontSize="20px" bold unit=" CAKE" value={getBalanceNumber(cakeAmount)} decimals={0} />
+          <Balance fontSize="20px" bold unit=" U2U" value={getBalanceNumber(cakeAmount)} decimals={0} />
         )}
         {isLoading || cakeAmount.isNaN() ? (
           <>
@@ -67,7 +67,7 @@ const RewardBracketDetail: React.FC<React.PropsWithChildren<RewardBracketDetailP
           <>
             {numberWinners !== '0' && (
               <Text fontSize="12px" color="textSubtle">
-                {getFullDisplayBalance(cakeAmount.div(parseInt(numberWinners, 10)), 18, 2)} CAKE {t('each')}
+                {getFullDisplayBalance(cakeAmount.div(parseInt(numberWinners, 10)), 18, 2)} U2U {t('each')}
               </Text>
             )}
             <Text fontSize="12px" color="textSubtle">

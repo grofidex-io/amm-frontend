@@ -255,7 +255,7 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
                 <MessageText marginBottom="10px">
                   {vaultPosition === VaultPosition.Flexible ? (
                     <>
-                      {t('Flexible CAKE pool is discontinued and no longer distributing rewards.')}
+                      {t('Flexible U2U pool is discontinued and no longer distributing rewards.')}
                       <LearnMoreLink withArrow />
                     </>
                   ) : vaultPosition >= VaultPosition.LockedEnd ? (
@@ -263,11 +263,11 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
                       t('To check out your converted position, please visit the protocol page.')
                     ) : isMigratedToVeCake ? (
                       t(
-                        'Extending or adding CAKE is not available for migrated positions. To get more veCAKE, withdraw from the unlocked CAKE pool position, and add CAKE to veCAKE.',
+                        'Extending or adding U2U is not available for migrated positions. To get more veU2U, withdraw from the unlocked U2U pool position, and add U2U to veU2U.',
                       )
                     ) : (
                       t(
-                        'The lock period has ended. To get more veCAKE, withdraw from the unlocked CAKE pool position, and add CAKE to veCAKE.',
+                        'The lock period has ended. To get more veU2U, withdraw from the unlocked U2U pool position, and add U2U to veU2U.',
                       )
                     )
                   ) : null}

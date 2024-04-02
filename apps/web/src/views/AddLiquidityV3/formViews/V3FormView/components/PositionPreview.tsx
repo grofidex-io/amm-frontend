@@ -16,7 +16,13 @@ import { formatPrice } from 'utils/formatCurrencyAmount'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 
 import { RangeTag } from 'components/RangeTag'
+import styled from 'styled-components'
 import RateToggle from './RateToggle'
+
+const StyledLightGreyCard = styled(LightGreyCard)`
+  border-width: 2px;
+  box-shadow: ${({ theme }) => theme.shadows.card};
+`
 
 export const PositionPreview = ({
   position,
@@ -79,7 +85,7 @@ export const PositionPreview = ({
         <RangeTag removed={removed} outOfRange={!inRange} />
       </RowBetween>
 
-      <LightGreyCard>
+      <StyledLightGreyCard>
         <AutoColumn gap="sm">
           <RowBetween>
             <RowFixed>
@@ -123,7 +129,7 @@ export const PositionPreview = ({
             <Text>{position?.pool?.fee / 10000}%</Text>
           </RowBetween>
         </AutoColumn>
-      </LightGreyCard>
+      </StyledLightGreyCard>
 
       <AutoColumn gap="md">
         <RowBetween>

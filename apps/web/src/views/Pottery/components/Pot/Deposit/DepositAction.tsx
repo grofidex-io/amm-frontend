@@ -1,20 +1,20 @@
-import { styled } from 'styled-components'
-import { useState, useMemo } from 'react'
-import { Flex, Box, Button, Text, HelpIcon, useTooltip, LogoRoundIcon, Skeleton, InputProps } from '@pancakeswap/uikit'
+import { Box, Button, Flex, HelpIcon, InputProps, LogoRoundIcon, Skeleton, Text, useTooltip } from '@pancakeswap/uikit'
 import { NumericalInput } from '@pancakeswap/widgets-internal'
+import { useMemo, useState } from 'react'
+import { styled } from 'styled-components'
 
 import { useTranslation } from '@pancakeswap/localization'
-import BigNumber from 'bignumber.js'
-import { usePotteryData, useLatestVaultAddress } from 'state/pottery/hook'
 import { CAKE } from '@pancakeswap/tokens'
-import useTokenBalance from 'hooks/useTokenBalance'
-import { getFullDisplayBalance, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import { PotteryDepositStatus } from 'state/types'
-import { useUserEnoughCakeValidator } from 'views/Pools/components/LockedPool/hooks/useUserEnoughCakeValidator'
+import { getBalanceNumber, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import BigNumber from 'bignumber.js'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import EnableButton from './EnableButton'
+import useTokenBalance from 'hooks/useTokenBalance'
+import { useLatestVaultAddress, usePotteryData } from 'state/pottery/hook'
+import { PotteryDepositStatus } from 'state/types'
+import { useUserEnoughCakeValidator } from 'views/Pools/components/LockedPool/hooks/useUserEnoughCakeValidator'
 import DepositButton from './DepositButton'
+import EnableButton from './EnableButton'
 
 const InputPanel = styled.div`
   display: flex;
@@ -52,7 +52,7 @@ const DepositAction: React.FC<React.PropsWithChildren<DepositActionProps>> = ({ 
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t(
-      'CAKE deposit will be diverted to the fixed-term staking pool. Please note that CAKE deposited can ONLY be withdrawn after 10 weeks.',
+      'U2U deposit will be diverted to the fixed-term staking pool. Please note that U2U deposited can ONLY be withdrawn after 10 weeks.',
     ),
     {
       placement: 'bottom',
@@ -113,7 +113,7 @@ const DepositAction: React.FC<React.PropsWithChildren<DepositActionProps>> = ({ 
           {t('Deposit')}
         </Text>
         <Text fontSize="12px" ml="4px" color="textSubtle" bold as="span">
-          CAKE
+          U2U
         </Text>
       </Box>
       <InputPanel>
@@ -135,20 +135,20 @@ const DepositAction: React.FC<React.PropsWithChildren<DepositActionProps>> = ({ 
                 </Button>
               )}
               <LogoRoundIcon m="0 4px" width="24px" height="24px" />
-              <Text>CAKE</Text>
+              <Text>U2U</Text>
             </Flex>
           </Flex>
         </Container>
         {isLessThanOneCake && (
           <Text color="failure" fontSize="14px" textAlign="right">
-            {t('Please deposit at least 1 CAKE to participate in the Pottery')}
+            {t('Please deposit at least 1 U2U to participate in the Pottery')}
           </Text>
         )}
       </InputPanel>
       <Flex>
         <Flex ml="auto">
           <Text fontSize="12px" color="textSubtle">
-            {t('Deposited CAKE will be locked for 10 weeks')}
+            {t('Deposited U2U will be locked for 10 weeks')}
           </Text>
           <Flex ref={targetRef}>
             {tooltipVisible && tooltip}

@@ -1,23 +1,23 @@
-import { useState, useEffect } from 'react'
-import { styled } from 'styled-components'
-import BigNumber from 'bignumber.js'
-import { Modal, Text, Flex, BalanceInput, Box, Button, LogoRoundIcon, useToast } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
+import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
+import { CAKE, bscTokens } from '@pancakeswap/tokens'
+import { BalanceInput, Box, Button, Flex, LogoRoundIcon, Modal, Text, useToast } from '@pancakeswap/uikit'
 import { formatNumber, getBalanceAmount, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import useTheme from 'hooks/useTheme'
-import useTokenBalance from 'hooks/useTokenBalance'
-import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
-import { useFarmAuctionContract } from 'hooks/useContract'
-import { DEFAULT_TOKEN_DECIMAL } from 'config'
-import ConnectWalletButton from 'components/ConnectWalletButton'
+import BigNumber from 'bignumber.js'
 import ApproveConfirmButtons, { ButtonArrangement } from 'components/ApproveConfirmButtons'
+import ConnectWalletButton from 'components/ConnectWalletButton'
+import { ToastDescriptionWithTx } from 'components/Toast'
+import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { ConnectedBidder, FetchStatus } from 'config/constants/types'
+import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCakePrice } from 'hooks/useCakePrice'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import { bscTokens, CAKE } from '@pancakeswap/tokens'
-import { ChainId } from '@pancakeswap/chains'
+import { useFarmAuctionContract } from 'hooks/useContract'
+import useTheme from 'hooks/useTheme'
+import useTokenBalance from 'hooks/useTokenBalance'
+import { useEffect, useState } from 'react'
+import { styled } from 'styled-components'
+import { useAccount } from 'wagmi'
 
 const StyledModal = styled(Modal)`
   & > div:nth-child(2) {
@@ -89,9 +89,9 @@ const PlaceBidModal: React.FC<React.PropsWithChildren<PlaceBidModalProps>> = ({
 
   useEffect(() => {
     if (userNotEnoughCake) {
-      setErrorText(t('Insufficient CAKE balance'))
+      setErrorText(t('Insufficient U2U balance'))
     } else if (!isMoreThanInitialBidAmount && isFirstBid) {
-      setErrorText(t('First bid must be %initialBidAmount% CAKE or more.', { initialBidAmount }))
+      setErrorText(t('First bid must be %initialBidAmount% U2U or more.', { initialBidAmount }))
     } else if (!isMultipleOfTen) {
       setErrorText(t('Bid must be a multiple of 10'))
     } else {
@@ -142,7 +142,7 @@ const PlaceBidModal: React.FC<React.PropsWithChildren<PlaceBidModalProps>> = ({
       <ExistingInfo>
         <Flex justifyContent="space-between">
           <Text>{t('Your existing bid')}</Text>
-          <Text>{t('%num% CAKE', { num: getBalanceNumber(amount) })}</Text>
+          <Text>{t('%num% U2U', { num: getBalanceNumber(amount) })}</Text>
         </Flex>
         <Flex justifyContent="space-between">
           <Text>{t('Your position')}</Text>
@@ -154,12 +154,12 @@ const PlaceBidModal: React.FC<React.PropsWithChildren<PlaceBidModalProps>> = ({
           <Text>{t('Bid a multiple of 10')}</Text>
           <Flex>
             <LogoRoundIcon width="24px" height="24px" mr="4px" />
-            <Text bold>CAKE</Text>
+            <Text bold>U2U</Text>
           </Flex>
         </Flex>
         {isFirstBid && (
           <Text pb="8px" small>
-            {t('First bid must be %initialBidAmount% CAKE or more.', { initialBidAmount })}
+            {t('First bid must be %initialBidAmount% U2U or more.', { initialBidAmount })}
           </Text>
         )}
         <BalanceInput
@@ -250,7 +250,7 @@ const PlaceBidModal: React.FC<React.PropsWithChildren<PlaceBidModalProps>> = ({
           )}
         </Flex>
         <Text color="textSubtle" small mt="24px">
-          {t('If your bid is unsuccessful, you’ll be able to reclaim your CAKE after the auction.')}
+          {t('If your bid is unsuccessful, you’ll be able to reclaim your U2U after the auction.')}
         </Text>
       </InnerContent>
     </StyledModal>

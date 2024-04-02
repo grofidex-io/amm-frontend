@@ -153,7 +153,7 @@ export const VeCakeCard = memo(() => {
                 {BENEFITS?.earnCake?.subTitle}
               </Text>
               <Text fontSize={14} color="text" bold>
-                {`${formatNumber(Number(formatBigInt(totalCakeDistributed)))} CAKE`}
+                {`${formatNumber(Number(formatBigInt(totalCakeDistributed)))} U2U`}
               </Text>
             </Flex>
           </Box>
@@ -256,7 +256,7 @@ export const VeCakeCardTableView = memo(() => {
           <Text fontSize={14} color="text">
             {BENEFITS?.earnCake?.subTitle}
             <Text fontSize={14} color="text" ml="3px" bold display="inline-block">
-              {`${formatNumber(Number(formatBigInt(totalCakeDistributed)))} CAKE`}
+              {`${formatNumber(Number(formatBigInt(totalCakeDistributed)))} U2U`}
             </Text>
           </Text>
         </Box>

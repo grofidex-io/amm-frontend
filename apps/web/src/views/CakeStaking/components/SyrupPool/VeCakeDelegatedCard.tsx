@@ -16,13 +16,13 @@ export const VeCakeDelegatedCard: React.FC<{ isTableView?: boolean }> = memo(({ 
         <img src={`${ASSET_CDN}/web/vecake/token-vecake.png`} alt="token-vecake" width="38px" />
         <Box>
           <Text color="white" bold fontSize={14} pr="20px" mb="10px">
-            {t('Your CAKE pool position has been converted to one of the 3rd party veCAKE locker protocols.')}
+            {t('Your U2U pool position has been converted to one of the 3rd party veCAKE locker protocols.')}
           </Text>
           <Text color="white" bold fontSize={14} pr="20px" mb="10px">
             {t('To check out your converted position, please visit the protocol page.')}
           </Text>
           <Text color="white" bold fontSize={14} pr="20px">
-            {t('You can create a native veCAKE position by locking CAKE.')}
+            {t('You can create a native veCAKE position by locking U2U.')}
           </Text>
         </Box>
       </Flex>

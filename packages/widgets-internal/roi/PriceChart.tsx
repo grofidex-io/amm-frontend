@@ -74,7 +74,7 @@ export const PriceChart = memo(function PriceChart({
       </Box>
     ) : (
       <Flex mt="0.5em" width="100%" flexDirection="column" alignItems="center" height="200px" justifyContent="center">
-        <BunnyKnownPlaceholder />
+        <BunnyKnownPlaceholder width={140} height={140} />
         <Text mt="1em" bold>
           {t("Price will appear here")}
         </Text>

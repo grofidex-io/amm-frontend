@@ -41,19 +41,22 @@ export async function fetchDerivedOffsetTVLHistory(dataClient: GraphQLClient, ch
         const { data } = await fetchPoolChartData(address, dataClient)
         if (!data) return accum
         data.forEach((poolDayData: PoolChartEntry) => {
-          const { date, totalValueLockedUSD, volumeUSD } = poolDayData
+          const { date, totalValueLockedUSD, volumeUSD, feesUSD } = poolDayData
           const roundedDate = date
           if (!accum[roundedDate]) {
             accum[roundedDate] = {
               tvlUSD: 0,
               date: roundedDate,
               volumeUSD: 0,
+              feesUSD: 0
             }
           }
           // eslint-disable-next-line operator-assignment
           accum[roundedDate].tvlUSD = accum[roundedDate].tvlUSD + totalValueLockedUSD
           // eslint-disable-next-line operator-assignment
           accum[roundedDate].volumeUSD = accum[roundedDate].volumeUSD + volumeUSD
+          // eslint-disable-next-line operator-assignment
+          accum[roundedDate].feesUSD = accum[roundedDate].feesUSD + feesUSD
         })
         return accum
       },
@@ -98,6 +101,7 @@ export async function fetchDerivedProtocolTVLHistory(dataClient: GraphQLClient, 
               tvlUSD: 0,
               date: roundedDate,
               volumeUSD: 0,
+              feesUSD: 0
             }
           }
           // eslint-disable-next-line operator-assignment

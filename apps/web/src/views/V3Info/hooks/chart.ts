@@ -30,14 +30,16 @@ export function useTransformedVolumeData(
     if (chartData) {
       const data: Record<string, GenericChartEntry> = {}
 
-      chartData.forEach(({ date, volumeUSD }: { date: number; volumeUSD: number }) => {
+      chartData.forEach(({ date, volumeUSD, feesUSD }: { date: number; volumeUSD: number, feesUSD?: number }) => {
         const group = unixToType(date, type)
         if (data[group]) {
           data[group].value += volumeUSD
+          data[group].feesUSD += feesUSD || 0
         } else {
           data[group] = {
             time: unixToDate(date),
             value: volumeUSD,
+            feesUSD: feesUSD || 0
           }
         }
       })

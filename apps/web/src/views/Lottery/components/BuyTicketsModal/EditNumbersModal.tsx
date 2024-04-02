@@ -1,10 +1,10 @@
+import { useTranslation } from '@pancakeswap/localization'
+import { ArrowBackIcon, AutoRenewIcon, Button, Flex, Modal, Text } from '@pancakeswap/uikit'
+import useTheme from 'hooks/useTheme'
 import { useCallback } from 'react'
 import { styled } from 'styled-components'
-import { Modal, Text, Flex, Button, ArrowBackIcon, AutoRenewIcon } from '@pancakeswap/uikit'
-import useTheme from 'hooks/useTheme'
-import { useTranslation } from '@pancakeswap/localization'
 import TicketInput from './TicketInput'
-import { UpdateTicketAction, Ticket } from './useTicketsReducer'
+import { Ticket, UpdateTicketAction } from './useTicketsReducer'
 
 const StyledModal = styled(Modal)`
   max-height: 552px;
@@ -49,7 +49,7 @@ const EditNumbersModal: React.FC<
       <ScrollableContainer>
         <Flex justifyContent="space-between" mb="16px">
           <Text color="textSubtle">{t('Total cost')}:</Text>
-          <Text>~{totalCost} CAKE</Text>
+          <Text>~{totalCost} U2U</Text>
         </Flex>
         <Text fontSize="12px" color="textSubtle" mb="16px">
           {t(

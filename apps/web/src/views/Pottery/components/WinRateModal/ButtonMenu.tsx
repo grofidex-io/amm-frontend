@@ -1,7 +1,7 @@
-import BigNumber from 'bignumber.js'
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Flex, HelpIcon, useTooltip } from '@pancakeswap/uikit'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import BigNumber from 'bignumber.js'
 import { useAccount } from 'wagmi'
 
 interface ButtonMenuProps {
@@ -20,7 +20,7 @@ const ButtonMenu: React.FC<React.PropsWithChildren<ButtonMenuProps>> = ({
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t(
-      'Your chance of winning is proportional to the CAKE you deposit relative to the total CAKE deposit for Pottery. Currently, there is a cap to the total CAKE deposit size during the beta release.',
+      'Your chance of winning is proportional to the U2U you deposit relative to the total U2U deposit for Pottery. Currently, there is a cap to the total U2U deposit size during the beta release.',
     ),
     {
       placement: 'top-end',

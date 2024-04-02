@@ -1,7 +1,7 @@
-import { styled } from 'styled-components'
-import { Card, CardBody, Text, Flex, Link } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Card, CardBody, Flex, Link, Text } from '@pancakeswap/uikit'
 import FoldableText from 'components/FoldableSection/FoldableText'
+import { styled } from 'styled-components'
 
 const Container = styled(Flex)`
   padding: 48px 16px;
@@ -97,12 +97,12 @@ const Questions = () => {
             >
               <StyledListText color="textSubtle">
                 {t(
-                  'Each campaign has its own eligibility requirements, like the unlock time of the CAKE staking position.',
+                  'Each campaign has its own eligibility requirements, like the unlock time of the U2U staking position.',
                 )}
               </StyledListText>
               <StyledListText color="textSubtle">
                 {t(
-                  'You may need to extend your locked CAKE staking position. Please follow the instructions on the page.',
+                  'You may need to extend your locked U2U staking position. Please follow the instructions on the page.',
                 )}
               </StyledListText>
             </FoldableText>

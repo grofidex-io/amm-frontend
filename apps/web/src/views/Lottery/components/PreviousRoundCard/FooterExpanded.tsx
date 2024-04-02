@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react'
-import { styled } from 'styled-components'
-import BigNumber from 'bignumber.js'
-import { Flex, Skeleton, Heading, Box, Text, Balance } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { LotteryRound, LotteryRoundGraphEntity } from 'state/types'
-import { useCakePrice } from 'hooks/useCakePrice'
-import { useGetLotteryGraphDataById } from 'state/lottery/hooks'
-import { getGraphLotteries } from 'state/lottery/getLotteriesData'
+import { Balance, Box, Flex, Heading, Skeleton, Text } from '@pancakeswap/uikit'
 import { formatNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import BigNumber from 'bignumber.js'
+import { useCakePrice } from 'hooks/useCakePrice'
+import { useEffect, useState } from 'react'
+import { getGraphLotteries } from 'state/lottery/getLotteriesData'
+import { useGetLotteryGraphDataById } from 'state/lottery/hooks'
+import { LotteryRound, LotteryRoundGraphEntity } from 'state/types'
+import { styled } from 'styled-components'
 import RewardBrackets from '../RewardBrackets'
 
 const NextDrawWrapper = styled(Flex)`
@@ -72,7 +72,7 @@ const PreviousRoundCardFooter: React.FC<
           <Balance
             fontSize="14px"
             color="textSubtle"
-            unit=" CAKE"
+            unit=" U2U"
             value={getBalanceNumber(lotteryNodeData?.amountCollectedInCake)}
             decimals={0}
           />

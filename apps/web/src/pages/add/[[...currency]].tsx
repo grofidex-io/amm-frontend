@@ -1,4 +1,5 @@
 import { isStableFarm } from '@pancakeswap/farms'
+import { ChainId, WNATIVE } from '@pancakeswap/sdk'
 import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import { useCurrency } from 'hooks/Tokens'
 import { useRouter } from 'next/router'
@@ -19,8 +20,9 @@ const AddLiquidityPage = () => {
   const { data: farmsV2Public } = useFarmV2PublicAPI()
   const { data: farmV3Public } = useFarmsV3Public()
 
-  const { currencyIdA, currencyIdB, feeAmount } = useCurrencyParams()
-
+  const { currencyIdA: _currencyIdA, currencyIdB: _currencyIdB, feeAmount } = useCurrencyParams()
+  const currencyIdA = _currencyIdA?.toLowerCase() === WNATIVE[ChainId.U2U_NEBULAS]?.address.toLowerCase() ? 'U2U' : _currencyIdA
+  const currencyIdB = _currencyIdB?.toLowerCase() === WNATIVE[ChainId.U2U_NEBULAS]?.address.toLowerCase() ? 'U2U' : _currencyIdB
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
 

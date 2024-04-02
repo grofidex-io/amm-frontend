@@ -32,7 +32,7 @@ export const useMenuItems = (onUsCitizenModalPresent?: () => void): ConfigMenuIt
         const innerItems = item?.items?.map((innerItem) => {
           const itemStatus = innerItem.href ? menuItemsStatus[innerItem.href] : undefined
           const modalId = innerItem.confirmModalId
-          const isInfo = innerItem.href === '/info/v3'
+          const isInfo = innerItem.href === '/info'
           if (itemStatus) {
             let itemMenuStatus: DropdownMenuItems['status'] | null = null
             if (itemStatus === 'soon') {

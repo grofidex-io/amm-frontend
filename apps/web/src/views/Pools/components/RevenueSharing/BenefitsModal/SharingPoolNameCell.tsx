@@ -1,12 +1,12 @@
-import { useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
-import { Text, Flex, LogoRoundIcon, Box, Balance } from '@pancakeswap/uikit'
+import { Balance, Box, Flex, LogoRoundIcon, Text } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
+import { useMemo } from 'react'
 
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import { useVaultPoolByKey, usePoolsWithVault } from 'state/pools/hooks'
-import { VaultKey, DeserializedLockedCakeVault } from 'state/types'
 import { Token } from '@pancakeswap/sdk'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { usePoolsWithVault, useVaultPoolByKey } from 'state/pools/hooks'
+import { DeserializedLockedCakeVault, VaultKey } from 'state/types'
 
 const SharingPoolNameCell = () => {
   const { t } = useTranslation()
@@ -38,7 +38,7 @@ const SharingPoolNameCell = () => {
       <LogoRoundIcon mr="8px" width={43} height={43} style={{ minWidth: 43 }} />
       <Box>
         <Text fontSize={12} color="secondary" bold lineHeight="110%" textTransform="uppercase">
-          {t('CAKE locked')}
+          {t('U2U locked')}
         </Text>
         <Balance bold decimals={2} fontSize={20} lineHeight="110%" value={currentLockedAmountNumber} />
         <Balance

@@ -27,7 +27,7 @@ function NavigateButton(props: SpaceProps) {
 
   return (
     <Button width="100%" as={Link} href="/cake-staking" {...props}>
-      {t('Go to CAKE Staking')}
+      {t('Go to U2U Staking')}
     </Button>
   )
 }

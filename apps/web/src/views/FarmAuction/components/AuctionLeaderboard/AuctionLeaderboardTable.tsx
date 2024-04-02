@@ -1,29 +1,29 @@
-import { useState } from 'react'
-import { styled } from 'styled-components'
-import BigNumber from 'bignumber.js'
+import { useTranslation } from '@pancakeswap/localization'
 import {
-  Text,
-  Flex,
   Box,
   BunnyPlaceholderIcon,
-  Skeleton,
   Button,
-  useModal,
+  EllipsisIcon,
+  Flex,
+  LinkExternal,
+  ScanLink,
+  Skeleton,
   SubMenu,
   SubMenuItem,
-  EllipsisIcon,
-  LinkExternal,
+  Text,
   useMatchBreakpoints,
-  ScanLink,
+  useModal,
 } from '@pancakeswap/uikit'
-import { getBlockExploreLink } from 'utils'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import { useTranslation } from '@pancakeswap/localization'
-import { useCakePrice } from 'hooks/useCakePrice'
+import BigNumber from 'bignumber.js'
 import { Bidder } from 'config/constants/types'
-import WhitelistedBiddersModal from '../WhitelistedBiddersModal'
+import { useCakePrice } from 'hooks/useCakePrice'
+import { useState } from 'react'
+import { styled } from 'styled-components'
+import { getBlockExploreLink } from 'utils'
 import { HARD_CODED_START_AUCTION_ID } from '../../constants'
 import { useV3FarmAuctionConfig } from '../../hooks/useV3FarmAuctionConfig'
+import WhitelistedBiddersModal from '../WhitelistedBiddersModal'
 
 const LeaderboardContainer = styled.div`
   display: grid;
@@ -191,7 +191,7 @@ const AuctionLeaderboardTable: React.FC<
           pr={[null, null, '24px']}
           py="16px"
         >
-          {t('CAKE bid')}
+          {t('U2U bid')}
         </Text>
         <Box />
         {/* Rows */}

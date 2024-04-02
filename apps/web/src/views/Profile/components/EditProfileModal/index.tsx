@@ -1,10 +1,10 @@
+import { ContextApi, useTranslation } from '@pancakeswap/localization'
 import { InjectedModalProps, Modal } from '@pancakeswap/uikit'
-import { useTranslation, ContextApi } from '@pancakeswap/localization'
-import useEditProfile, { Views } from './reducer'
-import StartView from './StartView'
-import PauseProfileView from './PauseProfileView'
-import ChangeProfilePicView from './ChangeProfilePicView'
 import ApproveCakeView from './ApproveCakeView'
+import ChangeProfilePicView from './ChangeProfilePicView'
+import PauseProfileView from './PauseProfileView'
+import StartView from './StartView'
+import useEditProfile, { Views } from './reducer'
 
 interface EditProfileModalProps extends InjectedModalProps {
   onSuccess?: () => void
@@ -19,7 +19,7 @@ const viewTitle = (t: ContextApi['t'], currentView: Views) => {
     case Views.REMOVE:
       return t('Remove Profile Pic')
     case Views.APPROVE:
-      return t('Enable CAKE')
+      return t('Enable U2U')
     default:
       return ''
   }

@@ -10,6 +10,7 @@ import { useCallback, useMemo, useState } from "react";
 import { Button, DynamicSection, Flex, useMatchBreakpoints } from "@pancakeswap/uikit";
 
 import { ScrollableContainer } from "@pancakeswap/uikit/components/RoiCalculatorModal/RoiCalculatorModal";
+import styled from "styled-components";
 import { LiquidityChartRangeInput } from "../swap/LiquidityChartRangeInput";
 import { useDensityChartData } from "../swap/LiquidityChartRangeInput/hooks";
 import { AnimatedArrow } from "./AnimationArrow";
@@ -28,6 +29,10 @@ import { TwoColumns } from "./TwoColumns";
 import { compoundingIndexToFrequency, spanIndexToSpan } from "./constants";
 import { useAmountsByUsdValue, usePriceRange, useRangeHopCallbacks, useRoi } from "./hooks";
 import { TickData } from "./types";
+
+const StyledButton = styled(Button)`
+  border-radius: 4px;
+`
 
 export interface RoiCalculatorPositionInfo {
   priceLower?: Price<Token, Token>;
@@ -395,15 +400,15 @@ export function RoiCalculator({
           feeAmount={feeAmount}
           ticksAtLimit={priceRange?.ticksAtLimit || {}}
         />
-        <Button
+        <StyledButton
           onClick={priceRange?.toggleFullRange}
-          variant={priceRange?.fullRange ? "primary" : "secondary"}
+          variant={priceRange?.fullRange ? "hover" : "tertiary"}
           mb="16px"
           scale="sm"
           className="button-hover"
         >
           {t("Full Range")}
-        </Button>
+        </StyledButton>
       </DynamicSection>
     </Section>
   );

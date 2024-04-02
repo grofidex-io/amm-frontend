@@ -95,7 +95,7 @@ const GaugesVoting = () => {
             <Box maxWidth={['200px', '200px', '537px']}>
               <Flex flexDirection={['column', 'column', 'row']}>
                 <Text color="textSubtle" maxWidth={['142px', '100%', '100%']}>
-                  {t('Use veCAKE to vote and determine CAKE emissions.')}
+                  {t('Use veCAKE to vote and determine U2U emissions.')}
                 </Text>
                 <Box ml={['-8px', '-8px', 0]}>
                   <InlineLink

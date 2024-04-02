@@ -39,7 +39,7 @@ const config: (
   [
     {
       label: 'Info',
-      href: '/info/v3',
+      href: '/info',
       icon: InfoIcon,
       fillIcon: InfoFilledIcon,
       hideSubNav: true,
@@ -230,6 +230,12 @@ const config: (
     {
       label: 'Pair',
       href: '/pair',
+      icon: PoolIcon,
+      hideSubNav: true,
+    },
+    {
+      label: 'Staking',
+      href: '/staking',
       icon: PoolIcon,
       hideSubNav: true,
     },

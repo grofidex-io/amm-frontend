@@ -81,7 +81,6 @@ const disabledFeatures = [
   "symbol_info",
   "timeframes_toolbar",
   "header_resolutions",
-  "header_compare",
 ];
 
 const enabledFeatures = [
@@ -103,6 +102,7 @@ export const defaultChartProps = {
   overrides: chartOverrides,
   enabled_features: enabledFeatures,
   disabled_features: disabledFeatures,
+  charts_storage_api_version: '1.1',
   studies_overrides: {
     'volume.volume.color.0': '#E43650',
     'volume.volume.color.1': '#229E6C',
