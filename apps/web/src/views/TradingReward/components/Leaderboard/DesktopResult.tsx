@@ -1,12 +1,12 @@
-import { useMemo } from 'react'
-import BigNumber from 'bignumber.js'
-import { Text, Flex, Td, ProfileAvatar } from '@pancakeswap/uikit'
-import { RankListDetail } from 'views/TradingReward/hooks/useRankList'
+import { Flex, ProfileAvatar, Td, Text } from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
-import { useProfileForAddress } from 'state/profile/hooks'
-import { useDomainNameForAddress } from 'hooks/useDomain'
 import truncateHash from '@pancakeswap/utils/truncateHash'
+import BigNumber from 'bignumber.js'
 import { useCakePrice } from 'hooks/useCakePrice'
+import { useDomainNameForAddress } from 'hooks/useDomain'
+import { useMemo } from 'react'
+import { useProfileForAddress } from 'state/profile/hooks'
+import { RankListDetail } from 'views/TradingReward/hooks/useRankList'
 
 interface DesktopResultProps {
   rank: RankListDetail
@@ -41,7 +41,7 @@ const DesktopResult: React.FC<React.PropsWithChildren<DesktopResultProps>> = ({ 
       <Td textAlign="right">
         <Text bold>{`$${formatNumber(rank.estimateRewardUSD)}`}</Text>
         <Text fontSize={12} color="textSubtle">
-          {`~${formatNumber(cakeAmount)} CAKE`}
+          {`~${formatNumber(cakeAmount)} U2U`}
         </Text>
       </Td>
     </tr>

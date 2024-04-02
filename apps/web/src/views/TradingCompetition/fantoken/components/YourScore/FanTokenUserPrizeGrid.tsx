@@ -1,12 +1,12 @@
-import { BlockIcon, CheckmarkCircleIcon, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { BlockIcon, CheckmarkCircleIcon, Flex, Text } from '@pancakeswap/uikit'
 
 import { styled } from 'styled-components'
-import { getRewardGroupAchievements, useFanTokenCompetitionRewards } from '../../../helpers'
-import { BoldTd, StyledPrizeTable, Td } from '../../../components/StyledPrizeTable'
 import { fanTokenPrizes } from '../../../../../config/constants/trading-competition/prizes'
-import UserPrizeGridDollar from '../../../components/YourScore/UserPrizeGridDollar'
+import { BoldTd, StyledPrizeTable, Td } from '../../../components/StyledPrizeTable'
 import AchievementPoints from '../../../components/YourScore/AchievementPoints'
+import UserPrizeGridDollar from '../../../components/YourScore/UserPrizeGridDollar'
+import { getRewardGroupAchievements, useFanTokenCompetitionRewards } from '../../../helpers'
 
 const StyledThead = styled.thead`
   border-bottom: 2px solid ${({ theme }) => theme.colors.cardBorder};
@@ -48,7 +48,7 @@ const FanTokenUserPrizeGrid: React.FC<React.PropsWithChildren<{ userTradingInfor
         <tr>
           <BoldTd>
             <Flex flexDirection="column">
-              <Text bold>{cakeReward.toFixed(4)} CAKE</Text>
+              <Text bold>{cakeReward.toFixed(4)} U2U</Text>
               <Text bold>{lazioReward.toFixed(4)} LAZIO</Text>
               <Text bold>{portoReward.toFixed(4)} PORTO</Text>
               <Text bold>{santosReward.toFixed(4)} SANTOS</Text>

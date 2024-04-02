@@ -1,8 +1,8 @@
-import { Flex, Box, Text, useTooltip } from '@pancakeswap/uikit'
+import { ComputedFarmConfigV3 } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
+import { Box, Flex, Text, useTooltip } from '@pancakeswap/uikit'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { ComputedFarmConfigV3 } from '@pancakeswap/farms'
 
 interface TradingRewardIconProps {
   pairs: ComputedFarmConfigV3[]
@@ -20,7 +20,7 @@ const TradingRewardIcon = ({ pairs }: TradingRewardIconProps) => {
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Flex flexDirection="column" width={300}>
-      <Text bold>{t('This token contains trading pair(s) eligible for earning CAKE by trading:')}</Text>
+      <Text bold>{t('This token contains trading pair(s) eligible for earning U2U by trading:')}</Text>
       <Flex flexDirection="column">
         {pairs.map((pair) => (
           <Text key={pair.lpAddress} bold as="li">{`${pair.lpSymbol} - ${pair.feeAmount / 10000}%`}</Text>

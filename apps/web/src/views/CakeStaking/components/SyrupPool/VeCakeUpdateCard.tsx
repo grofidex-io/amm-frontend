@@ -28,7 +28,7 @@ export const VeCakeUpdateCard: React.FC<{
               </>
             ) : (
               <>
-                {t('This product have been upgraded. Check out the brand new veCAKE for more CAKE staking benefits.')}
+                {t('This product have been upgraded. Check out the brand new veCAKE for more U2U staking benefits.')}
                 <LearnMoreLink />
               </>
             )}
@@ -48,7 +48,7 @@ export const VeCakeUpdateCardTableView: React.FC = memo(() => {
         <img src="/images/cake-staking/token-vecake.png" alt="token-vecake" width="38px" />
         <Box>
           <Text color="white" bold fontSize={14} pr="20px">
-            {t('This product have been upgraded. Check out the brand new veCAKE for more CAKE staking benefits.')}
+            {t('This product have been upgraded. Check out the brand new veCAKE for more U2U staking benefits.')}
             <LearnMoreLink />
           </Text>
         </Box>

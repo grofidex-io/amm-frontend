@@ -82,7 +82,7 @@ export const CakePoolLockInfo = () => {
       <Message variant="warning" icon={<InfoFilledIcon color="#D67E0A" />}>
         <Text as="p" color="#D67E0A">
           {t(
-            'Migrate your CAKE staking position to veCAKE and enjoy the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!',
+            'Migrate your U2U staking position to veCAKE and enjoy the benefits of weekly U2U yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!',
           )}
         </Text>
       </Message>

@@ -81,7 +81,6 @@ const disabledFeatures = [
   "symbol_info",
   "timeframes_toolbar",
   "header_resolutions",
-  "header_compare",
 ];
 
 const enabledFeatures = [

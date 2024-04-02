@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react'
-import { styled } from 'styled-components'
-import { useAccount } from 'wagmi'
-import BigNumber from 'bignumber.js'
+import { useTranslation } from '@pancakeswap/localization'
 import { Button, Flex, InjectedModalProps, Message, MessageText } from '@pancakeswap/uikit'
-import { getPancakeProfileAddress } from 'utils/addressHelpers'
+import BigNumber from 'bignumber.js'
+import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
+import ProfileAvatarWithTeam from 'components/ProfileAvatarWithTeam'
+import { FetchStatus } from 'config/constants/types'
+import { useCakeEnable } from 'hooks/useCakeEnable'
 import { useCake } from 'hooks/useContract'
 import { useBSCCakeBalance } from 'hooks/useTokenBalance'
-import { useCakeEnable } from 'hooks/useCakeEnable'
-import { useTranslation } from '@pancakeswap/localization'
-import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
-import { FetchStatus } from 'config/constants/types'
-import { requiresApproval } from 'utils/requiresApproval'
+import { useEffect, useState } from 'react'
 import { useProfile } from 'state/profile/hooks'
-import ProfileAvatarWithTeam from 'components/ProfileAvatarWithTeam'
-import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
+import { styled } from 'styled-components'
+import { getPancakeProfileAddress } from 'utils/addressHelpers'
+import { requiresApproval } from 'utils/requiresApproval'
+import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
+import { useAccount } from 'wagmi'
 import { UseEditProfileResponse } from './reducer'
 
 interface StartPageProps extends InjectedModalProps {
@@ -66,7 +66,7 @@ const StartPage: React.FC<React.PropsWithChildren<StartPageProps>> = ({ goToAppr
   }, [isProfileCostsLoading, hasMinimumCakeRequired, showCakeRequireFlow])
 
   /**
-   * Check if the wallet has the required CAKE allowance to change their profile pic or reactivate
+   * Check if the wallet has the required U2U allowance to change their profile pic or reactivate
    * If they don't, we send them to the approval screen first
    */
   useEffect(() => {
@@ -99,7 +99,7 @@ const StartPage: React.FC<React.PropsWithChildren<StartPageProps>> = ({ goToAppr
           <Message variant="warning" my="16px">
             <MessageText>
               {t(
-                "Before editing your profile, please make sure you've claimed all the unspent CAKE from previous IFOs!",
+                "Before editing your profile, please make sure you've claimed all the unspent U2U from previous IFOs!",
               )}
             </MessageText>
           </Message>

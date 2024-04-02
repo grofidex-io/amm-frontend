@@ -128,7 +128,7 @@ export const LockCakeForm: React.FC<{
           {t('add')}
         </Text>
         <Text color="textSubtle" textTransform="uppercase" fontSize={16} bold>
-          {t('CAKE')}
+          {t('U2U')}
         </Text>
       </FlexGap>
       <CakeInput value={value} onUserInput={onChange} disabled={disabled} />
@@ -159,7 +159,7 @@ const SubmitLockButton = ({ onDismiss }: { onDismiss?: () => void }) => {
 
   return (
     <Button mt="16px" disabled={disabled} width="100%" onClick={increaseLockAmount}>
-      {t('Add CAKE')}
+      {t('Add U2U')}
     </Button>
   )
 }

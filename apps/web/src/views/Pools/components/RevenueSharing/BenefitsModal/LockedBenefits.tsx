@@ -29,7 +29,7 @@ const LockedBenefits = () => {
   const iCakeTooltipComponent = () => (
     <>
       <Text>
-        {t('iCAKE allows you to participate in the IFO public sales and commit up to %iCake% amount of CAKE.', {
+        {t('iCAKE allows you to participate in the IFO public sales and commit up to %iCake% amount of U2U.', {
           iCake: cakeBenefits?.iCake,
         })}
       </Text>
@@ -80,7 +80,7 @@ const LockedBenefits = () => {
           <Box mt="8px">
             <Flex mt="8px" flexDirection="row" alignItems="center">
               <Text color="textSubtle" fontSize="14px" mr="auto">
-                {t('CAKE Yield')}
+                {t('U2U Yield')}
               </Text>
               <Text style={{ display: 'inline-block' }} color="success" bold>
                 {`${Number(lockedApy).toFixed(2)}%`}

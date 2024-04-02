@@ -2,11 +2,11 @@ import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 import { Address } from 'viem'
 
-import { StakeButton } from './StakeButton'
-import { useICakeBridgeStatus } from '../../../hooks/useIfoCredit'
 import { useChainNames } from '../../../hooks/useChainNames'
+import { useICakeBridgeStatus } from '../../../hooks/useIfoCredit'
+import { ContentText, LinkTitle, WarningTips } from '../../WarningTips'
 import { BridgeButton } from './BridgeButton'
-import { WarningTips, LinkTitle, ContentText } from '../../WarningTips'
+import { StakeButton } from './StakeButton'
 
 type Props = {
   ifoId: string
@@ -40,7 +40,7 @@ export function ICakeTips({ ifoChainId, ifoId, ifoAddress }: Props) {
   const tips = noICake
     ? t('You don’t have any iCAKE available for IFO public sale.')
     : shouldBridgeAgain
-    ? t('Bridge iCAKE again if you have extended your CAKE staking or added more CAKE')
+    ? t('Bridge iCAKE again if you have extended your U2U staking or added more U2U')
     : t('Bridge your iCAKE to participate this sale on %chain%', {
         chain: chainName,
       })

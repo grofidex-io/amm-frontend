@@ -64,7 +64,7 @@ export const ApproveAndLockModal: React.FC<ApproveAndLockModalProps> = ({
         {status < ApproveAndLockStatus.LOCK_CAKE_PENDING ? (
           <>
             <PendingModalContent
-              title={status === ApproveAndLockStatus.APPROVING_TOKEN ? t('Approve CAKE spending') : t('Confirm Lock')}
+              title={status === ApproveAndLockStatus.APPROVING_TOKEN ? t('Approve U2U spending') : t('Confirm Lock')}
               subTitle={status === ApproveAndLockStatus.APPROVING_TOKEN ? null : lockInfo}
             />
             {!cakeLockApproved ? <StepsIndicator currentStep={status} /> : null}

@@ -93,7 +93,7 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
     <Box>
       <Box mb="12px">
         <Text lineHeight="110%" as="span">
-          {t('The maximum amount of CAKE reward you may earn is capped at')}
+          {t('The maximum amount of U2U reward you may earn is capped at')}
         </Text>
         <Text lineHeight="110%" as="span" bold m="0 4px">
           0.1%
@@ -119,7 +119,7 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
           <Text bold fontSize="40px">{`$${formatNumber(rewardInUSD)}`}</Text>
           {isAdditionalAmountHit && <WarningIcon ml="10px" width={24} color="warning" />}
         </Flex>
-        <Text fontSize="14px" color="textSubtle">{`~${formatNumber(rewardInCake)} CAKE`}</Text>
+        <Text fontSize="14px" color="textSubtle">{`~${formatNumber(rewardInCake)} U2U`}</Text>
 
         <Box>
           <Text as="span" fontSize="12px" color="textSubtle" lineHeight="110%">
@@ -166,7 +166,7 @@ const QualifiedPreview: React.FC<React.PropsWithChildren<QualifiedPreviewProps>>
                 {t('at')}
               </Text>
               <Text color="warning" as="span" bold mr="4px" fontSize={14}>
-                {`$${formatNumber(totalMapCap)} (~${formatNumber(totalMapCapCovertCakeAmount)} CAKE).`}
+                {`$${formatNumber(totalMapCap)} (~${formatNumber(totalMapCapCovertCakeAmount)} U2U).`}
               </Text>
               <Text as="span" mr="4px" fontSize={14}>
                 {t('An additional amount of reward of')}

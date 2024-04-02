@@ -180,7 +180,7 @@ const TotalPeriod: React.FC<React.PropsWithChildren<TotalPeriodProps>> = ({
                   {minAmountDisplay({ amount: totalUnclaimInUSD, prefix: '$' })}
                 </Text>
                 <Text fontSize={['14px']} color="textSubtle">
-                  {minAmountDisplay({ amount: totalUnclaimInCake, prefix: '~', unit: ' CAKE' })}
+                  {minAmountDisplay({ amount: totalUnclaimInCake, prefix: '~', unit: ' U2U' })}
                 </Text>
               </Box>
               <Button

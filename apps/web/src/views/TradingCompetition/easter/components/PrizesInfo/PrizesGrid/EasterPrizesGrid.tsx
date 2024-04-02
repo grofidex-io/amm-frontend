@@ -1,24 +1,24 @@
-import { useState } from 'react'
-import { Tiers, Rank, easterPrizes } from 'config/constants/trading-competition/prizes'
+import { useTranslation } from '@pancakeswap/localization'
 import {
   BlockIcon,
   Box,
   CheckmarkCircleIcon,
+  CrownIcon,
   Flex,
   MedalBronzeIcon,
   MedalGoldIcon,
   MedalPurpleIcon,
   MedalSilverIcon,
   MedalTealIcon,
-  CrownIcon,
   Tab,
   TabMenu,
-  Text,
   TeamPlayerIcon,
+  Text,
   TrophyGoldIcon,
 } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import { Td, BoldTd, StyledPrizeTable } from '../../../../components/StyledPrizeTable'
+import { Rank, Tiers, easterPrizes } from 'config/constants/trading-competition/prizes'
+import { useState } from 'react'
+import { BoldTd, StyledPrizeTable, Td } from '../../../../components/StyledPrizeTable'
 
 const COLOR_GOLD = '#FFBF33'
 const COLOR_SILVER = '#C1C1C1'
@@ -91,7 +91,7 @@ const EasterPrizesGrid = () => {
             <tr>
               <th>{t('Rank in team')}</th>
               <th>{t('Tier')}</th>
-              <th>{t('CAKE Prizes (Split)')}</th>
+              <th>{t('U2U Prizes (Split)')}</th>
               <th>{t('Achievements')}</th>
               <th>{t('NFT')}</th>
             </tr>

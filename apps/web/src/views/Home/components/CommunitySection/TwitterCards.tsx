@@ -72,7 +72,7 @@ export const useTweetsData = () => {
   return useMemo(() => {
     return [
       {
-        tweet: `🐲 Step into the Dragon Lunar Lottery at U2Dex! Chase a treasure of 16,000 CAKE & an additional $3,880 in USDT prizes! ✨
+        tweet: `🐲 Step into the Dragon Lunar Lottery at U2Dex! Chase a treasure of 16,000 U2U & an additional $3,880 in USDT prizes! ✨
 🧧 Join the celebration: https://app.questn.com/event/869387113325449247
 `,
         link: 'https://x.com/U2Dex/status/1755252804086628435?s=20',

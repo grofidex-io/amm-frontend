@@ -76,7 +76,7 @@ export const AprButton = memo(function YieldInfo({
       <ul>
         {apr.isInCakeRewardDateRange && (
           <li>
-            {t('CAKE APR')}:
+            {t('U2U APR')}:
             <Text ml="3px" style={{ display: 'inline-block' }} bold>
               {`${apr.cakeYieldApr}%`}
             </Text>

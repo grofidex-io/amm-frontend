@@ -1,11 +1,11 @@
-import { Text, Box } from '@pancakeswap/uikit'
+import { Box, Text } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
 
 import { useTranslation } from '@pancakeswap/localization'
-import { useVaultPoolByKey } from 'state/pools/hooks'
-import { VaultKey, DeserializedLockedVaultUser } from 'state/types'
 import { Token } from '@pancakeswap/sdk'
 import dayjs from 'dayjs'
+import { useVaultPoolByKey } from 'state/pools/hooks'
+import { DeserializedLockedVaultUser, VaultKey } from 'state/types'
 import { getCakeVaultEarnings } from '../helpers'
 
 interface AutoEarningsBreakdownProps {
@@ -55,7 +55,7 @@ const AutoEarningsBreakdown: React.FC<React.PropsWithChildren<AutoEarningsBreakd
         <Box mt="12px">
           <Text>{t('Hourly Average')}:</Text>
           <Text bold>
-            {earnedCakePerHour < 0.01 ? '<0.01' : earnedCakePerHour.toFixed(2)} CAKE
+            {earnedCakePerHour < 0.01 ? '<0.01' : earnedCakePerHour.toFixed(2)} U2U
             <Text display="inline-block" ml="5px">
               ({earnedUsdPerHour < 0.01 ? '<0.01' : `~${earnedUsdPerHour.toFixed(2)}`} USD)
             </Text>

@@ -1,14 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { isCakeVaultSupported, CAKE_VAULT_SUPPORTED_CHAINS } from '@pancakeswap/pools'
-import { SpaceProps } from 'styled-system'
+import { CAKE_VAULT_SUPPORTED_CHAINS, isCakeVaultSupported } from '@pancakeswap/pools'
+import { Button, Flex, Text, useModalV2 } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
-import { Button, useModalV2, Flex, Text } from '@pancakeswap/uikit'
+import { SpaceProps } from 'styled-system'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 
-import { NetworkSwitcherModal } from './NetworkSwitcherModal'
 import { useChainNames } from '../../../hooks/useChainNames'
 import { ICakeLogo } from '../../Icons'
+import { NetworkSwitcherModal } from './NetworkSwitcherModal'
 
 type Props = SpaceProps
 
@@ -22,7 +22,7 @@ export function StakeButton(props: Props) {
   const tips = (
     <Flex flexDirection="column" justifyContent="flex-start">
       <ICakeLogo />
-      <Text mt="0.625rem">{t('Stake CAKE to obtain iCAKE - in order to be eligible in this public sale.')}</Text>
+      <Text mt="0.625rem">{t('Stake U2U to obtain iCAKE - in order to be eligible in this public sale.')}</Text>
     </Flex>
   )
 
@@ -31,16 +31,16 @@ export function StakeButton(props: Props) {
       <NetworkSwitcherModal
         isOpen={isOpen}
         supportedChains={CAKE_VAULT_SUPPORTED_CHAINS}
-        title={t('Stake CAKE')}
-        description={t('Lock CAKE on %chain% to obtain iCAKE', {
+        title={t('Stake U2U')}
+        description={t('Lock U2U on %chain% to obtain iCAKE', {
           chain: chainNames,
         })}
-        buttonText={t('Switch chain to stake CAKE')}
+        buttonText={t('Switch chain to stake U2U')}
         onDismiss={onDismiss}
         tips={tips}
       />
       <Button width="100%" onClick={onOpen} {...props}>
-        {t('Stake CAKE')}
+        {t('Stake U2U')}
       </Button>
     </>
   ) : null

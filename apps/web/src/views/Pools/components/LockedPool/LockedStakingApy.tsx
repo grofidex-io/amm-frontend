@@ -62,7 +62,7 @@ const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>>
         {tagTooltipVisibleOfRecentProfit && tagTooltipOfRecentProfit}
         <TooltipText>
           <Text ref={tagTargetRefOfRecentProfit} color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-            {t('Recent CAKE profit')}
+            {t('Recent U2U profit')}
           </Text>
         </TooltipText>
         <BalanceWithLoading color="text" bold fontSize="16px" value={earningTokenBalance} decimals={5} />

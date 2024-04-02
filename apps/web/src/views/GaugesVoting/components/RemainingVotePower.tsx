@@ -81,7 +81,7 @@ export const RemainingVotePower: React.FC<{
             disabled={locked}
             content={
               <>
-                {t('You have no locked CAKE.')} {t('To cast your vote, lock your CAKE for 3 weeks or more.')}
+                {t('You have no locked U2U.')} {t('To cast your vote, lock your U2U for 3 weeks or more.')}
               </>
             }
           >
