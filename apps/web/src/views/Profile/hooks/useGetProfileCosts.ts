@@ -1,5 +1,5 @@
-import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/chains'
+import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
 import { pancakeProfileABI } from 'config/abi/pancakeProfile'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -53,7 +53,7 @@ const useGetProfileCosts = () => {
         })
         setIsLoading(false)
       } catch (error) {
-        toastError(t('Error'), t('Could not retrieve CAKE costs for profile'))
+        toastError(t('Error'), t('Could not retrieve U2U costs for profile'))
       }
     }
 

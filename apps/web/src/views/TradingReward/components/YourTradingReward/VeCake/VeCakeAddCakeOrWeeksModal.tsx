@@ -75,7 +75,7 @@ export const VeCakeAddCakeOrWeeksModal: React.FC<React.PropsWithChildren<VeCakeA
         <StyledSwitchTextContainer onClick={toggleViewMode}>
           <ArrowUpDownIcon mr="4px" color="primary" style={{ rotate: '90deg' }} />
           <Text bold color="primary">
-            {modalViewMode === VeCakeModalView.CAKE_FORM_VIEW ? t('Extend Lock Instead') : t('Add CAKE Instead')}
+            {modalViewMode === VeCakeModalView.CAKE_FORM_VIEW ? t('Extend Lock Instead') : t('Add U2U Instead')}
           </Text>
         </StyledSwitchTextContainer>
       )}

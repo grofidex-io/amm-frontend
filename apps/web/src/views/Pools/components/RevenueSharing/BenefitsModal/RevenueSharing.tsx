@@ -55,13 +55,13 @@ const RevenueSharing: React.FunctionComponent<React.PropsWithChildren<RevenueSha
           <Flex mt="8px" flexDirection="row" alignItems="center">
             <BenefitsTooltipsText
               title={t('Available for claiming')}
-              tooltipComponent={<Text>{t('Amount of revenue available for claiming in CAKE.')}</Text>}
+              tooltipComponent={<Text>{t('Amount of revenue available for claiming in U2U.')}</Text>}
             />
             <Box>
               {availableCake > 0 && availableCake <= 0.01 ? (
-                <Text bold textAlign="right">{`< 0.01 CAKE`}</Text>
+                <Text bold textAlign="right">{`< 0.01 U2U`}</Text>
               ) : (
-                <Balance unit=" CAKE" textAlign="right" bold value={availableCake} decimals={2} />
+                <Balance unit=" U2U" textAlign="right" bold value={availableCake} decimals={2} />
               )}
               <Balance
                 ml="4px"

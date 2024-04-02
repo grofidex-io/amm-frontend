@@ -1,15 +1,15 @@
 /* eslint-disable react/no-array-index-key */
-import { useMemo } from 'react'
-import { styled } from 'styled-components'
-import { Box, Flex, Text, CardBody, CardRibbon, Skeleton, Balance, ScanLink } from '@pancakeswap/uikit'
-import BigNumber from 'bignumber.js'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useTranslation } from '@pancakeswap/localization'
-import { useCakePrice } from 'hooks/useCakePrice'
-import { PotteryRoundInfo } from 'state/types'
+import { Balance, Box, CardBody, CardRibbon, Flex, ScanLink, Skeleton, Text } from '@pancakeswap/uikit'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import BigNumber from 'bignumber.js'
 import Divider from 'components/Divider'
-import { getDrawnDate } from 'views/Lottery/helpers'
+import { useCakePrice } from 'hooks/useCakePrice'
+import { useMemo } from 'react'
+import { PotteryRoundInfo } from 'state/types'
+import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
+import { getDrawnDate } from 'views/Lottery/helpers'
 import Winner from './Winner'
 
 const StyledCardBody = styled(CardBody)`
@@ -101,7 +101,7 @@ const PreviousRoundCardBody: React.FC<React.PropsWithChildren<PreviousRoundCardB
           value={prizeInBusd}
         />
         <Balance
-          unit=" CAKE"
+          unit=" U2U"
           mb="18px"
           fontSize="14px"
           color="textSubtle"

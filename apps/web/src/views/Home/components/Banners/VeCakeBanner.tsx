@@ -172,8 +172,8 @@ const VeCakeBanner = () => {
               unoptimized
             />
           </Flex>
-          <Header data-text={isMobile ? t('Introducing Gauges Voting and veCAKE') : t('Your CAKE, Your Voice')}>
-            {isMobile ? t('Introducing Gauges Voting and veCAKE') : t('Your CAKE, Your Voice')}
+          <Header data-text={isMobile ? t('Introducing Gauges Voting and veU2U') : t('Your U2U, Your Voice')}>
+            {isMobile ? t('Introducing Gauges Voting and veU2U') : t('Your U2U, Your Voice')}
           </Header>
           <Box>
             {isDesktop ? (
@@ -190,7 +190,7 @@ const VeCakeBanner = () => {
                   {t('and')}
                 </SubText>
                 <SubText color="#280D5F" mr="4px">
-                  {t('veCAKE')}
+                  {t('veU2U')}
                 </SubText>
               </Flex>
             ) : null}

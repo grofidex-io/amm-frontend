@@ -1,12 +1,12 @@
-import { parseEther, parseUnits } from 'viem'
+import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import { useTranslation } from '@pancakeswap/localization'
 import { CAKE } from '@pancakeswap/tokens'
-import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import {
   BalanceInput,
   Box,
   Button,
   Flex,
+  IfoHasVestingNotice,
   Image,
   Link,
   Modal,
@@ -15,16 +15,16 @@ import {
   TooltipText,
   useToast,
   useTooltip,
-  IfoHasVestingNotice,
 } from '@pancakeswap/uikit'
+import { formatNumber, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
+import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import BigNumber from 'bignumber.js'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useMemo, useState } from 'react'
-import { formatNumber, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
+import { parseEther, parseUnits } from 'viem'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 
 interface Props {
@@ -68,7 +68,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   const multiplier = useMemo(() => getFullDecimalMultiplier(currency.decimals), [currency])
   const valueWithTokenDecimals = new BigNumber(value).times(multiplier)
   const cake = CAKE[ifo.chainId]
-  const label = cake ? t('Max. CAKE entry') : t('Max. token entry')
+  const label = cake ? t('Max. U2U entry') : t('Max. token entry')
 
   const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
     useApproveConfirmTransaction({
@@ -118,17 +118,17 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   }, [maximumTokenEntry, userCurrencyBalance])
 
   const basicTooltipContent = t(
-    'For the private sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.',
+    'For the private sale, each eligible participant will be able to commit any amount of U2U up to the maximum commit limit, which is published along with the IFO voting proposal.',
   )
 
   const unlimitedToolipContent = (
     <Box>
-      <Text display="inline">{t('For the public sale, Max CAKE entry is capped by')} </Text>
+      <Text display="inline">{t('For the public sale, Max U2U entry is capped by')} </Text>
       <Text bold display="inline">
         {t('the number of iCAKE.')}{' '}
       </Text>
       <Text display="inline">
-        {t('Lock more CAKE for longer durations to increase the maximum number of CAKE you can commit to the sale.')}
+        {t('Lock more U2U for longer durations to increase the maximum number of U2U you can commit to the sale.')}
       </Text>
     </Box>
   )
@@ -193,7 +193,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
             >
               {valueWithTokenDecimals.isGreaterThan(userCurrencyBalance)
                 ? t('Insufficient Balance')
-                : t('Exceeded max CAKE entry')}
+                : t('Exceeded max U2U entry')}
             </Text>
           )}
           <Text color="textSubtle" textAlign="right" fontSize="12px" mb="16px">
@@ -219,7 +219,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
           )}
           <Text color="textSubtle" fontSize="12px" mb="24px">
             {t(
-              'If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.',
+              'If you don’t commit enough U2U, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.',
             )}
             <Link
               fontSize="12px"

@@ -1,10 +1,10 @@
 import { IconButton, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 
-import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/chains'
+import { useTranslation } from '@pancakeswap/localization'
 import { useCallback, useEffect, useState } from 'react'
 
-import { styled, keyframes } from 'styled-components'
+import { keyframes, styled } from 'styled-components'
 
 export const v3PromotionFarms = {
   [ChainId.BSC]: {
@@ -74,7 +74,7 @@ export const V3SwapPromotionIcon: React.FC<{ wrapperStyle?: React.CSSProperties 
     tooltip: campaignTooltip,
     tooltipVisible: campaignTooltipVisible,
     targetRef: campaignTargetRef,
-  } = useTooltip(<Text>{t('Claim $135K CAKE Airdrop & Exclusive NFT')}</Text>, {
+  } = useTooltip(<Text>{t('Claim $135K U2U Airdrop & Exclusive NFT')}</Text>, {
     placement: 'top',
     trigger: 'hover',
     avoidToStopPropagation: true,

@@ -17,10 +17,10 @@ type BenefitItem = {
 export const BENEFITS: Record<BenefitCardType, BenefitItem> = {
   earnCake: {
     headImg: '/images/cake-staking/benefit-earn-cake.png',
-    title: <Trans>Earn CAKE</Trans>,
+    title: <Trans>Earn U2U</Trans>,
     subTitle: <Trans>Total Distributed</Trans>,
     btnText: <Trans>Check Reward</Trans>,
-    desc: [<Trans>Weekly revenue sharing</Trans>, <Trans>Weekly CAKE pool rewards</Trans>],
+    desc: [<Trans>Weekly revenue sharing</Trans>, <Trans>Weekly U2U pool rewards</Trans>],
     key: 'benefit-earn-cake',
   },
   gaugesVoting: {

@@ -47,7 +47,7 @@ export const LockInfo: React.FC<LockInfoProps> = ({ amount, status }) => {
           mr="4px"
           title={CAKE[ChainId.BSC].symbol}
         />
-        <Text fontSize="14px">{`${txAmount} CAKE`}</Text>
+        <Text fontSize="14px">{`${txAmount} U2U`}</Text>
       </Flex>
 
       <Text fontSize={12} color="textSubtle">

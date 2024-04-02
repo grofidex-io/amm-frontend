@@ -1,13 +1,13 @@
-import { BlockIcon, CheckmarkCircleIcon, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { BlockIcon, CheckmarkCircleIcon, Flex, Text } from '@pancakeswap/uikit'
 
 import { styled } from 'styled-components'
+import { modPrizes } from '../../../../../config/constants/trading-competition/prizes'
+import { BoldTd, StyledPrizeTable, Td } from '../../../components/StyledPrizeTable'
+import AchievementPoints from '../../../components/YourScore/AchievementPoints'
+import UserPrizeGridDollar from '../../../components/YourScore/UserPrizeGridDollar'
 import { getRewardGroupAchievements, useModCompetitionRewards } from '../../../helpers'
 import { UserTradingInformation } from '../../../types'
-import { BoldTd, StyledPrizeTable, Td } from '../../../components/StyledPrizeTable'
-import { modPrizes } from '../../../../../config/constants/trading-competition/prizes'
-import UserPrizeGridDollar from '../../../components/YourScore/UserPrizeGridDollar'
-import AchievementPoints from '../../../components/YourScore/AchievementPoints'
 import { useCanClaimSpecialNFT } from '../../../useCanClaimSpecialNFT'
 
 const StyledThead = styled.thead`
@@ -41,7 +41,7 @@ const ModUserPrizeGrid: React.FC<React.PropsWithChildren<{ userTradingInformatio
         <tr>
           <BoldTd>
             <Flex flexDirection="column">
-              <Text bold>{cakeReward.toFixed(4)} CAKE</Text>
+              <Text bold>{cakeReward.toFixed(4)} U2U</Text>
               <Text bold>{darReward.toFixed(4)} DAR</Text>
               <UserPrizeGridDollar dollarValueOfTokensReward={dollarValueOfTokensReward} />
             </Flex>

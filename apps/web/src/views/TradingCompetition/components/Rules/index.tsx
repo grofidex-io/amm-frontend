@@ -1,8 +1,8 @@
+import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
-import { useTranslation } from '@pancakeswap/localization'
-import RulesCard from './RulesCard'
 import FAQs from './FAQs'
+import RulesCard from './RulesCard'
 
 const Wrapper = styled(Flex)`
   flex-direction: column;
@@ -30,7 +30,7 @@ const Rules = () => {
         <RulesCard title={t('Trade to increase your rank')}>
           <Text textAlign="center" fontSize="14px" color="textSubtle">
             {t(
-              'Eligible pairs: DAR/BNB, CAKE/BNB, and CAKE/BUSD. Please note that the volume from limit orders will not be indexed.',
+              'Eligible pairs: DAR/BNB, U2U/BNB, and U2U/BUSD. Please note that the volume from limit orders will not be indexed.',
             )}
           </Text>
         </RulesCard>

@@ -39,7 +39,7 @@ const Multiplier: React.FC<React.PropsWithChildren<MultiplierProps>> = ({ multip
     <>
       <Text>
         {t(
-          'The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each block.',
+          'The Multiplier represents the proportion of U2U rewards each farm receives, as a proportion of the U2U produced each block.',
         )}
       </Text>
       <Text my="24px">
@@ -49,7 +49,7 @@ const Multiplier: React.FC<React.PropsWithChildren<MultiplierProps>> = ({ multip
       </Text>
       <Text>
         {t(
-          'We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives.',
+          'We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of U2U each farm receives.',
         )}
       </Text>
       {/* <Link

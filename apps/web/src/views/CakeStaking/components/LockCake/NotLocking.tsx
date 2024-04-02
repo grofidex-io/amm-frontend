@@ -58,7 +58,7 @@ export const NotLockingCard: React.FC<React.PropsWithChildren<NotLockingCardProp
 
   return (
     <StyledCard innerCardProps={{ padding: hideCardPadding ? 0 : ['24px 16px', '24px 16px', '24px'] }}>
-      {!hideTitle && <Heading scale="md">{t('Lock CAKE to get veCAKE')}</Heading>}
+      {!hideTitle && <Heading scale="md">{t('Lock U2U to get veCAKE')}</Heading>}
       <Grid
         gridTemplateColumns={isDesktop ? '1fr 1fr' : '1fr'}
         gridColumnGap="24px"
@@ -78,7 +78,7 @@ export const NotLockingCard: React.FC<React.PropsWithChildren<NotLockingCardProp
       <ColumnCenter>
         {account ? (
           <Button disabled={disabled} width={['100%', '100%', '50%']} onClick={handleModalOpen}>
-            {t('Lock CAKE')}
+            {t('Lock U2U')}
           </Button>
         ) : (
           <ConnectWalletButton width={['100%', '100%', '50%']} />

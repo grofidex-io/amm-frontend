@@ -1,7 +1,7 @@
-import { Text, Flex, useTooltip, TooltipText } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { VaultKey } from 'state/types'
+import { Flex, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { useVaultPoolByKey } from 'state/pools/hooks'
+import { VaultKey } from 'state/types'
 import { secondsToDay } from 'utils/timeHelper'
 import { getHasWithdrawFee } from '../../hooks/useWithdrawalFeeTimer'
 import UnstakingFeeCountdownRow from './UnstakingFeeCountdownRow'
@@ -32,7 +32,7 @@ const FeeSummary: React.FC<React.PropsWithChildren<FeeSummaryProps>> = ({
       </Text>
       <Text>
         {t(
-          'Only applies within %num% days of staking. Unstaking after %num% days will not include a fee. Timer resets every time you stake new CAKE in the pool.',
+          'Only applies within %num% days of staking. Unstaking after %num% days will not include a fee. Timer resets every time you stake new U2U in the pool.',
           {
             num: withdrawalDayPeriod,
           },

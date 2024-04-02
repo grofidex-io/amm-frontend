@@ -31,7 +31,7 @@ export const PageHead = () => {
         >
           <Button p="0" variant="text" mt="4px">
             <Text color="primary" bold fontSize="16px" mr="4px">
-              {t('Get CAKE')}
+              {t('Get U2U')}
             </Text>
             <ArrowForwardIcon color="primary" />
           </Button>
@@ -54,7 +54,7 @@ const Heading = () => {
   return (
     <Flex alignItems="baseline" justifyContent={staking ? 'space-between' : undefined}>
       <Text lineHeight="110%" bold color="secondary" mb="16px" fontSize={['32px', '32px', '64px', '64px']}>
-        {t('CAKE Staking')}
+        {t('U2U Staking')}
       </Text>
       {isMobile ? (
         <Link
@@ -104,7 +104,7 @@ const Description = () => {
       <DescriptionContent fullSize={staking}>
         <Text color="textSubtle" lineHeight="120%">
           {t(
-            'Enjoy the benefits of weekly CAKE yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!',
+            'Enjoy the benefits of weekly U2U yield, revenue share, gauges voting, farm yield boosting, participating in IFOs, and so much more!',
           )}
         </Text>
       </DescriptionContent>

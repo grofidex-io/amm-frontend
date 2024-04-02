@@ -1,30 +1,30 @@
-import { useState } from 'react'
-import { styled } from 'styled-components'
+import { useTranslation } from '@pancakeswap/localization'
 import {
+  Balance,
+  Box,
+  Button,
   Card,
-  CardHeader,
   CardBody,
+  CardFooter,
+  CardHeader,
+  ExpandableLabel,
   Flex,
   Heading,
-  Text,
   Skeleton,
-  Button,
+  Text,
   useModal,
-  Box,
-  CardFooter,
-  ExpandableLabel,
-  Balance,
 } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
-import { LotteryStatus } from 'config/constants/types'
-import { useTranslation } from '@pancakeswap/localization'
-import { useCakePrice } from 'hooks/useCakePrice'
-import { useLottery } from 'state/lottery/hooks'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import ViewTicketsModal from './ViewTicketsModal'
-import BuyTicketsButton from './BuyTicketsButton'
+import { LotteryStatus } from 'config/constants/types'
+import { useCakePrice } from 'hooks/useCakePrice'
+import { useState } from 'react'
+import { useLottery } from 'state/lottery/hooks'
+import { styled } from 'styled-components'
+import { useAccount } from 'wagmi'
 import { dateTimeOptions } from '../helpers'
+import BuyTicketsButton from './BuyTicketsButton'
 import RewardBrackets from './RewardBrackets'
+import ViewTicketsModal from './ViewTicketsModal'
 
 const Grid = styled.div`
   display: grid;
@@ -104,7 +104,7 @@ const NextDrawCard = () => {
             fontSize="14px"
             color="textSubtle"
             textAlign={['center', null, null, 'left']}
-            unit=" CAKE"
+            unit=" U2U"
             value={getBalanceNumber(amountCollectedInCake)}
             decimals={0}
           />

@@ -1,25 +1,25 @@
-import { styled } from 'styled-components'
+import { useTranslation } from '@pancakeswap/localization'
 import {
-  Text,
-  Heading,
-  Card,
-  CardHeader,
-  CardBody,
-  Flex,
-  Spinner,
-  Skeleton,
-  Tag,
   Button,
+  Card,
+  CardBody,
+  CardHeader,
   CheckmarkCircleIcon,
+  Flex,
+  Heading,
+  Skeleton,
+  Spinner,
+  Tag,
+  Text,
   useModal,
 } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import { Auction, AuctionStatus, ConnectedBidder } from 'config/constants/types'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { Auction, AuctionStatus, ConnectedBidder } from 'config/constants/types'
+import { styled } from 'styled-components'
 import PlaceBidModal from '../PlaceBidModal'
+import AuctionFooter from './AuctionFooter'
 import AuctionSchedule from './AuctionSchedule'
 import CannotBidMessage from './CannotBidMessage'
-import AuctionFooter from './AuctionFooter'
 
 const AuctionDetailsCard = styled(Card)`
   flex: 1;
@@ -78,7 +78,7 @@ const AuctionDetails: React.FC<React.PropsWithChildren<AuctionDetailsProps>> = (
             <Text small color="textSubtle">
               {t('Your existing bid')}
             </Text>
-            <Text small>{getBalanceNumber(amount)} CAKE</Text>
+            <Text small>{getBalanceNumber(amount)} U2U</Text>
           </Flex>
           <Flex justifyContent="space-between" width="100%" pt="8px">
             <Text small color="textSubtle">
@@ -90,7 +90,7 @@ const AuctionDetails: React.FC<React.PropsWithChildren<AuctionDetailsProps>> = (
             {t('Place bid')}
           </Button>
           <Text color="textSubtle" small>
-            {t('If your bid is unsuccessful, you’ll be able to reclaim your CAKE after the auction.')}
+            {t('If your bid is unsuccessful, you’ll be able to reclaim your U2U after the auction.')}
           </Text>
         </>
       )

@@ -1,4 +1,4 @@
-import { formatUnits } from 'viem'
+import { useDebounce } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import {
   AutoRenewIcon,
@@ -9,14 +9,13 @@ import {
   CheckmarkIcon,
   Flex,
   Heading,
-  Input as UIKitInput,
   Skeleton,
   Text,
+  Input as UIKitInput,
+  WarningIcon,
   useModal,
   useToast,
-  WarningIcon,
 } from '@pancakeswap/uikit'
-import { useDebounce } from '@pancakeswap/hooks'
 import { useSignMessage } from '@pancakeswap/wagmi'
 import { API_PROFILE } from 'config/constants/endpoints'
 import { FetchStatus } from 'config/constants/types'
@@ -26,9 +25,10 @@ import { useBSCCakeBalance } from 'hooks/useTokenBalance'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
 import { styled } from 'styled-components'
 import fetchWithTimeout from 'utils/fetchWithTimeout'
+import { formatUnits } from 'viem'
 import { useAccount } from 'wagmi'
-import { REGISTER_COST, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from './config'
 import ConfirmProfileCreationModal from './ConfirmProfileCreationModal'
+import { REGISTER_COST, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from './config'
 import useProfileCreation from './contexts/hook'
 
 dayjs.extend(relativeTime)
@@ -265,7 +265,7 @@ const UserName: React.FC<React.PropsWithChildren> = () => {
       </Button>
       {!hasMinimumCakeRequired && (
         <Text color="failure" mt="16px">
-          {t('A minimum of %num% CAKE is required', { num: formatUnits(REGISTER_COST, 18) })}
+          {t('A minimum of %num% U2U is required', { num: formatUnits(REGISTER_COST, 18) })}
         </Text>
       )}
     </>

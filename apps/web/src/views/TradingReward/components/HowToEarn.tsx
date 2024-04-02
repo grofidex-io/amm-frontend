@@ -1,8 +1,8 @@
-import { styled } from 'styled-components'
-import { Box, Flex, Text, Card, LinkExternal } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import Image from 'next/image'
+import { Box, Card, Flex, LinkExternal, Text } from '@pancakeswap/uikit'
 import Trans from 'components/Trans'
+import Image from 'next/image'
+import { styled } from 'styled-components'
 
 const stepList = [
   {
@@ -16,7 +16,7 @@ const stepList = [
     title: <Trans>Start trading</Trans>,
     subTitle: (
       <Trans>
-        Start trading any eligible pairs to earn rewards in CAKE. The more you trade, the more rewards you will earn
+        Start trading any eligible pairs to earn rewards in U2U. The more you trade, the more rewards you will earn
         from the current reward pool.
       </Trans>
     ),

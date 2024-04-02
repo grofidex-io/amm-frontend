@@ -1,40 +1,40 @@
-import { useMemo, ReactNode } from 'react'
+import { Ifo, PoolIds, cakeBnbLpToken } from '@pancakeswap/ifos'
+import { useTranslation } from '@pancakeswap/localization'
+import { Token } from '@pancakeswap/sdk'
+import { bscTokens } from '@pancakeswap/tokens'
 import {
-  Text,
-  Flex,
+  AutoRenewIcon,
+  BalanceWithLoading,
   Box,
+  BunnyPlaceholderIcon,
+  Button,
   CheckmarkCircleIcon,
+  ErrorIcon,
+  Flex,
   FlexProps,
   HelpIcon,
-  useTooltip,
-  Button,
-  AutoRenewIcon,
-  BunnyPlaceholderIcon,
+  IfoPercentageOfTotal,
+  IfoSkeletonCardTokens,
+  IfoVestingAvailableToClaim,
   Message,
   MessageText,
-  ErrorIcon,
-  BalanceWithLoading,
-  IfoSkeletonCardTokens,
-  IfoPercentageOfTotal,
-  IfoVestingAvailableToClaim,
+  Text,
+  useTooltip,
 } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
-import { Token } from '@pancakeswap/sdk'
-import { Ifo, PoolIds, cakeBnbLpToken } from '@pancakeswap/ifos'
-import { bscTokens } from '@pancakeswap/tokens'
-import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
-import { useTranslation } from '@pancakeswap/localization'
-import { getBalanceNumber, formatNumber } from '@pancakeswap/utils/formatBalance'
-import { TokenImage, TokenPairImage } from 'components/TokenImage'
-import { isBasicSale } from 'views/Ifos/hooks/v7/helpers'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { formatNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { TokenImage, TokenPairImage } from 'components/TokenImage'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { ReactNode, useMemo } from 'react'
+import { isBasicSale } from 'views/Ifos/hooks/v7/helpers'
+import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
+import { useAccount } from 'wagmi'
 
-import { EnableStatus } from '../types'
-import IFORequirements from './IFORequirements'
 import { TextLink } from '../../IfoCardStyles'
 import StakeVaultButton from '../StakeVaultButton'
+import { EnableStatus } from '../types'
 import { ICakeTips } from './ICakeTips'
+import IFORequirements from './IFORequirements'
 
 interface TokenSectionProps extends FlexProps {
   primaryToken?: Token
@@ -139,7 +139,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
   const { chainId } = useActiveChainId()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t(
-      'Sorry, you didn’t contribute enough CAKE to meet the minimum threshold. You didn’t buy anything in this sale, but you can still reclaim your CAKE.',
+      'Sorry, you didn’t contribute enough U2U to meet the minimum threshold. You didn’t buy anything in this sale, but you can still reclaim your U2U.',
     ),
     { placement: 'bottom' },
   )
@@ -329,7 +329,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
             (ifov31Msg || (
               <>
                 <Text textAlign="center" fontSize="14px">
-                  {t('To participate in the next IFO, lock some CAKE in the fixed-term staking CAKE pool!')}
+                  {t('To participate in the next IFO, lock some U2U in the fixed-term staking U2U pool!')}
                 </Text>
                 <TextLink href="/ifo#ifo-how-to" textAlign="center">
                   {t('How does it work?')} »

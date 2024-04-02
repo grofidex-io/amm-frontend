@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { styled } from 'styled-components'
-import { Flex, Text, Card, Box } from '@pancakeswap/uikit'
+import { Box, Card, Flex, Text } from '@pancakeswap/uikit'
 import Divider from 'components/Divider'
+import { styled } from 'styled-components'
 
 const HowToPlayContainer = styled(Flex)`
   width: 100%;
@@ -48,23 +48,23 @@ const HowToPlay: React.FC<React.PropsWithChildren> = () => {
   const steps: Step[] = [
     {
       label: t('Step %number%', { number: 1 }),
-      title: t('Deposit CAKE'),
+      title: t('Deposit U2U'),
       subtitle: t(
-        'Deposit CAKE on the monthly subscription date -- first Monday of each Month. Your chance of winning depends on how many CAKE you deposit compared to the total pool. Your CAKE deposit will be locked for 10 weeks. There will be a monthly TVL cap in the beta product stage.',
+        'Deposit U2U on the monthly subscription date -- first Monday of each Month. Your chance of winning depends on how many U2U you deposit compared to the total pool. Your U2U deposit will be locked for 10 weeks. There will be a monthly TVL cap in the beta product stage.',
       ),
     },
     {
       label: t('Step %number%', { number: 2 }),
       title: t('Wait for the Draw'),
       subtitle: t(
-        'A portion of the staking rewards from the CAKE deposited will fill the prize pot and there will be one weekly draw. There will be eight (8) winners each week. Check your chance of winning, add more CAKE on the monthly subscription date to increase your odds!',
+        'A portion of the staking rewards from the U2U deposited will fill the prize pot and there will be one weekly draw. There will be eight (8) winners each week. Check your chance of winning, add more U2U on the monthly subscription date to increase your odds!',
       ),
     },
     {
       label: t('Step %number%', { number: 3 }),
       title: t('Claim & Withdrawal'),
       subtitle: t(
-        "You can claim any winnings that you may have once the weekly draw is completed. Your CAKE can be withdrawn after 10 weeks but they won't be providing any winning odds anymore.",
+        "You can claim any winnings that you may have once the weekly draw is completed. Your U2U can be withdrawn after 10 weeks but they won't be providing any winning odds anymore.",
       ),
     },
   ]
@@ -76,7 +76,7 @@ const HowToPlay: React.FC<React.PropsWithChildren> = () => {
       </Text>
       <Text textAlign="center">
         {t(
-          'Deposit CAKE to get your Pottery tickets. More CAKE deposited, higher the chance of winning (and of course, higher the rewards)!',
+          'Deposit U2U to get your Pottery tickets. More U2U deposited, higher the chance of winning (and of course, higher the rewards)!',
         )}
       </Text>
       <Text mb="40px">{t('Simple!')}</Text>

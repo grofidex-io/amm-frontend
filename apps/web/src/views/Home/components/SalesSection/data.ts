@@ -50,14 +50,14 @@ export const earnSectionData = (t: TranslateFunction): SalesSectionProps => ({
 })
 
 export const cakeSectionData = (t: TranslateFunction): SalesSectionProps => ({
-  headingText: t('CAKE makes our world go round.'),
+  headingText: t('U2U makes our world go round.'),
   bodyText: t(
-    'CAKE token is at the heart of the U2Dex ecosystem. Buy it, win it, farm it, spend it, stake it... heck, you can even vote with it!',
+    'U2U token is at the heart of the U2Dex ecosystem. Buy it, win it, farm it, spend it, stake it... heck, you can even vote with it!',
   ),
   reverse: false,
   primaryButton: {
     to: '/swap?outputCurrency=0x6d7ce523d59C59De27BB755A1981f4043e79C70E&chainId=56',
-    text: t('Buy CAKE'),
+    text: t('Buy U2U'),
     external: false,
   },
   secondaryButton: {
@@ -71,7 +71,7 @@ export const cakeSectionData = (t: TranslateFunction): SalesSectionProps => ({
     attributes: [
       { src: 'bottom-right', alt: t('Small 3d pancake') },
       { src: 'top-right', alt: t('Small 3d pancake') },
-      { src: 'coin', alt: t('CAKE token') },
+      { src: 'coin', alt: t('U2U token') },
       { src: 'top-left', alt: t('Small 3d pancake') },
     ],
   },

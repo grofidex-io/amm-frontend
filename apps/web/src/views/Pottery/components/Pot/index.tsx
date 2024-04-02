@@ -105,7 +105,7 @@ const Pot: React.FC<React.PropsWithChildren> = () => {
               <Box>
                 <CardHeader
                   title={t('Pottery')}
-                  subTitle={t('Stake CAKE, Earn CAKE, Win CAKE')}
+                  subTitle={t('Stake U2U, Earn U2U, Win U2U')}
                   primarySrc="https://tokens.pancakeswap.finance/images/0x6d7ce523d59C59De27BB755A1981f4043e79C70E.png"
                   secondarySrc="/images/pot-icon.svg"
                 />

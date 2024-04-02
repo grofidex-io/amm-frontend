@@ -1,18 +1,18 @@
-import { useMemo, useState } from 'react'
-import { useSignMessage } from '@pancakeswap/wagmi'
-import { useToast, Box } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import BigNumber from 'bignumber.js'
-import { useAccount } from 'wagmi'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { encodePacked, keccak256 } from 'viem'
 import { ChainId } from '@pancakeswap/chains'
+import { useTranslation } from '@pancakeswap/localization'
+import { Box, useToast } from '@pancakeswap/uikit'
+import { useSignMessage } from '@pancakeswap/wagmi'
+import BigNumber from 'bignumber.js'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCakePrice } from 'hooks/useCakePrice'
-import SingleLatestReward from 'views/AffiliatesProgram/components/Dashboard/Reward/SingleLatestReward'
-import { UserClaimListResponse } from 'views/AffiliatesProgram/hooks/useUserClaimList'
 import { useAffiliateProgramContract } from 'hooks/useContract'
-import useUserExist from 'views/AffiliatesProgram/hooks/useUserExist'
+import { useMemo, useState } from 'react'
+import { encodePacked, keccak256 } from 'viem'
+import SingleLatestReward from 'views/AffiliatesProgram/components/Dashboard/Reward/SingleLatestReward'
 import WrongNetworkWarning from 'views/AffiliatesProgram/components/Dashboard/Reward/WrongNetworkWarning'
+import { UserClaimListResponse } from 'views/AffiliatesProgram/hooks/useUserClaimList'
+import useUserExist from 'views/AffiliatesProgram/hooks/useUserExist'
+import { useAccount } from 'wagmi'
 
 interface LatestRewardProps {
   isAffiliate: boolean
@@ -139,7 +139,7 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
           <SingleLatestReward
             usdAmountTitle={t('Affiliate Reward')}
             usdAmount={Number(affiliateRewardFeeUSD)}
-            cakeAmountTitle={t('Affiliate CAKE Earned')}
+            cakeAmountTitle={t('Affiliate U2U Earned')}
             cakeAmount={affiliateTotalCakeEarned}
             disabled={isAffiliateClaimDisabled}
             clickClaim={() => handleClaim(true)}
@@ -149,7 +149,7 @@ const LatestReward: React.FC<React.PropsWithChildren<LatestRewardProps>> = ({
       <SingleLatestReward
         usdAmountTitle={t('User Reward')}
         usdAmount={Number(userRewardFeeUSD)}
-        cakeAmountTitle={t('User CAKE Earned')}
+        cakeAmountTitle={t('User U2U Earned')}
         cakeAmount={userTotalCakeEarned}
         disabled={isUserClaimDisabled}
         clickClaim={() => handleClaim(false)}

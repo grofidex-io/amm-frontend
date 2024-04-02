@@ -1,13 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { bscTokens } from '@pancakeswap/tokens'
 import { Flex, Modal, Text, useToast } from '@pancakeswap/uikit'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { bscTokens } from '@pancakeswap/tokens'
-import { formatUnits } from 'viem'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useProfileContract } from 'hooks/useContract'
 import { useProfile } from 'state/profile/hooks'
+import { formatUnits } from 'viem'
 import { REGISTER_COST } from './config'
 import { State } from './contexts/types'
 
@@ -52,7 +52,7 @@ const ConfirmProfileCreationModal: React.FC<React.PropsWithChildren<Props>> = ({
       </Text>
       <Flex justifyContent="space-between" mb="16px">
         <Text>{t('Cost')}</Text>
-        <Text>{t('%num% CAKE', { num: formatUnits(REGISTER_COST, 18) })}</Text>
+        <Text>{t('%num% U2U', { num: formatUnits(REGISTER_COST, 18) })}</Text>
       </Flex>
       <ApproveConfirmButtons
         isApproveDisabled={isConfirmed || isConfirming || isApproved}

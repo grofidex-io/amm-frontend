@@ -276,12 +276,12 @@ export const VoteTable = () => {
           <Box width={['100%', '100%', '100%', '50%']} px={['16px', 'auto']} my={['24px', '24px', '36px']} mx="auto">
             <Message variant="warning" showIcon>
               <AutoColumn gap="8px">
-                <Text>{t('You have no locked CAKE.')}</Text>
+                <Text>{t('You have no locked U2U.')}</Text>
                 <FlexGap alignItems="center" gap="0.2em" flexWrap="wrap">
                   {t('To cast your vote, ')}
                   <Link href="/cake-staking" color="text">
                     <Text bold style={{ textDecoration: 'underline' }}>
-                      {t('lock your CAKE')}
+                      {t('lock your U2U')}
                     </Text>
                   </Link>
                   {t('for 3 weeks or more.')}
