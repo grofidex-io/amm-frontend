@@ -1,11 +1,11 @@
-import { InfoPageLayout } from 'views/Info'
-import Overview from 'views/Info/Overview'
+import Overview from 'views/V3Info'
+import { InfoPageLayout } from 'views/V3Info/components/Layout'
 
-const MultiChainPage = () => {
+const InfoPage = () => {
   return <Overview />
 }
 
-MultiChainPage.Layout = InfoPageLayout
-MultiChainPage.chains = []
+InfoPage.Layout = InfoPageLayout
+InfoPage.chains = [] // set all
 
-export default MultiChainPage
+export default InfoPage

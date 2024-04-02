@@ -218,7 +218,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
   )
 
   const infoUrl = useMemo(() => {
-    return `/info/v3${multiChainPaths[farm.token.chainId]}/pairs/${farm.lpAddress}?chain=${
+    return `/info${multiChainPaths[farm.token.chainId]}/pairs/${farm.lpAddress}?chain=${
       CHAIN_QUERY_NAME[farm.token.chainId]
     }`
   }, [farm.lpAddress, farm.token.chainId])

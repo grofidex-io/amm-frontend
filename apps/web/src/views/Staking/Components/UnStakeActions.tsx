@@ -2,13 +2,12 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, Text } from '@pancakeswap/uikit'
 import dayjs from 'dayjs'
 import { MouseEventHandler } from 'react'
-import { T } from 'vitest/dist/reporters-1evA5lom'
 import { StakedInfo } from '../Hooks/useStakingList'
 
 type UnStakeActionsProps = {
   data: StakedInfo
   periodTime: number
-  handleWithdraw: MouseEventHandler<T> | undefined
+  handleWithdraw: MouseEventHandler<HTMLButtonElement> | undefined
 }
 
 export function UnStakeActions({ data, periodTime, handleWithdraw }: UnStakeActionsProps) {
@@ -30,7 +29,7 @@ export function UnStakeActions({ data, periodTime, handleWithdraw }: UnStakeActi
         {t('Release In')}
       </Text>
       <Text fontSize="16px" letterSpacing="0.5px" fontWeight="500">
-        {dayjs.duration(remainTime).format('HH:mm:ss')}
+        {remainTime && dayjs.duration(remainTime).format('HH:mm:ss')}
       </Text>
     </Box>
   )

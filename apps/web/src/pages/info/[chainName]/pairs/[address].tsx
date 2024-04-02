@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
-import { InfoPageLayout } from 'views/Info'
-import Pool from 'views/Info/Pools/PoolPage'
+import { InfoPageLayout } from 'views/V3Info/components/Layout'
+import Pool from 'views/V3Info/views/PoolPage'
 
 const PoolPage = () => {
   const router = useRouter()
@@ -8,5 +8,6 @@ const PoolPage = () => {
 }
 
 PoolPage.Layout = InfoPageLayout
-PoolPage.chains = []
+PoolPage.chains = [] // set all
+
 export default PoolPage

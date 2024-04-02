@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/chains'
 import { ManipulateType } from 'dayjs'
 
-export const v3InfoPath = `info/v3`
+export const v3InfoPath = `info`
 
 export const POOL_HIDE: { [key: string]: string[] } = {
   // TODO: update to our own
@@ -63,7 +63,7 @@ export const SUBGRAPH_START_BLOCK = {
   [ChainId.LINEA]: 1444,
   [ChainId.BASE]: 2912007,
   [ChainId.OPBNB]: 1721753,
-  [ChainId.U2U_NEBULAS]: 19641975,
+  [ChainId.U2U_NEBULAS]: 20239918,
 }
 
 export const NODE_REAL_ADDRESS_LIMIT = 50

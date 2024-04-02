@@ -1,6 +1,6 @@
-import Token from 'views/V3Info/views/TokenPage'
+import Token from 'views/Info/Tokens/TokenPage'
 import { GetStaticPaths, GetStaticProps } from 'next'
-import { InfoPageLayout } from 'views/V3Info/components/Layout'
+import { InfoPageLayout } from 'views/Info'
 import { getTokenStaticPaths, getTokenStaticProps } from 'utils/pageUtils'
 
 const TokenPage = ({ address }: { address: string }) => {
@@ -8,7 +8,7 @@ const TokenPage = ({ address }: { address: string }) => {
     return null
   }
 
-  return <Token address={address.toLowerCase()} />
+  return <Token routeAddress={address} />
 }
 
 TokenPage.Layout = InfoPageLayout
