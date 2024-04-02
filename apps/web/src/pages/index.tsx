@@ -7,7 +7,7 @@ import { getCakeContract } from 'utils/contractHelpers'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import { bitQueryServerClient, infoServerClient } from 'utils/graphql'
 import { formatEther } from 'viem'
-import InfoPage from './info/v3/index'
+import InfoPage from './info/index'
 
 // const IndexPage = () => {
 //   return <InfoPage />

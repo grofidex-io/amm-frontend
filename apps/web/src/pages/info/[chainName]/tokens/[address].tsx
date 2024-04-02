@@ -1,6 +1,6 @@
-import Token from 'views/Info/Tokens/TokenPage'
+import Token from 'views/V3Info/views/TokenPage'
 import { GetStaticPaths, GetStaticProps } from 'next'
-import { InfoPageLayout } from 'views/Info'
+import { InfoPageLayout } from 'views/V3Info/components/Layout'
 import { getTokenStaticPaths, getTokenStaticProps } from 'utils/pageUtils'
 
 const TokenPage = ({ address }: { address: string }) => {
@@ -8,11 +8,11 @@ const TokenPage = ({ address }: { address: string }) => {
     return null
   }
 
-  return <Token routeAddress={address.toLowerCase()} />
+  return <Token address={address.toLowerCase()} />
 }
 
 TokenPage.Layout = InfoPageLayout
-TokenPage.chains = []
+TokenPage.chains = [] // set all
 
 export default TokenPage
 

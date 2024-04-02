@@ -17,12 +17,12 @@ export const InfoPageLayout = ({ children }) => {
     const config = [
       {
         label: t('V3'),
-        href: `/info/v3${chainPath}`,
-      },
-      {
-        label: t('V2'),
         href: `/info${chainPath}`,
       },
+      // {
+      //   label: t('V2'),
+      //   href: `/info${chainPath}`,
+      // },
     ]
     if (multiChainQueryStableClient[chainName])
       config.push({

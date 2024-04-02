@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router'
-import { InfoPageLayout } from 'views/V3Info/components/Layout'
-import Pool from 'views/V3Info/views/PoolPage'
+import { InfoPageLayout } from 'views/Info'
+import Pool from 'views/Info/Pools/PoolPage'
 
 const PoolPage = () => {
   const router = useRouter()
-  return <Pool address={String(router.query.address).toLowerCase()} />
+  return <Pool address={String(router.query.address)} />
 }
 
 PoolPage.Layout = InfoPageLayout

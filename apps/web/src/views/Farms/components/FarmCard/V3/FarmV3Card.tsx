@@ -69,7 +69,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
 
   const merklLink = getMerklLink({ chainId, lpAddress })
   const infoUrl = useMemo(() => {
-    return chainId ? `/info/v3${multiChainPaths[chainId]}/pairs/${lpAddress}?chain=${CHAIN_QUERY_NAME[chainId]}` : ''
+    return chainId ? `/info${multiChainPaths[chainId]}/pairs/${lpAddress}?chain=${CHAIN_QUERY_NAME[chainId]}` : ''
   }, [chainId, lpAddress])
   const hasBothFarmAndMerkl = useMemo(
     // for now, only rETH-ETH require both farm and merkl, so we hardcode it here

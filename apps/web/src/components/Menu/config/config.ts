@@ -39,7 +39,7 @@ const config: (
   [
     {
       label: 'Info',
-      href: '/info/v3',
+      href: '/info',
       icon: InfoIcon,
       fillIcon: InfoFilledIcon,
       hideSubNav: true,
