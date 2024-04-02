@@ -88,7 +88,7 @@ export default function ApproveLiquidityTokens({
       )}
       {showFieldAApproval &&
         (revokeANeeded ? (
-          <Button onClick={revokeACallback} disabled={approvalA === ApprovalState.PENDING} width="100%">
+          <Button className='button-hover' onClick={revokeACallback} disabled={approvalA === ApprovalState.PENDING} width="100%">
             {approvalA === ApprovalState.PENDING ? (
               <Dots>{t('Reset Approval on USDT', { asset: currencies[Field.CURRENCY_A]?.symbol })}</Dots>
             ) : (
@@ -96,7 +96,7 @@ export default function ApproveLiquidityTokens({
             )}
           </Button>
         ) : (
-          <Button onClick={approveACallback} disabled={approvalA === ApprovalState.PENDING} width="100%">
+          <Button className='button-hover' onClick={approveACallback} disabled={approvalA === ApprovalState.PENDING} width="100%">
             {approvalA === ApprovalState.PENDING ? (
               <Dots>{t('Enabling %asset%', { asset: currencies[Field.CURRENCY_A]?.symbol })}</Dots>
             ) : (
@@ -106,7 +106,7 @@ export default function ApproveLiquidityTokens({
         ))}
       {showFieldBApproval &&
         (revokeBNeeded ? (
-          <Button onClick={revokeBCallback} disabled={approvalB === ApprovalState.PENDING} width="100%">
+          <Button className='button-hover' onClick={revokeBCallback} disabled={approvalB === ApprovalState.PENDING} width="100%">
             {approvalB === ApprovalState.PENDING ? (
               <Dots>{t('Reset Approval on USDT', { asset: currencies[Field.CURRENCY_B]?.symbol })}</Dots>
             ) : (
@@ -114,7 +114,7 @@ export default function ApproveLiquidityTokens({
             )}
           </Button>
         ) : (
-          <Button onClick={approveBCallback} disabled={approvalB === ApprovalState.PENDING} width="100%">
+          <Button className='button-hover' onClick={approveBCallback} disabled={approvalB === ApprovalState.PENDING} width="100%">
             {approvalB === ApprovalState.PENDING ? (
               <Dots>{t('Enabling %asset%', { asset: currencies[Field.CURRENCY_B]?.symbol })}</Dots>
             ) : (

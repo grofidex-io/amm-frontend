@@ -4,7 +4,7 @@ import { Button, Flex, SyncAltIcon, Text } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 
 const RateToggleButton = styled(Button)`
-  border-radius: 8px;
+  border-radius: 6px;
   padding-left: 8px;
   padding-right: 8px;
   svg {
