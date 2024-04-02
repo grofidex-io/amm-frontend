@@ -51,7 +51,7 @@ const BenefitsModal: React.FunctionComponent<React.PropsWithChildren<BenefitsMod
       <AtomBox bg="gradientBubblegum" py="24px">
         <RowBetween flexWrap="nowrap" px="24px">
           <Text fontSize={20} bold>
-            {t('Locked CAKE Benefits')}
+            {t('Locked U2U Benefits')}
           </Text>
           <ModalCloseButton onDismiss={onDismiss} />
         </RowBetween>

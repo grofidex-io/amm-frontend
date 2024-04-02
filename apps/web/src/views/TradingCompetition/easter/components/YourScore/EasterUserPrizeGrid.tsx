@@ -1,18 +1,18 @@
-import React from 'react'
-import { styled } from 'styled-components'
+import { useTranslation } from '@pancakeswap/localization'
 import {
   BlockIcon,
   CheckmarkCircleIcon,
-  Flex,
   CrownIcon,
-  Text,
-  TeamPlayerIcon,
-  TrophyGoldIcon,
+  Flex,
   Skeleton,
+  TeamPlayerIcon,
+  Text,
+  TrophyGoldIcon,
 } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import { useCompetitionCakeRewards, getEasterRewardGroupAchievements } from '../../../helpers'
-import { BoldTd, Td, StyledPrizeTable } from '../../../components/StyledPrizeTable'
+import React from 'react'
+import { styled } from 'styled-components'
+import { BoldTd, StyledPrizeTable, Td } from '../../../components/StyledPrizeTable'
+import { getEasterRewardGroupAchievements, useCompetitionCakeRewards } from '../../../helpers'
 
 const StyledThead = styled.thead`
   border-bottom: 2px solid ${({ theme }) => theme.colors.cardBorder};
@@ -30,7 +30,7 @@ const EasterUserPrizeGrid: React.FC<React.PropsWithChildren<{ userTradingInforma
     <StyledPrizeTable>
       <StyledThead>
         <tr>
-          <th>{t('CAKE Prizes')}</th>
+          <th>{t('U2U Prizes')}</th>
           <th>{t('Achievements')}</th>
           <th>{t('NFT')}</th>
         </tr>

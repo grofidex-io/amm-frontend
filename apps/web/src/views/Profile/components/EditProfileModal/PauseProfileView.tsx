@@ -1,13 +1,13 @@
-import { useState } from 'react'
-import { AutoRenewIcon, Button, Checkbox, Flex, InjectedModalProps, Text, useToast } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
-import { useProfile } from 'state/profile/hooks'
+import { AutoRenewIcon, Button, Checkbox, Flex, InjectedModalProps, Text, useToast } from '@pancakeswap/uikit'
 import { formatBigInt } from '@pancakeswap/utils/formatBalance'
-import { useProfileContract } from 'hooks/useContract'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { ToastDescriptionWithTx } from 'components/Toast'
+import { useProfileContract } from 'hooks/useContract'
+import { useState } from 'react'
+import { useProfile } from 'state/profile/hooks'
+import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
 
 interface PauseProfilePageProps extends InjectedModalProps {
   onSuccess?: () => void
@@ -55,7 +55,7 @@ const PauseProfilePage: React.FC<React.PropsWithChildren<PauseProfilePageProps>>
         )}
       </Text>
       <Text as="p" color="textSubtle" mb="24px">
-        {t('Cost to reactivate in the future: %cost% CAKE', { cost: formatBigInt(numberCakeToReactivate) })}
+        {t('Cost to reactivate in the future: %cost% U2U', { cost: formatBigInt(numberCakeToReactivate) })}
       </Text>
       <label htmlFor="acknowledgement" style={{ cursor: 'pointer', display: 'block', marginBottom: '24px' }}>
         <Flex alignItems="center">

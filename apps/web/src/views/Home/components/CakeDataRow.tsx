@@ -59,7 +59,7 @@ const StyledWrapper = styled(Flex)`
 `
 
 /**
- * User (Planet Finance) built a contract on top of our original manual CAKE pool,
+ * User (Planet Finance) built a contract on top of our original manual U2U pool,
  * but the contract was written in such a way that when we performed the migration from Masterchef v1 to v2, the tokens were stuck.
  * These stuck tokens are forever gone (see their medium post) and can be considered out of circulation."
  * https://planetfinanceio.medium.com/pancakeswap-works-with-planet-to-help-cake-holders-f0d253b435af

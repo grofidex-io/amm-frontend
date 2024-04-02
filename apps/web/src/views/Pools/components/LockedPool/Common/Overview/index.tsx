@@ -1,20 +1,20 @@
+import { Box, Flex, Message, MessageText, Text } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
-import { Box, Text, Flex, MessageText, Message } from '@pancakeswap/uikit'
 
+import { useTranslation } from '@pancakeswap/localization'
 import { LightGreyCard } from 'components/Card'
 import dayjs from 'dayjs'
 import { useVaultApy } from 'hooks/useVaultApy'
-import { useTranslation } from '@pancakeswap/localization'
 import _toNumber from 'lodash/toNumber'
 import { convertTimeToMilliseconds } from 'utils/timeHelper'
 import formatSecondsToWeeks from '../../../utils/formatSecondsToWeeks'
-import TextRow from './TextRow'
+import CalculatorButton from '../../Buttons/CalculatorButton'
+import { OverviewPropsType } from '../../types'
+import formatICake from '../../utils/formatICake'
+import formatRoi from '../../utils/formatRoi'
 import BalanceRow from './BalanceRow'
 import DateRow from './DateRow'
-import formatRoi from '../../utils/formatRoi'
-import formatICake from '../../utils/formatICake'
-import { OverviewPropsType } from '../../types'
-import CalculatorButton from '../../Buttons/CalculatorButton'
+import TextRow from './TextRow'
 
 const Overview: React.FC<React.PropsWithChildren<OverviewPropsType>> = ({
   usdValueStaked,
@@ -126,7 +126,7 @@ const Overview: React.FC<React.PropsWithChildren<OverviewPropsType>> = ({
         <Box mt="16px" maxWidth="370px">
           <Message variant="warning">
             <MessageText>
-              {t('You will be able to withdraw the staked CAKE and profit only when the staking position is unlocked')}
+              {t('You will be able to withdraw the staked U2U and profit only when the staking position is unlocked')}
             </MessageText>
           </Message>
         </Box>

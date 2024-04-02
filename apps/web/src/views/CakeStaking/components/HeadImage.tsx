@@ -48,7 +48,7 @@ export const NewCakeStakingCard: React.FC = () => {
       >
         <SpeechBubbleBox display="flex">
           <Button variant="subtle" endIcon={<HelpIcon color="invertedContrast" width="24px" />}>
-            {t('New to CAKE Staking')}
+            {t('New to U2U Staking')}
           </Button>
           <SpeechBubble width="16px" height="16px" />
         </SpeechBubbleBox>

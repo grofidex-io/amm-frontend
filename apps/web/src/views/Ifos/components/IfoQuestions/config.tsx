@@ -28,13 +28,13 @@ const config = [
       <Box mt="1rem">
         <Trans>
           To participate in Private Sales, participants will have to meet certain requirements presented on the IFO
-          card. Each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit,
+          card. Each eligible participant will be able to commit any amount of U2U up to the maximum commit limit,
           which is published along with the IFO voting proposal.
         </Trans>
       </Box>,
       <Box mt="1rem">
         <Trans>
-          In the Public Sale, everyone with an active U2Dex profile can commit. However the maximum amount of CAKE users
+          In the Public Sale, everyone with an active U2Dex profile can commit. However the maximum amount of U2U users
           can commit, is equal to the number of iCAKE they have.
         </Trans>
       </Box>,
@@ -58,7 +58,7 @@ const config = [
       </Trans>,
       <Box mt="1rem">
         <Trans>
-          To get more iCAKE, simply get more veCAKE by locking more CAKE in your veCAKE position, or extending your
+          To get more iCAKE, simply get more veCAKE by locking more U2U in your veCAKE position, or extending your
           veCAKE position.
         </Trans>
       </Box>,
@@ -109,13 +109,13 @@ const config = [
   },
   {
     title: <Trans>Where does the participation fee go?</Trans>,
-    description: [<Trans>The CAKE from the participation fee will be burnt as part of the weekly token burn.</Trans>],
+    description: [<Trans>The U2U from the participation fee will be burnt as part of the weekly token burn.</Trans>],
   },
   {
     title: <Trans>How can I get an achievement for participating in the IFO?</Trans>,
     description: [
       <Trans>
-        You need to contribute a minimum of about 10 USD worth of CAKE to either sale. You can contribute to one or
+        You need to contribute a minimum of about 10 USD worth of U2U to either sale. You can contribute to one or
         both, it doesn’t matter: only your overall contribution is counted for the achievement.
       </Trans>,
       <Box mt="1rem">

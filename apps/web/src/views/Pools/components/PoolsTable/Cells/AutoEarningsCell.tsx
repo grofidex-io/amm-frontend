@@ -52,7 +52,7 @@ const AutoEarningsCell: React.FC<React.PropsWithChildren<AutoEarningsCellProps>>
       : new BigNumber(0),
   )
 
-  const labelText = t('Recent CAKE profit')
+  const labelText = t('Recent U2U profit')
   const earningTokenBalance = autoCakeToDisplay
   const hasEarnings = hasAutoEarnings
   const earningTokenDollarBalance = autoUsdToDisplay

@@ -1,4 +1,5 @@
 /* eslint-disable react/no-array-index-key */
+import { useTranslation } from '@pancakeswap/localization'
 import {
   Box,
   Button,
@@ -8,16 +9,15 @@ import {
   IconButton,
   InfoIcon,
   ModalBody,
-  ModalWrapper,
   ModalHeader,
   ModalProps,
   ModalTitle,
+  ModalWrapper,
   Text,
 } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
+import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import useTheme from 'hooks/useTheme'
 import { useState } from 'react'
-import { formatBigInt } from '@pancakeswap/utils/formatBalance'
 import { SaleStatusEnum } from 'views/PancakeSquad/types'
 
 interface BuyTicketsModalProps extends ModalProps {
@@ -96,14 +96,14 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
               <Text font-size="14px" color="textSubtle">
                 {t('Cost per Ticket')}
               </Text>
-              <Text font-size="14px">{formatBigInt(pricePerTicket, 0)} CAKE</Text>
+              <Text font-size="14px">{formatBigInt(pricePerTicket, 0)} U2U</Text>
             </Flex>
             <Flex mb="8px" justifyContent="space-between">
               <Text font-size="14px" color="textSubtle">
-                {t('Your CAKE Balance')}
+                {t('Your U2U Balance')}
               </Text>
               <Text font-size="14px" color={isCakeBalanceInsufficient ? 'failure' : 'text'}>
-                {formatBigInt(cakeBalance, 3)} CAKE
+                {formatBigInt(cakeBalance, 3)} U2U
               </Text>
             </Flex>
             <Flex
@@ -124,7 +124,7 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
                 {t('Total Cost')}
               </Text>
               <Text font-size="14px" bold>
-                {formatBigInt(totalCost, 0)} CAKE
+                {formatBigInt(totalCost, 0)} U2U
               </Text>
             </Flex>
           </Box>

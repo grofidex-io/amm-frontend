@@ -1,8 +1,8 @@
-import { styled } from 'styled-components'
-import { Box, Flex, Text, Heading } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Box, Flex, Heading, Text } from '@pancakeswap/uikit'
 import Divider from 'components/Divider'
 import Image from 'next/image'
+import { styled } from 'styled-components'
 
 const PrizeFundsContainer = styled(Flex)`
   width: 100%;
@@ -153,7 +153,7 @@ const PrizeFunds: React.FC<React.PropsWithChildren> = () => {
       </Flex>
       <Text maxWidth="918px" mt="20px" fontSize="14px" color="textSubtle">
         {t(
-          'Since the rewards from lock-staking are only distributed at the end of the duration, the prize pool to be distributed in each of the 10 weeks upon deposit is borrowed from the CAKE treasury based on the estimated APR. The rewards at the end of the duration from the deposit will be used to repay the treasury and to distribute the 20% staking rewards. Because the APR may change over the duration based on other deposits and their lock-periods in the lock CAKE pool, there may be a small deviance from the above percentages specified (+/- 10%). But, ultimately all staking rewards net of the Pottery fees will be returned to depositors through prize pool or rewards -- the expected value is the same.',
+          'Since the rewards from lock-staking are only distributed at the end of the duration, the prize pool to be distributed in each of the 10 weeks upon deposit is borrowed from the U2U treasury based on the estimated APR. The rewards at the end of the duration from the deposit will be used to repay the treasury and to distribute the 20% staking rewards. Because the APR may change over the duration based on other deposits and their lock-periods in the lock U2U pool, there may be a small deviance from the above percentages specified (+/- 10%). But, ultimately all staking rewards net of the Pottery fees will be returned to depositors through prize pool or rewards -- the expected value is the same.',
         )}
       </Text>
       <Box width="100%" m="40px 0">

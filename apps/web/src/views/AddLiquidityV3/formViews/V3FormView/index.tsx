@@ -69,12 +69,17 @@ import { useV3FormAddLiquidityCallback, useV3FormState } from './form/reducer'
 
 const StyledInput = styled(NumericalInput)`
   background-color: ${({ theme }) => theme.colors.input};
-  box-shadow: ${({ theme, error }) => theme.shadows[error ? 'warning' : 'inset']};
-  border-radius: 16px;
+  border: 2px solid ${({ theme }) => theme.colors.cardBorder};
+  box-shadow: ${({ theme, error }) => theme.shadows[error ? 'warning' : 'input']};
+  border-radius: 4px;
   padding: 8px 16px;
   font-size: 16px;
   width: 100%;
   margin-bottom: 16px;
+`
+const StyledButton = styled(Button)`
+  border-radius: 4px;
+  // border: 2px solid ${({ theme }) => theme.colors.cardBorder};
 `
 
 export const HideMedium = styled.div`
@@ -702,7 +707,8 @@ export default function V3FormView({
                     ?.sort(([a], [b]) => +a - +b)
                     .map(([quickAction, zoomLevel]) => {
                       return (
-                        <Button
+                        <StyledButton
+                          className='button-hover'
                           width="100%"
                           key={`quickActions${quickAction}`}
                           onClick={() => {
@@ -715,14 +721,15 @@ export default function V3FormView({
                             setActiveQuickAction(+quickAction)
                             isQuickButtonUsed.current = true
                           }}
-                          variant={+quickAction === activeQuickAction ? 'primary' : 'secondary'}
+                          variant={+quickAction === activeQuickAction ? 'hover' : 'tertiary'}
                           scale="sm"
                         >
                           {quickAction}%
-                        </Button>
+                        </StyledButton>
                       )
                     })}
-                <Button
+                <StyledButton
+                  className='button-hover'
                   width="200%"
                   onClick={() => {
                     if (activeQuickAction === 100) {
@@ -733,11 +740,11 @@ export default function V3FormView({
                     setActiveQuickAction(100)
                     isQuickButtonUsed.current = true
                   }}
-                  variant={activeQuickAction === 100 ? 'primary' : 'secondary'}
+                  variant={activeQuickAction === 100 ? 'hover' : 'tertiary'}
                   scale="sm"
                 >
                   {t('Full Range')}
-                </Button>
+                </StyledButton>
               </Flex>
             )}
 

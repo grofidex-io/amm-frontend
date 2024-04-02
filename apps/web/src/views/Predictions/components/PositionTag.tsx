@@ -1,17 +1,17 @@
-import { ReactNode } from 'react'
-import { styled } from 'styled-components'
+import { useTranslation } from '@pancakeswap/localization'
+import { BetPosition } from '@pancakeswap/prediction'
 import {
-  ArrowUpIcon,
   ArrowDownIcon,
+  ArrowUpIcon,
   Flex,
   FlexProps,
-  Text,
-  useTooltip,
-  TooltipText,
   InfoIcon,
+  Text,
+  TooltipText,
+  useTooltip,
 } from '@pancakeswap/uikit'
-import { BetPosition } from '@pancakeswap/prediction'
-import { useTranslation } from '@pancakeswap/localization'
+import { ReactNode } from 'react'
+import { styled } from 'styled-components'
 
 interface TagProps extends FlexProps {
   startIcon?: ReactNode
@@ -65,7 +65,7 @@ const PositionTag: React.FC<React.PropsWithChildren<PositionTagProps>> = ({ betP
       </Text>
       <Text>
         {t(
-          'The Locked Price & Closed Price are exactly the same (within 8 decimals), so neither side wins. All funds entered into UP and DOWN positions will go to the weekly CAKE burn.',
+          'The Locked Price & Closed Price are exactly the same (within 8 decimals), so neither side wins. All funds entered into UP and DOWN positions will go to the weekly U2U burn.',
         )}
       </Text>
     </>,

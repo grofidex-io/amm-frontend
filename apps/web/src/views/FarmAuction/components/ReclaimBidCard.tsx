@@ -1,16 +1,16 @@
-import { styled } from 'styled-components'
-import { Text, Heading, Card, CardHeader, CardBody, Flex, useToast } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
+import { Card, CardBody, CardHeader, Flex, Heading, Text, useToast } from '@pancakeswap/uikit'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import ApproveConfirmButtons, { ButtonArrangement } from 'components/ApproveConfirmButtons'
+import ConnectWalletButton from 'components/ConnectWalletButton'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useCake, useFarmAuctionContract } from 'hooks/useContract'
+import { styled } from 'styled-components'
 import { requiresApproval } from 'utils/requiresApproval'
 import { useAccount } from 'wagmi'
-import ConnectWalletButton from 'components/ConnectWalletButton'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
-import ApproveConfirmButtons, { ButtonArrangement } from 'components/ApproveConfirmButtons'
-import { ToastDescriptionWithTx } from 'components/Toast'
 import useReclaimAuctionBid from '../hooks/useReclaimAuctionBid'
 
 const StyledReclaimBidCard = styled(Card)`
@@ -70,11 +70,11 @@ const ReclaimBidCard: React.FC<React.PropsWithChildren> = () => {
           {t('Your bid in Auction #%auctionId% was unsuccessful.', { auctionId: reclaimableAuction.id })}
         </Text>
         <Text bold mb="16px">
-          {t('Reclaim your CAKE now.')}
+          {t('Reclaim your U2U now.')}
         </Text>
         <Flex justifyContent="space-between" mb="8px">
           <Text color="textSubtle">{t('Your total bid')}</Text>
-          <Text>{t('%num% CAKE', { num: getBalanceNumber(amount) })}</Text>
+          <Text>{t('%num% U2U', { num: getBalanceNumber(amount) })}</Text>
         </Flex>
         <Flex justifyContent="space-between" mb="24px">
           <Text color="textSubtle">{t('Your position')}</Text>

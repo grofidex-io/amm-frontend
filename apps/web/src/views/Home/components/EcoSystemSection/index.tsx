@@ -224,7 +224,7 @@ const useEarnBlockData = () => {
     return [
       {
         title: t('Farm'),
-        description: t('Stake LP tokens, harvest CAKE'),
+        description: t('Stake LP tokens, harvest U2U'),
         ctaTitle: t('Stake Now'),
         image: `${ASSET_CDN}/web/landing/earn-farm.png`,
         defaultImage: `${ASSET_CDN}/web/landing/earn-farm-purple.png`,
@@ -232,7 +232,7 @@ const useEarnBlockData = () => {
       },
       {
         title: t('Pools'),
-        description: t('Stake CAKE, earn various rewards'),
+        description: t('Stake U2U, earn various rewards'),
         ctaTitle: t('Stake Now'),
         image: `${ASSET_CDN}/web/landing/earn-pools.png`,
         defaultImage: `${ASSET_CDN}/web/landing/earn-pools-purple.png`,

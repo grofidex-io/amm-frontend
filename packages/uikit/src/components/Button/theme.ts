@@ -77,4 +77,9 @@ export const styleVariants = {
     background: vars.colors.silver,
     color: "black",
   },
+  [variants.HOVER]: {
+    background: vars.colors.hover,
+    color: "black",
+    boxShadow: vars.shadows.button,
+  },
 };

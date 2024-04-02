@@ -46,7 +46,7 @@ const LotteryCardContent = () => {
     refetchOnWindowFocus: false,
   })
 
-  const cakePrizesText = t('%cakePrizeInUsd% in CAKE prizes this round', { cakePrizeInUsd: cakePriceBusd.toString() })
+  const cakePrizesText = t('%cakePrizeInUsd% in U2U prizes this round', { cakePrizeInUsd: cakePriceBusd.toString() })
   const [pretext, prizesThisRound] = cakePrizesText.split(cakePriceBusd.toString())
   const amountCollectedInCake = currentLottery ? parseFloat(currentLottery.amountCollectedInCake) : null
   const currentLotteryPrize = amountCollectedInCake ? cakePriceBusd.times(amountCollectedInCake) : null
@@ -86,7 +86,7 @@ const LotteryCardContent = () => {
           {prizesThisRound}
         </Text>
         <Text color="white" mb="40px">
-          {t('Buy tickets with CAKE, win CAKE if your numbers match')}
+          {t('Buy tickets with U2U, win U2U if your numbers match')}
         </Text>
       </Flex>
       <Flex alignItems="center" justifyContent="center">

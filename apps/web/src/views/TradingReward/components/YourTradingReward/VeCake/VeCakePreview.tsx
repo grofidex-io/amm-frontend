@@ -91,7 +91,7 @@ export const VeCakePreview: React.FC<React.PropsWithChildren<VeCakePreviewProps>
             {t('You have earn some trading REWARDS')}
           </Text>
           <Text bold fontSize="40px">{`$${formatNumber(rewardInUSD)}`}</Text>
-          <Text fontSize="14px" color="textSubtle">{`~${formatNumber(rewardInCake)} CAKE`}</Text>
+          <Text fontSize="14px" color="textSubtle">{`~${formatNumber(rewardInCake)} U2U`}</Text>
 
           <Message variant="danger" mt="10px">
             <MessageText>
@@ -138,7 +138,7 @@ export const VeCakePreview: React.FC<React.PropsWithChildren<VeCakePreviewProps>
       ) : cakeLockExpired ? (
         <VeCakeButtonWithMessage
           messageText={t(
-            'Your CAKE staking position is expired. Unlock your position and set up a new one to start earning.',
+            'Your U2U staking position is expired. Unlock your position and set up a new one to start earning.',
           )}
           buttonText={t('Unlock')}
           onClick={handleUnlockButton}

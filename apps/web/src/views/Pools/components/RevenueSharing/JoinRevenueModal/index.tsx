@@ -1,16 +1,16 @@
+import { Box, Card, Flex, LinkExternal, Modal, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Pool } from '@pancakeswap/widgets-internal'
 import { useMemo } from 'react'
 import { styled } from 'styled-components'
-import { Modal, Text, Card, Flex, Box, LinkExternal, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { Pool } from '@pancakeswap/widgets-internal'
 
-import Image from 'next/image'
-import useTheme from 'hooks/useTheme'
-import { Token } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
-import JoinButton from 'views/Pools/components/RevenueSharing/JoinRevenueModal/JoinButton'
-import { useVaultPoolByKey, usePoolsWithVault } from 'state/pools/hooks'
-import { VaultKey, DeserializedLockedCakeVault } from 'state/types'
+import { Token } from '@pancakeswap/sdk'
+import useTheme from 'hooks/useTheme'
+import Image from 'next/image'
+import { usePoolsWithVault, useVaultPoolByKey } from 'state/pools/hooks'
+import { DeserializedLockedCakeVault, VaultKey } from 'state/types'
 import LockedStaking from 'views/Pools/components/LockedPool/LockedStaking'
+import JoinButton from 'views/Pools/components/RevenueSharing/JoinRevenueModal/JoinButton'
 
 interface JoinRevenueModalProps {
   refresh?: () => void
@@ -84,7 +84,7 @@ const JoinRevenueModal: React.FunctionComponent<React.PropsWithChildren<JoinReve
           <TooltipContainer>
             <Text fontSize={['14px', '14px', '14px', '16px']} lineHeight="110%">
               {
-                'Update your CAKE staking position to join the revenue sharing program for weekly revenue sharing distributions! '
+                'Update your U2U staking position to join the revenue sharing program for weekly revenue sharing distributions! '
               }
             </Text>
           </TooltipContainer>

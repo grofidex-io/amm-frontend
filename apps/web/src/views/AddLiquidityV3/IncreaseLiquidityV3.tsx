@@ -317,7 +317,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
             position ? <PositionPreview position={position} inRange={!outOfRange} ticksAtLimit={ticksAtLimit} /> : null
           }
           bottomContent={() => (
-            <Button width="100%" mt="16px" onClick={onIncrease}>
+            <Button className='button-hover' width="100%" mt="16px" onClick={onIncrease}>
               {t('Increase')}
             </Button>
           )}

@@ -9,14 +9,14 @@ import {
   InfoIcon,
   PlayCircleOutlineIcon,
   Text,
-  useTooltip,
   WaitIcon,
+  useTooltip,
 } from '@pancakeswap/uikit'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useState } from 'react'
 import { fetchLedgerData, markAsCollected } from 'state/predictions'
-import { getRoundResult, Result } from 'state/predictions/helpers'
+import { Result, getRoundResult } from 'state/predictions/helpers'
 import { useGetCurrentEpoch, useGetIsClaimable, useGetPredictionsStatus } from 'state/predictions/hooks'
 import { Bet } from 'state/types'
 import { styled } from 'styled-components'
@@ -52,7 +52,7 @@ const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => 
       </Text>
       <Text>
         {t(
-          'The Locked Price & Closed Price are exactly the same (within 8 decimals), so neither side wins. All funds entered into UP and DOWN positions will go to the weekly CAKE burn.',
+          'The Locked Price & Closed Price are exactly the same (within 8 decimals), so neither side wins. All funds entered into UP and DOWN positions will go to the weekly U2U burn.',
         )}
       </Text>
     </>,

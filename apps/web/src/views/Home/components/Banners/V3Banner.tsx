@@ -226,8 +226,8 @@ const V3Banner = () => {
       <S.Inner>
         <S.LeftWrapper>
           <Title>{t('U2Dex V3')}</Title>
-          <StyledSubheading data-text={t('Claim $135K CAKE Airdrop & Exclusive NFT')}>
-            {t('Claim $135K CAKE Airdrop & Exclusive NFT')}
+          <StyledSubheading data-text={t('Claim $135K U2U Airdrop & Exclusive NFT')}>
+            {t('Claim $135K U2U Airdrop & Exclusive NFT')}
           </StyledSubheading>
           <NextLinkFromReactRouter
             target="_blank"

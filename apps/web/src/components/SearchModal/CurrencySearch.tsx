@@ -35,6 +35,7 @@ import CurrencyList from './CurrencyList'
 import ImportRow from './ImportRow'
 import useTokenComparator from './sorting'
 import { getSwapSound } from './swapSound'
+import { CommonBasesType } from './types'
 
 const FlexPointer = styled(Flex)`
   cursor: pointer;
@@ -161,8 +162,14 @@ function CurrencySearch({
   const tokenComparator = useTokenComparator(invertSearchOrder)
 
   const filteredSortedTokens: Token[] = useMemo(() => {
-    return onRampFlow ? [...filteredQueryTokens] : [...filteredQueryTokens].sort(tokenComparator)
-  }, [filteredQueryTokens, tokenComparator, onRampFlow])
+    let data =  onRampFlow ? [...filteredQueryTokens] : [...filteredQueryTokens].sort(tokenComparator)
+    if(commonBasesType === CommonBasesType.LIQUIDITY) {
+      data = data.filter((item) => {
+        return item.wrapped?.address?.toLowerCase() !== WNATIVE[ChainId.U2U_NEBULAS].address?.toLowerCase()
+      })
+    }
+    return data
+  }, [onRampFlow, filteredQueryTokens, tokenComparator, commonBasesType])
 
   const filteredSortedTokensList2: Token[] = useMemo(() => {
     const _filteredQueryTokens = [...filteredQueryTokens]
@@ -333,27 +340,7 @@ function CurrencySearch({
         </Text>
       </Column>
     )
-  }, [
-    filteredInactiveTokens,
-    filteredSortedTokens,
-    handleCurrencySelect,
-    hasFilteredInactiveTokens,
-    otherSelectedCurrency,
-    searchToken,
-    searchTokenIsAdded,
-    selectedCurrency,
-    setImportToken,
-    showNative,
-    showImportView,
-    t,
-    showCommonBases,
-    isMobile,
-    height,
-    mode,
-    step,
-    handleBack,
-    currency0,
-  ])
+  }, [searchToken, searchTokenIsAdded, hasFilteredInactiveTokens, filteredSortedTokens, mode, step, handleBack, isMobile, showCommonBases, height, showNative, filteredInactiveTokens, handleCurrencySelect, otherSelectedCurrency, selectedCurrency, showImportView, setImportToken, isSelectMulti, filteredSortedTokensList2, currency0, t])
 
   return (
     <>

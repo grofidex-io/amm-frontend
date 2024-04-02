@@ -44,6 +44,7 @@ const FormStakingBtn = () => {
           </ToastDescriptionWithTx>,
         )
         dispatch(resetStakingState())
+        // refresh staking list
       }
     } catch (e) {
       console.error(e)

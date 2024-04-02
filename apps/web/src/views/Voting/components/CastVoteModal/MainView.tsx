@@ -104,7 +104,7 @@ export const VeMainView = ({
             <br />
             <Text color="textSubtle" fontSize="14px">
               {t(
-                'Your voting power is determined by the number of veCAKE you have at the block detailed above. CAKE held in other places does NOT contribute to your voting power.',
+                'Your voting power is determined by the number of veCAKE you have at the block detailed above. U2U held in other places does NOT contribute to your voting power.',
               )}
             </Text>
             <br />
@@ -191,7 +191,7 @@ const MainView: React.FC<React.PropsWithChildren<MainViewProps>> = ({
                     <Flex>
                       <RocketIcon color={isBoostingExpired ? 'warning' : 'secondary'} width="15px" height="15px" />
                       <Text ml="4px" bold color={isBoostingExpired ? 'warning' : 'secondary'} fontSize="14px">
-                        {isBoostingExpired ? t('Boosting Expired') : t('Boosted by vCAKE')}
+                        {isBoostingExpired ? t('Boosting Expired') : t('Boosted by vU2U')}
                       </Text>
                     </Flex>
                   )}
@@ -205,7 +205,7 @@ const MainView: React.FC<React.PropsWithChildren<MainViewProps>> = ({
               <Message variant="danger" mb="12px">
                 <Text color="danger">
                   {t(
-                    'Hold some CAKE in your wallet or on U2Dex at the snapshot block to get voting power for future proposals.',
+                    'Hold some U2U in your wallet or on U2Dex at the snapshot block to get voting power for future proposals.',
                   )}
                 </Text>
               </Message>

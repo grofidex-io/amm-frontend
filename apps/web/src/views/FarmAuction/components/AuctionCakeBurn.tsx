@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react'
-import { Text, Flex, Skeleton, Image, Balance } from '@pancakeswap/uikit'
-import { useFarmAuctionContract } from 'hooks/useContract'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { useCakePrice } from 'hooks/useCakePrice'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { Balance, Flex, Image, Skeleton, Text } from '@pancakeswap/uikit'
 import { bigIntToBigNumber } from '@pancakeswap/utils/bigNumber'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { useCakePrice } from 'hooks/useCakePrice'
+import { useFarmAuctionContract } from 'hooks/useContract'
+import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 
 const BurnedText = styled(Text)`
@@ -43,7 +43,7 @@ const AuctionCakeBurn: React.FC<React.PropsWithChildren> = () => {
     <Flex flexDirection={['column-reverse', null, 'row']}>
       <Flex flexDirection="column" flex="2" ref={observerRef}>
         {burnedCakeAmount !== 0 ? (
-          <Balance fontSize="64px" bold value={burnedCakeAmount} decimals={0} unit=" CAKE" />
+          <Balance fontSize="64px" bold value={burnedCakeAmount} decimals={0} unit=" U2U" />
         ) : (
           <Skeleton width="256px" height="64px" />
         )}
@@ -61,7 +61,7 @@ const AuctionCakeBurn: React.FC<React.PropsWithChildren> = () => {
           <Skeleton width="128px" />
         )}
       </Flex>
-      <Image width={350} height={320} src="/images/burnt-cake.png" alt={t('Burnt CAKE')} />
+      <Image width={350} height={320} src="/images/burnt-cake.png" alt={t('Burnt U2U')} />
     </Flex>
   )
 }

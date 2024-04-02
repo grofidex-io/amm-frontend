@@ -1,13 +1,13 @@
+import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import { useTranslation } from '@pancakeswap/localization'
-import { useMemo } from 'react'
 import { Button, IfoGetTokenModal, useModal, useToast } from '@pancakeswap/uikit'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { getTokenListTokenUrl, getTokenLogoURLByAddress } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { Ifo, PoolIds } from '@pancakeswap/ifos'
 import { useTokenBalanceByChain } from 'hooks/useTokenBalance'
+import { useMemo } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 
 import ContributeModal from './ContributeModal'
@@ -39,7 +39,7 @@ const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, if
     toastSuccess(
       t('Success!'),
       <ToastDescriptionWithTx txHash={txHash}>
-        {t('You have contributed %amount% CAKE to this IFO!', {
+        {t('You have contributed %amount% U2U to this IFO!', {
           amount: getBalanceNumber(amount),
         })}
       </ToastDescriptionWithTx>,
@@ -80,7 +80,7 @@ const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, if
       width="100%"
       disabled={isDisabled}
     >
-      {isMaxCommitted && publicIfoData.status === 'live' ? t('Max. Committed') : t('Commit CAKE')}
+      {isMaxCommitted && publicIfoData.status === 'live' ? t('Max. Committed') : t('Commit U2U')}
     </Button>
   )
 }

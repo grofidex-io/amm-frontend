@@ -1,12 +1,12 @@
-import { Flex, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
-import useWithdrawalFeeTimer from 'views/Pools/hooks/useWithdrawalFeeTimer'
-import { useVaultPoolByKey } from 'state/pools/hooks'
-import { secondsToDay } from 'utils/timeHelper'
-import { VaultKey } from 'state/types'
+import { Flex, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
+import { useVaultPoolByKey } from 'state/pools/hooks'
+import { VaultKey } from 'state/types'
+import { secondsToDay } from 'utils/timeHelper'
+import useWithdrawalFeeTimer from 'views/Pools/hooks/useWithdrawalFeeTimer'
+import { useAccount } from 'wagmi'
 import WithdrawalFeeTimer from './WithdrawalFeeTimer'
 
 dayjs.extend(duration)
@@ -36,7 +36,7 @@ const UnstakingFeeCountdownRow: React.FC<React.PropsWithChildren<UnstakingFeeCou
       </Text>
       <Text>
         {t(
-          'Only applies within %num% days of staking. Unstaking after %num% days will not include a fee. Timer resets every time you stake new CAKE in the pool.',
+          'Only applies within %num% days of staking. Unstaking after %num% days will not include a fee. Timer resets every time you stake new U2U in the pool.',
           {
             num: withdrawalDayPeriod,
           },

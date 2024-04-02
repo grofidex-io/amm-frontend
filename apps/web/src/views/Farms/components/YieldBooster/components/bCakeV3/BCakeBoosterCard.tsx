@@ -70,7 +70,7 @@ export const useBCakeTooltipContent = () => {
     <>
       <Box mb="20px">
         {t(
-          'Yield Boosters allow you to boost your farming yields by locking CAKE in the fixed-term staking CAKE pool. The more CAKE you lock, and the longer you lock them, the higher the boost you will receive.',
+          'Yield Boosters allow you to boost your farming yields by locking U2U in the fixed-term staking U2U pool. The more U2U you lock, and the longer you lock them, the higher the boost you will receive.',
         )}
       </Box>
       <Box>
@@ -141,14 +141,14 @@ const CardContent: React.FC = () => {
     return (
       <Box width="100%">
         <Text color="textSubtle" fontSize={12} bold>
-          {t('No CAKE locked')}
+          {t('No U2U locked')}
         </Text>
         <Text color="textSubtle" fontSize={12} mb="16px">
           {t('An active veCAKE staking position is required for activating farm yield boosters.')}
         </Text>
         <NextLink href="/cake-staking" passHref>
           <Button width="100%" style={{ backgroundColor: theme.colors.textSubtle }}>
-            {t('Go to CAKE Staking')}
+            {t('Go to U2U Staking')}
           </Button>
         </NextLink>
       </Box>
@@ -163,12 +163,12 @@ const CardContent: React.FC = () => {
       </Flex>
       <Text color="textSubtle" fontSize={12} mb="10px">
         {t(
-          'Boost unlimited number of positions on all V3 Farms. Boost will be applied when staking. Lock more CAKE or extend your lock to receive a higher boost.',
+          'Boost unlimited number of positions on all V3 Farms. Boost will be applied when staking. Lock more U2U or extend your lock to receive a higher boost.',
         )}
       </Text>
       <NextLink href="/cake-staking" passHref>
         <Button width="100%" style={{ backgroundColor: theme.colors.textSubtle }}>
-          {t('Go to CAKE Staking')}
+          {t('Go to U2U Staking')}
         </Button>
       </NextLink>
     </Box>
