@@ -7,6 +7,14 @@ export const FullWidthButtonMenu = styled(ButtonMenu)<{ disabled?: boolean }>`
 
   & > button {
     width: 100%;
+    &:disabled {
+      color: ${({ theme }) => theme.colors.textDisabled};
+      background: transparent;
+      border: none;
+      &:hover {
+        background: transparent;
+      }
+    }
   }
 
   opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};

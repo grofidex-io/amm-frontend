@@ -1,6 +1,6 @@
 import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { Card, Flex, Progress, ProgressBar, ScanLink, Tab, TabMenu, Table, Td, Text, Th } from '@pancakeswap/uikit'
+import { Box, Card, Flex, Progress, ProgressBar, ScanLink, Tab, TabMenu, Table, Td, Text, Th } from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { formatAmount } from '@pancakeswap/utils/formatInfoNumbers'
 import truncateHash from '@pancakeswap/utils/truncateHash'
@@ -25,6 +25,24 @@ const StyledProgress = styled(Progress)`
   border-radius: 16px;
   height: 12px;
 `
+const StyledTable = styled(Table)`
+  th, td {
+    &:nth-child(3) {
+      min-width: 160px;
+      @media screen and (max-width: 575px) {
+        min-width: 140px;
+      }
+      @media screen and (max-width: 424px) {
+        min-width: 120px;
+      }
+    }
+  }
+`
+const LayoutScroll = styled(Box)`
+  overflow-x: auto;
+  margin-bottom: 20px;
+`
+
 export function TopHolders() {
   const {
     [Field.INPUT]: { currencyId: inputCurrencyId },
@@ -64,83 +82,85 @@ export function TopHolders() {
         ))}
       </TabMenu>
       <Flex padding="10px 0">
-        <Card style={{ width: '100%' }}>
-          <Table>
-            <thead>
-              <Th>
-                <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
-                  {t('Address')}
+        <Card style={{ width: '100%', overflow: 'hidden' }}>
+          <LayoutScroll>
+            <StyledTable>
+              <thead>
+                <Th>
+                  <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
+                    {t('Address')}
+                  </Text>
+                </Th>
+                <Th>
+                  <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
+                    {t('Supply')}
+                  </Text>
+                </Th>
+                <Th width="30%" />
+                <Th>
+                  <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
+                    {t('Amount')}
+                  </Text>
+                </Th>
+                {/* <Th width="15%">
+                <Text fontSize="12px" bold textTransform="uppercase" color="secondary" textAlign="left">
+                  {t('Commission')}
                 </Text>
-              </Th>
-              <Th>
-                <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
-                  {t('Supply')}
-                </Text>
-              </Th>
-              <Th width="30%" />
-              <Th>
-                <Text fontSize="12px" bold textTransform="uppercase" color="textSubtle" textAlign="left">
-                  {t('Amount')}
-                </Text>
-              </Th>
-              {/* <Th width="15%">
-              <Text fontSize="12px" bold textTransform="uppercase" color="secondary" textAlign="left">
-                {t('Commission')}
-              </Text>
-            </Th> */}
-            </thead>
-            <tbody>
-              {isPending ? (
-                <tr>
-                  <Td colSpan={5} textAlign="center">
-                    {t('Loading...')}
-                  </Td>
-                </tr>
-              ) : (
-                <>
-                  {data?.listHolders?.map((item) => (
-                    <tr key={item.address}>
-                      <Td>
-                        {isAddress(item.address) ? (
-                          <ScanLink
-                            useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
-                            href={getBlockExploreLink(item.address, 'address', multiChainId[chainName])}
-                          >
-                            {truncateHash(item.address)}
-                          </ScanLink>
-                        ) : (
-                          item.address
-                        )}
-                      </Td>
-                      <Td>
-                        <Text bold>{formatAmount(getPercent(item.value))}%</Text>
-                      </Td>
-                      <Td>
-                        <StyledProgress variant="flat">
-                          <ProgressBar
-                            $useDark
-                            $background={theme?.colors.primary}
-                            style={{ width: `${Math.min(Math.max(getPercent(item.value), 0), 100)}%` }}
-                          />
-                        </StyledProgress>
-                      </Td>
-                      <Td>
-                        <Text bold>{`${formatNumber(Number(formatUnits(item.value, data.token?.decimals)))}`}</Text>
-                      </Td>
-                      {/* <Td>
-                      <Flex flexDirection="column">
-                        <Text bold>{`~ ${formatNumber(Number(data.cakeBalance), 0)} U2U`}</Text>
-                        <Text textAlign="left" fontSize="12px" color="textSubtle">
-                          {`$${formatNumber(Number(data.metric.totalEarnFeeUSD), 0)}`}
-                        </Text>
-                      </Flex>
-                    </Td> */}
-                    </tr>
-                  ))}
-                </>
-              )}
-            </tbody>
-          </Table>
+              </Th> */}
+              </thead>
+              <tbody>
+                {isPending ? (
+                  <tr>
+                    <Td colSpan={5} textAlign="center">
+                      {t('Loading...')}
+                    </Td>
+                  </tr>
+                ) : (
+                  <>
+                    {data?.listHolders?.map((item) => (
+                      <tr key={item.address}>
+                        <Td>
+                          {isAddress(item.address) ? (
+                            <ScanLink
+                              useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
+                              href={getBlockExploreLink(item.address, 'address', multiChainId[chainName])}
+                            >
+                              {truncateHash(item.address)}
+                            </ScanLink>
+                          ) : (
+                            item.address
+                          )}
+                        </Td>
+                        <Td>
+                          <Text bold>{formatAmount(getPercent(item.value))}%</Text>
+                        </Td>
+                        <Td>
+                          <StyledProgress variant="flat">
+                            <ProgressBar
+                              $useDark
+                              $background={theme?.colors.primary}
+                              style={{ width: `${Math.min(Math.max(getPercent(item.value), 0), 100)}%` }}
+                            />
+                          </StyledProgress>
+                        </Td>
+                        <Td>
+                          <Text bold>{`${formatNumber(Number(formatUnits(item.value, data.token?.decimals)))}`}</Text>
+                        </Td>
+                        {/* <Td>
+                        <Flex flexDirection="column">
+                          <Text bold>{`~ ${formatNumber(Number(data.cakeBalance), 0)} U2U`}</Text>
+                          <Text textAlign="left" fontSize="12px" color="textSubtle">
+                            {`$${formatNumber(Number(data.metric.totalEarnFeeUSD), 0)}`}
+                          </Text>
+                        </Flex>
+                      </Td> */}
+                      </tr>
+                    ))}
+                  </>
+                )}
+              </tbody>
+            </StyledTable>
+          </LayoutScroll>
         </Card>
       </Flex>
     </div>

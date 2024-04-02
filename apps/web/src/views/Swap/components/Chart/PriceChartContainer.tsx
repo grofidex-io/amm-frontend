@@ -27,6 +27,13 @@ type PriceChartContainerProps = {
 
 const FlexPointer = styled(Flex)`
   cursor: pointer;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: ${({ theme }) => theme.colors.backgroundItem};
+  @media screen and (max-width: 575px) {
+    padding: 6px 10px;
+  }
 `
 const BorderLayout = styled.div`
   border: 2px solid ${({ theme }) => theme.colors.cardBorder};
@@ -34,6 +41,16 @@ const BorderLayout = styled.div`
   border-radius: 8px;
   padding: 16px;
   background: ${({ theme }) => theme.colors.backgroundAlt};
+`
+const StyledIconButton = styled(IconButton)`
+  --size: 24px;
+  width: var(--size);
+  height: var(--size);
+  margin-left: 12px;
+  @media screen and (max-width: 575px) {
+    --size: 20px;
+    margin-left: 8px;
+  }
 `
 
 const PriceChartContainer: React.FC<React.PropsWithChildren<PriceChartContainerProps>> = ({
@@ -77,11 +94,7 @@ const PriceChartContainer: React.FC<React.PropsWithChildren<PriceChartContainerP
     <BorderLayout>
       <Flex justifyContent="space-between" mb="12px">
         <FlexPointer
-          alignItems="center"
           className="border-neubrutal"
-          p="8px 12px"
-          borderRadius="8px"
-          background="var(--colors-backgroundItem)"
           onClick={onCurrencySelectClick}
         >
           {outputCurrency ? (
@@ -94,9 +107,9 @@ const PriceChartContainer: React.FC<React.PropsWithChildren<PriceChartContainerP
               {outputCurrency ? `${inputCurrency.symbol}/${outputCurrency.symbol}` : inputCurrency.symbol}
             </Text>
           )}
-          <IconButton variant="text" height="24px" width="24px" onClick={onCurrencySelectClick}>
-            <SyncAltIcon ml="6px" color="primary" />
-          </IconButton>
+          <StyledIconButton variant="text" onClick={onCurrencySelectClick}>
+            <SyncAltIcon color="primary" />
+          </StyledIconButton>
         </FlexPointer>
       </Flex>
       {isWrap || isRewardWrap ? (

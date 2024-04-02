@@ -82,7 +82,7 @@ const SlippageTabs = () => {
 
   return (
     <Flex flexDirection="column">
-      <Flex flexDirection="column" mb="24px">
+      <Flex flexDirection="column" mb={["16px", "16px", "20px", "20px", "24px"]}>
         <Flex mb="12px">
           <Text>{t('Slippage Tolerance')}</Text>
           <QuestionHelper
@@ -168,7 +168,7 @@ const SlippageTabs = () => {
           </Text>
         )}
       </Flex>
-      <Flex justifyContent="space-between" alignItems="center" mb="24px">
+      <Flex justifyContent="space-between" alignItems="center" mb={["16px", "16px", "20px", "20px", "24px"]}>
         <Flex alignItems="center">
           <Text>{t('Tx deadline (mins)')}</Text>
           <QuestionHelper

@@ -34,6 +34,18 @@ const CurrencySymbol = styled.div`
   font-weight: 600;
   color: ${({ theme }) => theme.colors.textSubtle};
   margin-bottom: 8px;
+
+  @media screen and (max-width: 991px) {
+    font-size: 15px;
+  }
+  @media screen and (max-width: 575px) {
+    font-size: 14px;
+  }
+`
+const StyledButton = styled(Button)`
+  @media screen and (max-width: 575px) {
+    font-size: 12px;
+  }
 `
 
 interface CurrencyInputPanelProps {
@@ -289,7 +301,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                       (lpPercent && lpPercent === percent.toString())
 
                     return (
-                      <Button
+                      <StyledButton
                         key={`btn_quickCurrency${percent}`}
                         data-dd-action-name={`Balance percent ${percent}`}
                         onClick={() => {
@@ -301,11 +313,11 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                         style={{ textTransform: 'uppercase', borderRadius: '4px' }}
                       >
                         {percent}%
-                      </Button>
+                      </StyledButton>
                     )
                   })}
                 {maxAmount?.greaterThan(0) && showMaxButton && (
-                  <Button
+                  <StyledButton
                     data-dd-action-name="Balance percent max"
                     onClick={(e) => {
                       e.stopPropagation()
@@ -317,7 +329,7 @@ const CurrencyInputPanel = memo(function CurrencyInputPanel({
                     style={{ textTransform: 'uppercase', borderRadius: '4px' }}
                   >
                     {t('Max')}
-                  </Button>
+                  </StyledButton>
                 )}
               </Flex>
             )}

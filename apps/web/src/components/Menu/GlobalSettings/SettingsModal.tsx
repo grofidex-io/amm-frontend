@@ -263,7 +263,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
             </Flex>
             <BorderLayout>
               <TransactionSettings />
-              <Flex justifyContent="space-between" alignItems="center" mb="24px">
+              <Flex justifyContent="space-between" alignItems="center" mb={["16px", "16px", "20px", "20px", "24px"]}>
                 <Flex alignItems="center">
                   <Text>{t('Expert Mode')}</Text>
                   <QuestionHelper

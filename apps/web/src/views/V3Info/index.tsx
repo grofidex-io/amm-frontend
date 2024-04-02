@@ -6,6 +6,7 @@ import dayjs from 'dayjs'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import { useEffect, useMemo, useState } from 'react'
+import styled from 'styled-components'
 import ComposedChart from './components/ComposedChart/alt'
 import LineChart from './components/LineChart/alt'
 import Percent from './components/Percent'
@@ -25,6 +26,30 @@ import { useTransformedVolumeData } from './hooks/chart'
 import { VolumeWindow } from './types'
 import { unixToDate } from './utils/date'
 import { formatDollarAmount } from './utils/numbers'
+
+const StyledTextTitle = styled(Text)`
+  font-size: 32px;
+  @media screen and (max-width: 991px) {
+    font-size: 28px;
+  }
+  @media screen and (max-width: 575px) {
+    font-size: 24px;
+  }
+`
+const StyledPercent = styled(Percent)`
+  font-size: 32px;
+  @media screen and (max-width: 991px) {
+    font-size: 28px;
+  }
+  @media screen and (max-width: 575px) {
+    font-size: 24px;
+  }
+`
+const StyledButton = styled(Button)`
+  @media screen and (max-width: 479px) {
+    padding: 0 12px;
+  }
+`
 
 export default function Home() {
   useEffect(() => {
@@ -127,12 +152,12 @@ export default function Home() {
             topLeft={
               <AutoColumn gap="4px">
                 <Text fontSize="16px">{t('TVL')}</Text>
-                <Text fontSize="32px">
+                <StyledTextTitle>
                   <Flex>
                     <MonoSpace>{tvlValue}</MonoSpace>
-                    <Percent fontSize='32px' value={protocolData?.tvlUSDChange} wrap />
+                    <StyledPercent value={protocolData?.tvlUSDChange} wrap />
                   </Flex>
-                </Text>
+                </StyledTextTitle>
                 <Text fontSize="12px" height="14px">
                   <MonoSpace>{leftLabel ?? now.format('MMM D, YYYY')} (UTC)</MonoSpace>
                 </Text>
@@ -159,35 +184,35 @@ export default function Home() {
             activeWindow={volumeWindow}
             topRight={
               <RowFixed style={{ marginLeft: '-40px', marginTop: '8px' }}>
-                <Button
+                <StyledButton
                   scale="sm"
                   variant={volumeWindow === VolumeWindow.daily ? 'primary' : 'bubblegum'}
                   onClick={() => setVolumeWindow(VolumeWindow.daily)}
                 >
                   D
-                </Button>
-                <Button
+                </StyledButton>
+                <StyledButton
                   scale="sm"
                   variant={volumeWindow === VolumeWindow.weekly ? 'primary' : 'bubblegum'}
                   style={{ marginLeft: '8px' }}
                   onClick={() => setVolumeWindow(VolumeWindow.weekly)}
                 >
                   W
-                </Button>
-                <Button
+                </StyledButton>
+                <StyledButton
                   variant={volumeWindow === VolumeWindow.monthly ? 'primary' : 'bubblegum'}
                   scale="sm"
                   style={{ marginLeft: '8px' }}
                   onClick={() => setVolumeWindow(VolumeWindow.monthly)}
                 >
                   M
-                </Button>
+                </StyledButton>
               </RowFixed>
             }
             topLeft={
               <AutoColumn gap="4px" marginBottom="6px">
                 <Text fontSize="16px">{t('Volume - Fee')}</Text>
-                <Text fontSize="32px">
+                <StyledTextTitle>
                   <MonoSpace>
                     {volumeHover.value
                       ? formatDollarAmount(volumeHover.value)
@@ -201,7 +226,7 @@ export default function Home() {
                       ? formatDollarAmount(volumeHover.feesUSD)
                       : formatDollarAmount(formattedVolumeData[formattedVolumeData.length - 1]?.feesUSD, 2)}
                   </MonoSpace>
-                </Text>
+                </StyledTextTitle>
                 <Text fontSize="12px" height="14px">
                   <MonoSpace>{rightLabel ?? now.format('MMM D, YYYY')} (UTC)</MonoSpace>
                 </Text>

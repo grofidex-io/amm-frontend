@@ -14,6 +14,16 @@ enum CHART_TYPE {
   LINE = 1,
   CANDLE = 2
 }
+
+const StyledFlex  = styled(Flex)`
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  @media screen and (max-width: 575px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+`
 const IconImage = styled.div`
   border-radius: 4px;
   padding: 8px;
@@ -25,6 +35,12 @@ const IconImage = styled.div`
   color: ${({ theme }) => theme.colors.textSubtle};
   + div {
     margin-left: 12px;
+    @media screen and (max-width: 991px) {
+      margin-left: 8px;
+    }
+    @media screen and (max-width: 575px) {
+      margin-left: 4px;
+    }
   }
   &:hover {
     color: ${({ theme }) => theme.colors.hover};
@@ -35,7 +51,32 @@ const IconImage = styled.div`
     background: ${({ theme }) => theme.colors.primary};
   }
   svg {
+    --size: 20px;
     display: block;
+    width: var(--size);
+    height: var(--size);
+    @media screen and (max-width: 991px) {
+      --size: 18px;
+    }
+    @media screen and (max-width: 575px) {
+      --size: 16px;
+    }
+  }
+`
+const StyledListButton = styled(Box)`
+  @media screen and (max-width: 575px) {
+    width: 100%;
+    text-align: right;
+  }
+`
+const StyledButtonMenuItem = styled(ButtonMenuItem)`
+  @media screen and (max-width: 991px) {
+    padding: 0 12px;
+    font-size: 15px;
+  }
+  @media screen and (max-width: 575px) {
+    padding: 0 8px;
+    font-size: 14px;
   }
 `
 
@@ -144,9 +185,9 @@ const BasicChart = ({
 
   return (
     <>
-      <Flex position="absolute" right="0" top="-50px">
+      <Flex position="absolute" right="0" top={["-55px", "-55px", "-60px"]}>
         <IconImage onClick={() => { setChartType(CHART_TYPE.LINE) }} className={chartType === CHART_TYPE.LINE ? 'active' : ''}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 21 21" fill="none">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 21" fill="none">
             <g clip-path="url(#clip0_70_5252)">
             <path d="M19.2807 19.2492H4.28068C3.61764 19.2492 2.98175 18.9858 2.51291 18.517C2.04407 18.0481 1.78068 17.4122 1.78068 16.7492V1.76919C1.78068 1.54817 1.69288 1.33621 1.5366 1.17993C1.38032 1.02365 1.16836 0.935852 0.947347 0.935852C0.726333 0.935852 0.514372 1.02365 0.358091 1.17993C0.201811 1.33621 0.114014 1.54817 0.114014 1.76919L0.114014 16.7492C0.115337 17.8538 0.554749 18.9129 1.33586 19.694C2.11698 20.4751 3.17602 20.9145 4.28068 20.9159H19.2807C19.5017 20.9159 19.7137 20.8281 19.8699 20.6718C20.0262 20.5155 20.114 20.3035 20.114 20.0825C20.114 19.8615 20.0262 19.6495 19.8699 19.4933C19.7137 19.337 19.5017 19.2492 19.2807 19.2492Z" fill="currentColor"/>
             </g>
@@ -159,7 +200,7 @@ const BasicChart = ({
           </svg>
         </IconImage>
         <IconImage onClick={() => { setChartType(CHART_TYPE.CANDLE) }} className={chartType === CHART_TYPE.CANDLE ? 'active' : ''}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 21 21" fill="none">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 21" fill="none">
             <g clip-path="url(#clip0_70_5245)">
             <path d="M19.2807 19.2692H2.61401C2.393 19.2692 2.18104 19.1814 2.02476 19.0251C1.86848 18.8688 1.78068 18.6569 1.78068 18.4359V1.76919C1.78068 1.54817 1.69288 1.33621 1.5366 1.17993C1.38032 1.02365 1.16836 0.935852 0.947347 0.935852C0.726333 0.935852 0.514372 1.02365 0.358091 1.17993C0.201811 1.33621 0.114014 1.54817 0.114014 1.76919L0.114014 18.4359C0.114014 19.0989 0.377406 19.7348 0.846247 20.2036C1.31509 20.6725 1.95097 20.9359 2.61401 20.9359H19.2807C19.5017 20.9359 19.7137 20.8481 19.8699 20.6918C20.0262 20.5355 20.114 20.3235 20.114 20.1025C20.114 19.8815 20.0262 19.6695 19.8699 19.5133C19.7137 19.357 19.5017 19.2692 19.2807 19.2692Z" fill="currentColor"/>
             <path d="M12.6141 17.603C12.8351 17.603 13.0471 17.5152 13.2034 17.359C13.3596 17.2027 13.4474 16.9907 13.4474 16.7697V10.9364C13.4474 10.7153 13.3596 10.5034 13.2034 10.3471C13.0471 10.1908 12.8351 10.103 12.6141 10.103C12.3931 10.103 12.1811 10.1908 12.0248 10.3471C11.8686 10.5034 11.7808 10.7153 11.7808 10.9364V16.7697C11.7808 16.9907 11.8686 17.2027 12.0248 17.359C12.1811 17.5152 12.3931 17.603 12.6141 17.603Z" fill="currentColor"/>
@@ -181,7 +222,7 @@ const BasicChart = ({
         justifyContent="space-between"
         flexWrap="wrap"
       >
-        <Flex width="100%" justifyContent="space-between" alignItems="center">
+        <StyledFlex>
           <Flex flexDirection="column" pt="12px" minHeight="77px">
             <PairPriceDisplay
               value={pairPrices?.length > 0 && valueToDisplay}
@@ -196,19 +237,18 @@ const BasicChart = ({
               {hoverDate || currentDate}
             </Text>
           </Flex>
-          <Box>
+          <StyledListButton>
             {LIST_RESOLUTION.length > 0 && (
               <ButtonMenu activeIndex={timeWindow} onItemClick={handleSetTimeWindow} scale="sm">
                   {
-                   LIST_RESOLUTION.map((item: string) => {
-                      return <ButtonMenuItem>{t(item)}</ButtonMenuItem>
+                    LIST_RESOLUTION.map((item: string) => {
+                      return <StyledButtonMenuItem>{t(item)}</StyledButtonMenuItem>
                     })
                   }
               </ButtonMenu>
             )}
-         
-          </Box>
-        </Flex>
+          </StyledListButton>
+        </StyledFlex>
       </Flex>
       <Box height={isMobile ? '100%' : chartHeight} p={isMobile ? '0px' : '16px 0'} width="100%">
         {chartType === CHART_TYPE.LINE ? (

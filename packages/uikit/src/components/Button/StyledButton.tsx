@@ -113,6 +113,17 @@ const StyledButton = styled("button").withConfig({
         color: ${decorator.color ?? "white"};
       }
     `}
+
+  // @media screen and (max-width: 991px) {
+  //   border-radius: 6px;
+  // }
+  @media screen and (max-width: 575px) {
+    border-radius: 6px;
+    font-size: 15px;
+  }
+  @media screen and (max-width: 424px) {
+    font-size: 14px;
+  }
 `;
 
 export default StyledButton;
