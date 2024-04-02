@@ -36,22 +36,27 @@ const ResponsiveGrid = styled.div`
 
   grid-template-columns: 20px 3fr repeat(4, 1fr);
   padding: 0 24px;
-  @media screen and (max-width: 900px) {
+  & :nth-child(3), & :nth-child(6) {
+    max-width: 300px;
+    word-break: break-word;
+  }
+  @media screen and (max-width: 991px) {
     grid-template-columns: 20px 1.5fr repeat(3, 1fr);
     & :nth-child(4) {
       display: none;
     }
   }
 
-  @media screen and (max-width: 800px) {
-    grid-template-columns: 20px 1.5fr repeat(2, 1fr);
+  @media screen and (max-width: 767px) {
+    grid-template-columns: 20px 2fr repeat(2, 1fr);
     & :nth-child(6) {
       display: none;
     }
   }
 
-  @media screen and (max-width: 670px) {
+  @media screen and (max-width: 575px) {
     grid-template-columns: 1.3fr 1fr;
+    padding: 0 20px;
     > *:first-child {
       display: none;
     }

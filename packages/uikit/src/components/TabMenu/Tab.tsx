@@ -7,6 +7,7 @@ const getBorderRadius = ({ scale }: TabProps) => (scale === "md" ? "8px" : "24px
 const getPadding = ({ scale }: TabProps) => (scale === "md" ? "8px" : "16px");
 
 const Tab = styled.button<TabProps>`
+  --rounded: 8px;
   display: inline-flex;
   justify-content: center;
   cursor: pointer;
@@ -14,7 +15,7 @@ const Tab = styled.button<TabProps>`
   outline: 0;
   flex-grow: 1;
   padding: 12px 8px;
-  border-radius: ${({ isCustom }) => (isCustom ? "0" : `8px`)};
+  border-radius: ${({ isCustom }) => (isCustom ? "0" : `var(--rounded)`)};
   font-size: 16px;
   font-weight: 600;
   border: ${({ isCustom }) => (isCustom ? "0" : "2px solid")};
@@ -29,6 +30,12 @@ const Tab = styled.button<TabProps>`
   ${borderColor}
   &:hover {
     color: ${({ isCustom, theme }) => (isCustom ? theme.colors.hover : "inherit")};
+  }
+
+  @media screen and (max-width: 575px) {
+    --rounded: 6px;
+    font-size: 15px;
+    padding: 10px 8px;
   }
 `;
 

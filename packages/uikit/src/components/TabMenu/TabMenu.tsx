@@ -4,19 +4,24 @@ import Flex from "../Box/Flex";
 import { TabMenuProps } from "./types";
 
 const Wrapper = styled(Flex)<{ fullWidth?: boolean; customWidth?: boolean; isShowBorderBottom?: boolean }>`
-  border-bottom: ${({ isShowBorderBottom, theme }) =>
+--rounded: 8px;  
+border-bottom: ${({ isShowBorderBottom, theme }) =>
     isShowBorderBottom ? `2px solid ${theme.colors.input}` : "none"};
   overflow-x: auto;
   border: ${({ customWidth, theme }) => (customWidth ? "0" : `2px solid ${theme.colors.cardBorder}`)};
   background: ${({ customWidth, theme }) => (customWidth ? theme.colors.transparent : theme.colors.backgroundItem)};
   padding: ${({ fullWidth, customWidth }) => (fullWidth || customWidth ? 0 : "16px 16px 0 16px")};
-  border-radius: 8px;
+  border-radius: var(--rounded);
 
   ::-webkit-scrollbar {
     display: none;
   }
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+
+  @media screen and (max-width: 575px) {
+    --rounded: 6px;
+  }
 `;
 
 const Inner = styled(Flex)<{ fullWidth?: boolean; customWidth?: boolean; gap?: string }>`
