@@ -2,8 +2,15 @@ import { useTranslation } from "@pancakeswap/localization";
 import { Balance, Button, Heading, Skeleton, Text, TooltipText, useTooltip } from "@pancakeswap/uikit";
 import BigNumber from "bignumber.js";
 
+import styled from "styled-components";
 import { FARMS_SMALL_AMOUNT_THRESHOLD } from "../../../constants";
 import { ActionContainer, ActionContent, ActionTitles } from "./styles";
+
+const StyledButton = styled(Button)`
+  @media screen and (max-width: 575px) {
+    height: 40px;
+  }
+`
 
 export interface HarvestActionProps {
   earnings: BigNumber;
@@ -38,7 +45,7 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActi
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     `${toolTipBalance} ${t(
-      `CAKE has been harvested to the farm booster contract and will be automatically sent to your wallet upon the next harvest.`
+      `U2U has been harvested to the farm booster contract and will be automatically sent to your wallet upon the next harvest.`
     )}`,
     {
       placement: "bottom",
@@ -49,7 +56,7 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActi
     <ActionContainer style={{ minHeight: 124.5 }}>
       <ActionTitles>
         <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
-          CAKE
+          U2U
         </Text>
         <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
           {t("Earned")}
@@ -71,9 +78,9 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActi
             <Balance fontSize="12px" color="textSubtle" decimals={2} value={earningsBusd} unit=" USD" prefix="~" />
           )}
         </div>
-        <Button ml="4px" disabled={disabled} onClick={handleHarvest}>
+        <StyledButton ml="4px" disabled={disabled} onClick={handleHarvest}>
           {pendingTx ? t("Harvesting") : t("Harvest")}
-        </Button>
+        </StyledButton>
       </ActionContent>
     </ActionContainer>
   );

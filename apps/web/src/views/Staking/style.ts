@@ -69,3 +69,28 @@ export const StyledIconImage = styled.img`
   width: var(--size);
   margin: auto;
 `
+export const StyledButton = styled(Box)`
+  cursor: pointer;
+  text-align: center;
+  flex: 1;
+  color: ${({ theme }) => theme.colors.textSubtle};
+  font-size: 14px;
+  font-weight: 600;
+  &:not(:last-child) {
+    margin-right: 5px;
+  }
+  &.active {
+    color: ${({ theme }) => theme.colors.primary};
+    .divider {
+      background: ${({ theme }) => theme.colors.hover};
+    }
+  }
+  .divider {
+    border: 2px solid ${({ theme }) => theme.colors.cardBorder};
+    background: ${({ theme }) => theme.colors.textSubtle};
+    height: 10px;
+    width: 100%;
+    border-radius: 2px;
+    margin-bottom: 4px;
+  }
+`

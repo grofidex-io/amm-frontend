@@ -30,6 +30,14 @@ const StyledLink = styled(Link)`
     text-decoration: initial;
   }
 `
+const StyledButton = styled(Button)`
+  @media screen and (max-width: 991px) {
+    height: 44px;
+  }
+  @media screen and (max-width: 575px) {
+    height: 40px;
+  }
+`
 
 type PositionType = 'staked' | 'unstaked'
 
@@ -249,7 +257,7 @@ const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<Far
           positionType={positionType}
         />
         {positionType === 'unstaked' ? (
-          <Button
+          <StyledButton
             className="button-hover"
             width={['120px']}
             style={{ alignSelf: 'center' }}
@@ -257,9 +265,9 @@ const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<Far
             onClick={handleStake}
           >
             {t('Stake')}
-          </Button>
+          </StyledButton>
         ) : (
-          <Button
+          <StyledButton
             className="button-hover"
             variant="secondary"
             width={['120px']}
@@ -268,7 +276,7 @@ const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<Far
             onClick={handleUnStake}
           >
             {t('Unstake')}
-          </Button>
+          </StyledButton>
         )}
       </RowBetween>
     </>

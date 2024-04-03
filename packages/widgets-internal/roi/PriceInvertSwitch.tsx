@@ -17,6 +17,10 @@ const StyledButton = styled(Button)`
       fill: ${({ theme }) => theme.colors.black};
     }
   }
+  
+  @media screen and (max-width: 575px) {
+    border-radius: 6px;
+  }
 `;
 
 interface Props {
