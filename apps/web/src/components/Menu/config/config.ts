@@ -3,12 +3,14 @@ import {
   DropdownMenuItems,
   EarnFillIcon,
   EarnIcon,
-  InfoFilledIcon,
-  InfoIcon,
   MenuItemsType,
   PoolIcon,
+  ResourcesFilledIcon,
+  ResourcesIcon,
   SwapFillIcon,
   SwapIcon,
+  TrophyFillIcon,
+  TrophyIcon,
 } from '@pancakeswap/uikit'
 import { SUPPORT_FARMS } from 'config/constants/supportChains'
 
@@ -40,8 +42,8 @@ const config: (
     {
       label: 'Info',
       href: '/info',
-      icon: InfoIcon,
-      fillIcon: InfoFilledIcon,
+      icon: ResourcesIcon,
+      fillIcon: ResourcesFilledIcon,
       hideSubNav: true,
       // items: [
       //   {
@@ -236,7 +238,8 @@ const config: (
     {
       label: 'Staking',
       href: '/staking',
-      icon: PoolIcon,
+      icon: TrophyIcon,
+      fillIcon: TrophyFillIcon,
       hideSubNav: true,
     },
   ].map((item) => addMenuItemSupported(item, chainId))

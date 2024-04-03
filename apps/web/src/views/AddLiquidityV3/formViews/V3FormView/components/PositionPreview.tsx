@@ -143,16 +143,16 @@ export const PositionPreview = ({
           <RateToggle currencyA={sorted ? currency0 : currency1} handleRateToggle={handleRateChange} />
         </RowBetween>
 
-        <RowBetween>
+        <RowBetween flexWrap={["wrap", "wrap", "nowrap"]} gap={["12px", "12px", "0px"]}>
           <RangePriceSection
-            width="48%"
+            width={["100%", "100%", "48%"]}
             title={t('Min Price')}
             currency0={quoteCurrency}
             currency1={baseCurrency}
             price={formatTickPrice(priceLower, ticksAtLimit, Bound.LOWER, locale)}
           />
           <RangePriceSection
-            width="48%"
+            width={["100%", "100%", "48%"]}
             title={t('Max Price')}
             currency0={quoteCurrency}
             currency1={baseCurrency}
