@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/chains'
+import { ChainDefault } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Link, Message, MessageText, Text } from '@pancakeswap/uikit'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
@@ -20,7 +20,7 @@ const WalletWrongNetwork: React.FC<React.PropsWithChildren<WalletWrongNetworkPro
   const { switchNetworkAsync, canSwitch } = useSwitchNetwork()
 
   const handleSwitchNetwork = async (): Promise<void> => {
-    await switchNetworkAsync(ChainId.BSC)
+    await switchNetworkAsync(ChainDefault)
     onDismiss?.()
   }
 

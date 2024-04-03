@@ -20,6 +20,7 @@ queryChainIdAtom.onMount = (set) => {
   } else {
     chainId = getChainId(c)
   }
+
   if (isChainSupported(+chainId)) {
     set(+chainId)
   } else {
