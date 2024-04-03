@@ -1,6 +1,7 @@
 import { ChainId, STABLESWAP_SUBGRAPHS } from '@pancakeswap/chains'
 import {
   AMM_STAKING_CLIENT,
+  APR_SUBGRAPH,
   BIT_QUERY,
   INFO_CLIENT,
   INFO_CLIENT_ETH,
@@ -54,6 +55,7 @@ export const v3Clients = {
 
 export const v3InfoClients = { ...v3Clients, [ChainId.BSC]: new GraphQLClient(V3_BSC_INFO_CLIENT) }
 export const ammStakingClients = new GraphQLClient(AMM_STAKING_CLIENT)
+export const aprSubgraphClients = new GraphQLClient(APR_SUBGRAPH)
 
 export const infoClientETH = new GraphQLClient(INFO_CLIENT_ETH)
 

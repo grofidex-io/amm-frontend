@@ -1,18 +1,22 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { atomWithReducer } from 'jotai/utils'
-import { replaceStakingState, resetStakingState, updateSlippagePercent, updateStakingAmountError } from './actions'
+import { replaceStakingState, resetStakingState, updateCalculateApr, updateSlippagePercent, updateStakingAmountError } from './actions'
 
 export interface StakingState {
   readonly currencyId: string
   readonly stakingAmount: string
   readonly stakingAmountError: string
   readonly slippagePercent: number | undefined
+  readonly apr: string // % | NaN
+  readonly estimatedRewards: string // % | NaN
 }
 
 const initialState: StakingState = {
   currencyId: 'U2U',
   stakingAmount: '',
   stakingAmountError: '',
+  apr: 'NaN',
+  estimatedRewards: 'NaN',
   slippagePercent: undefined,
 }
 
@@ -24,6 +28,8 @@ const reducer = createReducer<StakingState>(initialState, (builder) =>
         stakingAmount: amount,
         stakingAmountError: amountError,
         slippagePercent: percent,
+        apr: state.apr,
+        estimatedRewards: state.estimatedRewards,
       }
     })
     .addCase(updateSlippagePercent, (state, { payload: percent }) => {
@@ -31,6 +37,10 @@ const reducer = createReducer<StakingState>(initialState, (builder) =>
     })
     .addCase(updateStakingAmountError, (state, { payload: msg }) => {
       state.stakingAmountError = msg
+    })
+    .addCase(updateCalculateApr, (state, { payload: { apr, estimatedRewards} }) => {
+      state.apr = apr ?? 'NaN'
+      state.estimatedRewards = estimatedRewards ?? 'NaN'
     })
     .addCase(resetStakingState, () => initialState),
 )
