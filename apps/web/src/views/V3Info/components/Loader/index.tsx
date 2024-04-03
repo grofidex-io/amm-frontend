@@ -97,22 +97,14 @@ export const LocalLoader = ({ fill }: { fill: boolean }) => {
     <Wrapper fill={fill ? 1 : 0}>
       <Box>
         <AnimatedImg>
-          <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 40 40" fill="none">
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M13.6252 3.71618L19.1838 0.592719V39.4073L4 30.6604V8.15383L9.5764 4.94124L9.55899 11.3558V27.4584L13.6252 29.8009V3.71618Z"
-              fill="#8EF102"
-            />
-            <mask id="mask0_2012_998" maskUnits="userSpaceOnUse" x="21" y="0" width="17" height="40">
-              <path
-                d="M27.4878 30.3936V9.60641L31.554 11.9485V28.0511L27.4878 30.3936ZM21.9292 0V40L37.113 31.2535V8.74652L21.9292 0Z"
-                fill="white"
-              />
+          <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50" fill="none">
+            <mask id="mask0_2003_1021" maskUnits="userSpaceOnUse" x="26" y="0" width="20" height="50">
+            <path d="M33.427 37.9906V12.0094L38.5092 14.9368V35.0628L33.427 37.9906ZM26.4795 0.00274467V49.9973L45.4572 39.0653V10.9347L26.4795 0.00274467Z" fill="white"/>
             </mask>
-            <g mask="url(#mask0_2012_998)">
-              <path d="M37.113 0H21.9292V40H37.113V0Z" fill="#8EF102" />
+            <g mask="url(#mask0_2003_1021)">
+            <path d="M45.4572 0.00274467H26.4795V49.9973H45.4572V0.00274467Z" fill="#8EF102"/>
             </g>
+            <path d="M10.6964 14.932V35.0602L15.7831 37.9903V24.6367L22.7295 28.6529V50L3.75 39.0686V10.9314L22.7139 0H22.7295V8.00906L15.7831 12.0019L14.0797 12.9864L10.6964 14.932Z" fill="#8EF102"/>
           </svg>
         </AnimatedImg>
         <AnimatedShadow />

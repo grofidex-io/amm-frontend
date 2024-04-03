@@ -94,8 +94,13 @@ const Container = styled.div<{ expanded; isLastFarm }>`
   display: flex;
   width: 100%;
   flex-direction: column-reverse;
-  padding-top: 24px;
-  padding-bottom: 24px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
 
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
@@ -116,8 +121,8 @@ const StyledScanLink = styled(ScanLink)`
 const ActionContainer = styled.div`
   display: flex;
   overflow: auto;
-  padding-left: 24px;
-  padding-right: 24px;
+  padding-left: 20px;
+  padding-right: 20px;
   flex-direction: column;
 
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -125,13 +130,19 @@ const ActionContainer = styled.div`
     align-items: center;
     flex-grow: 1;
     flex-wrap: wrap;
+    padding-left: 24px;
+    padding-right: 24px;
   }
 `
 
 const InfoContainer = styled.div`
   min-width: 200px;
-  padding-left: 24px;
-  padding-right: 24px;
+  padding-left: 20px;
+  padding-right: 20px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
 `
 
 const ValueContainer = styled.div``
