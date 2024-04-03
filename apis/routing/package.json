@@ -22,6 +22,7 @@
   "private": true,
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "wrangler publish -e production"
+    "deploy": "wrangler publish -e production",
+    "login": "wrangler login"
   }
 }

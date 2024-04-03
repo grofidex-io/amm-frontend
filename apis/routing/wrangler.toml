@@ -1,6 +1,6 @@
 compatibility_date = "2022-05-20"
 kv_namespaces = [
-  {binding = "POOLS", id = "00e20486ed8c400b91dc1d7503788f2c", preview_id = "00e20486ed8c400b91dc1d7503788f2c"},
+  {binding = "POOLS", id = "d248be13ba044c50aaebdb348a30e45d", preview_id = "d248be13ba044c50aaebdb348a30e45d"},
 ]
 
 main = "src/index.ts"
@@ -11,7 +11,7 @@ crons = ["0 0 * * *"]
 
 [env.production]
 kv_namespaces = [
-  {binding = "POOLS", id = "6d83276d453d4e6082c5fcd9a9922e76"},
+  {binding = "POOLS", id = "d248be13ba044c50aaebdb348a30e45d"},
 ]
 name = "routing"
 
