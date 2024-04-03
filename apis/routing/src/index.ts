@@ -7,18 +7,17 @@ import { error, json, missing } from 'itty-router-extras'
 
 import { poolsRoute } from './pools'
 import { v3SubgraphProvider, viemProviders } from './provider'
-import { setupPoolBackupCrontab } from './subgraphPoolBackup'
 
 const { parseCurrency, parseCurrencyAmount, parsePool, serializeTrade } = SmartRouter.Transformer
 
 const router = Router()
 
-const CACHE_TIME = {
-  [ChainId.ETHEREUM]: 10,
-  [ChainId.GOERLI]: 10,
-  [ChainId.BSC]: 2,
-  [ChainId.BSC_TESTNET]: 2,
-}
+// const CACHE_TIME = {
+//   [ChainId.ETHEREUM]: 10,
+//   [ChainId.GOERLI]: 10,
+//   [ChainId.BSC]: 2,
+//   [ChainId.BSC_TESTNET]: 2,
+// }
 
 const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: viemProviders })
 
@@ -49,8 +48,9 @@ async function sha256(message: string) {
   return [...new Uint8Array(hashBuffer)].map((b) => b.toString(16).padStart(2, '0')).join('')
 }
 
-router.get('/v0/quote', async (req, event: FetchEvent) => {
-  const parsed = SmartRouter.APISchema.zRouterGetParams.safeParse(req.query)
+router.post('/v0/quote', async (req) => {
+  const body = (await req.json?.()) as any
+  const parsed = SmartRouter.APISchema.zRouterGetParams.safeParse(body)
   if (parsed.success === false) {
     return error(400, 'Invalid params')
   }
@@ -86,7 +86,7 @@ router.get('/v0/quote', async (req, event: FetchEvent) => {
       stablePools,
     }
 
-    event.waitUntil(PoolCache.set(cacheKey, pools))
+    // event.waitUntil(PoolCache.set(cacheKey, pools))
   }
 
   try {
@@ -106,102 +106,102 @@ router.get('/v0/quote', async (req, event: FetchEvent) => {
   }
 })
 
-function timeout(seconds: number) {
-  return new Promise<null>((resolve) =>
-    setTimeout(() => {
-      resolve(null)
-    }, seconds * 1_000),
-  )
-}
+// function timeout(seconds: number) {
+//   return new Promise<null>((resolve) =>
+//     setTimeout(() => {
+//       resolve(null)
+//     }, seconds * 1_000),
+//   )
+// }
 
-router.post('/v0/quote', async (req, event) => {
-  const body = (await req.json?.()) as any
-  const parsed = SmartRouter.APISchema.zRouterPostParams.safeParse(body)
-  if (parsed.success === false) {
-    return error(400, 'Invalid params')
-  }
+// router.post('/v0/quote', async (req, event) => {
+//   const body = (await req.json?.()) as any
+//   const parsed = SmartRouter.APISchema.zRouterPostParams.safeParse(body)
+//   if (parsed.success === false) {
+//     return error(400, 'Invalid params')
+//   }
 
-  const hash = await sha256(JSON.stringify(body))
+//   const hash = await sha256(JSON.stringify(body))
 
-  const cacheUrl = new URL(req.url)
-  cacheUrl.pathname = `/posts${cacheUrl.pathname}${hash}`
-  const cacheKey = new Request(cacheUrl.toString(), {
-    // @ts-ignore
-    headers: req.headers,
-    method: 'GET',
-  })
+//   const cacheUrl = new URL(req.url)
+//   cacheUrl.pathname = `/posts${cacheUrl.pathname}${hash}`
+//   const cacheKey = new Request(cacheUrl.toString(), {
+//     // @ts-ignore
+//     headers: req.headers,
+//     method: 'GET',
+//   })
 
-  const cache = caches.default
-  const cacheResponse = await cache.match(cacheKey)
-  let response
+//   const cache = caches.default
+//   const cacheResponse = await cache.match(cacheKey)
+//   let response
 
-  if (!cacheResponse) {
-    const {
-      amount,
-      chainId,
-      currency,
-      tradeType,
-      blockNumber,
-      gasPriceWei,
-      maxHops,
-      maxSplits,
-      poolTypes,
-      candidatePools,
-    } = parsed.data
+//   if (!cacheResponse) {
+//     const {
+//       amount,
+//       chainId,
+//       currency,
+//       tradeType,
+//       blockNumber,
+//       gasPriceWei,
+//       maxHops,
+//       maxSplits,
+//       poolTypes,
+//       candidatePools,
+//     } = parsed.data
 
-    const gasPrice = gasPriceWei
-      ? BigInt(gasPriceWei)
-      : async () => BigInt(await (await viemProviders({ chainId }).getGasPrice()).toString())
+//     const gasPrice = gasPriceWei
+//       ? BigInt(gasPriceWei)
+//       : async () => BigInt(await (await viemProviders({ chainId }).getGasPrice()).toString())
 
-    const currencyAAmount = parseCurrencyAmount(chainId, amount)
-    const currencyB = parseCurrency(chainId, currency)
+//     const currencyAAmount = parseCurrencyAmount(chainId, amount)
+//     const currencyB = parseCurrency(chainId, currency)
 
-    const pools = candidatePools.map((pool) => parsePool(chainId, pool as any))
+//     const pools = candidatePools.map((pool) => parsePool(chainId, pool as any))
 
-    try {
-      const getTrade = async () => {
-        const trade = await SmartRouter.getBestTrade(currencyAAmount, currencyB, tradeType, {
-          gasPriceWei: gasPrice,
-          poolProvider: SmartRouter.createStaticPoolProvider(pools),
-          quoteProvider: onChainQuoteProvider,
-          maxHops,
-          maxSplits,
-          blockNumber: Number(blockNumber),
-          allowedPoolTypes: poolTypes,
-          quoterOptimization: false,
-        })
+//     try {
+//       const getTrade = async () => {
+//         const trade = await SmartRouter.getBestTrade(currencyAAmount, currencyB, tradeType, {
+//           gasPriceWei: gasPrice,
+//           poolProvider: SmartRouter.createStaticPoolProvider(pools),
+//           quoteProvider: onChainQuoteProvider,
+//           maxHops,
+//           maxSplits,
+//           blockNumber: Number(blockNumber),
+//           allowedPoolTypes: poolTypes,
+//           quoterOptimization: false,
+//         })
 
-        if (!trade) {
-          throw new Error('No valid trade')
-        }
+//         if (!trade) {
+//           throw new Error('No valid trade')
+//         }
 
-        return trade
-      }
+//         return trade
+//       }
 
-      const res = await Promise.race([timeout(30), getTrade()])
-      if (!res) {
-        throw new Error('Timeout')
-      }
+//       const res = await Promise.race([timeout(30), getTrade()])
+//       if (!res) {
+//         throw new Error('Timeout')
+//       }
 
-      response = json(serializeTrade(res), {
-        headers: {
-          'Cache-Control': `public, s-maxage=${CACHE_TIME[chainId] ?? '5'}`,
-        },
-      })
-      event.waitUntil(cache.put(cacheKey, response.clone()))
-    } catch (e) {
-      event.waitUntil(sendLog(e))
-      response = error(500, e instanceof Error ? e.message : 'No valid trade')
-    }
-  } else {
-    response = new Response(cacheResponse.body, cacheResponse)
-  }
+//       response = json(serializeTrade(res), {
+//         headers: {
+//           'Cache-Control': `public, s-maxage=${CACHE_TIME[chainId] ?? '5'}`,
+//         },
+//       })
+//       event.waitUntil(cache.put(cacheKey, response.clone()))
+//     } catch (e) {
+//       event.waitUntil(sendLog(e))
+//       response = error(500, e instanceof Error ? e.message : 'No valid trade')
+//     }
+//   } else {
+//     response = new Response(cacheResponse.body, cacheResponse)
+//   }
 
-  return response
-})
+//   return response
+// })
 
 // Crontab to fetch and store v3 pools from subgraph
-setupPoolBackupCrontab()
+// setupPoolBackupCrontab()
 // V3 pools endpoint
 poolsRoute(router)
 
