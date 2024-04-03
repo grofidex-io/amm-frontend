@@ -74,6 +74,14 @@ const StyledCMCLink = styled(UIKitLink)`
     opacity: 0.8;
   }
 `
+const StyledButton = styled(Button)`
+  @media screen and (max-width: 991px) {
+    height: 44px;
+  }
+  @media screen and (max-width: 575px) {
+    height: 40px;
+  }
+`
 const DEFAULT_TIME_WINDOW = dayjs.duration(1, 'weeks')
 
 const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = ({ routeAddress }) => {
@@ -198,12 +206,12 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
               </Flex>
               <Flex>
                 <NextLinkFromReactRouter to={`/add/${address}?chain=${CHAIN_QUERY_NAME[chainId]}`}>
-                  <Button mr="8px" variant="secondary">
+                  <StyledButton mr="8px" variant="secondary">
                     {t('Add Liquidity')}
-                  </Button>
+                  </StyledButton>
                 </NextLinkFromReactRouter>
                 <NextLinkFromReactRouter to={`/swap?outputCurrency=${address}&chainId=${multiChainId[chainName]}`}>
-                  <Button>{t('Trade')}</Button>
+                  <StyledButton>{t('Trade')}</StyledButton>
                 </NextLinkFromReactRouter>
               </Flex>
             </Flex>

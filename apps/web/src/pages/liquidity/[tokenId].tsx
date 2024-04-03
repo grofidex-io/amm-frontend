@@ -165,7 +165,7 @@ function PositionPriceSection({
             currency0={currencyQuote}
             currency1={currencyBase}
           />
-          {isMobile ? null : <SyncAltIcon width="24px" mx="16px" />}
+          {isMobile ? null : <SyncAltIcon width="24px" mx={[0, 0, 0, "16px"]} />}
           <RangePriceSection
             ml={['0', '0', '16px']}
             title={t('Max Price')}
@@ -566,7 +566,7 @@ export default function PoolPage() {
                     )}
                     <MerklTag poolAddress={poolAddress} />
                   </Flex>
-                  <RowBetween gap="16px" flexWrap="nowrap">
+                  <RowBetween gap={["12px", "16px"]} flexWrap={["wrap", "nowrap"]}>
                     <Text fontSize="14px" color="textSubtle" style={{ wordBreak: 'break-word' }}>
                       LP #{tokenIdFromUrl} / {new Percent(feeAmount || 0, 1_000_000).toSignificant()}% {t('fee tier')}
                     </Text>
@@ -634,6 +634,7 @@ export default function PoolPage() {
                   justifyContent="space-between"
                   width="100%"
                   mb="8px"
+                  mt={["8px", "8px", 0]}
                   style={{ gap: '16px' }}
                   flexWrap={['wrap', 'wrap', 'nowrap']}
                 >
@@ -958,11 +959,11 @@ function PositionHistory_({
         {isExpanded ? t('Hide') : t('History')}
       </ExpandableLabel>
       {isExpanded && (
-        <AtomBox display="grid" gap="16px">
-          <AtomBox display="grid" style={{ gridTemplateColumns: '1fr 1fr 1fr' }} alignItems="center">
-            <PreTitle color="textSubtle">{t('Timestamp')}</PreTitle>
-            <PreTitle color="textSubtle">{t('Action')}</PreTitle>
-            <PreTitle color="textSubtle">{t('Token Transferred')}</PreTitle>
+        <AtomBox display={["flex", "grid"]} gap="16px" justifyContent={["space-between", "stretch"]}>
+          <AtomBox display={["block", "grid"]} style={{ gridTemplateColumns: '1fr 1fr 1fr' }} alignItems="center">
+            <PreTitle mb={["8px", "8px", "0px"]} height={["22px", "22px", "auto"]} textAlign={["left", "left", "center"]} color="textSubtle">{t('Timestamp')}</PreTitle>
+            <PreTitle mb={["8px", "8px", "0px"]} height={["22px", "22px", "auto"]} textAlign={["left", "left", "center"]} color="textSubtle">{t('Action')}</PreTitle>
+            <PreTitle height={["22px", "22px", "auto"]} textAlign={["left", "left", "center"]} color="textSubtle">{t('Token Transferred')}</PreTitle>
           </AtomBox>
 
           {data.map((d) => {
@@ -1085,21 +1086,21 @@ function PositionHistoryRow({
   if (isMobile) {
     return (
       <Box>
-        <AutoRow>
+        <AutoRow mb={["8px", "8px", "0px"]} justifyContent="flex-end">
           <ScanLink
             useBscCoinFallback={chainId ? ChainLinkSupportChains.includes(chainId) : false}
             href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}
           >
-            <Flex flexDirection="column" alignItems="center">
-              <Text ellipsis>{mobileDate}</Text>
-              <Text fontSize="12px">{mobileTime}</Text>
+            <Flex alignItems="center" justifyContent="flex-end" ml="auto">
+              <Text fontSize={["14px", "14px", "15px"]} color='secondary' ellipsis>{mobileDate}</Text>
+              <Text display={["none", "block"]} fontSize={["14px", "14px", "15px"]} color='secondary' ellipsis>{mobileTime}</Text>
             </Flex>
           </ScanLink>
         </AutoRow>
-        <Text>{positionHistoryTypeText[type]}</Text>
+        <Text textAlign="right" mb={["8px", "8px", "0px"]}>{positionHistoryTypeText[type]}</Text>
         <AutoColumn gap="4px">
           {+positionTx.amount0 > 0 && (
-            <AutoRow flexWrap="nowrap" gap="12px" justifyContent="space-between">
+            <AutoRow flexWrap="nowrap" gap={["8px", "12px"]} justifyContent="space-between">
               <AutoRow width="auto" flexWrap="nowrap" gap="4px">
                 <AtomBox minWidth="24px">
                   <CurrencyLogo currency={currency0} />
@@ -1112,7 +1113,7 @@ function PositionHistoryRow({
             </AutoRow>
           )}
           {+positionTx.amount1 > 0 && (
-            <AutoRow flexWrap="nowrap" gap="12px" justifyContent="space-between">
+            <AutoRow flexWrap="nowrap" gap={["8px", "12px"]} justifyContent="space-between">
               <AutoRow width="auto" flexWrap="nowrap" gap="4px">
                 <AtomBox minWidth="24px">
                   <CurrencyLogo currency={currency1} />
@@ -1143,7 +1144,7 @@ function PositionHistoryRow({
           useBscCoinFallback={chainId ? ChainLinkSupportChains.includes(chainId) : false}
           href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}
         >
-          <Text ellipsis>{desktopDate}</Text>
+          <Text color='secondary' ellipsis>{desktopDate}</Text>
         </ScanLink>
       </AutoRow>
       <Text>{positionHistoryTypeText[type]}</Text>

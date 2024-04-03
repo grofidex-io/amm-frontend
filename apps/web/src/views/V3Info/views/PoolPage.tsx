@@ -63,6 +63,14 @@ const TokenButton = styled(Flex)`
     opacity: 0.6;
   }
 `
+const StyledButton = styled(Button)`
+  @media screen and (max-width: 991px) {
+    height: 44px;
+  }
+  @media screen and (max-width: 575px) {
+    height: 40px;
+  }
+`
 
 enum ChartView {
   VOL,
@@ -74,7 +82,7 @@ enum ChartView {
 
 const PoolPage: React.FC<{ address: string }> = ({ address }) => {
   // const { chainId } = useActiveChainId()
-  const { isXs, isSm } = useMatchBreakpoints()
+  const { isXs, isSm, isMd, isLg, isXl } = useMatchBreakpoints()
 
   const now = dayjs()
   useEffect(() => {
@@ -189,7 +197,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                 size={32}
                 chainName={chainName}
               />
-              <Text ml="38px" bold fontSize={isXs || isSm ? '24px' : '40px'} id="info-pool-pair-title">
+              <Text ml="38px" bold fontSize={isXs ? '20px' : isSm ? '24px' : isMd ? '28px' : isLg ? '32px' : isXl ? '36px' : '40px'} id="info-pool-pair-title">
                 {`${symbol0} / ${symbol1}`}{' '}
                 <GreyBadge ml="4px" style={{ display: 'inline-block' }}>
                   {feeTierPercent(poolData.feeTier)}
@@ -233,16 +241,16 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                     CHAIN_QUERY_NAME[multiChainId[chainName]]
                   }`}
                 >
-                  <Button mr="8px" variant="secondary" className="button-hover">
+                  <StyledButton Tokens Locked mr="8px" variant="secondary" className="button-hover">
                     {t('Add Liquidity')}
-                  </Button>
+                  </StyledButton>
                 </NextLinkFromReactRouter>
                 <NextLinkFromReactRouter
                   to={`/swap?inputCurrency=${poolData.token0.address}&outputCurrency=${poolData.token1.address}&chain=${
                     CHAIN_QUERY_NAME[multiChainId[chainName]]
                   }`}
                 >
-                  <Button className="button-hover">{t('Trade')}</Button>
+                  <StyledButton Tokens Locked className="button-hover">{t('Trade')}</StyledButton>
                 </NextLinkFromReactRouter>
               </Flex>
             </Flex>

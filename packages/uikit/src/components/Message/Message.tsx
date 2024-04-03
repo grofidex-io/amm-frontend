@@ -21,6 +21,15 @@ const MessageContainer = styled.div<MessageProps>`
   padding: 16px;
   border-radius: 8px;
   border: solid 1px;
+  font-size: 16px;
+  line-height: 1.15;
+  
+  @media screen and (max-width: 575px) {
+    font-size: 15px;
+  }
+  @media screen and (max-width: 424px) {
+    padding: 12px;
+  }
 
   ${space}
   ${systemVariant({
