@@ -2,7 +2,7 @@ import { getStakingContract } from 'utils/contractHelpers'
 
 export const stake = async (stakingContract: ReturnType<typeof getStakingContract>, amount: string) => {
   if (!stakingContract.account) return undefined
-  return stakingContract.write.stake([0], {
+  return stakingContract.write.stake([], {
     // gas: DEFAULT_GAS_LIMIT,
     // gasPrice,
     account: stakingContract.account,
@@ -31,6 +31,15 @@ export const claimReward = async (stakingContract: ReturnType<typeof getStakingC
 }
 
 /// Read Proxy
+export const validator = async (stakingContract: ReturnType<typeof getStakingContract>) => {
+  try {
+    return stakingContract.read.validator() // id
+  } catch (e) {
+    console.error(e)
+    return undefined
+  }
+}
+
 export const withdrawalPeriodTime = async (stakingContract: ReturnType<typeof getStakingContract>) => {
   try {
     return stakingContract.read.withdrawalPeriodTime() // seconds

@@ -35,7 +35,7 @@ function StakingList() {
           {renderHeaderItem({
             image: "/images/staking/icon-package.svg", 
             title: 'Total Package', 
-            value: data?.totalPackage?.toString()
+            value: data?.totalPackage?.toString() ?? '0'
           })}
           {renderHeaderItem({
             image: "/images/staking/icon-amount.svg", 
