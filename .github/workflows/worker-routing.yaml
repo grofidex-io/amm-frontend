@@ -1,8 +1,8 @@
-name: Worker
+name: Worker-Routing
 on:
   push:
     branches: [ staging, testnet ]
-    release:
+  release:
       types: [ published ]
 jobs:
   deploy:
@@ -34,10 +34,10 @@ jobs:
           envkey_U2U_TESTNET_NODE: ${{ vars.U2U_TESTNET_NODE }}        
           
           directory: .
-          file_name: apis/farms/.env
+          file_name: apis/routing/.env
           fail_on_empty: false
 
       - name: Build & Deploy Worker
         run: |
-          cd apis/farms
+          cd apis/routing
           npm run deploy
