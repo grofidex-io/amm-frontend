@@ -8,7 +8,8 @@ import { gql } from 'graphql-request'
 import { useCurrency } from 'hooks/Tokens'
 import { useStakingContract } from 'hooks/useContract'
 import { useAtom } from 'jotai'
-import { useEffect } from 'react'
+import debounce from 'lodash/debounce'
+import { useCallback, useEffect } from 'react'
 import { replaceStakingState, resetStakingState, updateCalculateApr, updateSlippagePercent } from 'state/staking/actions'
 import { useStakingState } from 'state/staking/hooks'
 import { stakingReducerAtom } from 'state/staking/reducer'
@@ -17,6 +18,8 @@ import { validator } from 'utils/calls/staking'
 import { aprSubgraphClients } from 'utils/graphql'
 import { useAccount } from 'wagmi'
 import { StyledButton } from '../style'
+
+let timeFlag = Date.now()
 
 const FormStaking = () => {
   const stakingContract = useStakingContract()
@@ -49,48 +52,11 @@ const FormStaking = () => {
     return ''
   }
 
-  const parseAmountChange = (event) => {
-    if (!event.currentTarget.validity.valid) return
-    const amount = event.target.value.replace(/,/g, '.')
-    dispatch(
-      replaceStakingState({
-        amount,
-        amountError: getAmountError(amount),
-        percent: undefined,
-      }),
-    )
-    handleCalculateApr(BigNumber(amount))
-  }
-
-  const parseSlippagePercentToAmount = (percent) => {
-    try {
-      const amount = rawBalance.multipliedBy(new BigNumber(percent / 100))
-      const amountStr = Number(amount.toFixed(6, BigNumber.ROUND_DOWN)).toString()
-      dispatch(
-        replaceStakingState({
-          amount: amountStr,
-          amountError: '',
-          percent,
-        }),
-      )
-      handleCalculateApr(BigNumber(amountStr))
-    } catch (e) {
-      console.error(e)
-    }
-  }
-
-  const handleCalculateApr = async (amount: BigNumber) => {
+  const getCalculateApr = async (amount: BigNumber) => {
+    if (amount.isZero() || amount.isNaN()) return null
     try {
       const validatorId = await validator(stakingContract)
-      if (validatorId == null) {
-        dispatch(
-          updateCalculateApr({
-            apr: 'NaN',
-            estimatedRewards: 'NaN',
-          }),
-        )
-        return
-      }
+      if (validatorId == null) return null
       const APR_QUERY = gql`
         query getApr($amount: String!, $id: Int!) {
           calculateApr(
@@ -106,20 +72,61 @@ const FormStaking = () => {
       })
       const aprValue = BigNumber(calculateApr)
       const estimatedValue = aprValue.multipliedBy(amount).dividedBy(100).multipliedBy(0.95)
-      dispatch(
-        updateCalculateApr({
-          apr: aprValue.toFixed(2, BigNumber.ROUND_DOWN),
-          estimatedRewards: estimatedValue.toFixed(2, BigNumber.ROUND_DOWN)
-        }),
-      )
+      return { aprValue, estimatedValue }
     } catch(e) {
-      console.error(e)
-      dispatch(
-        updateCalculateApr({
+      return null
+    }
+  }
+
+  const handleCalculateApr = async (amount: string) => {
+    timeFlag = Date.now()
+    const _flag = timeFlag
+    const result = await getCalculateApr(BigNumber(amount))
+    if (_flag === timeFlag) {
+      if (result == null) {
+        dispatch(updateCalculateApr({
           apr: 'NaN',
-          estimatedRewards: 'NaN',
+          estimatedRewards: 'NaN'
+        }))
+        return 
+      } 
+      const { aprValue, estimatedValue } = result
+      dispatch(updateCalculateApr({
+        apr: aprValue.toFixed(2, BigNumber.ROUND_DOWN),
+        estimatedRewards: estimatedValue.toFixed(2, BigNumber.ROUND_DOWN),
+      }))
+    }
+  }
+
+  const debounceUpdateApr = useCallback(debounce((nextValue) => handleCalculateApr(nextValue), 250), [])
+
+  const parseAmountChange = (event) => {
+    if (!event.currentTarget.validity.valid) return
+    const amount = event.target.value.replace(/,/g, '.')
+    dispatch(
+      replaceStakingState({
+        amount,
+        amountError: getAmountError(amount),
+        percent: undefined,
+      }),
+    )
+    debounceUpdateApr(amount);
+  }
+
+  const parseSlippagePercentToAmount = (percent) => {
+    try {
+      const amount = rawBalance.multipliedBy(new BigNumber(percent / 100))
+      const amountStr = Number(amount.toFixed(6, BigNumber.ROUND_DOWN)).toString()
+      dispatch(
+        replaceStakingState({
+          amount: amountStr,
+          amountError: '',
+          percent,
         }),
       )
+      handleCalculateApr(amountStr)
+    } catch (e) {
+      console.error(e)
     }
   }
 
@@ -170,6 +177,7 @@ const FormStaking = () => {
             pattern="^[0-9]*[.,]?[0-9]{0,6}$"
             placeholder="0.00"
             value={stakingAmount}
+            maxLength={50}
             // onBlur={() => {
             //   parseCustomSlippage((userSlippageTolerance / 100).toFixed(2))
             // }}
