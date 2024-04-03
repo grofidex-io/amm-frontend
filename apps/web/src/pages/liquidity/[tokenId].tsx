@@ -96,6 +96,11 @@ const StyledLightGreyCard = styled(LightGreyCard)`
   border-radius: 8px;
   box-shadow: ${({ theme }) => theme.shadows.card};
 `
+const StyledButton = styled(Button) `
+  @media screen and (max-width: 991px) {
+    height: 44px;
+  }
+`
 
 const useInverter = ({
   priceLower,
@@ -588,15 +593,15 @@ export default function PoolPage() {
                     <NextLinkFromReactRouter
                       to={`/increase/${currencyId(currency0)}/${currencyId(currency1)}/${feeAmount}/${tokenId}`}
                     >
-                      <Button className="button-hover" disabled={!isOwnNFT} width="100%">
+                      <StyledButton className="button-hover" disabled={!isOwnNFT} width="100%">
                         {t('Add')}
-                      </Button>
+                      </StyledButton>
                     </NextLinkFromReactRouter>
                     {!removed && (
                       <NextLinkFromReactRouter to={`/remove/${tokenId}`}>
-                        <Button className="button-hover" disabled={!isOwnNFT} ml="4px" variant="secondary" width="100%">
+                        <StyledButton className="button-hover" disabled={!isOwnNFT} ml="4px" variant="secondary" width="100%">
                           {t('Remove')}
-                        </Button>
+                        </StyledButton>
                       </NextLinkFromReactRouter>
                     )}
                   </>
@@ -609,15 +614,15 @@ export default function PoolPage() {
                   <NextLinkFromReactRouter
                     to={`/increase/${currencyId(currency0)}/${currencyId(currency1)}/${feeAmount}/${tokenId}`}
                   >
-                    <Button className="button-hover" disabled={!isOwnNFT} width="100%" mb="8px">
+                    <StyledButton className="button-hover" disabled={!isOwnNFT} width="100%" mb="8px">
                       {t('Add')}
-                    </Button>
+                    </StyledButton>
                   </NextLinkFromReactRouter>
                   {!removed && (
                     <NextLinkFromReactRouter to={`/remove/${tokenId}`}>
-                      <Button className="button-hover" disabled={!isOwnNFT} variant="secondary" width="100%" mb="8px">
+                      <StyledButton className="button-hover" disabled={!isOwnNFT} variant="secondary" width="100%" mb="8px">
                         {t('Remove')}
-                      </Button>
+                      </StyledButton>
                     </NextLinkFromReactRouter>
                   )}
                 </>

@@ -79,6 +79,12 @@ const StyledLightCard = styled(LightCard)`
   box-shadow: ${({ theme }) => theme.shadows.card};
 `
 
+const StyledButton = styled(Button)`
+  @media screen and (max-width: 575px) {
+    height: 44px;
+  }
+`
+
 ActionContainer.defaultProps = {
   bg: 'dropdown',
 }
@@ -224,6 +230,7 @@ const SingleFarmV3Card: React.FunctionComponent<
               title={outOfRangeUnstaked ? t('Staking') : t('Unstaking')}
               width={['100%', '100%', '420px']}
               maxWidth={['100%', null, '420px']}
+              margin={['auto']}
             >
               <AutoColumn gap="16px">
                 <AtomBox
@@ -292,18 +299,19 @@ const SingleFarmV3Card: React.FunctionComponent<
                           href={liquidityUrl}
                           style={{ whiteSpace: 'nowrap' }}
                           className="button-hover"
+                          height={['44px', '44px', '48px']} 
                         >
                           {t('View Position')}
                         </Button>
                       ) : (
-                        <Button className="button-hover" variant="tertiary" width="100%" as="a">
+                        <Button height={['44px', '44px', '48px']} className="button-hover" variant="tertiary" width="100%" as="a">
                           {t('Manage Position')}
                         </Button>
                       )}
                     </NextLink>
                   </AutoColumn>
                 </StyledLightCard>
-                <Button
+                <StyledButton
                   variant={outOfRangeUnstaked ? 'subtle' : 'primary'}
                   onClick={outOfRangeUnstaked ? handleStake : handleUnStake}
                   disabled={attemptingTxn || harvesting}
@@ -311,9 +319,9 @@ const SingleFarmV3Card: React.FunctionComponent<
                   className="button-hover"
                 >
                   {outOfRangeUnstaked ? t('Continue Staking') : t('Unstake')}
-                </Button>
+                </StyledButton>
                 {outOfRangeUnstaked ? null : (
-                  <Text color="textSubtle">
+                  <Text fontSize={['14px', '15px']} color="textSubtle">
                     {t(
                       'Unstake will also automatically harvest any earnings that you haven’t collected yet, and send them to your wallet.',
                     )}

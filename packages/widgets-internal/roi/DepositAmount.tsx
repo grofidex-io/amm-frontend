@@ -36,6 +36,10 @@ const StyledButton = styled(Button)`
   width: 100%;
   text-transform: uppercase;
   border-radius: 2px;
+
+  @media screen and (max-width: 575px) {
+    font-size: 12px;
+  }
 `;
 
 interface UsdAmountInputProps {
