@@ -58,7 +58,7 @@ const AnniversaryAchievementModal: React.FC<AnniversaryModalProps> = ({ excludeL
   // Check claim status
   useEffect(() => {
     const fetchClaimAnniversaryStatus = async () => {
-      const canClaimAnniversary = account && (await contract.read.canClaim([account]))
+      const canClaimAnniversary = account && (await contract.read?.canClaim([account]))
       setCanClaimAnniversaryPoints(Boolean(canClaimAnniversary))
     }
 
