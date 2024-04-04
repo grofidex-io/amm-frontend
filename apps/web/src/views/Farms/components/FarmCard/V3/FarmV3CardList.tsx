@@ -33,7 +33,7 @@ const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3Card
   }, [onHarvestAll, stakedPositions])
 
   return (
-    <Box width="100%" py="20px">
+    <Box width="100%">
       {multiplier !== '0X' && unstakedPositions.length > 0 && (
         <Flex flexDirection="column" width="100%" mb="24px" id={`${farm.pid}-farm-v3-available`}>
           <PreTitle fontSize="12px" color="textSubtle" m="0 0 8px 0">

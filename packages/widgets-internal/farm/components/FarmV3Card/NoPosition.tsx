@@ -1,6 +1,6 @@
-import { ReactNode } from "react";
 import { useTranslation } from "@pancakeswap/localization";
-import { Text, Button, Flex } from "@pancakeswap/uikit";
+import { Button, Flex, Text } from "@pancakeswap/uikit";
+import { ReactNode } from "react";
 
 interface NoPositionProps {
   inactive: boolean;
@@ -30,7 +30,7 @@ const NoPosition: React.FunctionComponent<React.PropsWithChildren<NoPositionProp
             {t("no position found")}
           </Text>
           {!inactive && (
-            <Button width="100%" onClick={onAddLiquidityClick}>
+            <Button className="button-hover" width="100%" onClick={onAddLiquidityClick}>
               {t("Add Liquidity")}
             </Button>
           )}

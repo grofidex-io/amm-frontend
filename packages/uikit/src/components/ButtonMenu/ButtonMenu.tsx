@@ -53,6 +53,10 @@ const StyledButtonMenu = styled.div.withConfig({
     return "";
   }}
   ${space}
+
+  @media screen and (max-width: 575px) {
+    border-radius: 6px;
+  }
 `;
 
 const ButtonMenu: React.FC<React.PropsWithChildren<ButtonMenuProps>> = ({

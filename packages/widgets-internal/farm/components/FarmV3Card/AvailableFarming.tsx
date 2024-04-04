@@ -1,14 +1,24 @@
-import { styled } from "styled-components";
-import { useTranslation } from "@pancakeswap/localization";
 import { PositionDetails } from "@pancakeswap/farms";
-import { PreTitle, Text, Button, Flex, Box } from "@pancakeswap/uikit";
+import { useTranslation } from "@pancakeswap/localization";
+import { Box, Button, Flex, PreTitle, Text } from "@pancakeswap/uikit";
+import { styled } from "styled-components";
 
-const LightGreyCard = styled("div")`
+const StyledLightGreyCard = styled("div")`
   padding: 0;
-  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  background-color: ${({ theme }) => theme.colors.dropdown};
+  border: 2px solid ${({ theme }) => theme.colors.cardBorder};
   border-radius: ${({ theme }) => theme.radii.card};
-`;
+  box-shadow: ${({ theme }) => theme.shadows.card};
+`
+const StyledButton = styled(Button)`
+  @media screen and (max-width: 991px) {
+    height: 44px;
+    padding: 0 20px;
+  }
+  @media screen and (max-width: 575px) {
+    height: 40px;
+    padding: 0 16px;
+  }
+`
 
 interface AvailableFarmingProps {
   lpSymbol: string;
@@ -28,8 +38,8 @@ const AvailableFarming: React.FunctionComponent<React.PropsWithChildren<Availabl
       <PreTitle color="textSubtle" mb="8px">
         {t("%totalAvailableFarm% LP Available for Farming", { totalAvailableFarm: unstakedPositions.length })}
       </PreTitle>
-      <LightGreyCard>
-        <Flex padding="16px" justifyContent="space-between">
+      <StyledLightGreyCard>
+        <Flex padding="16px" justifyContent="space-between" flexWrap="wrap">
           <Flex flexDirection="column">
             <Text bold color="textSubtle" mb="4px">
               {lpSymbol}
@@ -42,11 +52,11 @@ const AvailableFarming: React.FunctionComponent<React.PropsWithChildren<Availabl
               ))}
             </Box>
           </Flex>
-          <Button style={{ alignSelf: "center", whiteSpace: "nowrap" }} onClick={onClickViewAllButton}>
+          <StyledButton className='button-hover' style={{ alignSelf: "center", whiteSpace: "nowrap" }} onClick={onClickViewAllButton}>
             {t("View All")}
-          </Button>
+          </StyledButton>
         </Flex>
-      </LightGreyCard>
+      </StyledLightGreyCard>
     </Box>
   );
 };
