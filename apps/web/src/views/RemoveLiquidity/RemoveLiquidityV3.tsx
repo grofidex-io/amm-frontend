@@ -74,7 +74,7 @@ const StyledButton = styled(Button)`
     padding: 0 12px;
   }
   @media screen and (max-width: 374px) {
-    height: 32px;
+    height: 30px;
     padding: 0 10px;
   }
 `
