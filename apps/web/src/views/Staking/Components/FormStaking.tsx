@@ -155,7 +155,7 @@ const FormStaking = () => {
     <>
       <Box>
         <Flex alignItems="center" justifyContent="space-between" mb="8px">
-          <Text fontSize="16px" fontWeight="600" color="textSubtle">
+          <Text display={["none", "block"]} fontSize="16px" fontWeight="600" color="textSubtle">
             {t('Staking amount')}
           </Text>
           <Flex alignItems="center">
@@ -195,7 +195,7 @@ const FormStaking = () => {
         </Box>
         <Box my="24px">
           <Flex alignItems="center" justifyContent="space-between" mb="8px">
-            <Text color="textSubtle" fontSize="14px">
+            <Text color="textSubtle" fontSize={["13px", "14px"]}>
               {t('Current estimated APR (%)')}
             </Text>
             <Text fontSize="14px">{apr === 'NaN' ? '--' : apr}</Text>
@@ -219,7 +219,7 @@ const FormStaking = () => {
             <Text fontSize="14px">0 U2U</Text>
           </Flex> */}
           <Flex alignItems="center" justifyContent="space-between">
-            <Text color="textSubtle" fontSize="14px">
+            <Text color="textSubtle" fontSize={["13px", "14px"]}>
               {t('Estimated rewards')}
             </Text>
             <Text fontSize="14px">{estimatedRewards === 'NaN' ? '--' : estimatedRewards} U2U</Text>
