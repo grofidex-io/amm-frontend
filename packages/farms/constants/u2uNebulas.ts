@@ -23,6 +23,13 @@ export const farmsV3 = defineFarmV3Configs([
     token0: u2uNebulasTokens.wu2u,
     token1: u2uNebulasTokens.usdt,
     feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 3,
+    lpAddress: '0xfb61397fa89da0e8eeb717a2f8d0565317ce4de6',
+    token0: u2uNebulasTokens.wbtc,
+    token1: u2uNebulasTokens.usdt,
+    feeAmount: FeeAmount.LOW,
   }
   // {
   //   pid: 2,
