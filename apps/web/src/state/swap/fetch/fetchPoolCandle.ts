@@ -4,15 +4,15 @@ import { v3InfoClients } from 'utils/graphql'
 
 interface CandleResults {
   [key: string]: {
-    high0: string
-    close0: string
-    open0: string
-    low0: string
+    high1: string
+    close1: string
+    open1: string
+    low1: string
     high: string
     close: string
     open: string
     low: string
-    volumeToken0: string
+    volumeToken1: string
     periodStartUnix: number
     date,
     timeMs: number
@@ -22,11 +22,11 @@ interface CandleResults {
 const POOL_CANDLE_15M = gql`
 query getCandle($token0: String, $token1: String, $from: Int, $to: Int) {
   pool15MinuteCandleDatas(where: {pool_: {token0: $token0, token1: $token1}, periodStartUnix_gte: $from, periodStartUnix_lte: $to}) {
-    high0
-    close0
-    open0
-    low0
-    volumeToken0
+    high1
+    close1
+    open1
+    low1
+    volumeToken1
     periodStartUnix
   }
 }
@@ -34,11 +34,11 @@ query getCandle($token0: String, $token1: String, $from: Int, $to: Int) {
 const POOL_CANDLE_30M = gql`
 query getCandle($token0: String, $token1: String, $from: Int, $to: Int) {
   pool30MinuteCandleDatas(where: {pool_: {token0: $token0, token1: $token1}, periodStartUnix_gte: $from, periodStartUnix_lte: $to}) {
-    high0
-    close0
-    open0
-    low0
-    volumeToken0
+    high1
+    close1
+    open1
+    low1
+    volumeToken1
     periodStartUnix
   }
 }
@@ -47,11 +47,11 @@ query getCandle($token0: String, $token1: String, $from: Int, $to: Int) {
 const POOL_CANDLE_5M = gql`
 query getCandle($token0: String, $token1: String, $from: Int, $to: Int) {
   pool5MinuteCandleDatas(where: {pool_: {token0: $token0, token1: $token1}, periodStartUnix_gte: $from, periodStartUnix_lte: $to}) {
-    high0
-    close0
-    open0
-    low0
-    volumeToken0
+    high1
+    close1
+    open1
+    low1
+    volumeToken1
     periodStartUnix
   }
 }
@@ -59,11 +59,11 @@ query getCandle($token0: String, $token1: String, $from: Int, $to: Int) {
 const POOL_CANDLE_HOUR = gql`
 query getCandle($token0: String, $token1: String, $from: Int, $to: Int) {
   poolHourCandleDatas(where: {pool_: {token0: $token0, token1: $token1}, periodStartUnix_gte: $from, periodStartUnix_lte: $to}) {
-    high0
-    close0
-    open0
-    low0
-    volumeToken0
+    high1
+    close1
+    open1
+    low1
+    volumeToken1
     periodStartUnix
   }
 }
@@ -72,11 +72,11 @@ query getCandle($token0: String, $token1: String, $from: Int, $to: Int) {
 const POOL_CANDLE_MINUTE = gql`
 query getCandle($token0: String, $token1: String, $from: Int, $to: Int) {
   poolMinuteCandleDatas(where: {pool_: {token0: $token0, token1: $token1}, periodStartUnix_gte: $from, periodStartUnix_lte: $to}) {
-    high0
-    close0
-    open0
-    low0
-    volumeToken0
+    high1
+    close1
+    open1
+    low1
+    volumeToken1
     periodStartUnix
   }
 }
@@ -84,11 +84,11 @@ query getCandle($token0: String, $token1: String, $from: Int, $to: Int) {
 const POOL_CANDLE_DAY= gql`
 query getCandle($token0: String, $token1: String, $from: Int, $to: Int) {
   poolDayCandleDatas(where: {pool_: {token0: $token0, token1: $token1}, date_gte: $from, date_lte: $to}) {
-    high0
-    close0
-    open0
-    low0
-    volumeToken0
+    high1
+    close1
+    open1
+    low1
+    volumeToken1
     date
   }
 }
@@ -96,11 +96,11 @@ query getCandle($token0: String, $token1: String, $from: Int, $to: Int) {
 const POOL_CANDLE_MONTH= gql`
 query getCandle($token0: String, $token1: String, $from: Int, $to: Int) {
   poolMonthCandleDatas(where: {pool_: {token0: $token0, token1: $token1}, date_gte: $from, date_lte: $to}) {
-    high0
-    close0
-    open0
-    low0
-    volumeToken0
+    high1
+    close1
+    open1
+    low1
+    volumeToken1
     date
   }
 }
@@ -109,11 +109,11 @@ query getCandle($token0: String, $token1: String, $from: Int, $to: Int) {
 const POOL_CANDLE_WEEK= gql`
 query getCandle($token0: String, $token1: String, $from: Int, $to: Int) {
   poolWeekCandleDatas(where: {pool_: {token0: $token0, token1: $token1}, date_gte: $from, date_lte: $to}) {
-    high0
-    close0
-    open0
-    low0
-    volumeToken0
+    high1
+    close1
+    open1
+    low1
+    volumeToken1
     date
   }
 }
@@ -166,11 +166,11 @@ export const  fetchPoolCandleByInterval = async (pairs: Array<string>, from: num
   ? list?.map((m) => {
       return {
         time: m.date ? m.date * 1000 : m.periodStartUnix * 1000,
-        low: m.low0 || m.low,
-        high: m.high0 || m.high,
-        open: m.open0 || m.open,
-        close: m.close0 || m.close,
-        volume: m.volumeToken0,
+        low: m.low1 || m.low,
+        high: m.high1 || m.high,
+        open: m.open1 || m.open,
+        close: m.close1 || m.close,
+        volume: m.volumeToken1,
         timeMs: m.date || m.periodStartUnix
       }
     })
