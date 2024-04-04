@@ -2,7 +2,7 @@
   "name": "@pancakeswap/chains",
   "license": "MIT",
   "version": "0.4.1",
-  "description": "The single source of truth for Pancakeswap chain-related information",
+  "description": "The single source of truth for GroFiDex chain-related information",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "module": "dist/index.mjs",
