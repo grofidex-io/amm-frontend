@@ -112,7 +112,7 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
           setShowMenu(true);
         } else {
           // Has scroll down
-          setShowMenu(false);
+          // setShowMenu(false);
         }
       }
       refPrevOffset.current = currentOffset;
@@ -147,7 +147,7 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
               <Flex>
                 <Logo href={homeLink?.href ?? "/"} />
                 <AtomBox display={{ xs: "none", lg: "block" }}>
-                  <MenuItems items={links} activeItem={activeItem} activeSubItem={activeSubItem} headerMenu ml="24px" />
+                  <MenuItems items={links} activeItem={activeItem} activeSubItem={activeSubItem} headerMenu ml={["16px", "20px", "20px", "20px", "12px","24px"]} />
                 </AtomBox>
               </Flex>
               <Flex alignItems="center" height="100%">

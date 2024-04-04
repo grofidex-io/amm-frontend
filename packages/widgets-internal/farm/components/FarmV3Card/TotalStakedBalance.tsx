@@ -9,6 +9,16 @@ const LightGreyCard = styled("div")`
   border-radius: ${({ theme }) => theme.radii.card};
   box-shadow: ${({ theme }) => theme.shadows.card};
 `;
+const StyledButton = styled(Button)`
+  @media screen and (max-width: 991px) {
+    height: 44px;
+    padding: 0 20px;
+  }
+  @media screen and (max-width: 575px) {
+    height: 40px;
+    padding: 0 16px;
+  }
+`
 
 interface TotalStakedBalanceProps {
   stakedPositions: PositionDetails[];
@@ -48,13 +58,13 @@ const TotalStakedBalance: React.FunctionComponent<React.PropsWithChildren<TotalS
               </Flex>
             </Box>
           </Flex>
-          <Button
+          <StyledButton
             className="button-hover"
             style={{ alignSelf: "center", whiteSpace: "nowrap" }}
             onClick={onClickViewAllButton}
           >
             {t("View All")}
-          </Button>
+          </StyledButton>
         </Flex>
       </LightGreyCard>
     </Box>
