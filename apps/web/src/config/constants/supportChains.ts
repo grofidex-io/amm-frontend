@@ -16,3 +16,5 @@ export const FIXED_STAKING_SUPPORTED_CHAINS = [ChainId.BSC]
 export const V3_MIGRATION_SUPPORTED_CHAINS = [ChainId.BSC, ChainId.ETHEREUM]
 
 export const SUPPORT_CAKE_STAKING = [ChainId.BSC, ChainId.BSC_TESTNET]
+
+export const SUPPORT_STAKING = [ChainId.U2U_NEBULAS]
