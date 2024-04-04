@@ -287,7 +287,7 @@ export function UniversalAddLiquidity({
         <ResponsiveTwoColumns>
           <AutoColumn alignSelf="stretch">
             <PreTitle mb="8px">{t('Choose Token Pair')}</PreTitle>
-            <FlexGap gap="4px" width="100%" mb="8px" alignItems="center">
+            <FlexGap gap="4px" width="100%" mb="8px" alignItems="center" flexWrap={["wrap", "nowrap"]} justifyContent={["center", "normal"]}>
               <CurrencySelect
                 id="add-liquidity-select-tokena"
                 selectedCurrency={baseCurrency}

@@ -10,7 +10,7 @@ interface ApproveModalContentProps {
 export const ApproveModalContentV1: React.FC<ApproveModalContentProps> = ({ title, isMM, isBonus }) => {
   const { t } = useTranslation();
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    <Text>{t("Pancakeswap AMM includes V3, V2 and stable swap.")}</Text>,
+    <Text>{t("GroFiDex AMM swap.")}</Text>,
     { placement: "top" }
   );
 

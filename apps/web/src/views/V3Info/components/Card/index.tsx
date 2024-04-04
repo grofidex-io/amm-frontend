@@ -1,5 +1,5 @@
-import { Box } from '@pancakeswap/uikit'
-import { styled } from 'styled-components'
+import { Box } from '@pancakeswap/uikit';
+import { styled } from 'styled-components';
 
 const Card = styled(Box)<{ width?: string; padding?: string; border?: string; borderRadius?: string }>`
   width: ${({ width }) => width ?? '100%'};
@@ -66,7 +66,7 @@ export const ScrollableX = styled.div`
 
 export const GreyBadge = styled(Card)`
   width: fit-content;
-  border-radius: 8px;
+  border-radius: 4px;
   background: ${({ theme }) => theme.colors.backgroundDisabled};
   color: ${({ theme }) => theme.colors.text};
   padding: 4px 6px;

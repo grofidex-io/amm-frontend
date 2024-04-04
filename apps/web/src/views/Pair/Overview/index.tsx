@@ -93,6 +93,10 @@ const StyledButton = styled(Button)`
     height: 80px;
     font-size: 18px;
   }
+  
+  @media screen and (max-width: 424px) {
+    width: 100%;
+  }
 `
 const StylesInternalLink = styled(Link)`
   width: auto;

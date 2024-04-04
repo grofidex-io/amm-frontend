@@ -19,7 +19,6 @@ import { useNetworkConnectorUpdater } from 'hooks/useActiveWeb3React'
 import { useHover } from 'hooks/useHover'
 import { useSessionChainId } from 'hooks/useSessionChainId'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
-import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import { useUserShowTestnet } from 'state/user/hooks/useUserShowTestnet'
@@ -63,7 +62,7 @@ const NetworkSelect = ({ switchNetwork, chainId }) => {
             </Text>
           </UserMenuItem>
         ))}
-      <UserMenuItem
+      {/* <UserMenuItem
         key={`aptos-${AptosChain.id}`}
         style={{ justifyContent: 'flex-start' }}
         as="a"
@@ -80,7 +79,7 @@ const NetworkSelect = ({ switchNetwork, chainId }) => {
         <Text color="text" pl="12px">
           {AptosChain.name}
         </Text>
-      </UserMenuItem>
+      </UserMenuItem> */}
     </>
   )
 }
@@ -198,12 +197,12 @@ export const NetworkSwitcher = () => {
         placement="bottom"
         variant={isLoading ? 'pending' : isWrongNetwork ? 'danger' : 'default'}
         avatarSrc="https://raw.githubusercontent.com/u2u-eco/default-token-list/master/logos/network/native-currency/u2u.png"
-        disabled
+        disabled={!isWrongNetwork}
         text={
           isLoading ? (
             t('Requesting')
           ) : isWrongNetwork ? (
-            t('Network')
+            t('Wrong Network')
           ) : foundChain ? (
             <>
               <Box display={['none', null, null, null, null, 'block']}>{chainNameConverter(foundChain.name)}</Box>

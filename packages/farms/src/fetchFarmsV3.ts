@@ -2,7 +2,7 @@ import { getLlamaChainName } from '@pancakeswap/chains'
 import { Currency, ERC20Token, WU2U } from '@pancakeswap/sdk'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { tickToPrice } from '@pancakeswap/v3-sdk'
-import BN from 'bignumber.js'
+import BN, { BigNumber } from 'bignumber.js'
 import chunk from 'lodash/chunk'
 import { Address, PublicClient } from 'viem'
 
@@ -28,6 +28,7 @@ export async function farmV3FetchFarms({
   chainId,
   totalAllocPoint,
   commonPrice,
+  ethPrice
 }: {
   farms: ComputedFarmConfigV3[]
   provider: ({ chainId }: { chainId: number }) => PublicClient
@@ -35,10 +36,11 @@ export async function farmV3FetchFarms({
   chainId: number
   totalAllocPoint: bigint
   commonPrice: CommonPrice
+  ethPrice: BigNumber
 }) {
   const [poolInfos, cakePrice, v3PoolData] = await Promise.all([
     fetchPoolInfos(farms, chainId, provider, masterChefAddress),
-    '0.01',
+    Number(ethPrice).toFixed(8),
     fetchV3Pools(farms, chainId, provider),
   ])
 

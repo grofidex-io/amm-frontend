@@ -1,8 +1,8 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { styled } from "styled-components";
 import { Modal, ModalV2, ModalV2Props } from "@pancakeswap/uikit";
+import { styled } from "styled-components";
 
-import { RoiCalculatorProps, RoiCalculator } from "./RoiCalculator";
+import { RoiCalculator, RoiCalculatorProps } from "./RoiCalculator";
 
 export const StyledModal = styled(Modal)`
   & > :nth-child(2) {
@@ -10,6 +10,9 @@ export const StyledModal = styled(Modal)`
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
+    width: 780px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
     width: 860px;
   }
 `;

@@ -1,49 +1,29 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Rounding } from '@pancakeswap/swap-sdk-core'
+import { Rounding } from '@pancakeswap/sdk'
 import { Box, Flex, Input, Text } from '@pancakeswap/uikit'
-import { formatAmount } from '@pancakeswap/utils/formatFractions'
+import { bigIntToBigNumber } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
-import { useCurrency } from 'hooks/Tokens'
+import { gql } from 'graphql-request'
+import { useStakingContract } from 'hooks/useContract'
 import { useAtom } from 'jotai'
-import { useEffect } from 'react'
-import { replaceStakingState, resetStakingState, updateSlippagePercent } from 'state/staking/actions'
+import debounce from 'lodash/debounce'
+import { useCallback, useEffect } from 'react'
+import { replaceStakingState, resetStakingState, updateCalculateApr, updateSlippagePercent } from 'state/staking/actions'
 import { useStakingState } from 'state/staking/hooks'
 import { stakingReducerAtom } from 'state/staking/reducer'
 import { useCurrencyBalance } from 'state/wallet/hooks'
-import styled from 'styled-components'
+import { validator } from 'utils/calls/staking'
+import { aprSubgraphClients } from 'utils/graphql'
 import { useAccount } from 'wagmi'
+import useStakingConfig from '../Hooks/useStakingConfig'
+import { StyledButton } from '../style'
 
-const StyledButton = styled(Box)`
-  cursor: pointer;
-  text-align: center;
-  flex: 1;
-  color: ${({ theme }) => theme.colors.textSubtle};
-  font-size: 14px;
-  font-weight: 600;
-  &:not(:last-child) {
-    margin-right: 5px;
-  }
-  &.active {
-    color: ${({ theme }) => theme.colors.primary};
-    .divider {
-      background: ${({ theme }) => theme.colors.hover};
-    }
-  }
-  .divider {
-    border: 2px solid ${({ theme }) => theme.colors.cardBorder};
-    background: ${({ theme }) => theme.colors.textSubtle};
-    height: 10px;
-    width: 100%;
-    border-radius: 2px;
-    margin-bottom: 4px;
-  }
-`
-
-// const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`) // match escaped "." characters via in a non-capturing group
+let timeFlag = Date.now()
 
 const FormStaking = () => {
+  const stakingContract = useStakingContract()
   const [, dispatch] = useAtom(stakingReducerAtom)
-  const { currencyId, stakingAmount, stakingAmountError, slippagePercent } = useStakingState()
+  const { stakingAmount, stakingAmountError, slippagePercent, apr, estimatedRewards } = useStakingState()
   const { t } = useTranslation()
 
   const slippagePercents = [25, 50, 75, 100]
@@ -52,12 +32,13 @@ const FormStaking = () => {
     dispatch(resetStakingState())
   }, [])
 
-  const currency = useCurrency(currencyId)
+  const { currency, isWrongNetwork } = useStakingConfig()
   const { address: account } = useAccount()
-  const currencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
+  const currencyBalance = useCurrencyBalance(account, currency)
+  
   const rawBalance: BigNumber = new BigNumber(
     currencyBalance?.asFraction
-      .divide(10n ** BigInt(currencyBalance?.currency.decimals))
+      .divide(10n ** BigInt(currency.decimals))
       .toFixed(6, { groupSeparator: '' }, Rounding.ROUND_DOWN) ?? '0',
   )
 
@@ -66,10 +47,58 @@ const FormStaking = () => {
       return t('Enter an amount')
     }
     if (BigNumber(value).gt(rawBalance)) {
-      return t('Insufficient %symbol% balance', { symbol: currencyId })
+      return t('Insufficient %symbol% balance', { symbol: currency.symbol })
     }
     return ''
   }
+
+  const getCalculateApr = async (amount: BigNumber) => {
+    if (amount.isZero() || amount.isNaN()) return null
+    try {
+      const validatorId = await validator(stakingContract)
+      if (validatorId == null) return null
+      const APR_QUERY = gql`
+        query getApr($amount: String!, $id: Int!) {
+          calculateApr(
+            validatorId: $id,
+            amount: $amount,
+            duration: 0
+          )
+        }
+      `
+      const { calculateApr } = await aprSubgraphClients.request(APR_QUERY, {
+        amount: amount.multipliedBy(bigIntToBigNumber(10n ** BigInt(currency.decimals))).toString(),
+        id: Number(validatorId),
+      })
+      const aprValue = BigNumber(calculateApr)
+      const estimatedValue = aprValue.multipliedBy(amount).dividedBy(100).multipliedBy(0.95)
+      return { aprValue, estimatedValue }
+    } catch(e) {
+      return null
+    }
+  }
+
+  const handleCalculateApr = async (amount: string) => {
+    timeFlag = Date.now()
+    const _flag = timeFlag
+    const result = await getCalculateApr(BigNumber(amount))
+    if (_flag === timeFlag) {
+      if (result == null) {
+        dispatch(updateCalculateApr({
+          apr: 'NaN',
+          estimatedRewards: 'NaN'
+        }))
+        return 
+      } 
+      const { aprValue, estimatedValue } = result
+      dispatch(updateCalculateApr({
+        apr: aprValue.toFixed(2, BigNumber.ROUND_DOWN),
+        estimatedRewards: estimatedValue.toFixed(2, BigNumber.ROUND_DOWN),
+      }))
+    }
+  }
+
+  const debounceUpdateApr = useCallback(debounce((nextValue) => handleCalculateApr(nextValue), 250), [])
 
   const parseAmountChange = (event) => {
     if (!event.currentTarget.validity.valid) return
@@ -81,18 +110,21 @@ const FormStaking = () => {
         percent: undefined,
       }),
     )
+    debounceUpdateApr(amount);
   }
 
   const parseSlippagePercentToAmount = (percent) => {
     try {
       const amount = rawBalance.multipliedBy(new BigNumber(percent / 100))
+      const amountStr = BigNumber(amount.toFixed(6, BigNumber.ROUND_DOWN)).toString()
       dispatch(
         replaceStakingState({
-          amount: Number(amount.toFixed(6, BigNumber.ROUND_DOWN)).toString(),
+          amount: amountStr,
           amountError: '',
           percent,
         }),
       )
+      handleCalculateApr(amountStr)
     } catch (e) {
       console.error(e)
     }
@@ -123,7 +155,7 @@ const FormStaking = () => {
     <>
       <Box>
         <Flex alignItems="center" justifyContent="space-between" mb="8px">
-          <Text fontSize="16px" fontWeight="600" color="textSubtle">
+          <Text display={["none", "block"]} fontSize="16px" fontWeight="600" color="textSubtle">
             {t('Staking amount')}
           </Text>
           <Flex alignItems="center">
@@ -131,10 +163,10 @@ const FormStaking = () => {
               {t('U2U Available')}
             </Text>
             <Text fontSize="12px" fontWeight="700" color="primary" ml="3px">
-              {formatAmount(currencyBalance, 6)}
+              {isWrongNetwork ? '--' : rawBalance.toString()}
             </Text>
             <Text fontSize="12px" ml="3px">
-              {currencyId}
+              {currency.symbol}
             </Text>
           </Flex>
         </Flex>
@@ -145,6 +177,7 @@ const FormStaking = () => {
             pattern="^[0-9]*[.,]?[0-9]{0,6}$"
             placeholder="0.00"
             value={stakingAmount}
+            maxLength={50}
             // onBlur={() => {
             //   parseCustomSlippage((userSlippageTolerance / 100).toFixed(2))
             // }}
@@ -162,12 +195,12 @@ const FormStaking = () => {
         </Box>
         <Box my="24px">
           <Flex alignItems="center" justifyContent="space-between" mb="8px">
-            <Text color="textSubtle" fontSize="14px">
+            <Text color="textSubtle" fontSize={["13px", "14px"]}>
               {t('Current estimated APR (%)')}
             </Text>
-            <Text fontSize="14px">0</Text>
+            <Text fontSize="14px">{apr === 'NaN' ? '--' : apr}</Text>
           </Flex>
-          <Flex alignItems="center" justifyContent="space-between" mb="8px">
+          {/* <Flex alignItems="center" justifyContent="space-between" mb="8px">
             <Text color="textSubtle" fontSize="14px">
               {t('30 days')}
             </Text>
@@ -184,12 +217,12 @@ const FormStaking = () => {
               {t('180 days')}
             </Text>
             <Text fontSize="14px">0 U2U</Text>
-          </Flex>
+          </Flex> */}
           <Flex alignItems="center" justifyContent="space-between">
-            <Text color="textSubtle" fontSize="14px">
-              {t('360 days')}
+            <Text color="textSubtle" fontSize={["13px", "14px"]}>
+              {t('Estimated rewards')}
             </Text>
-            <Text fontSize="14px">0 U2U</Text>
+            <Text fontSize="14px">{estimatedRewards === 'NaN' ? '--' : estimatedRewards} U2U</Text>
           </Flex>
         </Box>
       </Box>

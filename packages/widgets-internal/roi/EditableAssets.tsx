@@ -7,6 +7,10 @@ import { AssetCard, AssetCardProps, CardSection, SectionTitle } from "./AssetCar
 
 const StyledButton = styled(Button)`
   border-radius: 4px;
+  
+  @media screen and (max-width: 575px) {
+    font-size: 12px;
+  }
 `
 
 interface Props extends AssetCardProps {

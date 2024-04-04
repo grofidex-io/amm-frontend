@@ -2,10 +2,10 @@ import { bigIntToBigNumber } from '@pancakeswap/utils/bigNumber'
 import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
 import { gql } from 'graphql-request'
-import { useCurrency } from 'hooks/Tokens'
 import { useStakingContract } from 'hooks/useContract'
 import { pendingReward, withdrawalPeriodTime } from 'utils/calls/staking'
 import { ammStakingClients } from 'utils/graphql'
+import useStakingConfig from './useStakingConfig'
 
 export interface StakedInfo {
   id: string
@@ -29,7 +29,7 @@ export interface StakingResponse {
 
 export function useStakingList() {
   const stakingContract = useStakingContract()
-  const currency = useCurrency('U2U')
+  const { currency, isWrongNetwork } = useStakingConfig()
 
   const formatAmount = (value: BigNumber) => {
     const rawValue: BigNumber = value.dividedBy(bigIntToBigNumber(10n ** BigInt(currency?.decimals ?? 18)))
@@ -127,11 +127,11 @@ export function useStakingList() {
   }
 
   const { data, refetch, isPending, isFetching, error } = useQuery({
-    queryKey: ['amm-subgraphs/staking/list', stakingContract.account?.address],
+    queryKey: ['amm-subgraphs/staking/list', currency.chainId, stakingContract.account?.address],
     queryFn: async () => {
       return fetchStakingList(stakingContract?.account?.address?.toLowerCase())
     },
-    enabled: Boolean(stakingContract?.account?.address),
+    enabled: Boolean(stakingContract?.account?.address) && !isWrongNetwork,
     refetchInterval: 7 * 60 * 1000, // milliseconds
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,

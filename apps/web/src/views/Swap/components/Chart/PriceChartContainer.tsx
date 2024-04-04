@@ -103,7 +103,7 @@ const PriceChartContainer: React.FC<React.PropsWithChildren<PriceChartContainerP
             inputCurrency && <CurrencyLogo currency={inputCurrency} size="24px" style={{ marginRight: '8px' }} />
           )}
           {inputCurrency && (
-            <Text color="text" bold>
+            <Text fontSize={['14px', '14px', '15px']} color="text" bold>
               {outputCurrency ? `${inputCurrency.symbol}/${outputCurrency.symbol}` : inputCurrency.symbol}
             </Text>
           )}

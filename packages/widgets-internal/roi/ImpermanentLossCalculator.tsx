@@ -1,7 +1,7 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { Currency, CurrencyAmount, ONE_HUNDRED_PERCENT, ZERO_PERCENT } from "@pancakeswap/sdk";
 import { CAKE } from "@pancakeswap/tokens";
-import { AutoColumn, Box, Message, Row, RowBetween, Toggle } from "@pancakeswap/uikit";
+import { AutoColumn, Box, Message, MessageText, Row, RowBetween, Toggle } from "@pancakeswap/uikit";
 import { FeeCalculator, encodeSqrtRatioX96 } from "@pancakeswap/v3-sdk";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { styled } from "styled-components";
@@ -285,9 +285,11 @@ export const ImpermanentLossCalculator = memo(function ImpermanentLossCalculator
 
   const outofRangeWarning = isExitPriceOutOfRange ? (
     <Message variant="warning">
-      {t(
-        "Exit price is out of the position price range. The number of estimated rewards will not account for the loss from the position being out-of-range."
-      )}
+      <MessageText>
+        {t(
+          "Exit price is out of the position price range. The number of estimated rewards will not account for the loss from the position being out-of-range."
+        )}
+      </MessageText>
     </Message>
   ) : null;
 

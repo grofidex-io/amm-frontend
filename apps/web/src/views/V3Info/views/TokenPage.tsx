@@ -14,7 +14,7 @@ import {
   ScanLink,
   Spinner,
   Text,
-  useMatchBreakpoints,
+  useMatchBreakpoints
 } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from '@pancakeswap/widgets-internal'
 
@@ -72,6 +72,14 @@ const ContentLayout = styled.div`
   @media screen and (max-width: 800px) {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr;
+  }
+`
+const StyledButton = styled(Button)`
+  @media screen and (max-width: 991px) {
+    height: 44px;
+  }
+  @media screen and (max-width: 575px) {
+    height: 40px;
   }
 `
 
@@ -238,14 +246,14 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                 </Flex>
                 <Flex>
                   <NextLinkFromReactRouter to={`/add/${address}?chain=${CHAIN_QUERY_NAME[chainId!]}`}>
-                    <Button mr="8px" variant="secondary" className="button-hover">
+                    <StyledButton mr="8px" variant="secondary" className="button-hover">
                       {t('Add Liquidity')}
-                    </Button>
+                    </StyledButton>
                   </NextLinkFromReactRouter>
                   <NextLinkFromReactRouter
                     to={`/swap?outputCurrency=${address}&chain=${CHAIN_QUERY_NAME[multiChainId[chainName]]}`}
                   >
-                    <Button className="button-hover">{t('Trade')}</Button>
+                    <StyledButton className="button-hover">{t('Trade')}</StyledButton>
                   </NextLinkFromReactRouter>
                 </Flex>
               </Flex>

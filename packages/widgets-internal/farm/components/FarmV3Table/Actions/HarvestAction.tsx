@@ -1,6 +1,16 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { Balance, Button, Flex, Text } from "@pancakeswap/uikit";
+import styled from "styled-components";
 import { ActionContent, ActionTitles } from "./styles";
+
+const StyledButton = styled(Button)`
+  @media screen and (max-width: 991px) {
+    height: 44px;
+  }
+  @media screen and (max-width: 575px) {
+    height: 40px;
+  }
+`
 
 export interface HarvestActionProps {
   earnings: number;
@@ -38,14 +48,14 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActi
             <Balance fontSize="12px" color="textSubtle" decimals={2} value={earningsBusd} unit=" USD" prefix="~" />
           )}
         </div>
-        <Button
+        <StyledButton
           className="button-hover"
           ml="4px"
           disabled={pendingTx || !userDataReady || disabled}
           onClick={handleHarvest}
         >
           {pendingTx ? t("Harvesting") : t("Harvest")}
-        </Button>
+        </StyledButton>
       </ActionContent>
     </Flex>
   );

@@ -79,6 +79,7 @@ import { chainlinkOracleABI } from 'config/abi/chainlinkOracle'
 import { crossFarmingReceiverABI } from 'config/abi/crossFarmingReceiver'
 import { farmAuctionABI } from 'config/abi/farmAuction'
 import { fixedStakingABI } from 'config/abi/fixedStaking'
+import { groFiStakingManagerAbi } from 'config/abi/groFiStakingManagerAbi'
 import { lotteryV2ABI } from 'config/abi/lotteryV2'
 import { lpTokenABI } from 'config/abi/lpTokenAbi'
 import { masterChefV2ABI } from 'config/abi/masterchefV2'
@@ -90,7 +91,6 @@ import { potteryVaultABI } from 'config/abi/potteryVaultAbi'
 import { revenueSharingPoolABI } from 'config/abi/revenueSharingPool'
 import { revenueSharingPoolGatewayABI } from 'config/abi/revenueSharingPoolGateway'
 import { revenueSharingPoolProxyABI } from 'config/abi/revenueSharingPoolProxy'
-import { stakingAbi } from 'config/abi/stakingAbi'
 import { tradingCompetitionEasterABI } from 'config/abi/tradingCompetitionEaster'
 import { tradingCompetitionFanTokenABI } from 'config/abi/tradingCompetitionFanToken'
 import { tradingCompetitionMoDABI } from 'config/abi/tradingCompetitionMoD'
@@ -541,7 +541,7 @@ export const getRevenueSharingPoolGatewayContract = (signer?: WalletClient, chai
 
 export const getStakingContract = (signer?: WalletClient, chainId?: number) => {
   return getContract({
-    abi: stakingAbi,
+    abi: groFiStakingManagerAbi,
     address: getStakingAddress(chainId),
     signer,
     chainId,

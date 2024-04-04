@@ -25,9 +25,11 @@ import { useV3PositionsFromTokenIds, useV3TokenIdsByAccount } from 'hooks/v3/use
 import toLower from 'lodash/toLower'
 import { useMemo } from 'react'
 import fetchWithTimeout from 'utils/fetchWithTimeout'
+import { v3InfoClients } from 'utils/graphql'
 import { getViemClients } from 'utils/viem'
 import { publicClient } from 'utils/wagmi'
 import { Hex, decodeFunctionResult, encodeFunctionData } from 'viem'
+import { fetchETHPriceData } from 'views/V3Info/data/token/priceData'
 import { useETHPriceData } from 'views/V3Info/hooks'
 import { useAccount } from 'wagmi'
 
@@ -78,12 +80,13 @@ export const useFarmsV3Public = () => {
       const farms = farmsV3ConfigChainMap[chainId as ChainId]
 
       const commonPrice = await fetchCommonTokenUSDValue(priceHelperTokens[chainId ?? -1])
-
+      const { data: ethPrice } = await fetchETHPriceData(v3InfoClients[chainId])
       try {
         const data = await farmFetcherV3.fetchFarms({
           chainId: chainId ?? -1,
           farms,
           commonPrice,
+          ethPrice
         })
 
         return data

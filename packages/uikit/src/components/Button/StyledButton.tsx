@@ -74,6 +74,7 @@ const StyledButton = styled("button").withConfig({
   justify-content: center;
   letter-spacing: 0.03em;
   line-height: 1;
+  white-space: nowrap;
   opacity: ${getOpacity};
   outline: 0;
   transition: all 0.3s;

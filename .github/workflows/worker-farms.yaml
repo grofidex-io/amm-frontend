@@ -1,8 +1,8 @@
-name: Worker
+name: Worker-Farms
 on:
   push:
     branches: [ staging, testnet ]
-    release:
+  release:
       types: [ published ]
 jobs:
   deploy:

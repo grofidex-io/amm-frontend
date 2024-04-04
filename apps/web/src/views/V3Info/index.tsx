@@ -155,7 +155,7 @@ export default function Home() {
                 <StyledTextTitle>
                   <Flex>
                     <MonoSpace>{tvlValue}</MonoSpace>
-                    <StyledPercent value={protocolData?.tvlUSDChange} wrap />
+                    {protocolData?.tvlUSDChange && <StyledPercent value={protocolData?.tvlUSDChange} wrap />}
                   </Flex>
                 </StyledTextTitle>
                 <Text fontSize="12px" height="14px">

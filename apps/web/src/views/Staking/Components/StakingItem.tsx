@@ -5,10 +5,32 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useStakingContract } from 'hooks/useContract'
 import { useState } from 'react'
+import styled from 'styled-components'
 import { claimReward, unStake, withdraw } from 'utils/calls/staking'
+import useStakingConfig from '../Hooks/useStakingConfig'
 import { StakedInfo, useStakingList } from '../Hooks/useStakingList'
 import { BorderLayout, StyledBox, StyledTextTitle } from '../style'
 import { UnStakeActions } from './UnStakeActions'
+
+const StyledFlex = styled(Flex)`
+  gap: 80px;
+  @media screen and (max-width: 1199px) {
+    gap: 60px;
+  }
+  @media screen and (max-width: 991px) {
+    gap: 80px;
+  }
+  @media screen and (max-width: 767px) {
+    gap: 60px;
+  }
+  @media screen and (max-width: 575px) {
+    gap: 40px;
+    flex-direction: column;
+  }
+`
+const StyledButton = styled(Button) `
+  height: 40px;
+`
 
 type StakingProps = {
   stakedInfo: StakedInfo
@@ -28,6 +50,7 @@ const StakingItem = ({ stakedInfo, periodTime, isUnStake }: StakingProps) => {
   const enableClaim = stakedInfo.reward.gt(BigNumber(0))
 
   const stakingContract = useStakingContract()
+  const { currency } = useStakingConfig()
   const { refresh } = useStakingList()
 
   const handUnStake = async () => {
@@ -81,7 +104,7 @@ const StakingItem = ({ stakedInfo, periodTime, isUnStake }: StakingProps) => {
   const renderAction = () => {
     if (!isUnStake) {
       return (
-        <Button
+        <StyledButton
           height="40px"
           variant="secondary"
           disabled={enableClaim}
@@ -89,7 +112,7 @@ const StakingItem = ({ stakedInfo, periodTime, isUnStake }: StakingProps) => {
           onClick={handUnStake}
         >
           {isUnStaking ? t('Unstaking...') : t('Unstake')}
-        </Button>
+        </StyledButton>
       )
     }
     return (
@@ -103,34 +126,34 @@ const StakingItem = ({ stakedInfo, periodTime, isUnStake }: StakingProps) => {
   }
 
   return (
-    <BorderLayout p="30px 40px">
-      <Flex style={{ gap: '100px' }}>
+    <BorderLayout p={["16px 20px", "20px 24px", "20px 24px", "24px 30px", "24px", "30px 40px"]}>
+      <StyledFlex>
         <StyledBox>
-          <StyledTextTitle fontSize="20px">{t('Staked Amount')} (U2U)</StyledTextTitle>
-          <Flex alignItems="center" justifyContent="space-between" mt="26px" width="100%">
-            <Text fontSize="36px" lineHeight="1">
+          <StyledTextTitle fontSize={["16px", "18px", "18px", "20px"]}>{t('Staked Amount')} ({currency.symbol})</StyledTextTitle>
+          <Flex alignItems="center" justifyContent="space-between" mt={["16px", "20px", "24px"]} width="100%">
+            <Text fontSize="24px" lineHeight="1">
               {stakedInfo.amountDisplay}
             </Text>
             {renderAction()}
           </Flex>
         </StyledBox>
         <StyledBox>
-          <StyledTextTitle fontSize="20px">
-            <Text fontFamily="'Metuo', sans-serif" fontSize="20px" fontWeight="900" color="secondary" mr="8px">
-              U2U
+          <StyledTextTitle fontSize={["16px", "18px", "18px", "20px"]}>
+            <Text fontFamily="'Metuo', sans-serif" fontSize={["16px", "18px", "18px", "20px"]} fontWeight="900" color="secondary" mr="6px">
+              {currency.symbol}
             </Text>
             {t('Reward')}
           </StyledTextTitle>
-          <Flex alignItems="center" justifyContent="space-between" mt="26px" width="100%">
-            <Text fontSize="36px" lineHeight="1">
+          <Flex alignItems="center" justifyContent="space-between" mt={["16px", "20px", "24px"]} width="100%">
+            <Text fontSize="24px" lineHeight="1">
               {stakedInfo.rewardDisplay}
             </Text>
-            <Button height="42px" width="120px" disabled={!enableClaim} className="button-hover" onClick={handleClaim}>
+            <StyledButton disabled={!enableClaim} className="button-hover" onClick={handleClaim}>
               {isClaiming ? t('Claiming...'): t('Claim')}
-            </Button>
+            </StyledButton>
           </Flex>
         </StyledBox>
-      </Flex>
+      </StyledFlex>
     </BorderLayout>
   )
 }

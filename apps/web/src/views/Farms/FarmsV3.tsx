@@ -111,7 +111,7 @@ const FilterContainer = styled.div`
   width: 100%;
   padding: 8px 0px;
 
-  ${({ theme }) => theme.mediaQueries.sm} {
+  ${({ theme }) => theme.mediaQueries.md} {
     width: auto;
     padding: 0;
   }
@@ -159,12 +159,13 @@ const FinishedTextLink = styled(Link)`
 const FarmText = styled.p`
   color: ${({ theme }) => theme.colors.text};
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: calc(28 / 20);
   margin-bottom: 8px;
   ${({ theme }) => theme.mediaQueries.sm} {
     font-size: 20px;
     margin-bottom: 18px;
+    font-weight: 600;
   }
   ${({ theme }) => theme.mediaQueries.lg} {
     font-size: 24px;

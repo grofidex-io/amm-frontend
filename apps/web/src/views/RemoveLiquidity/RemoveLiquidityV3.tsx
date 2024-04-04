@@ -69,6 +69,14 @@ const StyledLightGreyCard = styled(LightGreyCard)`
 `
 const StyledButton = styled(Button)`
   border-radius: 4px !important;
+  @media screen and (max-width: 424px) {
+    height: 32px;
+    padding: 0 12px;
+  }
+  @media screen and (max-width: 374px) {
+    height: 30px;
+    padding: 0 10px;
+  }
 `
 
 // redirect invalid tokenIds
@@ -409,7 +417,7 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
             {t('Amount of Liquidity to Remove')}
           </Text>
           <BorderCard style={{ padding: '16px' }}>
-            <Text fontSize="40px" bold mb="16px" style={{ lineHeight: 1 }}>
+            <Text fontSize={["32px", "32px", "36px", "36px", "40px"]} bold mb="16px" style={{ lineHeight: 1 }}>
               {percentForSlider}%
             </Text>
             <Slider

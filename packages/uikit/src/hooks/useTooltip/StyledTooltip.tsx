@@ -44,4 +44,11 @@ export const StyledTooltip = styled(Motion.div)`
   &[data-popper-placement^="right"] > ${Arrow} {
     left: -4px;
   }
+
+  @media screen and (max-width: 575px) {
+    font-size: 15px;
+  }
+  @media screen and (max-width: 424px) {
+    font-size: 14px;
+  }
 ` as typeof Motion.div;

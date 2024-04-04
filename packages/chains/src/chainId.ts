@@ -22,6 +22,8 @@ export enum ChainId {
   U2U_NEBULAS = 2484,
 }
 
+export const ChainDefault = ChainId.U2U_NEBULAS
+
 export const testnetChainIds = [
   ChainId.GOERLI,
   ChainId.BSC_TESTNET,

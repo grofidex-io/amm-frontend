@@ -99,7 +99,7 @@ export const useProtocolTransactionDataWidthPair = (params: {
     ...QUERY_SETTINGS_IMMUTABLE,
     refetchInterval: 3000,
   })
-  return useMemo(() => data?.data?.filter((d) => d.amountUSD > 0) ?? [], [data])
+  return data?.data || []
 }
 
 export const useTokenPriceChartData = (

@@ -3,7 +3,6 @@ import { Button, useToast } from '@pancakeswap/uikit'
 import { bigIntToBigNumber } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { useCurrency } from 'hooks/Tokens'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useStakingContract } from 'hooks/useContract'
 import { useAtom } from 'jotai'
@@ -11,14 +10,22 @@ import { useState } from 'react'
 import { resetStakingState, updateStakingAmountError } from 'state/staking/actions'
 import { useStakingState } from 'state/staking/hooks'
 import { stakingReducerAtom } from 'state/staking/reducer'
+import styled from 'styled-components'
 import { stake } from 'utils/calls/staking'
+import useStakingConfig from '../Hooks/useStakingConfig'
 import { useStakingList } from '../Hooks/useStakingList'
+
+const StyledButton = styled(Button)`
+  @media screen and (max-width: 991px) {
+    height: 44px;
+  }
+`
 
 const FormStakingBtn = () => {
   const { t } = useTranslation()
 
-  const { currencyId, stakingAmount, stakingAmountError } = useStakingState()
-  const currency = useCurrency(currencyId)
+  const { stakingAmount, stakingAmountError } = useStakingState()
+  const { currency } = useStakingConfig()
 
   const [, dispatch] = useAtom(stakingReducerAtom)
   const stakingContract = useStakingContract()
@@ -59,14 +66,14 @@ const FormStakingBtn = () => {
   }
 
   return (
-    <Button
+    <StyledButton
       width="100%"
       className="button-hover"
       disabled={isStaking}
       onClick={handleStake}
     >
       {isStaking ? t('Staking...') : t('Stake')}
-    </Button>
+    </StyledButton>
   )
 }
 

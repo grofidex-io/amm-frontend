@@ -1,6 +1,6 @@
 # universal-router-sdk
 
-This SDK facilitates interactions with Universal Router. This repo is the pancakeswap variation of the original Universal-router-sdk by UniswapLabs. The GroFi DEX implementation makes the necessary changes in order to be compatible with the Pancakeswap smart-router and other existing SDK's.
+This SDK facilitates interactions with Universal Router. This repo is the pancakeswap variation of the original Universal-router-sdk by UniswapLabs. The GroFi DEX implementation makes the necessary changes in order to be compatible with the GroFiDex smart-router and other existing SDK's.
 
 ## Usage
 

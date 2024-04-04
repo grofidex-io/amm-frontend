@@ -23,11 +23,15 @@ const Container = styled.div`
   position: relative;
   z-index: 105;
   width: 100%;
-  min-width: 250px;
-  margin-right: 20px;
+  min-width: 240px;
+  margin-right: 16px;
   display: none;
   ${({ theme }) => theme.mediaQueries.md} {
     display: block;
+  }
+  ${({ theme }) => theme.mediaQueries.xl} {
+    min-width: 250px;
+    margin-right: 20px;
   }
 `
 
