@@ -15,10 +15,10 @@ const distanceToNow = (t: TranslateFunction, timeInMilliSeconds: number) => {
   const { days, hours, minutes, seconds } = getTimePeriods(secondsRemaining);
 
   let toNowString = "";
-  if (days !== 0) toNowString += `${days} ${t("d")}`;
-  if (hours !== 0) toNowString += `${hours} ${t("h")}`;
-  if (minutes !== 0) toNowString += `${minutes} ${t("m")}`;
-  if (seconds !== 0) toNowString += `${seconds} ${t("s")}`;
+  if (days !== 0) toNowString += `${days}${t("d")} `;
+  if (hours !== 0) toNowString += `${hours}${t("h")} `;
+  if (minutes !== 0) toNowString += `${minutes}${t("m")} `;
+  if (seconds !== 0) toNowString += `${seconds}${t("s")} `;
 
   return time > new Date() || !Number.isFinite(timeInMilliSeconds) ? t("Now") : toNowString;
 };
