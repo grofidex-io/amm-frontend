@@ -15,8 +15,15 @@ export const farmsV3 = defineFarmV3Configs([
     lpAddress: '0x5a44b5dc588018e7f9f1bc39b72d476a6355db89',
     token0: u2uNebulasTokens.wu2u,
     token1: u2uNebulasTokens.usdt,
-    feeAmount: FeeAmount.LOW,
+    feeAmount: FeeAmount.HIGH,
   },
+  {
+    pid: 2,
+    lpAddress: '0x546B56f6a294750ea44d0b58cA2BB0a7201518e6',
+    token0: u2uNebulasTokens.wu2u,
+    token1: u2uNebulasTokens.usdt,
+    feeAmount: FeeAmount.LOW,
+  }
   // {
   //   pid: 2,
   //   lpAddress: '0x0d71d040dccc62ad8faf1a66c13ac5526eae35ac',
