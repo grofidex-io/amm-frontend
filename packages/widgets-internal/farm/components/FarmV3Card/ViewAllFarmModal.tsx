@@ -62,14 +62,16 @@ const ViewAllFarmModal: React.FunctionComponent<React.PropsWithChildren<ViewAllF
 
   return (
     <ModalContainer style={{ minWidth: "300px", maxHeight: "90vh", overflow: "hidden" }}>
-      <AtomBox bg="gradientBubblegum" py="24px" maxWidth="420px">
-        <RowBetween flexWrap="nowrap" px="24px">
-          <Flex alignItems="center" width="100%">
-            {tokenPairImage}
-            <Text bold m="0 8px">
-              {lpSymbol.split(" ")[0]}
-            </Text>
-            <AutoRow gap="4px" justifyContent="flex-start" flex={1}>
+      <AtomBox pb="24px" maxWidth={["100%", "100%", "100%", "420px"]} m="auto">
+        <RowBetween flexWrap="nowrap" px="24px" py="16px" background="gradientBubblegum">
+          <Flex flexDirection="column" width="100%">
+            <Flex alignItems="center">
+              {tokenPairImage}
+              <Text bold m="0 8px">
+                {lpSymbol.split(" ")[0]}
+              </Text>
+            </Flex>
+            <AutoRow gap="4px" justifyContent="flex-start" mt="8px" flex={1}>
               {isReady && multiplier && (
                 <StyledTag mr="4px" variant="secondary">
                   {multiplier}
@@ -83,7 +85,7 @@ const ViewAllFarmModal: React.FunctionComponent<React.PropsWithChildren<ViewAllF
           <ModalCloseButton onDismiss={onDismiss} />
         </RowBetween>
         <ModalBody mt="16px">
-          <ScrollableContainer px="24px">{children}</ScrollableContainer>
+          <ScrollableContainer px={["0px", "24px"]}>{children}</ScrollableContainer>
         </ModalBody>
         <AutoColumn px="24px" gap="16px">
           {onHarvestAll && (

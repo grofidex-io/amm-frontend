@@ -54,6 +54,9 @@ const StyledMenuItem = styled.a<StyledMenuItemProps>`
       ? `
     height: 36px;
     padding: 0 16px;
+    @media screen and (max-width: 1199px) {
+      padding: 0 14px;
+    }
     `
       : `
     padding-left: 4px;
