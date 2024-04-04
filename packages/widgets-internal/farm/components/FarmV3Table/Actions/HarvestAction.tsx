@@ -43,9 +43,9 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActi
       </ActionTitles>
       <ActionContent style={{ height: "100%" }}>
         <div>
-          <Balance fontSize={20} bold decimals={2} value={earnings} />
+          <Balance fontSize={20} bold decimals={4} value={earnings} />
           {earningsBusd > 0 && (
-            <Balance fontSize="12px" color="textSubtle" decimals={2} value={earningsBusd} unit=" USD" prefix="~" />
+            <Balance fontSize="12px" color="textSubtle" decimals={4} value={earningsBusd} unit=" USD" prefix="~" />
           )}
         </div>
         <StyledButton
