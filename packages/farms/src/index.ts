@@ -29,7 +29,7 @@ export {
   supportedChainIdV2,
   supportedChainIdV3,
   type FarmSupportedChainId,
-  type FarmV3SupportedChainId,
+  type FarmV3SupportedChainId
 }
 
 export function createFarmFetcher(provider: ({ chainId }: { chainId: any }) => PublicClient) {
@@ -79,10 +79,12 @@ export function createFarmFetcherV3(provider: ({ chainId }: { chainId: number })
     farms,
     chainId,
     commonPrice,
+    ethPrice
   }: {
     farms: ComputedFarmConfigV3[]
     chainId: FarmV3SupportedChainId
-    commonPrice: CommonPrice
+    commonPrice: CommonPrice,
+    ethPrice: BigNumber
   }) => {
     const masterChefAddress = masterChefV3Addresses[chainId]
     if (!masterChefAddress || !provider) {
@@ -97,7 +99,6 @@ export function createFarmFetcherV3(provider: ({ chainId }: { chainId: number })
       })
 
       const cakePerSecond = new BigNumber(latestPeriodCakePerSecond.toString()).div(1e18).div(1e12).toString()
-
       const farmsWithPrice = await farmV3FetchFarms({
         farms,
         chainId,
@@ -105,6 +106,7 @@ export function createFarmFetcherV3(provider: ({ chainId }: { chainId: number })
         masterChefAddress,
         totalAllocPoint,
         commonPrice,
+        ethPrice
       })
 
       return {

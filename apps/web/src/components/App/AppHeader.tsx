@@ -39,6 +39,10 @@ const AppHeaderContainer = styled(Flex)<{ borderHidden?: boolean }>`
     css`
       border-bottom: 1px solid transparent;
     `}
+  
+  @media screen and (max-width: 575px) {
+    padding: 20px;
+  }
 `
 
 const FilterSection = styled(AutoRow)`

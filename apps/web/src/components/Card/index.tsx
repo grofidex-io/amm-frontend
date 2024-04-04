@@ -2,7 +2,7 @@ import { Box, BoxProps } from '@pancakeswap/uikit'
 import { styled } from 'styled-components'
 
 export interface LightCardProps extends BoxProps {
-  width?: string
+  width?: string | string[]
   padding?: string | string[]
   border?: string
   borderRadius?: string

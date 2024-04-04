@@ -3,7 +3,9 @@ import { createFarmFetcherV3, fetchCommonTokenUSDValue } from '@pancakeswap/farm
 import { priceHelperTokens } from '@pancakeswap/farms/constants/common'
 import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
 import { NextApiHandler } from 'next'
+import { v3InfoClients } from 'utils/graphql'
 import { getViemClients } from 'utils/viem.server'
+import { fetchETHPriceData } from 'views/V3Info/data/token/priceData'
 import { nativeEnum as zNativeEnum } from 'zod'
 
 const farmFetcherV3 = createFarmFetcherV3(getViemClients)
@@ -25,11 +27,12 @@ const handler: NextApiHandler = async (req, res) => {
   const farms = farmsV3ConfigChainMap[chainId]
 
   const commonPrice = await fetchCommonTokenUSDValue(priceHelperTokens[chainId])
-
+  const { data: ethPrice } = await fetchETHPriceData(v3InfoClients[chainId])
   const data = await farmFetcherV3.fetchFarms({
     chainId,
     farms,
     commonPrice,
+    ethPrice
   })
 
   const farmsWithPrice = data.farmsWithPrice.map((f) => ({
