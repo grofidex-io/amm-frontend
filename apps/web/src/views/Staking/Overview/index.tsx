@@ -30,6 +30,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
           alignItems="flex-start"
           width="100%"
           style={{ gap: '16px' }}
+          py={["24px", "24px", "16px", "16px"]}
         >
           <Flex
             flexDirection="column"
@@ -44,10 +45,10 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
             order={['1', '1', '1', '1', '2']}
             width={['100%', '100%', '100%', '100%', '360px']}
             flexGrow={1}
-            mb={['30px', '30px', '36px', '40px', '0']}
+            mb={['20px', '20px', '24px', '24px', '0']}
           >
-            <BorderLayout p="30px 16px">
-              <Text fontFamily="'Metuo', sans-serif" fontSize="24px" fontWeight="900" mb="36px">
+            <BorderLayout p={["24px 16px", "24px 16px", "30px 16px"]} m="auto" width={["100%", "100%", "400px", "400px", "100%"]}>
+              <Text fontFamily="'Metuo', sans-serif" fontSize={["20px", "20px", "24px"]} fontWeight="900" mb={["20px", "20px", "28px", "28px","36px"]}>
                 {t('Staking')}
               </Text>
               <FormStaking />

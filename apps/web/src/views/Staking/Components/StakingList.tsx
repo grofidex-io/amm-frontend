@@ -19,13 +19,13 @@ function StakingList() {
     value: string | null | undefined,
   }) => {
     return (
-      <Flex alignItems="center">
+      <Flex alignItems="center" flexDirection={["column", "column", "row"]} mb={["10px", "0px"]}>
         <StyledIcon>
           <StyledIconImage src={image} />
         </StyledIcon>
-        <Box ml="16px">
+        <Box ml={["0", "0", "12px", "12px", "12px", "16px"]} mt={["6px", "8px", "0px"]}>
           <StyledTextTitle fontSize="10px">{t(title)}</StyledTextTitle>
-          {_loading ? <Skeleton height={12} width={60}/> : <Text fontSize="16px" fontWeight="600">
+          {_loading ? <Skeleton height={12} width={60}/> : <Text textAlign={["center", "center", "left"]} fontSize="16px" fontWeight="600">
             {value ?? '--'}
           </Text>}
         </Box>
@@ -36,7 +36,7 @@ function StakingList() {
   const renderHeader = () => {
     return (
       <BorderLayout p="16px">
-        <Flex justifyContent="space-around">
+        <Flex justifyContent={["center", "space-between", "space-around"]} flexDirection={["column", "row"]}>
           {renderHeaderItem({
             image: "/images/staking/icon-package.svg", 
             title: 'Total Package', 

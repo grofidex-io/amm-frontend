@@ -80,6 +80,14 @@ const StyledInput = styled(NumericalInput)`
 const StyledButton = styled(Button)`
   border-radius: 4px;
   // border: 2px solid ${({ theme }) => theme.colors.cardBorder};
+  @media screen and (max-width: 424px) {
+    height: 32px;
+    padding: 0 12px;
+  }
+  @media screen and (max-width: 374px) {
+    height: 30px;
+    padding: 0 10px;
+  }
 `
 
 export const HideMedium = styled.div`
@@ -700,7 +708,7 @@ export default function V3FormView({
                 </Box>
               </Message>
             ) : (
-              <Flex justifyContent="space-between" width="100%" style={{ gap: '8px' }}>
+              <Flex justifyContent="space-between" width="100%" style={{ gap: '6px' }}>
                 {feeAmount &&
                   QUICK_ACTION_CONFIGS[feeAmount] &&
                   Object.entries<ZoomLevels>(QUICK_ACTION_CONFIGS[feeAmount])
@@ -751,7 +759,7 @@ export default function V3FormView({
             {outOfRange ? (
               <Message variant="warning">
                 <RowBetween>
-                  <Text ml="12px" fontSize="12px">
+                  <Text fontSize="12px">
                     {t(
                       'Your position will not earn fees or be used in trades until the market price moves into your range.',
                     )}

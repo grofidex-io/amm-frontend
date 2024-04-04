@@ -10,9 +10,16 @@ import { useState } from 'react'
 import { resetStakingState, updateStakingAmountError } from 'state/staking/actions'
 import { useStakingState } from 'state/staking/hooks'
 import { stakingReducerAtom } from 'state/staking/reducer'
+import styled from 'styled-components'
 import { stake } from 'utils/calls/staking'
 import useStakingConfig from '../Hooks/useStakingConfig'
 import { useStakingList } from '../Hooks/useStakingList'
+
+const StyledButton = styled(Button)`
+  @media screen and (max-width: 991px) {
+    height: 44px;
+  }
+`
 
 const FormStakingBtn = () => {
   const { t } = useTranslation()
@@ -59,14 +66,14 @@ const FormStakingBtn = () => {
   }
 
   return (
-    <Button
+    <StyledButton
       width="100%"
       className="button-hover"
       disabled={isStaking}
       onClick={handleStake}
     >
       {isStaking ? t('Staking...') : t('Stake')}
-    </Button>
+    </StyledButton>
   )
 }
 

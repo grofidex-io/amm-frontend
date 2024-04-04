@@ -19,10 +19,25 @@ export const StyledBox = styled(Box)`
       content: '';
       position: absolute;
       top: 0;
-      right: -50px;
+      right: -41px;
       width: 2px;
       height: 100%;
       background: #445434;
+      @media screen and (max-width: 1199px) {
+        right: -31px;
+      }
+      @media screen and (max-width: 991px) {
+        right: -51px;
+      }
+      @media screen and (max-width: 767px) {
+        right: -31px;
+      }
+      @media screen and (max-width: 575px) {
+        height: 2px;
+        width: 100%;
+        top: calc(100% + 21px);
+        right: auto;
+      }
     }
   }
 `
@@ -34,11 +49,19 @@ export const StyledTextTitle = styled(Text)`
 `
 
 export const StakingH1 = styled(Heading)`
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 900;
   line-height: calc(56 / 52);
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   ${({ theme }) => theme.mediaQueries.sm} {
+    font-size: 36px;
+    margin-bottom: 16px;
+  }
+  ${({ theme }) => theme.mediaQueries.md} {
+    font-size: 44px;
+    margin-bottom: 20px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
     font-size: 52px;
     margin-bottom: 24px;
   }
@@ -46,12 +69,13 @@ export const StakingH1 = styled(Heading)`
 export const StakingText = styled.p`
   color: ${({ theme }) => theme.colors.text};
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: calc(24 / 18);
-  margin-bottom: 8px;
+  margin-bottom: 0;
   ${({ theme }) => theme.mediaQueries.sm} {
     font-size: 18px;
-    margin-bottom: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
   }
 `
 export const StyledIcon = styled.div`
@@ -63,11 +87,17 @@ export const StyledIcon = styled.div`
   align-items: center;
   justify-content: center;
   background: rgba(225, 250, 187, 0.2);
+  @media screen and (max-width: 1199px) {
+    --size: 32px;
+  }
 `
 export const StyledIconImage = styled.img`
   --size: 24px;
   width: var(--size);
   margin: auto;
+  @media screen and (max-width: 1199px) {
+    --size: 20px;
+  }
 `
 export const StyledButton = styled(Box)`
   cursor: pointer;
@@ -92,5 +122,11 @@ export const StyledButton = styled(Box)`
     width: 100%;
     border-radius: 2px;
     margin-bottom: 4px;
+    @media screen and (max-width: 374px) {
+      height: 8px;
+    }
+  }
+  @media screen and (max-width: 374px) {
+    font-size: 13px;
   }
 `
