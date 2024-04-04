@@ -1,13 +1,15 @@
-import { createFarmFetcherV3, ComputedFarmConfigV3, fetchTokenUSDValues } from '@pancakeswap/farms'
-import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
+import { ComputedFarmConfigV3, createFarmFetcherV3, fetchTokenUSDValues } from '@pancakeswap/farms'
 import { priceHelperTokens } from '@pancakeswap/farms/constants/common'
+import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
 import { Currency, ERC20Token } from '@pancakeswap/sdk'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
-import { useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { useMemo } from 'react'
 
 import { FAST_INTERVAL } from 'config/constants'
+import { v3InfoClients } from 'utils/graphql'
 import { getViemClients } from 'utils/viem'
+import { fetchETHPriceData } from 'views/V3Info/data/token/priceData'
 
 const farmFetcherV3 = createFarmFetcherV3(getViemClients)
 
@@ -31,7 +33,6 @@ export function useFarm({ currencyA, currencyB, feeAmount }: FarmParams) {
     const farm = farms.find((f) => f.lpAddress === lpAddress)
     return farm ?? null
   }, [chainId, currencyA, currencyB, feeAmount])
-
   return useQuery({
     queryKey: [chainId, farmConfig?.token0.symbol, farmConfig?.token1.symbol, farmConfig?.feeAmount],
 
@@ -47,12 +48,13 @@ export function useFarm({ currencyA, currencyB, feeAmount }: FarmParams) {
       }
 
       const commonPrice = await fetchTokenUSDValues(tokensToGetPrice)
-
+      const { data: ethPrice } = await fetchETHPriceData(v3InfoClients[chainId])
       try {
         const data = await farmFetcherV3.fetchFarms({
           chainId,
           farms: [farmConfig],
           commonPrice,
+          ethPrice
         })
 
         const { farmsWithPrice, cakePerSecond, poolLength } = data

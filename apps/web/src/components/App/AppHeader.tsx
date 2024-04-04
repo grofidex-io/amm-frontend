@@ -72,12 +72,12 @@ const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({
           (typeof backTo === 'string' ? (
             <Link legacyBehavior passHref href={backTo}>
               <IconButton as="a" scale="sm">
-                <ArrowBackIcon width={["24px", "28px", "32px"]} />
+                <ArrowBackIcon width="32px" />
               </IconButton>
             </Link>
           ) : (
             <IconButton scale="sm" variant="text" onClick={backTo}>
-              <ArrowBackIcon width={["24px", "28px", "32px"]} />
+              <ArrowBackIcon width="32px" />
             </IconButton>
           ))}
         <Flex pr={backTo && shouldCenter ? '48px' : ''} flexDirection="column" width="100%" marginTop="4px">
