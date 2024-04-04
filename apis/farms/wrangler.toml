@@ -13,7 +13,7 @@ crons = []
 
 [env.production]
 kv_namespaces = [
-  {binding = "FARMS", id = "a8cf7fd11f70400d845fc7cfb7859406"},
+  {binding = "FARMS", id = "4ac3b54c6e17404a95ccd3f8fcbcf3ac"},
 ]
 name = "amm-prod"
 node_compat = true
