@@ -6,6 +6,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useStakingContract } from 'hooks/useContract'
 import { useState } from 'react'
 import { claimReward, unStake, withdraw } from 'utils/calls/staking'
+import useStakingConfig from '../Hooks/useStakingConfig'
 import { StakedInfo, useStakingList } from '../Hooks/useStakingList'
 import { BorderLayout, StyledBox, StyledTextTitle } from '../style'
 import { UnStakeActions } from './UnStakeActions'
@@ -28,6 +29,7 @@ const StakingItem = ({ stakedInfo, periodTime, isUnStake }: StakingProps) => {
   const enableClaim = stakedInfo.reward.gt(BigNumber(0))
 
   const stakingContract = useStakingContract()
+  const { currency } = useStakingConfig()
   const { refresh } = useStakingList()
 
   const handUnStake = async () => {
@@ -106,7 +108,7 @@ const StakingItem = ({ stakedInfo, periodTime, isUnStake }: StakingProps) => {
     <BorderLayout p="30px 40px">
       <Flex style={{ gap: '100px' }}>
         <StyledBox>
-          <StyledTextTitle fontSize="20px">{t('Staked Amount')} (U2U)</StyledTextTitle>
+          <StyledTextTitle fontSize="20px">{t('Staked Amount')} ({currency.symbol})</StyledTextTitle>
           <Flex alignItems="center" justifyContent="space-between" mt="26px" width="100%">
             <Text fontSize="36px" lineHeight="1">
               {stakedInfo.amountDisplay}
@@ -117,7 +119,7 @@ const StakingItem = ({ stakedInfo, periodTime, isUnStake }: StakingProps) => {
         <StyledBox>
           <StyledTextTitle fontSize="20px">
             <Text fontFamily="'Metuo', sans-serif" fontSize="20px" fontWeight="900" color="secondary" mr="8px">
-              U2U
+              {currency.symbol}
             </Text>
             {t('Reward')}
           </StyledTextTitle>

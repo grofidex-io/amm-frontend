@@ -3,7 +3,6 @@ import { atomWithReducer } from 'jotai/utils'
 import { replaceStakingState, resetStakingState, updateCalculateApr, updateSlippagePercent, updateStakingAmountError } from './actions'
 
 export interface StakingState {
-  readonly currencyId: string
   readonly stakingAmount: string
   readonly stakingAmountError: string
   readonly slippagePercent: number | undefined
@@ -12,7 +11,6 @@ export interface StakingState {
 }
 
 const initialState: StakingState = {
-  currencyId: 'U2U',
   stakingAmount: '',
   stakingAmountError: '',
   apr: 'NaN',
@@ -24,7 +22,6 @@ const reducer = createReducer<StakingState>(initialState, (builder) =>
   builder
     .addCase(replaceStakingState, (state, { payload: { amount, amountError, percent } }) => {
       return {
-        currencyId: state.currencyId,
         stakingAmount: amount,
         stakingAmountError: amountError,
         slippagePercent: percent,

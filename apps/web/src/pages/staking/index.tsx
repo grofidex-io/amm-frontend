@@ -1,3 +1,4 @@
+import { SUPPORT_STAKING } from 'config/constants/supportChains'
 import { InfoPageLayout } from 'views/Staking/Layout'
 import { Overview } from 'views/Staking/Overview'
 
@@ -6,6 +7,6 @@ const InfoPage = () => {
 }
 
 InfoPage.Layout = InfoPageLayout
-InfoPage.chains = [] // set all
+InfoPage.chains = SUPPORT_STAKING
 
 export default InfoPage

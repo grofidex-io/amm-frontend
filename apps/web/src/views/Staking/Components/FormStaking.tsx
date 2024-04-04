@@ -1,11 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Rounding } from '@pancakeswap/swap-sdk-core'
+import { Rounding } from '@pancakeswap/sdk'
 import { Box, Flex, Input, Text } from '@pancakeswap/uikit'
 import { bigIntToBigNumber } from '@pancakeswap/utils/bigNumber'
-import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import BigNumber from 'bignumber.js'
 import { gql } from 'graphql-request'
-import { useCurrency } from 'hooks/Tokens'
 import { useStakingContract } from 'hooks/useContract'
 import { useAtom } from 'jotai'
 import debounce from 'lodash/debounce'
@@ -17,6 +15,7 @@ import { useCurrencyBalance } from 'state/wallet/hooks'
 import { validator } from 'utils/calls/staking'
 import { aprSubgraphClients } from 'utils/graphql'
 import { useAccount } from 'wagmi'
+import useStakingConfig from '../Hooks/useStakingConfig'
 import { StyledButton } from '../style'
 
 let timeFlag = Date.now()
@@ -24,7 +23,7 @@ let timeFlag = Date.now()
 const FormStaking = () => {
   const stakingContract = useStakingContract()
   const [, dispatch] = useAtom(stakingReducerAtom)
-  const { currencyId, stakingAmount, stakingAmountError, slippagePercent, apr, estimatedRewards } = useStakingState()
+  const { stakingAmount, stakingAmountError, slippagePercent, apr, estimatedRewards } = useStakingState()
   const { t } = useTranslation()
 
   const slippagePercents = [25, 50, 75, 100]
@@ -33,12 +32,13 @@ const FormStaking = () => {
     dispatch(resetStakingState())
   }, [])
 
-  const currency = useCurrency(currencyId)
+  const { currency, isWrongNetwork } = useStakingConfig()
   const { address: account } = useAccount()
-  const currencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
+  const currencyBalance = useCurrencyBalance(account, currency)
+  
   const rawBalance: BigNumber = new BigNumber(
     currencyBalance?.asFraction
-      .divide(10n ** BigInt(currencyBalance?.currency.decimals))
+      .divide(10n ** BigInt(currency.decimals))
       .toFixed(6, { groupSeparator: '' }, Rounding.ROUND_DOWN) ?? '0',
   )
 
@@ -47,7 +47,7 @@ const FormStaking = () => {
       return t('Enter an amount')
     }
     if (BigNumber(value).gt(rawBalance)) {
-      return t('Insufficient %symbol% balance', { symbol: currencyId })
+      return t('Insufficient %symbol% balance', { symbol: currency.symbol })
     }
     return ''
   }
@@ -67,7 +67,7 @@ const FormStaking = () => {
         }
       `
       const { calculateApr } = await aprSubgraphClients.request(APR_QUERY, {
-        amount: amount.multipliedBy(bigIntToBigNumber(10n ** BigInt(currencyBalance?.currency.decimals ?? 18))).toString(),
+        amount: amount.multipliedBy(bigIntToBigNumber(10n ** BigInt(currency.decimals))).toString(),
         id: Number(validatorId),
       })
       const aprValue = BigNumber(calculateApr)
@@ -116,7 +116,7 @@ const FormStaking = () => {
   const parseSlippagePercentToAmount = (percent) => {
     try {
       const amount = rawBalance.multipliedBy(new BigNumber(percent / 100))
-      const amountStr = Number(amount.toFixed(6, BigNumber.ROUND_DOWN)).toString()
+      const amountStr = BigNumber(amount.toFixed(6, BigNumber.ROUND_DOWN)).toString()
       dispatch(
         replaceStakingState({
           amount: amountStr,
@@ -163,10 +163,10 @@ const FormStaking = () => {
               {t('U2U Available')}
             </Text>
             <Text fontSize="12px" fontWeight="700" color="primary" ml="3px">
-              {formatAmount(currencyBalance, 6)}
+              {isWrongNetwork ? '--' : rawBalance.toString()}
             </Text>
             <Text fontSize="12px" ml="3px">
-              {currencyId}
+              {currency.symbol}
             </Text>
           </Flex>
         </Flex>
