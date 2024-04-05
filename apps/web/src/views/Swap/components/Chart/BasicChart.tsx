@@ -97,6 +97,7 @@ const BasicChart = ({
   const LIST_RESOLUTION = chartType === CHART_TYPE.CANDLE ? RESOLUTION_CANDLE : RESOLUTION_LINE
   const handleSetChartType = (type: number) => {
     setTimeWindow(0)
+    setResolution('1')
     setChartType(type)
   }
   const handleSetTimeWindow = (timeDay: PairDataTimeWindowEnum | number) => {
