@@ -128,6 +128,7 @@ const TrandingViewCustom = ({ symbol, resolution }: TradingViewProps) => {
         resolution,
         symbol,
       }
+      setChartReady(false)
       setLoading(true)
       if (isMobile) {
         opts.hide_side_toolbar = true
