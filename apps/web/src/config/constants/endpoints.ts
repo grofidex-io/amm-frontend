@@ -56,7 +56,7 @@ export const TRADING_REWARD_API = 'https://trading-reward.pancakeswap.com/api/v1
 
 export const QUOTING_API = `${process.env.NEXT_PUBLIC_QUOTING_API}/v0/quote`
 
-export const FARMS_API = 'https://amm-prod.steven-d1e.workers.dev'
+export const FARMS_API = 'https://farm-worker.grofidex.io'
 
 export const MERCURYO_WIDGET_ID = process.env.NEXT_PUBLIC_MERCURYO_WIDGET_ID || '64d1f9f9-85ee-4558-8168-1dc0e7057ce6'
 
