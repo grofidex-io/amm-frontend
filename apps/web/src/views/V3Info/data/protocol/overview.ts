@@ -108,7 +108,6 @@ export async function fetchProtocolData(
       txCount,
       txCountChange,
     }
-    console.log("🚀 ~ formattedData:", formattedData)
 
     return {
       error: false,
