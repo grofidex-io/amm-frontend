@@ -3,6 +3,7 @@ import { Button, useToast } from '@pancakeswap/uikit'
 import { bigIntToBigNumber } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { gql } from 'graphql-request'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useStakingContract } from 'hooks/useContract'
 import { useAtom } from 'jotai'
@@ -12,6 +13,7 @@ import { useStakingState } from 'state/staking/hooks'
 import { stakingReducerAtom } from 'state/staking/reducer'
 import styled from 'styled-components'
 import { stake } from 'utils/calls/staking'
+import { ammStakingClients } from 'utils/graphql'
 import useStakingConfig from '../Hooks/useStakingConfig'
 import { useStakingList } from '../Hooks/useStakingList'
 
@@ -20,6 +22,12 @@ const StyledButton = styled(Button)`
     height: 44px;
   }
 `
+
+interface ContractsResponse {
+  contracts: {
+    id: string
+  }[]
+}
 
 const FormStakingBtn = () => {
   const { t } = useTranslation()
@@ -36,6 +44,22 @@ const FormStakingBtn = () => {
   // const { fetchWithCatchTxError, loading: isPending } = useCatchTxError()
   const { fetchWithCatchTxError } = useCatchTxError()
 
+  const getContractId = async () => {
+    try {
+      const CONTRACT_ID_QUERY = gql`
+        query getContractId {
+          contracts(where: {tokenId: "0"}) {
+            id
+          }
+        }
+      `
+      const { contracts } = await ammStakingClients.request<ContractsResponse>(CONTRACT_ID_QUERY)
+      return contracts.length === 0 ? null : contracts[0].id
+    } catch(e) {
+      return null
+    }
+  }
+
   const handleStake = async () => {
     try {
       if (stakingAmount === '' || BigNumber(stakingAmount).eq(0)) {
@@ -46,8 +70,9 @@ const FormStakingBtn = () => {
         return
       }
       setIsStaking(true)
+      const contractId = await getContractId() ?? '0x0000000000000000000000000000000000000000'
       const value = BigNumber(stakingAmount).multipliedBy(bigIntToBigNumber(10n ** BigInt(currency?.decimals ?? 18)))
-      const receipt = await fetchWithCatchTxError(() => stake(stakingContract, value.toFixed(0, BigNumber.ROUND_DOWN)))
+      const receipt = await fetchWithCatchTxError(() => stake(stakingContract, value.toFixed(0, BigNumber.ROUND_DOWN), contractId))
       if (receipt?.status) {
         toastSuccess(
           t('Success!'),

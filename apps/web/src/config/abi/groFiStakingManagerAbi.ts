@@ -57,6 +57,12 @@ export const groFiStakingManagerAbi = [
 				internalType: "uint256",
 				name: "tokenId",
 				type: "uint256"
+			},
+			{
+				indexed: false,
+				internalType: "address",
+				name: "contractStake",
+				type: "address"
 			}
 		],
 		name: "BurnNFT",
@@ -132,6 +138,12 @@ export const groFiStakingManagerAbi = [
 				internalType: "uint256",
 				name: "toValidatorID",
 				type: "uint256"
+			},
+			{
+				indexed: false,
+				internalType: "address",
+				name: "contractStake",
+				type: "address"
 			}
 		],
 		name: "Stake",
@@ -303,32 +315,20 @@ export const groFiStakingManagerAbi = [
 	{
 		inputs: [
 			{
-				components: [
-					{
-						internalType: "uint256",
-						name: "amount",
-						type: "uint256"
-					},
-					{
-						internalType: "uint256",
-						name: "issueAt",
-						type: "uint256"
-					}
-				],
-				internalType: "struct NFTDescriptor.ConstructTokenURIParams",
-				name: "params",
-				type: "tuple"
+				internalType: "address",
+				name: "",
+				type: "address"
 			}
 		],
-		name: "constructTokenURI",
+		name: "contractAvail",
 		outputs: [
 			{
-				internalType: "string",
+				internalType: "uint256",
 				name: "",
-				type: "string"
+				type: "uint256"
 			}
 		],
-		stateMutability: "pure",
+		stateMutability: "view",
 		type: "function"
 	},
 	{
@@ -381,6 +381,11 @@ export const groFiStakingManagerAbi = [
 				type: "address"
 			},
 			{
+				internalType: "address",
+				name: "_nftDes",
+				type: "address"
+			},
+			{
 				internalType: "uint256",
 				name: "_validator",
 				type: "uint256"
@@ -428,6 +433,19 @@ export const groFiStakingManagerAbi = [
 				internalType: "string",
 				name: "",
 				type: "string"
+			}
+		],
+		stateMutability: "view",
+		type: "function"
+	},
+	{
+		inputs: [],
+		name: "nftDes",
+		outputs: [
+			{
+				internalType: "address",
+				name: "",
+				type: "address"
 			}
 		],
 		stateMutability: "view",
@@ -567,7 +585,13 @@ export const groFiStakingManagerAbi = [
 		type: "function"
 	},
 	{
-		inputs: [],
+		inputs: [
+			{
+				internalType: "address",
+				name: "_staking",
+				type: "address"
+			}
+		],
 		name: "stake",
 		outputs: [],
 		stateMutability: "payable",
@@ -692,6 +716,19 @@ export const groFiStakingManagerAbi = [
 			}
 		],
 		name: "updateConfig",
+		outputs: [],
+		stateMutability: "nonpayable",
+		type: "function"
+	},
+	{
+		inputs: [
+			{
+				internalType: "address",
+				name: "_nftDes",
+				type: "address"
+			}
+		],
+		name: "updateNFT",
 		outputs: [],
 		stateMutability: "nonpayable",
 		type: "function"
