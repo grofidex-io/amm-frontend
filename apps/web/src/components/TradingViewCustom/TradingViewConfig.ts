@@ -113,7 +113,7 @@ export const defaultChartProps = {
   custom_css_url: "/charting_library/tradingview-chart.css",
   loading_screen: { backgroundColor: "#272727", foregroundColor: "#2962ff" },
   favorites: {
-    intervals: ["5", "15", "60", "240", "1D"],
+    intervals: ["1", "5", "15", "60", "240", "1D"],
   },
   // custom_formatters: {
   //   timeFormatter: {

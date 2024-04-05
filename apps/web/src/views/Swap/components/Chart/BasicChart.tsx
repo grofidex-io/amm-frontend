@@ -93,7 +93,7 @@ const BasicChart = ({
 }) => {
   const [chartType, setChartType] = useState<number>(CHART_TYPE.LINE)
   const [timeWindow, setTimeWindow] = useState<PairDataTimeWindowEnum | number>(0)
-  const [resolution, setResolution] = useState<string>('15')
+  const [resolution, setResolution] = useState<string>('1')
   const LIST_RESOLUTION = chartType === CHART_TYPE.CANDLE ? RESOLUTION_CANDLE : RESOLUTION_LINE
   const handleSetTimeWindow = (timeDay: PairDataTimeWindowEnum | number) => {
     setTimeWindow(timeDay)
