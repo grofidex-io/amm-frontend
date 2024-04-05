@@ -1,6 +1,8 @@
+import { ChainDefault } from '@pancakeswap/chains'
 import BigNumber from 'bignumber.js'
 import { gql, GraphQLClient } from 'graphql-request'
 import { Block } from 'state/info/types'
+import { SUBGRAPH_START_BLOCK } from 'views/V3Info/constants'
 import { ProtocolData } from '../../types'
 import { getPercentChange } from '../../utils/data'
 
@@ -46,7 +48,7 @@ export async function fetchProtocolData(
 
     const data24 = await dataClient.request<GlobalResponse>(GLOBAL_DATA(block24?.number ?? 0))
 
-    const data48 = await dataClient.request<GlobalResponse>(GLOBAL_DATA(block48?.number ?? 0))
+    const data48 = await dataClient.request<GlobalResponse>(GLOBAL_DATA(block48?.number <= SUBGRAPH_START_BLOCK[ChainDefault] ? SUBGRAPH_START_BLOCK[ChainDefault] : block48?.number ?? 0))
 
     const parsed = data?.factories?.[0]
     const parsed24 = data24?.factories?.[0]
@@ -106,6 +108,7 @@ export async function fetchProtocolData(
       txCount,
       txCountChange,
     }
+    console.log("🚀 ~ formattedData:", formattedData)
 
     return {
       error: false,
