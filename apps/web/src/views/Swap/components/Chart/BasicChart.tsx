@@ -80,7 +80,7 @@ const StyledButtonMenuItem = styled(ButtonMenuItem)`
   }
 `
 
-const RESOLUTION_CANDLE = ['15M', '1H', '1D', '1W', '1M']
+const RESOLUTION_CANDLE = ['1', '5','15M', '1H', '1D', '1W', '1M']
 const RESOLUTION_LINE = ['1D', '1W', '1M', '1Y' ]
 const BasicChart = ({
   token0Address,
@@ -93,24 +93,30 @@ const BasicChart = ({
 }) => {
   const [chartType, setChartType] = useState<number>(CHART_TYPE.LINE)
   const [timeWindow, setTimeWindow] = useState<PairDataTimeWindowEnum | number>(0)
-  const [resolution, setResolution] = useState<string>('15')
+  const [resolution, setResolution] = useState<string>('1')
   const LIST_RESOLUTION = chartType === CHART_TYPE.CANDLE ? RESOLUTION_CANDLE : RESOLUTION_LINE
   const handleSetTimeWindow = (timeDay: PairDataTimeWindowEnum | number) => {
     setTimeWindow(timeDay)
     switch(timeDay) {
       case 0:
-        setResolution('15')
+        setResolution('1')
         break
       case 1:
-        setResolution('60')
+        setResolution('5')
         break
       case 2:
-        setResolution('1D')
+        setResolution('15')
         break
       case 3:
-        setResolution('1W')
+        setResolution('60')
         break
       case 4:
+        setResolution('1D')
+        break
+      case 5:
+        setResolution('1W')
+        break
+      case 6:
         setResolution('1M')
         break
       default:

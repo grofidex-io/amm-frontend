@@ -9,6 +9,8 @@ export const CORS_ALLOW = [
   /^http:\/\/localhost(:\d+)?$/,
   'https://testnet.u2w.io',
   'https://testnet.u2dex.io',
+  'https://testnet.grofidex.io',
+  'https://grofidex.io'
 ]
 
 function isString(s: any): s is string {

@@ -1,11 +1,21 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Loading, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useDataFeed } from 'hooks/tradingView/useDataFeed'
 import { useStreaming } from 'hooks/tradingView/useStream'
 import { useEffect, useRef, useState } from 'react'
+import styled from 'styled-components'
 import { usePoolCandle } from 'views/Swap/hooks/usePoolCandle'
 import { IChartingLibraryWidget } from "../../../public/charting_library/charting_library"
 import { defaultChartProps } from './TradingViewConfig'
+
+const ContainerLoading = styled.div`
+  height: 100%;
+  width: 100%;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  background: ${({ theme }) => theme.colors.backgroundAlt};
+`
 /**
  * When the script tag is injected the TradingView object is not immediately
  * available on the window. So we listen for when it gets set
@@ -57,18 +67,21 @@ interface TradingViewProps {
 }
 const TrandingViewCustom = ({ symbol, resolution }: TradingViewProps) => {
   const { currentLanguage } = useTranslation()
+  let firstInit  = true
   const chartContainerRef = useRef(null)
   const [isChartReady, setChartReady] = useState<boolean>(false)
+  const [isLoading, setLoading] = useState<boolean>(true)
   const tvWidgetRef = useRef<IChartingLibraryWidget | null>(null);
   const { isMobile } = useMatchBreakpoints()
   const [lastTime, setLastTime] = useState<number>(0)
   const symbolAddress = symbol.split("-")
   const pairs = symbolAddress[1].split('_')
+  
   // const chartContainerRef = useRef<HTMLDivElement | null>(null);
   // const [isScriptLoaded, setScriptLoaded] = useState(false)
-  const  { dataFeed } = useDataFeed()
+  const  { dataFeed, precision } = useDataFeed()
   const { handleCandle } = useStreaming()
-  const newCandleData = usePoolCandle(pairs, lastTime * 1000 ,  Date.now(), resolution) 
+  const newCandleData =  usePoolCandle(pairs, lastTime * 1000 ,  Date.now(), resolution) 
   if(newCandleData && newCandleData?.length > 0) {
     const lastCandle = newCandleData[newCandleData?.length - 1]
     if(lastCandle) {
@@ -89,19 +102,34 @@ const TrandingViewCustom = ({ symbol, resolution }: TradingViewProps) => {
     }
   }
 
+  const updatePrecision = (_precision: number) => {
+    if(tvWidgetRef.current) {
+      const _format = `1${'0'.repeat(_precision)}`
+      tvWidgetRef.current?.applyOverrides({ 'mainSeriesProperties.minTick': `${_format},1,false` })
+    }
+  }
+
+
+
   const onReady = () => {
     tvWidgetRef.current?.onChartReady(() => {
       setChartReady(true)
       handleLastTime()
+      setTimeout(() => {
+        firstInit = false
+      })
+      tvWidgetRef.current?.activeChart().dataReady(() => {
+        setLoading(false);
+      });
     })
-
   }
-
   useEffect(() => {
       const opts: any = {
         resolution,
         symbol,
       }
+      setChartReady(false)
+      setLoading(true)
       if (isMobile) {
         opts.hide_side_toolbar = true
       }
@@ -119,25 +147,23 @@ const TrandingViewCustom = ({ symbol, resolution }: TradingViewProps) => {
         })
       }
 
-    
-
-
     // Ignore isMobile to avoid re-render TV
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentLanguage, symbol])
+  }, [currentLanguage, symbol, resolution])
 
+  
   useEffect(() => {
-
-    const chart = isChartReady && tvWidgetRef.current?.activeChart  ? tvWidgetRef.current?.activeChart() : null
-    if(resolution && chart && isChartReady) {
-      chart.resetData()
-      const _resolution: any = resolution
-      chart.setResolution(_resolution)
+    updatePrecision(precision)
+  }, [precision, tvWidgetRef, isChartReady])
+  
+  useEffect(() => {
+    if(resolution && tvWidgetRef.current && !firstInit) {
+      tvWidgetRef.current?.remove()
       setTimeout(() => {
         handleLastTime()
       }, 1000)
     }
-  }, [resolution, isChartReady])
+  }, [resolution])
 
   useEffect(() => {
     return () => {
@@ -147,6 +173,7 @@ const TrandingViewCustom = ({ symbol, resolution }: TradingViewProps) => {
   return (
     <Box overflow="hidden" height="100%" className="tradingview_container">
       {/* <div ref={chartContainerRef} /> */}
+      {isLoading && <ContainerLoading><Loading width={40} height={40}/></ContainerLoading> }
       <div style={{height: "100%"}} ref={chartContainerRef}  />
     </Box> 
   )

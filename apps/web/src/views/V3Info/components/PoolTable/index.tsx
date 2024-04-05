@@ -22,21 +22,21 @@ const ResponsiveGrid = styled.div`
   grid-gap: 1em;
   align-items: center;
 
-  grid-template-columns: 20px 3.5fr repeat(3, 1fr);
+  grid-template-columns: 30px 3.5fr repeat(3, 1fr);
   padding: 0 24px;
   & :nth-child(3) {
     max-width: 300px;
     word-break: break-word;
   }
   @media screen and (max-width: 900px) {
-    grid-template-columns: 20px 1.5fr repeat(2, 1fr);
+    grid-template-columns: 30px 1.5fr repeat(2, 1fr);
     & :nth-child(3) {
       display: none;
     }
   }
 
   @media screen and (max-width: 500px) {
-    grid-template-columns: 20px 1.5fr repeat(1, 1fr);
+    grid-template-columns: 30px 1.5fr repeat(1, 1fr);
     & :nth-child(5) {
       display: none;
     }
@@ -161,7 +161,7 @@ export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDat
       {sortedPools.length > 0 ? (
         <>
           <ResponsiveGrid>
-            <Text color="textSubtle">#</Text>
+            <Text color="textSubtle">{t('NO.')}</Text>
             <ClickableColumnHeader color="textSubtle">
               {t('Pair')}
               <SortButton

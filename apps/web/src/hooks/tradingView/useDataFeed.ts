@@ -1,6 +1,8 @@
 
 // import { useStreaming } from './useStreaming'
 
+import { Decimal } from "@pancakeswap/swap-sdk-core";
+import { useState } from "react";
 import { fetchPoolCandleByInterval } from "state/swap/fetch/fetchPoolCandle";
 import { PeriodParams } from "../../../public/charting_library/charting_library";
 import { useStreaming } from "./useStream";
@@ -18,8 +20,15 @@ import { useStreaming } from "./useStream";
     symbols_types: [{ name: 'crypto', value: 'crypto' }]
   }
 
+  Decimal.set({
+    precision: 20,
+    rounding: Decimal.ROUND_HALF_UP,
+    toExpNeg: -7,
+    toExpPos: 21
+  });
   
 export const useDataFeed = () => {
+  const [precision, setPrecision] = useState<number>(4)
   const {subscribeOnStream, unsubscribeFromStream} = useStreaming()
   const dataFeed = {
     onReady: (callback: any) => {
@@ -100,8 +109,12 @@ export const useDataFeed = () => {
           }
         })
         if (firstDataRequest) {
+          const lastBar = bars[bars.length - 1]
+          const _precision = new Decimal(lastBar.close).toSignificantDigits(4)
+          setPrecision(_precision.decimalPlaces())
+
           lastBarsCache.set(symbolInfo.key, {
-            ...bars[bars.length - 1]
+            ...lastBar
           })
         }
         onResult(bars, { noData: false })
@@ -118,7 +131,8 @@ export const useDataFeed = () => {
     }
   }
   return {
-    dataFeed
+    dataFeed,
+    precision
   }
 
 }

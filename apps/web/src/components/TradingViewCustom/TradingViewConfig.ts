@@ -56,7 +56,7 @@ export const chartOverrides = {
   "paneProperties.legendProperties.showSymbol": false,
   "paneProperties.legendProperties.showSeriesOHLC": true,
   "mainSeriesProperties.statusViewStyle.showInterval": false,
-  "mainSeriesProperties.minTick": '1000,1,false',
+  // "mainSeriesProperties.minTick": '1000,1,false',
   "scalesProperties.showSymbolLabels": false,
   ...chartStyleOverrides,
 };
@@ -113,7 +113,7 @@ export const defaultChartProps = {
   custom_css_url: "/charting_library/tradingview-chart.css",
   loading_screen: { backgroundColor: "#272727", foregroundColor: "#2962ff" },
   favorites: {
-    intervals: ["5", "15", "60", "240", "1D"],
+    intervals: ["1", "5", "15", "60", "240", "1D"],
   },
   // custom_formatters: {
   //   timeFormatter: {

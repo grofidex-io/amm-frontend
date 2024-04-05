@@ -160,10 +160,10 @@ const FormStaking = () => {
           </Text>
           <Flex alignItems="center">
             <Text fontSize="12px" color="textSubtle" ml="3px">
-              {t('U2U Available')}
+              {t('%symbol% Available', {symbol: currency.symbol})}
             </Text>
             <Text fontSize="12px" fontWeight="700" color="primary" ml="3px">
-              {isWrongNetwork ? '--' : rawBalance.toString()}
+              {isWrongNetwork ? '--' : BigNumber(rawBalance).toFixed(2, BigNumber.ROUND_DOWN)}
             </Text>
             <Text fontSize="12px" ml="3px">
               {currency.symbol}
@@ -177,7 +177,7 @@ const FormStaking = () => {
             pattern="^[0-9]*[.,]?[0-9]{0,6}$"
             placeholder="0.00"
             value={stakingAmount}
-            maxLength={50}
+            maxLength={20}
             // onBlur={() => {
             //   parseCustomSlippage((userSlippageTolerance / 100).toFixed(2))
             // }}
@@ -222,7 +222,7 @@ const FormStaking = () => {
             <Text color="textSubtle" fontSize={["13px", "14px"]}>
               {t('Estimated rewards')}
             </Text>
-            <Text fontSize="14px">{estimatedRewards === 'NaN' ? '--' : estimatedRewards} U2U</Text>
+            <Text fontSize="14px">{estimatedRewards === 'NaN' ? '--' : estimatedRewards} {currency.symbol}</Text>
           </Flex>
         </Box>
       </Box>
