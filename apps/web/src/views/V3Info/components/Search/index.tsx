@@ -73,6 +73,7 @@ const Menu = styled.div`
   ${({ theme }) => theme.mediaQueries.xl} {
     right: 0;
     transform: unset;
+    left: auto;
   }
 `
 
