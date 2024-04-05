@@ -36,7 +36,6 @@ const Menu = styled.div`
   top: 50px;
   max-height: 400px;
   overflow: auto;
-  right: 0;
   padding: 1.5rem;
   padding-bottom: 2.5rem;
   position: absolute;
@@ -46,6 +45,8 @@ const Menu = styled.div`
     0px 24px 32px rgba(0, 0, 0, 0.04);
   border: 1px solid ${({ theme }) => theme.colors.secondary};
   margin-top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
   ${({ theme }) => theme.mediaQueries.sm} {
     margin-top: 0;
     width: 500px;
@@ -53,8 +54,12 @@ const Menu = styled.div`
   }
   ${({ theme }) => theme.mediaQueries.md} {
     margin-top: 0;
-    width: 800px;
+    width: 700px;
     max-height: 600px;
+  }
+  ${({ theme }) => theme.mediaQueries.xl} {
+    right: 0;
+    transform: unset;
   }
 `
 
