@@ -140,6 +140,8 @@ const getQueryByResolution = (resolution: string | number) => {
       return POOL_CANDLE_HOUR
   }
 }
+
+
 export const  fetchPoolCandleByInterval = async (pairs: Array<string>, from: number, to: number, resolution: string | number) => {
   const client = v3InfoClients[ChainId.U2U_NEBULAS]
   const query = getQueryByResolution(resolution)
@@ -164,12 +166,16 @@ export const  fetchPoolCandleByInterval = async (pairs: Array<string>, from: num
 
   const data = list
   ? list?.map((m) => {
+    const low = m.low1 || m.low
+    const high = m.high1 || m.high
+    const open = m.open1 || m.open
+    const close = m.close1 || m.close
       return {
         time: m.date ? m.date * 1000 : m.periodStartUnix * 1000,
-        low: m.low1 || m.low,
-        high: m.high1 || m.high,
-        open: m.open1 || m.open,
-        close: m.close1 || m.close,
+        low: Number(low),
+        high: Number(high),
+        open: Number(open),
+        close: Number(close),
         volume: m.volumeToken1,
         timeMs: m.date || m.periodStartUnix
       }

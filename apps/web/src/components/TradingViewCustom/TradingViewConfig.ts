@@ -56,7 +56,7 @@ export const chartOverrides = {
   "paneProperties.legendProperties.showSymbol": false,
   "paneProperties.legendProperties.showSeriesOHLC": true,
   "mainSeriesProperties.statusViewStyle.showInterval": false,
-  "mainSeriesProperties.minTick": '1000,1,false',
+  // "mainSeriesProperties.minTick": '1000,1,false',
   "scalesProperties.showSymbolLabels": false,
   ...chartStyleOverrides,
 };

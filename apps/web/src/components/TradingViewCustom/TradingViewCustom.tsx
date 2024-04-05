@@ -57,6 +57,7 @@ interface TradingViewProps {
 }
 const TrandingViewCustom = ({ symbol, resolution }: TradingViewProps) => {
   const { currentLanguage } = useTranslation()
+  let firstInit  = true
   const chartContainerRef = useRef(null)
   const [isChartReady, setChartReady] = useState<boolean>(false)
   const tvWidgetRef = useRef<IChartingLibraryWidget | null>(null);
@@ -64,11 +65,12 @@ const TrandingViewCustom = ({ symbol, resolution }: TradingViewProps) => {
   const [lastTime, setLastTime] = useState<number>(0)
   const symbolAddress = symbol.split("-")
   const pairs = symbolAddress[1].split('_')
+  
   // const chartContainerRef = useRef<HTMLDivElement | null>(null);
   // const [isScriptLoaded, setScriptLoaded] = useState(false)
-  const  { dataFeed } = useDataFeed()
+  const  { dataFeed, precision } = useDataFeed()
   const { handleCandle } = useStreaming()
-  const newCandleData = usePoolCandle(pairs, lastTime * 1000 ,  Date.now(), resolution) 
+  const newCandleData =  usePoolCandle(pairs, lastTime * 1000 ,  Date.now(), resolution) 
   if(newCandleData && newCandleData?.length > 0) {
     const lastCandle = newCandleData[newCandleData?.length - 1]
     if(lastCandle) {
@@ -89,14 +91,24 @@ const TrandingViewCustom = ({ symbol, resolution }: TradingViewProps) => {
     }
   }
 
+  const updatePrecision = (_precision: number) => {
+    if(tvWidgetRef.current) {
+      const _format = `1${'0'.repeat(_precision)}`
+      tvWidgetRef.current?.applyOverrides({ 'mainSeriesProperties.minTick': `${_format},1,false` })
+    }
+  }
+
+
+
   const onReady = () => {
     tvWidgetRef.current?.onChartReady(() => {
       setChartReady(true)
       handleLastTime()
+      setTimeout(() => {
+        firstInit = false
+      })
     })
-
   }
-
   useEffect(() => {
       const opts: any = {
         resolution,
@@ -119,25 +131,23 @@ const TrandingViewCustom = ({ symbol, resolution }: TradingViewProps) => {
         })
       }
 
-    
-
-
     // Ignore isMobile to avoid re-render TV
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentLanguage, symbol])
+  }, [currentLanguage, symbol, resolution])
 
+  
   useEffect(() => {
-
-    const chart = isChartReady && tvWidgetRef.current?.activeChart  ? tvWidgetRef.current?.activeChart() : null
-    if(resolution && chart && isChartReady) {
-      chart.resetData()
-      const _resolution: any = resolution
-      chart.setResolution(_resolution)
+    updatePrecision(precision)
+  }, [precision, tvWidgetRef, isChartReady])
+  
+  useEffect(() => {
+    if(resolution && tvWidgetRef.current && !firstInit) {
+      tvWidgetRef.current.remove()
       setTimeout(() => {
         handleLastTime()
       }, 1000)
     }
-  }, [resolution, isChartReady])
+  }, [resolution])
 
   useEffect(() => {
     return () => {
