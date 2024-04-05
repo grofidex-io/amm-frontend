@@ -135,9 +135,11 @@ const TrandingViewCustom = ({ symbol, resolution }: TradingViewProps) => {
       }
       // @ts-ignore
       if (window.tv?.widget || window.TradingView?.widget) {
-        // @ts-ignore
-        tvWidgetRef.current = initializeTradingView(window.TradingView || window.tv, currentLanguage.code, opts, dataFeed, chartContainerRef)
-        onReady()
+        setTimeout(() => {
+          // @ts-ignore
+          tvWidgetRef.current = initializeTradingView(window.TradingView || window.tv, currentLanguage.code, opts, dataFeed, chartContainerRef)
+          onReady()
+        })
       } else {
         tradingViewListener().then((tv) => {
           // @ts-ignore
