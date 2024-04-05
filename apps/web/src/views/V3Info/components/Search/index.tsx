@@ -49,7 +49,8 @@ const Menu = styled.div`
   top: 50px;
   max-height: 400px;
   overflow: auto;
-  right: 0;
+  left: 50%;
+  transform: translateX(-50%);
   padding: 1.5rem;
   padding-bottom: 2.5rem;
   position: absolute;
@@ -66,8 +67,12 @@ const Menu = styled.div`
   }
   ${({ theme }) => theme.mediaQueries.md} {
     margin-top: 0;
-    width: 800px;
+    width: 700px;
     max-height: 600px;
+  }
+  ${({ theme }) => theme.mediaQueries.xl} {
+    right: 0;
+    transform: unset;
   }
 `
 
@@ -260,7 +265,7 @@ const Search = () => {
         {isLoading && debouncedSearchTerm && <Skeleton />}
         {showMessage && <Text>{noTokensMessage}</Text>}
         {!showWatchlist && debouncedSearchTerm.length < MINIMUM_SEARCH_CHARACTERS && (
-          <Text>{t('Search liquidity pairs or tokens')}</Text>
+          <Text>{t('Search tokens')}</Text>
         )}
       </>
     )
@@ -278,7 +283,7 @@ const Search = () => {
         {isLoading && debouncedSearchTerm && <Skeleton />}
         {showMessage && <Text>{noPoolsMessage}</Text>}
         {!showWatchlist && debouncedSearchTerm.length < MINIMUM_SEARCH_CHARACTERS && (
-          <Text>{t('Search liquidity pairs or tokens')}</Text>
+          <Text>{t('Search liquidity pairs')}</Text>
         )}
       </>
     )
@@ -304,9 +309,9 @@ const Search = () => {
         {showMenu && (
           <Menu ref={menuRef}>
             <Flex mb="16px">
-              <OptionButton enabled={!showWatchlist} onClick={() => setShowWatchlist(false)}>
+              {/* <OptionButton enabled={!showWatchlist} onClick={() => setShowWatchlist(false)}>
                 {t('Search')}
-              </OptionButton>
+              </OptionButton> */}
               <OptionButton style={{ display: 'none' }} enabled={showWatchlist} onClick={() => setShowWatchlist(true)}>
                 {t('Watchlist')}
               </OptionButton>

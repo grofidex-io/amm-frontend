@@ -6,7 +6,7 @@ import toFormat from 'toformat'
 
 import { BigintIsh, Rounding } from '../constants'
 
-const Decimal = toFormat(_Decimal)
+export const Decimal = toFormat(_Decimal)
 const Big = toFormat(_Big)
 
 const toSignificantRounding = {
@@ -42,6 +42,7 @@ const toFixedRounding = {
   [Rounding.ROUND_HALF_UP]: RoundingMode.RoundHalfUp,
   [Rounding.ROUND_UP]: RoundingMode.RoundUp,
 }
+
 
 export class Fraction {
   public readonly numerator: bigint

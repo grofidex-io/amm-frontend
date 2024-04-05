@@ -34,21 +34,21 @@ const ResponsiveGrid = styled.div`
   grid-gap: 1em;
   align-items: center;
 
-  grid-template-columns: 20px 3fr repeat(4, 1fr);
+  grid-template-columns: 30px 3fr repeat(4, 1fr);
   padding: 0 24px;
   & :nth-child(3), & :nth-child(6) {
     max-width: 300px;
     word-break: break-word;
   }
   @media screen and (max-width: 991px) {
-    grid-template-columns: 20px 1.5fr repeat(3, 1fr);
+    grid-template-columns: 30px 1.5fr repeat(3, 1fr);
     & :nth-child(4) {
       display: none;
     }
   }
 
   @media screen and (max-width: 767px) {
-    grid-template-columns: 20px 2fr repeat(2, 1fr);
+    grid-template-columns: 30px 2fr repeat(2, 1fr);
     & :nth-child(6) {
       display: none;
     }
@@ -197,7 +197,7 @@ export default function TokenTable({
       {sortedTokens.length > 0 ? (
         <AutoColumn gap="16px">
           <ResponsiveGrid>
-            <Text color="textSubtle">#</Text>
+            <Text color="textSubtle">{t('NO.')}</Text>
             <ClickableColumnHeader color="textSubtle">
               {t('Name')}
               <SortButton
