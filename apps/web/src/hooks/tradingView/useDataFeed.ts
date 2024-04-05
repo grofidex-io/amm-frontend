@@ -109,13 +109,14 @@ export const useDataFeed = () => {
           }
         })
         if (firstDataRequest) {
-          const lastBar = bars[bars.length - 1]
-          const _precision = new Decimal(lastBar.close).toSignificantDigits(4)
-          setPrecision(_precision.decimalPlaces())
-
-          lastBarsCache.set(symbolInfo.key, {
-            ...lastBar
-          })
+          if(bars.length > 0) {
+            const lastBar = bars[bars.length - 1]
+            const _precision = new Decimal(Math.min(lastBar.close,bars[0].close)).toSignificantDigits(4)
+            setPrecision(_precision.decimalPlaces())
+            lastBarsCache.set(symbolInfo.key, {
+              ...lastBar
+            })
+          }
         }
         onResult(bars, { noData: false })
       } catch (error) {
