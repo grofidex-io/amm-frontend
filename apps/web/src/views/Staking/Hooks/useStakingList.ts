@@ -33,7 +33,7 @@ export function useStakingList() {
 
   const formatAmount = (value: BigNumber) => {
     const rawValue: BigNumber = value.dividedBy(bigIntToBigNumber(10n ** BigInt(currency?.decimals ?? 18)))
-    return Number(rawValue.toFixed(6, BigNumber.ROUND_DOWN)).toString()
+    return rawValue.toFixed(6, BigNumber.ROUND_DOWN)
   }
 
   async function fetchWithdrawPeriodTime() {
@@ -132,7 +132,7 @@ export function useStakingList() {
       return fetchStakingList(stakingContract?.account?.address?.toLowerCase())
     },
     enabled: Boolean(stakingContract?.account?.address) && !isWrongNetwork,
-    refetchInterval: 7 * 60 * 1000, // milliseconds
+    refetchInterval: 30000, // milliseconds
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     retry: 3,
