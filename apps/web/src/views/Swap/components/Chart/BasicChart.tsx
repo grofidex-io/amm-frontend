@@ -95,6 +95,10 @@ const BasicChart = ({
   const [timeWindow, setTimeWindow] = useState<PairDataTimeWindowEnum | number>(0)
   const [resolution, setResolution] = useState<string>('1')
   const LIST_RESOLUTION = chartType === CHART_TYPE.CANDLE ? RESOLUTION_CANDLE : RESOLUTION_LINE
+  const handleSetChartType = (type: number) => {
+    setTimeWindow(0)
+    setChartType(type)
+  }
   const handleSetTimeWindow = (timeDay: PairDataTimeWindowEnum | number) => {
     setTimeWindow(timeDay)
     switch(timeDay) {
@@ -192,7 +196,7 @@ const BasicChart = ({
   return (
     <>
       <Flex position="absolute" right="0" top={["-55px", "-55px", "-60px"]}>
-        <IconImage onClick={() => { setChartType(CHART_TYPE.LINE) }} className={chartType === CHART_TYPE.LINE ? 'active' : ''}>
+        <IconImage onClick={() => { handleSetChartType(CHART_TYPE.LINE) }} className={chartType === CHART_TYPE.LINE ? 'active' : ''}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 21" fill="none">
             <g clip-path="url(#clip0_70_5252)">
             <path d="M19.2807 19.2492H4.28068C3.61764 19.2492 2.98175 18.9858 2.51291 18.517C2.04407 18.0481 1.78068 17.4122 1.78068 16.7492V1.76919C1.78068 1.54817 1.69288 1.33621 1.5366 1.17993C1.38032 1.02365 1.16836 0.935852 0.947347 0.935852C0.726333 0.935852 0.514372 1.02365 0.358091 1.17993C0.201811 1.33621 0.114014 1.54817 0.114014 1.76919L0.114014 16.7492C0.115337 17.8538 0.554749 18.9129 1.33586 19.694C2.11698 20.4751 3.17602 20.9145 4.28068 20.9159H19.2807C19.5017 20.9159 19.7137 20.8281 19.8699 20.6718C20.0262 20.5155 20.114 20.3035 20.114 20.0825C20.114 19.8615 20.0262 19.6495 19.8699 19.4933C19.7137 19.337 19.5017 19.2492 19.2807 19.2492Z" fill="currentColor"/>
@@ -205,7 +209,7 @@ const BasicChart = ({
             </defs>
           </svg>
         </IconImage>
-        <IconImage onClick={() => { setChartType(CHART_TYPE.CANDLE) }} className={chartType === CHART_TYPE.CANDLE ? 'active' : ''}>
+        <IconImage onClick={() => { handleSetChartType(CHART_TYPE.CANDLE) }} className={chartType === CHART_TYPE.CANDLE ? 'active' : ''}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 21" fill="none">
             <g clip-path="url(#clip0_70_5245)">
             <path d="M19.2807 19.2692H2.61401C2.393 19.2692 2.18104 19.1814 2.02476 19.0251C1.86848 18.8688 1.78068 18.6569 1.78068 18.4359V1.76919C1.78068 1.54817 1.69288 1.33621 1.5366 1.17993C1.38032 1.02365 1.16836 0.935852 0.947347 0.935852C0.726333 0.935852 0.514372 1.02365 0.358091 1.17993C0.201811 1.33621 0.114014 1.54817 0.114014 1.76919L0.114014 18.4359C0.114014 19.0989 0.377406 19.7348 0.846247 20.2036C1.31509 20.6725 1.95097 20.9359 2.61401 20.9359H19.2807C19.5017 20.9359 19.7137 20.8481 19.8699 20.6918C20.0262 20.5355 20.114 20.3235 20.114 20.1025C20.114 19.8815 20.0262 19.6695 19.8699 19.5133C19.7137 19.357 19.5017 19.2692 19.2807 19.2692Z" fill="currentColor"/>
