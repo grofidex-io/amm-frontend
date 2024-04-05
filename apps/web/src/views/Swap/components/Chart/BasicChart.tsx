@@ -80,7 +80,7 @@ const StyledButtonMenuItem = styled(ButtonMenuItem)`
   }
 `
 
-const RESOLUTION_CANDLE = ['1', '5','15M', '1H', '1D', '1W', '1M']
+const RESOLUTION_CANDLE = ['1m', '5m','15m', '1H', '1D', '1W', '1M']
 const RESOLUTION_LINE = ['1D', '1W', '1M', '1Y' ]
 const BasicChart = ({
   token0Address,
