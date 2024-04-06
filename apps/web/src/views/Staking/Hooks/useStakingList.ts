@@ -33,7 +33,7 @@ export function useStakingList() {
 
   const formatAmount = (value: BigNumber) => {
     const rawValue: BigNumber = value.dividedBy(bigIntToBigNumber(10n ** BigInt(currency?.decimals ?? 18)))
-    return rawValue.toFixed(6, BigNumber.ROUND_DOWN)
+    return BigNumber(rawValue.toFixed(6, BigNumber.ROUND_DOWN)).toString()
   }
 
   async function fetchWithdrawPeriodTime() {

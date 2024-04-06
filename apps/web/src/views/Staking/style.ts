@@ -12,8 +12,11 @@ export const BorderLayout = styled(Box)`
 `
 
 export const StyledBox = styled(Box)`
-  flex: 1;
+  width: calc((100% - var(--space)) / 2);
   position: relative;
+  @media screen and (max-width: 767px) {
+    width: 100%;
+  }
   &:first-child {
     &:before {
       content: '';
@@ -27,15 +30,12 @@ export const StyledBox = styled(Box)`
         right: -31px;
       }
       @media screen and (max-width: 991px) {
-        right: -51px;
+        right: -41px;
       }
       @media screen and (max-width: 767px) {
-        right: -31px;
-      }
-      @media screen and (max-width: 575px) {
         height: 2px;
         width: 100%;
-        top: calc(100% + 21px);
+        top: calc(100% + 18px);
         right: auto;
       }
     }
