@@ -1,8 +1,8 @@
 import { getStakingContract } from 'utils/contractHelpers'
 
-export const stake = async (stakingContract: ReturnType<typeof getStakingContract>, amount: string) => {
+export const stake = async (stakingContract: ReturnType<typeof getStakingContract>, amount: string, contractId: string) => {
   if (!stakingContract.account) return undefined
-  return stakingContract.write.stake([], {
+  return stakingContract.write.stake([contractId], {
     // gas: DEFAULT_GAS_LIMIT,
     // gasPrice,
     account: stakingContract.account,
