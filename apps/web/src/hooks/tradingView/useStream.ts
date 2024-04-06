@@ -38,20 +38,12 @@ export const useStreaming = () => {
 
       if (subscriptionItemCandle.symbol.toLowerCase() !== barData.symbol.toLowerCase()) return
 
-      const {lastDailyBar} = subscriptionItemCandle
+      const { lastDailyBar } = subscriptionItemCandle
       const nextDailyBarTime = getNextDailyBarTime(lastDailyBar.time, subscriptionItemCandle.resolution)
 
       let bar: any
-
       if (barData.time >= nextDailyBarTime) {
-        bar = {
-          time: nextDailyBarTime,
-          open: barData.open,
-          high: barData.high,
-          low: barData.low,
-          close: barData.close,
-          volume: Number(barData.volume)
-        }
+        bar = barData
       } else {
         bar = {
           ...lastDailyBar,
