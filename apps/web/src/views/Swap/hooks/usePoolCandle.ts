@@ -15,7 +15,7 @@ export function usePoolCandle(pairs: Array<string>, from: number, to: number, re
     queryFn: () => fetchPoolCandleByInterval(pairs, from, to, resolution),
     enabled: Boolean(pairs && resolution && from),
     ...QUERY_SETTINGS_IMMUTABLE,
-    refetchInterval: 5000,
+    refetchInterval: 10000,
   })
   return data
 }
