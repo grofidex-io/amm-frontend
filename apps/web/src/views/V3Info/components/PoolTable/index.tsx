@@ -1,4 +1,6 @@
+import { ChainDefault } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
+import { NATIVE, WNATIVE } from '@pancakeswap/sdk'
 import { ArrowBackIcon, ArrowForwardIcon, Box, SortArrowIcon, Text } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import NextLink from 'next/link'
@@ -72,8 +74,8 @@ const SORT_FIELD = {
 const DataRow = ({ poolData, index, chainPath }: { poolData: PoolData; index: number; chainPath: string }) => {
   const chainName = useChainNameByQuery()
   const chainId = useChainIdByQuery()
-  const token0symbol = getTokenSymbolAlias(poolData.token0.address, chainId, poolData.token0.symbol)
-  const token1symbol = getTokenSymbolAlias(poolData.token1.address, chainId, poolData.token1.symbol)
+  const token0symbol = poolData.token0.address?.toLowerCase()  === WNATIVE[ChainDefault].address.toLowerCase() ? NATIVE[ChainDefault].symbol  : getTokenSymbolAlias(poolData.token0.address, chainId, poolData.token0.symbol)
+  const token1symbol = poolData.token1.address?.toLowerCase()  === WNATIVE[ChainDefault].address.toLowerCase() ? NATIVE[ChainDefault].symbol  : getTokenSymbolAlias(poolData.token1.address, chainId, poolData.token1.symbol)
 
   return (
     <LinkWrapper href={`/${v3InfoPath}${chainPath}/pairs/${poolData.address}`}>
