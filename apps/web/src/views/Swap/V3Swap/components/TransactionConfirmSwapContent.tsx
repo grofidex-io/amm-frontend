@@ -141,6 +141,7 @@ export const TransactionConfirmSwapContent = memo<TransactionConfirmSwapContentP
           disabledConfirm={showAcceptChanges}
           slippageAdjustedAmounts={slippageAdjustedAmounts ?? undefined}
           isEnoughInputBalance={isEnoughInputBalance ?? undefined}
+          typeSwap={typeSwap}
           onConfirm={onConfirm}
         />
       ) : null
@@ -154,6 +155,7 @@ export const TransactionConfirmSwapContent = memo<TransactionConfirmSwapContentP
       isEnoughInputBalance,
       slippageAdjustedAmounts,
       priceImpactWithoutFee,
+      typeSwap,
       onConfirm,
     ])
 

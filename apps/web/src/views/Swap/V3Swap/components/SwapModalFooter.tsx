@@ -12,6 +12,7 @@ import { styled } from 'styled-components'
 import { warningSeverity } from 'utils/exchange'
 import { formatExecutionPrice as mmFormatExecutionPrice } from 'views/Swap/MMLinkPools/utils/exchange'
 
+import { TYPE_SWAP } from 'state/swap/reducer'
 import FormattedPriceImpact from '../../components/FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError } from '../../components/styleds'
 import { SlippageAdjustedAmounts, formatExecutionPrice } from '../utils/exchange'
@@ -38,6 +39,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
   disabledConfirm,
   isMM,
   isRFQReady,
+  typeSwap,
   currencyBalances,
 }: {
   trade?: SmartRouterTrade<TradeType>
@@ -51,6 +53,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
   swapErrorMessage?: string | undefined
   disabledConfirm: boolean
   isMM?: boolean
+  typeSwap?: number
   isRFQReady?: boolean
   currencyBalances: {
     INPUT?: CurrencyAmount<Currency>
@@ -241,9 +244,9 @@ export const SwapModalFooter = memo(function SwapModalFooter({
           {isMM && !isRFQReady ? (
             <Dots>{t('Checking RFQ with MM')}</Dots>
           ) : severity > 2 || (tradeType === TradeType.EXACT_OUTPUT && !isEnoughInputBalance) ? (
-            t('Swap Anyway')
+            (typeSwap !== undefined ? typeSwap === TYPE_SWAP.BUY ? 'Buy Anyway' : 'Sell Anyway' : 'Swap Anyway')
           ) : (
-            t('Confirm Swap')
+            (typeSwap !== undefined ? typeSwap === TYPE_SWAP.BUY ? 'Confirm Buy' : 'Confirm Sell' : 'Confirm Swap')
           )}
         </Button>
 
