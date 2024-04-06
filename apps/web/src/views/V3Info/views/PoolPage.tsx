@@ -28,6 +28,8 @@ import { styled } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { formatAmount } from 'utils/formatInfoNumbers'
 
+import { ChainDefault } from '@pancakeswap/chains'
+import { NATIVE, WNATIVE } from '@pancakeswap/sdk'
 import { getTokenSymbolAlias } from 'utils/getTokenAlias'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import BarChart from '../components/BarChart/alt'
@@ -150,8 +152,8 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
   const { t } = useTranslation()
 
   const [poolSymbol, symbol0, symbol1] = useMemo(() => {
-    const s0 = getTokenSymbolAlias(poolData?.token0.address, chainId, poolData?.token0.symbol)
-    const s1 = getTokenSymbolAlias(poolData?.token1.address, chainId, poolData?.token1.symbol)
+    const s0 = poolData?.token0.address?.toLowerCase()  === WNATIVE[ChainDefault].address.toLowerCase() ? NATIVE[ChainDefault].symbol : getTokenSymbolAlias(poolData?.token0.address, chainId, poolData?.token0.symbol)
+    const s1 = poolData?.token1.address?.toLowerCase()  === WNATIVE[ChainDefault].address.toLowerCase() ? NATIVE[ChainDefault].symbol : getTokenSymbolAlias(poolData?.token1.address, chainId, poolData?.token1.symbol)
     return [`${s0} / ${s1}`, s0, s1]
   }, [chainId, poolData?.token0.address, poolData?.token0.symbol, poolData?.token1.address, poolData?.token1.symbol])
 
