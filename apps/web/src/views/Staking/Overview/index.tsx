@@ -36,7 +36,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
             flexDirection="column"
             order={['2', '2', '2', '2', '1']}
             width={['100%', '100%', '100%', '100%', 'auto']}
-            flexGrow={2}
+            flex={1}
           >
             <StakingList />
           </Flex>
@@ -44,7 +44,6 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
             flexDirection="column"
             order={['1', '1', '1', '1', '2']}
             width={['100%', '100%', '100%', '100%', '360px']}
-            flexGrow={1}
             mb={['20px', '20px', '24px', '24px', '0']}
           >
             <BorderLayout p={["24px 16px", "24px 16px", "30px 16px"]} m="auto" width={["100%", "100%", "400px", "400px", "100%"]}>
