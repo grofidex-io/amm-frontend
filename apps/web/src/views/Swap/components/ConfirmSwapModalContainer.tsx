@@ -1,5 +1,6 @@
-import { Modal, BoxProps } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { BoxProps, Modal } from '@pancakeswap/uikit'
+import { TYPE_SWAP } from 'state/swap/reducer'
 
 interface ConfirmSwapModalContainerProps extends BoxProps {
   hideTitleAndBackground?: boolean
@@ -7,6 +8,7 @@ interface ConfirmSwapModalContainerProps extends BoxProps {
   bodyTop?: string
   bodyPadding?: string
   handleDismiss: () => void
+  typeSwap?: number
 }
 
 const ConfirmSwapModalContainer: React.FC<React.PropsWithChildren<ConfirmSwapModalContainerProps>> = ({
@@ -15,6 +17,7 @@ const ConfirmSwapModalContainer: React.FC<React.PropsWithChildren<ConfirmSwapMod
   bodyTop,
   bodyPadding,
   hideTitleAndBackground,
+  typeSwap,
   handleDismiss,
   ...props
 }) => {
@@ -23,7 +26,7 @@ const ConfirmSwapModalContainer: React.FC<React.PropsWithChildren<ConfirmSwapMod
   return (
     <Modal
       {...props}
-      title={hideTitleAndBackground ? '' : t('Confirm Swap')}
+      title={hideTitleAndBackground ? '' : (typeSwap !== undefined ? typeSwap === TYPE_SWAP.BUY ? 'Confirm Buy' : 'Confirm Sell' : 'Confirm Swap')}
       headerPadding={hideTitleAndBackground && headerPadding ? headerPadding : '12px 24px'}
       bodyPadding={hideTitleAndBackground && bodyPadding ? bodyPadding : '24px'}
       bodyTop={bodyTop}

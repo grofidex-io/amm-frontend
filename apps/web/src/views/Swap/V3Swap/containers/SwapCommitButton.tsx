@@ -73,7 +73,7 @@ export const SwapCommitButton = memo(function SwapCommitButton({
     wrapType,
     execute: onWrap,
     inputError: wrapInputError,
-  } = useWrapCallback(inputCurrency, outputCurrency, typedValue)
+  } = useWrapCallback(inputCurrency, outputCurrency, typedValue, onUserInput)
   const showWrap = wrapType !== WrapType.NOT_APPLICABLE
   const [isRoutingSettingChange, resetRoutingSetting] = useRoutingSettingChanged()
   const slippageAdjustedAmounts = useSlippageAdjustedAmounts(trade)

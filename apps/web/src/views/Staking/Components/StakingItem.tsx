@@ -13,23 +13,41 @@ import { BorderLayout, StyledBox, StyledTextTitle } from '../style'
 import { UnStakeActions } from './UnStakeActions'
 
 const StyledFlex = styled(Flex)`
-  gap: 80px;
+  --space: 80px;
+  gap: var(--space);
   @media screen and (max-width: 1199px) {
-    gap: 60px;
+    --space: 60px;
   }
   @media screen and (max-width: 991px) {
-    gap: 80px;
+    --space: 80px;
   }
   @media screen and (max-width: 767px) {
-    gap: 60px;
-  }
-  @media screen and (max-width: 575px) {
-    gap: 40px;
+    --space: 40px;
     flex-direction: column;
   }
 `
 const StyledButton = styled(Button) `
   height: 40px;
+  min-width: 120px;
+  margin-bottom: 8px;
+`
+const StyledText = styled(Text)`
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 24px;
+  line-height: 1;
+  margin-right: 10px;
+  margin-bottom: 8px;
+  max-width: 320px;
+  @media screen and (max-width: 1199px) {
+    font-size: 22px;
+  }
+  @media screen and (max-width: 991px) {
+    max-width: 400px;
+  }
+  @media screen and (max-width: 767px) {
+    max-width: 100%;
+  }
 `
 
 type StakingProps = {
@@ -126,14 +144,14 @@ const StakingItem = ({ stakedInfo, periodTime, isUnStake }: StakingProps) => {
   }
 
   return (
-    <BorderLayout p={["16px 20px", "20px 24px", "20px 24px", "24px 30px", "24px", "30px 40px"]}>
+    <BorderLayout p={["16px 20px", "20px", "20px", "20px", "20px 24px"]}>
       <StyledFlex>
         <StyledBox>
           <StyledTextTitle fontSize={["16px", "18px", "18px", "20px"]}>{t('Staked Amount')} ({currency.symbol})</StyledTextTitle>
-          <Flex alignItems="center" justifyContent="space-between" mt={["16px", "20px", "24px"]} width="100%">
-            <Text fontSize="24px" lineHeight="1">
+          <Flex flexWrap="wrap" alignItems="center" justifyContent="space-between" mt={["12px", "16px", "20px"]} width="100%">
+            <StyledText>
               {stakedInfo.amountDisplay}
-            </Text>
+            </StyledText>
             {renderAction()}
           </Flex>
         </StyledBox>
@@ -144,10 +162,10 @@ const StakingItem = ({ stakedInfo, periodTime, isUnStake }: StakingProps) => {
             </Text>
             {t('Reward')}
           </StyledTextTitle>
-          <Flex alignItems="center" justifyContent="space-between" mt={["16px", "20px", "24px"]} width="100%">
-            <Text fontSize="24px" lineHeight="1">
+          <Flex flexWrap="wrap" alignItems="center" justifyContent="space-between" mt={["12px", "16px", "20px"]} width="100%">
+            <StyledText>
               {stakedInfo.rewardDisplay}
-            </Text>
+            </StyledText>
             <StyledButton disabled={!enableClaim} className="button-hover" onClick={handleClaim}>
               {isClaiming ? t('Claiming...'): t('Claim')}
             </StyledButton>
