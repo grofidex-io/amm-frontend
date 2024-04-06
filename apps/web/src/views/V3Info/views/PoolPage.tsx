@@ -30,6 +30,7 @@ import { formatAmount } from 'utils/formatInfoNumbers'
 
 import { ChainDefault } from '@pancakeswap/chains'
 import { NATIVE, WNATIVE } from '@pancakeswap/sdk'
+import { useRouter } from 'next/router'
 import { getTokenSymbolAlias } from 'utils/getTokenAlias'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import BarChart from '../components/BarChart/alt'
@@ -104,6 +105,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
   const [view, setView] = useState(ChartView.VOL)
   const [latestValue, setLatestValue] = useState<number | undefined>()
   const [valueLabel, setValueLabel] = useState<string | undefined>()
+  const router = useRouter()
 
   const hasSmallDifference = useMemo(() => {
     return poolData ? Math.abs(poolData.token1Price - poolData.token0Price) < 1 : false
@@ -240,8 +242,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
               <Flex>
                 <NextLinkFromReactRouter
                   to={`/add/${poolData.token0.address}/${poolData.token1.address}?chain=${
-                    CHAIN_QUERY_NAME[multiChainId[chainName]]
-                  }`}
+                    CHAIN_QUERY_NAME[multiChainId[chainName]]}&from=${router.asPath}`}
                 >
                   <StyledButton Tokens Locked mr="8px" variant="secondary" className="button-hover">
                     {t('Add Liquidity')}

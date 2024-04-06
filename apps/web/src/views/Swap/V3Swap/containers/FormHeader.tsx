@@ -1,7 +1,7 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { FC, useCallback } from 'react'
+import { useTranslation } from '@pancakeswap/localization';
+import { FC, useCallback } from 'react';
 
-import CurrencyInputHeader from '../../components/CurrencyInputHeader'
+import CurrencyInputHeader from '../../components/CurrencyInputHeader';
 
 export const FormHeader: FC<{ refreshDisabled: boolean; onRefresh: () => void }> = ({ refreshDisabled, onRefresh }) => {
   const { t } = useTranslation()
@@ -15,7 +15,7 @@ export const FormHeader: FC<{ refreshDisabled: boolean; onRefresh: () => void }>
 
   return (
     <CurrencyInputHeader
-      title={t('Swap')}
+      title={t('Trade')}
       subtitle={t('Trade tokens in an instant')}
       hasAmount={!refreshDisabled}
       onRefreshPrice={handleRefresh}

@@ -4,6 +4,7 @@ import { CAKE } from '@pancakeswap/tokens'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useMemo } from 'react'
+import { Field } from 'state/swap/actions'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import { useCallWithGasPrice } from './useCallWithGasPrice'
@@ -26,6 +27,7 @@ export default function useWrapCallback(
   inputCurrency: Currency | undefined | null,
   outputCurrency: Currency | undefined | null,
   typedValue: string | undefined,
+  onUserInput?: (field: Field, typedValue: string) => void | undefined
 ): { wrapType: WrapType; execute?: undefined | (() => Promise<void>); inputError?: string } {
   const { t } = useTranslation()
   const { account, chainId } = useAccountActiveChain()
@@ -72,6 +74,9 @@ export default function useWrapCallback(
                     translatableSummary: { text: 'Wrap %amount% %native% to %wrap%', data: { amount, native, wrap } },
                     type: 'wrap',
                   })
+                  if(onUserInput !== undefined) {
+                    onUserInput(Field.INPUT, '')
+                  }
                 } catch (error) {
                   console.error('Could not deposit', error)
                 }
@@ -100,6 +105,9 @@ export default function useWrapCallback(
                     summary: `Unwrap ${amount} ${wrap} to ${native}`,
                     translatableSummary: { text: 'Unwrap %amount% %wrap% to %native%', data: { amount, wrap, native } },
                   })
+                  if(onUserInput !== undefined) {
+                    onUserInput(Field.INPUT, '')
+                  }
                 } catch (error) {
                   console.error('Could not withdraw', error)
                 }

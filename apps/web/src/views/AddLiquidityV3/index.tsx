@@ -387,7 +387,7 @@ export function AddLiquidityV3Layout({
   children: React.ReactNode
 }) {
   const { t } = useTranslation()
-
+  const router = useRouter()
   const [selectType] = useAtom(selectTypeAtom)
   const { currencyIdA, currencyIdB, feeAmount } = useCurrencyParams()
 
@@ -410,8 +410,11 @@ export function AddLiquidityV3Layout({
       )
       return `/stable/${selectedLp?.lpAddress}`
     }
+    if(router.query?.from){
+      return router.query.from as string
+    }
     return '/pair?tab=1'
-  }, [lpTokens, baseCurrency, quoteCurrency, currencyIdA, currencyIdB, preferredSelectType])
+  }, [lpTokens, baseCurrency, quoteCurrency, currencyIdA, currencyIdB, preferredSelectType, router])
 
   return (
     <Page>
