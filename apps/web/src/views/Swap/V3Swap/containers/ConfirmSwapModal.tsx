@@ -131,7 +131,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
     if (attemptingTxn) {
       return (
         <SwapPendingModalContentV1
-          title={t('Confirm Swap')}
+          title={(typeSwap !== undefined ? typeSwap === TYPE_SWAP.BUY ? 'Confirm Buy' : 'Confirm Sell' : 'Confirm Swap')}
           currencyA={currencyA}
           currencyB={currencyB}
           amountA={amountA}
@@ -253,6 +253,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
       bodyPadding={isShowingLoadingAnimation ? '0 24px 24px 24px' : '24px'}
       bodyTop={isShowingLoadingAnimation ? '-15px' : '0'}
       handleDismiss={handleDismiss}
+      typeSwap={typeSwap}
     >
       <Box>{topModal}</Box>
       {isShowingLoadingAnimation && !swapErrorMessage && (
