@@ -12,6 +12,7 @@ import {
 } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useAirdropModalStatus from 'components/GlobalCheckClaimStatus/hooks/useAirdropModalStatus'
+import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import Trans from 'components/Trans'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useAuth from 'hooks/useAuth'
@@ -21,8 +22,10 @@ import { useProfile } from 'state/profile/hooks'
 import { usePendingTransactions } from 'state/transactions/hooks'
 import { useAccount } from 'wagmi'
 import ClaimYourNFT from './ClaimYourNFT'
+import SettingUserMenuItem from './SettingUserMenuItem'
 import WalletModal, { WalletView } from './WalletModal'
 import WalletUserMenuItem from './WalletUserMenuItem'
+
 
 const UserMenuItems = () => {
   const { t } = useTranslation()
@@ -53,6 +56,7 @@ const UserMenuItems = () => {
         {t('Recent Transactions')}
         {hasPendingTransactions && <RefreshIcon spin />}
       </UserMenuItem>
+      <SettingUserMenuItem mode={SettingsMode.SWAP_LIQUIDITY} />
       <UserMenuDivider />
       {/* <NextLink href={`/profile/${account?.toLowerCase()}`} passHref>
         <UserMenuItem disabled={isWrongNetwork || chainId !== ChainId.BSC}>{t('Your NFTs')}</UserMenuItem>

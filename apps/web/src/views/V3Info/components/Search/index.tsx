@@ -49,7 +49,7 @@ const Menu = styled.div`
   top: 50px;
   max-height: 400px;
   overflow: auto;
-  left: 50%;
+  left: 65%;
   transform: translateX(-50%);
   padding: 1.5rem;
   padding-bottom: 2.5rem;
@@ -353,7 +353,6 @@ const Search = () => {
                       <Text ml="10px">
                         <Text>{`${token.address && getTokenNameAlias(token.address, chainId, token.name)} (${
                           token.address && getTokenSymbolAlias(token.address, chainId, token.symbol)
-                        }
                         })`}</Text>
                       </Text>
                       {/* <SaveIcon
