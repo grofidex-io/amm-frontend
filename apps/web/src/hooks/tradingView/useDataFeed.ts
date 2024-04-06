@@ -15,7 +15,7 @@ import { useStreaming } from "./useStream";
   // DatafeedConfiguration implementation
   const configurationData = {
     // Represents the resolutions for bars supported by your datafeed
-    supported_resolutions: [15, 60, '1D', '1W', '1M'],
+    supported_resolutions: [1, 5, 15, 60, '1D', '1W', '1M'],
     // The `symbols_types` arguments are used for the `searchSymbols` method if a user selects this symbol type
     symbols_types: [{ name: 'crypto', value: 'crypto' }]
   }
@@ -112,7 +112,8 @@ export const useDataFeed = () => {
           if(bars.length > 0) {
             const lastBar = bars[bars.length - 1]
             const _precision = new Decimal(Math.min(lastBar.close,bars[0].close)).toSignificantDigits(4)
-            setPrecision(_precision.decimalPlaces())
+            const _decimal = _precision.decimalPlaces()
+            setPrecision(_decimal > 4 ? _decimal : 4)
             lastBarsCache.set(symbolInfo.key, {
               ...lastBar
             })
