@@ -20,6 +20,7 @@ const Image = styled.img`
   width: var(--size);
   max-width: 300px;
   margin-top: 30px;
+  display: none;
   ${({ theme }) => theme.mediaQueries.sm} {
     --size: 350px;
     max-width: 100%;
@@ -28,6 +29,7 @@ const Image = styled.img`
     --size: 400px;
     min-width: var(--size);
     margin-top: 0;
+    display: block;
   }
   ${({ theme }) => theme.mediaQueries.xxl} {
     --size: 450px;

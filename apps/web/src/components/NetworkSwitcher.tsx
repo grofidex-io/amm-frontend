@@ -22,10 +22,26 @@ import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import { useUserShowTestnet } from 'state/user/hooks/useUserShowTestnet'
+import styled from 'styled-components'
 import { chainNameConverter } from 'utils/chainNameConverter'
 import { chains } from 'utils/wagmi'
 import { useNetwork } from 'wagmi'
 import { ChainLogo } from './Logo/ChainLogo'
+
+const StyledUserMenu = styled(UserMenu)`
+  > div {
+    @media screen and (max-width: 1439px) {
+      padding: 8px 8px 8px 24px;
+    }
+    > div {
+      &:nth-child(2) {
+        @media screen and (max-width: 1439px) {
+          display: none;
+        }
+      }
+    }
+  }
+`
 
 const AptosChain = {
   id: 1,
@@ -192,7 +208,7 @@ export const NetworkSwitcher = () => {
   return (
     <Box ref={cannotChangeNetwork ? targetRef : null} height="100%">
       {cannotChangeNetwork && tooltipVisible && tooltip}
-      <UserMenu
+      <StyledUserMenu
         mr="8px"
         placement="bottom"
         variant={isLoading ? 'pending' : isWrongNetwork ? 'danger' : 'default'}
@@ -220,7 +236,7 @@ export const NetworkSwitcher = () => {
             <NetworkSelect switchNetwork={switchNetworkAsync} chainId={chainId} />
           )
         }
-      </UserMenu>
+      </StyledUserMenu>
     </Box>
   )
 }

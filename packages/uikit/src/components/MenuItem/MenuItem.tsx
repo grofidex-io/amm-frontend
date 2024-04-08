@@ -6,6 +6,7 @@ import { MenuItemProps } from "./types";
 
 const MenuItem: React.FC<React.PropsWithChildren<MenuItemProps>> = ({
   children,
+  type,
   href,
   isActive = false,
   isDisabled = false,
@@ -22,6 +23,7 @@ const MenuItem: React.FC<React.PropsWithChildren<MenuItemProps>> = ({
     ? {
         as: linkComponent,
         href,
+        target: type === 1 ? '_blank' : ''
       }
     : {
         as: "div",

@@ -15,11 +15,14 @@ export const StyledBottomNavItem = styled.button`
   &:hover div {
     background: ${({ theme }) => theme.colors.tertiary};
   }
-  @media screen and (max-width: 479px) {
+  @media screen and (max-width: 575px) {
     padding: 0 10px;
   }
-  @media screen and (max-width: 374px) {
+  @media screen and (max-width: 479px) {
     padding: 0 8px;
+  }
+  @media screen and (max-width: 424px) {
+    padding: 0 6px;
   }
 `;
 

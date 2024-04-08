@@ -9,4 +9,5 @@ export interface BottomNavItemProps {
   fillIcon?: ElementType<any>;
   isActive?: boolean;
   showItemsOnMobile?: boolean;
+  type?: number;
 }
