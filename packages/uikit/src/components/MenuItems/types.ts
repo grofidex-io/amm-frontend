@@ -12,6 +12,7 @@ export type MenuItemsType = {
   disabled?: boolean;
   showOnMobile?: boolean;
   showItemsOnMobile?: boolean;
+  type?: number;
 };
 
 export interface MenuItemsProps extends BoxProps {

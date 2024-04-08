@@ -10,6 +10,7 @@ const BottomNavItem: React.FC<React.PropsWithChildren<BottomNavItemProps>> = ({
   icon,
   fillIcon,
   href,
+  type,
   showItemsOnMobile = false,
   isActive = false,
   disabled = false,
@@ -17,7 +18,7 @@ const BottomNavItem: React.FC<React.PropsWithChildren<BottomNavItemProps>> = ({
 }) => {
   const { linkComponent } = useContext(MenuContext);
   const bottomNavItemContent = (
-    <StyledBottomNavItem as={linkComponent} href={href} {...props}>
+    <StyledBottomNavItem as={linkComponent} target={ type === 1 ? '_blank' : '' } href={href} {...props}>
       <Flex flexDirection="column" justifyContent="center" alignItems="center" height="100%">
         {icon && (
           <AnimatedIconComponent
