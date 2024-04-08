@@ -130,7 +130,7 @@ const Chart = ({
               cursor={false}
               contentStyle={{ display: 'none' }}
               formatter={(toolTipValue: number, name: string, props) => {
-                if (setValue && parsedValue?.value !== props.payload.value && parsedValue?.feesUSD !== props.payload.feesUSD) {
+                if (setValue && parsedValue?.value !== props.payload.value ) {
                   setValue(props.payload)
                 }
                 const formattedTime = dayjs(props.payload.time).format('MMM D')

@@ -174,7 +174,7 @@ export default function Home() {
                 ? monthlyVolumeData
                 : volumeWindow === VolumeWindow.weekly
                 ? weeklyVolumeData
-                : formattedVolumeData
+                : formattedVolumeData?.filter((item) => item.feesUSD !== 0 && item.value !== 0 )
             }
             color={theme.colors.primary}
             setValue={setVolumeHover}
