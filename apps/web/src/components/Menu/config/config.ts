@@ -1,5 +1,6 @@
 import { ContextApi } from '@pancakeswap/localization'
 import {
+  DropdownMenuItemType,
   DropdownMenuItems,
   EarnFillIcon,
   EarnIcon,
@@ -11,6 +12,7 @@ import {
   SwapIcon,
   TrophyFillIcon,
   TrophyIcon,
+  VoteIcon,
 } from '@pancakeswap/uikit'
 import { SUPPORT_FARMS } from 'config/constants/supportChains'
 
@@ -241,6 +243,13 @@ const config: (
       icon: TrophyIcon,
       fillIcon: TrophyFillIcon,
       hideSubNav: true,
+    },
+    {
+      label: 'Faucet',
+      href: 'https://faucet.uniultra.xyz/',
+      icon: VoteIcon,
+      hideSubNav: true,
+      type: DropdownMenuItemType.EXTERNAL_LINK,
     },
   ].map((item) => addMenuItemSupported(item, chainId))
 
