@@ -15,11 +15,11 @@ const MenuItems: React.FC<React.PropsWithChildren<MenuItemsProps>> = ({
 }) => {
   return (
     <Flex {...props}>
-      {items.map(({ label, items: menuItems = [], href, icon, disabled }) => {
+      {items.map(({ label, items: menuItems = [], href, icon, disabled, type }) => {
         const statusColor = menuItems?.find((menuItem) => menuItem.status !== undefined)?.status?.color;
         const isActive = activeItem === href;
         const isHeaderMenu = headerMenu;
-        const linkProps = isTouchDevice() && menuItems && menuItems.length > 0 ? {} : { href };
+        const linkProps = isTouchDevice() && menuItems && menuItems.length > 0 ? {} : { href, type };
         const Icon = icon;
         return (
           <DropdownMenu
