@@ -73,7 +73,7 @@ export async function fetchChartData(client: GraphQLClient) {
     // fill in empty days ( there will be no day datas if no trades made that day )
     let timestamp = firstEntry?.date ?? startTimestamp
     let latestTvl = firstEntry?.tvlUSD ?? 0
-    const latestFees = firstEntry?.feesUSD ?? 0
+    // const latestFees = firstEntry?.feesUSD ?? 0
     while (timestamp < endTimestamp - ONE_DAY_UNIX) {
       const nextDay = timestamp + ONE_DAY_UNIX
       const currentDayIndex = parseInt((nextDay / ONE_DAY_UNIX).toFixed(0))
@@ -82,7 +82,7 @@ export async function fetchChartData(client: GraphQLClient) {
           date: nextDay,
           volumeUSD: 0,
           tvlUSD: latestTvl,
-          feesUSD: latestFees
+          feesUSD: 0
         }
       } else {
         latestTvl = formattedExisting[currentDayIndex].tvlUSD
