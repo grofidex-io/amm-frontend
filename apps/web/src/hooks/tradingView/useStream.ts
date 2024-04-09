@@ -12,7 +12,7 @@ export interface PAIR_ITEM {
 }
 
 const channelToSubscription = new Map()
-
+let subscriptionItemCandle: any = null
 export const useStreaming = () => {
   return useMemo(() => {
     function getNextDailyBarTime(barTime: number, resolution: string) {
@@ -25,7 +25,7 @@ export const useStreaming = () => {
       return date.getTime()
     }
 
-    let subscriptionItemCandle: any = null
+
     function handleCandle(barData: any) {
       const channelString = `${barData.symbol.toLowerCase()}`
       if (!subscriptionItemCandle) {
@@ -102,7 +102,6 @@ export const useStreaming = () => {
         symbol: symbolInfo.key,
         handlers: [handler]
       }
-
 
       channelToSubscription.set(channelString, subscriptionItem)
       // const resolutions: any = RESOLUTION
