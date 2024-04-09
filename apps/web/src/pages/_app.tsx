@@ -26,7 +26,7 @@ import { useLoadExperimentalFeatures } from 'hooks/useExperimentalFeatureEnabled
 import { useInitGlobalWorker } from 'hooks/useWorker'
 import { persistor, useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
-import { Blocklist, Updaters } from '..'
+import { Updaters } from '..'
 import { SEO } from '../../next-seo.config'
 import Providers from '../Providers'
 import Menu from '../components/Menu'
@@ -152,7 +152,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const Layout = Component.Layout || Fragment
   const ShowMenu = Component.mp ? Fragment : Menu
   const isShowScrollToTopButton = Component.isShowScrollToTopButton || true
-  const shouldScreenWallet = Component.screen || false
+  // const shouldScreenWallet = Component.screen || false
 
   return (
     <ProductionErrorBoundary>
@@ -167,7 +167,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
       <NetworkModal pageSupportedChains={Component.chains} />
       <TransactionsDetailModal />
       {isShowScrollToTopButton && <ScrollToTopButtonV2 />}
-      {shouldScreenWallet && <Blocklist />}
+      {/* {shouldScreenWallet && <Blocklist />} */}
     </ProductionErrorBoundary>
   )
 }
