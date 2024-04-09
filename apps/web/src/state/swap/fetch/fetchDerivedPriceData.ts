@@ -1,5 +1,5 @@
 import { ChainId, STABLESWAP_SUBGRAPHS } from '@pancakeswap/chains'
-import { INFO_CLIENT, INFO_CLIENT_ETH, INFO_CLIENT_WITH_CHAIN, V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
+import { INFO_CLIENT_ETH, INFO_CLIENT_WITH_CHAIN, V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
 import { ONE_DAY_UNIX, ONE_HOUR_SECONDS } from 'config/constants/info'
 import dayjs from 'dayjs'
 import request from 'graphql-request'
@@ -18,11 +18,11 @@ type Protocol = (typeof PROTOCOL)[number]
 type ProtocolEndpoint = Record<Protocol, string>
 
 const SWAP_INFO_BY_CHAIN = {
-  [ChainId.BSC]: {
-    v2: INFO_CLIENT,
-    stable: STABLESWAP_SUBGRAPHS[ChainId.BSC],
-    // v3: V3_SUBGRAPH_URLS[ChainId.BSC],
-  },
+  // [ChainId.BSC]: {
+  //   v2: INFO_CLIENT,
+  //   stable: STABLESWAP_SUBGRAPHS[ChainId.BSC],
+  //   // v3: V3_SUBGRAPH_URLS[ChainId.BSC],
+  // },
   [ChainId.ETHEREUM]: {
     v2: INFO_CLIENT_ETH,
     // v3: V3_SUBGRAPH_URLS[ChainId.ETHEREUM],
@@ -68,7 +68,7 @@ const SWAP_INFO_BY_CHAIN = {
   [ChainId.ARBITRUM_SEPOLIA]: {},
   [ChainId.BASE_SEPOLIA]: {},
   [ChainId.U2U_NEBULAS]: {
-    v2: INFO_CLIENT,
+    // v2: INFO_CLIENT,
     // stable: STABLESWAP_SUBGRAPHS[ChainId.U2U_NEBULAS],
     v3: V3_SUBGRAPH_URLS[ChainId.U2U_NEBULAS],
   },
