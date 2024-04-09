@@ -1,4 +1,4 @@
-import { ChainId, STABLESWAP_SUBGRAPHS } from '@pancakeswap/chains'
+import { ChainDefault, ChainId, STABLESWAP_SUBGRAPHS } from '@pancakeswap/chains'
 import {
   AMM_STAKING_CLIENT,
   APR_SUBGRAPH,
@@ -23,7 +23,7 @@ export const getGQLHeaders = (endpoint: string) => {
   return undefined
 }
 
-export const infoClient = new GraphQLClient(INFO_CLIENT)
+export const infoClient = new GraphQLClient(V3_SUBGRAPH_URLS[ChainDefault])
 
 export const infoClientWithChain = (chainId?: number) => {
   if (chainId && INFO_CLIENT_WITH_CHAIN[chainId]) {
