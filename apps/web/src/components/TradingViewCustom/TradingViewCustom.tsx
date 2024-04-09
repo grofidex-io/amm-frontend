@@ -97,7 +97,7 @@ const TrandingViewCustom = ({ symbol, resolution }: TradingViewProps) => {
 
   const handleLastTime = () => {
     const visibleRange = tvWidgetRef.current?.activeChart().getVisibleRange()
-    if(visibleRange) {
+    if(visibleRange && visibleRange?.to) {
       setLastTime(visibleRange?.to)
     }
   }
@@ -123,6 +123,7 @@ const TrandingViewCustom = ({ symbol, resolution }: TradingViewProps) => {
       });
     })
   }
+  
   useEffect(() => {
       const opts: any = {
         resolution,
@@ -170,6 +171,7 @@ const TrandingViewCustom = ({ symbol, resolution }: TradingViewProps) => {
   useEffect(() => {
     return () => {
       tvWidgetRef.current = null
+      setLastTime(0)
     }
   },[])
   return (
