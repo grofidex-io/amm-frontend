@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Button, useToast } from '@pancakeswap/uikit'
 import { bigIntToBigNumber } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { gql } from 'graphql-request'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -14,6 +15,7 @@ import { stakingReducerAtom } from 'state/staking/reducer'
 import styled from 'styled-components'
 import { stake } from 'utils/calls/staking'
 import { ammStakingClients } from 'utils/graphql'
+import { useAccount } from 'wagmi'
 import useStakingConfig from '../Hooks/useStakingConfig'
 import { useStakingList } from '../Hooks/useStakingList'
 
@@ -32,6 +34,7 @@ interface ContractsResponse {
 const FormStakingBtn = () => {
   const { t } = useTranslation()
 
+  const { address: account } = useAccount()
   const { stakingAmount, stakingAmountError } = useStakingState()
   const { currency } = useStakingConfig()
 
@@ -90,6 +93,9 @@ const FormStakingBtn = () => {
     }
   }
 
+  if (!account) {
+    return <ConnectWalletButton width="100%" />
+  }
   return (
     <StyledButton
       width="100%"

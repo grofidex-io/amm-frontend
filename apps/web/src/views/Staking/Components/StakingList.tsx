@@ -1,6 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Skeleton, Text } from '@pancakeswap/uikit'
-import useStakingConfig from '../Hooks/useStakingConfig'
 import { useStakingList } from '../Hooks/useStakingList'
 import { BorderLayout, StyledIcon, StyledIconImage, StyledTextTitle } from '../style'
 import StakingItem from './StakingItem'
@@ -9,10 +8,7 @@ import StakingLoading from './StakingLoading'
 function StakingList() {
   const { t } = useTranslation()
   const { data, periodTime, loading } = useStakingList()
-  const { isWrongNetwork } = useStakingConfig()
-
-  const _loading = loading || isWrongNetwork
-
+  
   const renderHeaderItem = ({image, title, value}: {
     image: string, 
     title: string,
@@ -25,7 +21,7 @@ function StakingList() {
         </StyledIcon>
         <Box ml={["0", "0", "12px", "12px", "12px", "16px"]} mt={["6px", "8px", "0px"]}>
           <StyledTextTitle fontSize="10px">{t(title)}</StyledTextTitle>
-          {_loading ? <Skeleton m={["auto", "auto", "unset"]} height={12} width={60}/> : <Text style={{ textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '120px' }} textAlign={["center", "center", "left"]} fontSize="16px" fontWeight="600">
+          {loading ? <Skeleton m={["auto", "auto", "unset"]} height={12} width={60}/> : <Text style={{ textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '120px' }} textAlign={["center", "center", "left"]} fontSize="16px" fontWeight="600">
             {value ?? '--'}
           </Text>}
         </Box>
@@ -73,7 +69,7 @@ function StakingList() {
   return (
     <>
       {renderHeader()}
-      {_loading ? <StakingLoading/> : renderList()}
+      {loading ? <StakingLoading/> : renderList()}
     </>
   )
 }
