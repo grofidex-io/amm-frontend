@@ -257,7 +257,7 @@ const BasicChart = ({
               <ButtonMenu activeIndex={timeWindow} onItemClick={handleSetTimeWindow} scale="sm">
                   {
                     LIST_RESOLUTION.map((item: string) => {
-                      return <StyledButtonMenuItem>{t(item)}</StyledButtonMenuItem>
+                      return <StyledButtonMenuItem key={item}>{t(item)}</StyledButtonMenuItem>
                     })
                   }
               </ButtonMenu>
