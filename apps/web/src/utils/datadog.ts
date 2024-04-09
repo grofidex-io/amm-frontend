@@ -34,7 +34,7 @@ export const logger = getLogger('main')
 export const tracker = getLogger('perf', { forwardErrorsToLogs: false })
 
 function createDatadogRumManager() {
-  let initialized = false
+  let initialized = true
 
   function init() {
     if (initialized) {
