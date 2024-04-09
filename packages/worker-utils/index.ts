@@ -3,6 +3,7 @@ export const CORS_ALLOW = [
   /\.pancakeswap\.finance$/,
   /\.pancakeswap\.games$/,
   /\.pancakeswap\.com$/,
+  'https://proxy-worker-api.pancakeswap.com',
   'https://pancakeswap.finance',
   'https://pancakeswap.games',
   'https://pancakeswap.com',

@@ -18,7 +18,7 @@ export const NOTIFICATION_HUB_BASE_URL = 'https://notification-hub.pancakeswap.c
  */
 export const GRAPH_API_PREDICTION_V1 = 'https://api.thegraph.com/subgraphs/name/pancakeswap/prediction'
 
-export const INFO_CLIENT = 'https://proxy-worker-api.grofidex.io/bsc-exchange'
+export const INFO_CLIENT = 'https://proxy-worker-api.pancakeswap.com/bsc-exchange'
 export const V3_BSC_INFO_CLIENT = `https://subgraph-amm-dev.uniultra.xyz/subgraphs/name/u2u-amm/u2dex-v1`
 export const AMM_STAKING_CLIENT = `https://subgraph-amm-dev.uniultra.xyz/subgraphs/name/u2u-amm/staking`
 export const APR_SUBGRAPH = `https://testnet-staking-graphql.uniultra.xyz/graphql`
