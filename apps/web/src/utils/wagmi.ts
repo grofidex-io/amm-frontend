@@ -1,5 +1,4 @@
 import { getWagmiConnector } from '@binance/w3w-wagmi-connector'
-import { CyberWalletConnector, isCyberWallet } from '@cyberlab/cyber-app-sdk'
 import { ChainId } from '@pancakeswap/chains'
 import { TrustWalletConnector } from '@pancakeswap/wagmi/connectors/trustWallet'
 import memoize from 'lodash/memoize'
@@ -8,7 +7,6 @@ import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 // import { LedgerConnector } from 'wagmi/connectors/ledger'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { chains, publicClient } from './client'
 
 export { chains, publicClient }
@@ -28,23 +26,23 @@ export const coinbaseConnector = new CoinbaseWalletConnector({
   },
 })
 
-export const walletConnectConnector = new WalletConnectConnector({
-  chains,
-  options: {
-    // ignore the error in test environment
-    // Error: To use QR modal, please install @walletconnect/modal package
-    showQrModal: process.env.NODE_ENV !== 'test',
-    projectId: 'e542ff314e26ff34de2d4fba98db70bb',
-  },
-})
+// export const walletConnectConnector = new WalletConnectConnector({
+//   chains,
+//   options: {
+//     // ignore the error in test environment
+//     // Error: To use QR modal, please install @walletconnect/modal package
+//     showQrModal: process.env.NODE_ENV !== 'test',
+//     projectId: 'e542ff314e26ff34de2d4fba98db70bb',
+//   },
+// })
 
-export const walletConnectNoQrCodeConnector = new WalletConnectConnector({
-  chains,
-  options: {
-    showQrModal: false,
-    projectId: 'e542ff314e26ff34de2d4fba98db70bb',
-  },
-})
+// export const walletConnectNoQrCodeConnector = new WalletConnectConnector({
+//   chains,
+//   options: {
+//     showQrModal: false,
+//     projectId: 'e542ff314e26ff34de2d4fba98db70bb',
+//   },
+// })
 
 export const metaMaskConnector = new MetaMaskConnector({
   chains,
@@ -76,15 +74,15 @@ export const trustWalletConnector = new TrustWalletConnector({
   },
 })
 
-export const cyberWalletConnector = isCyberWallet()
-  ? new CyberWalletConnector({
-      chains: chains as any,
-      options: {
-        name: 'GroFi DEX',
-        appId: 'b825cd87-2db3-456d-b108-d61e74d89771',
-      },
-    })
-  : undefined
+// export const cyberWalletConnector = isCyberWallet()
+//   ? new CyberWalletConnector({
+//       chains: chains as any,
+//       options: {
+//         name: 'GroFi DEX',
+//         appId: 'b825cd87-2db3-456d-b108-d61e74d89771',
+//       },
+//     })
+//   : undefined
 
 const BinanceW3WConnector = getWagmiConnector()
 export const binanceWeb3WalletConnector = new BinanceW3WConnector({
