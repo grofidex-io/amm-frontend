@@ -40,7 +40,6 @@ export async function getRoutesWithValidQuote({
     ],
     [],
   )
-  console.log(routesWithoutQuote)
   const getRoutesWithQuote =
     tradeType === TradeType.EXACT_INPUT
       ? quoteProvider.getRouteWithQuotesExactIn
