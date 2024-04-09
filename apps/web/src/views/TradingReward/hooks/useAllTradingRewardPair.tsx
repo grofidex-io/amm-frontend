@@ -163,7 +163,7 @@ const useAllTradingRewardPair = ({ status, type }: UseAllTradingRewardPairProps)
         const [campaignPairs, campaignIdsIncentive, qualification, rewardInfo] = await Promise.all([
           fetchCampaignPairs(campaignIds, type),
           fetchCampaignIdsIncentive(contract, campaignIds),
-          fetUserQualification(contract),
+          // fetUserQualification(contract),
           fetchRewardInfo(campaignIds, type),
         ])
 
