@@ -5,6 +5,7 @@ import { gql } from 'graphql-request'
 import { useStakingContract } from 'hooks/useContract'
 import { pendingReward, withdrawalPeriodTime } from 'utils/calls/staking'
 import { ammStakingClients } from 'utils/graphql'
+import { useAccount } from 'wagmi'
 import useStakingConfig from './useStakingConfig'
 
 export interface StakedInfo {
@@ -28,6 +29,7 @@ export interface StakingResponse {
 }
 
 export function useStakingList() {
+  const { address: account } = useAccount()
   const stakingContract = useStakingContract()
   const { currency, isWrongNetwork } = useStakingConfig()
 
@@ -127,11 +129,11 @@ export function useStakingList() {
   }
 
   const { data, refetch, isPending, isFetching, error } = useQuery({
-    queryKey: ['amm-subgraphs/staking/list', currency.chainId, stakingContract.account?.address],
+    queryKey: ['amm-subgraphs/staking/list', currency.chainId, account],
     queryFn: async () => {
-      return fetchStakingList(stakingContract?.account?.address?.toLowerCase())
+      return fetchStakingList(account?.toLowerCase())
     },
-    enabled: Boolean(stakingContract?.account?.address) && !isWrongNetwork,
+    enabled: Boolean(account) && !isWrongNetwork,
     refetchInterval: 30000, // milliseconds
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
@@ -143,7 +145,7 @@ export function useStakingList() {
   return {
     refresh: refetch,
     data: data?.user,
-    loading: isPending,
+    loading: (isPending || isWrongNetwork) && account,
     syncing: isFetching,
     periodTime: data?.periodTime,
     error,

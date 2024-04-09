@@ -12,7 +12,6 @@ import CurrencySearchModal from 'components/SearchModal/CurrencySearchModal'
 import { BigNumber } from 'ethers'
 import { useCurrency } from 'hooks/Tokens'
 import useNativeCurrency from 'hooks/useNativeCurrency'
-import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { Field } from 'state/swap/actions'
 import { useDefaultsFromURLSearch, useSingleTokenSwapInfo, useSwapState } from 'state/swap/hooks'
 import TransactionsTable from 'views/V3Info/components/TransactionsTable'
@@ -23,7 +22,6 @@ import { SwapFeaturesContext } from './SwapFeaturesContext'
 import { V3SwapForm } from './V3Swap'
 import { TopHolders } from './V3Swap/containers/TopHolders'
 import PriceChartContainer from './components/Chart/PriceChartContainer'
-import HotTokenList from './components/HotTokenList'
 import useWarningImport from './hooks/useWarningImport'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 
@@ -35,9 +33,9 @@ export default function Swap() {
     isChartDisplayed,
     setIsChartExpanded,
     isChartSupported,
-    isHotTokenSupported,
+    // isHotTokenSupported,
   } = useContext(SwapFeaturesContext)
-  const [isSwapHotTokenDisplay, setIsSwapHotTokenDisplay] = useSwapHotTokenDisplay()
+  // const [isSwapHotTokenDisplay, setIsSwapHotTokenDisplay] = useSwapHotTokenDisplay()
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const [isOnlyMyTransaction, setOnlyMyTransaction] = useState<boolean>(false)
@@ -202,7 +200,7 @@ export default function Swap() {
               setIsOpen={(isOpen) => setIsChartDisplayed?.(isOpen)}
             />
           )} */}
-          {isSwapHotTokenDisplay && isHotTokenSupported && <HotTokenList handleOutputSelect={handleOutputSelect} />}
+          {/* {isSwapHotTokenDisplay && isHotTokenSupported && <HotTokenList handleOutputSelect={handleOutputSelect} />} */}
           {/* <ModalV2
             isOpen={!isDesktop && isSwapHotTokenDisplay && isHotTokenSupported}
             onDismiss={() => setIsSwapHotTokenDisplay(false)}
