@@ -114,11 +114,11 @@ const fetchCampaignIdsIncentive = async (
 }
 
 const fetUserQualification = async (tradingRewardContract: ReturnType<typeof getTradingRewardContract>) => {
-  const result = await tradingRewardContract.read.getUserQualification()
+  // const result = await tradingRewardContract.read.getUserQualification()
   return {
-    thresholdLockTime: new BigNumber(result[0].toString()).toNumber(),
-    thresholdLockAmount: new BigNumber(result[1].toString()).toNumber(),
-    minAmountUSD: new BigNumber(result[3].toString()).toJSON(),
+    thresholdLockTime: 0,// new BigNumber(result[0].toString()).toNumber(),
+    thresholdLockAmount: 0,// new BigNumber(result[1].toString()).toNumber(),
+    minAmountUSD: "",// new BigNumber(result[3].toString()).toJSON(),
   } as Qualification
 }
 

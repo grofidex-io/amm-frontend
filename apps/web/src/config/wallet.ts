@@ -1,7 +1,6 @@
 import { WalletConfigV2 } from '@pancakeswap/ui-wallets'
 import { WalletFilledIcon } from '@pancakeswap/uikit'
-import type { ExtendEthereum } from 'global'
-import { walletConnectNoQrCodeConnector } from '../utils/wagmi'
+// import { walletConnectNoQrCodeConnector } from '../utils/wagmi'
 import { ASSET_CDN } from './constants/endpoints'
 
 export enum ConnectorNames {
@@ -18,16 +17,16 @@ export enum ConnectorNames {
   CyberWallet = 'cyberwallet',
 }
 
-const createQrCode = (chainId: number, connect) => async () => {
-  connect({ connector: walletConnectNoQrCodeConnector, chainId })
+// const createQrCode = (chainId: number, connect) => async () => {
+//   connect({ connector: walletConnectNoQrCodeConnector, chainId })
 
-  const r = await walletConnectNoQrCodeConnector.getProvider()
-  return new Promise<string>((resolve) => {
-    r.on('display_uri', (uri) => {
-      resolve(uri)
-    })
-  })
-}
+//   const r = await walletConnectNoQrCodeConnector.getProvider()
+//   return new Promise<string>((resolve) => {
+//     r.on('display_uri', (uri) => {
+//       resolve(uri)
+//     })
+//   })
+// }
 
 const isMetamaskInstalled = () => {
   if (typeof window === 'undefined') {
@@ -45,9 +44,9 @@ const isMetamaskInstalled = () => {
   return false
 }
 
-function isBinanceWeb3WalletInstalled() {
-  return typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isBinance)
-}
+// function isBinanceWeb3WalletInstalled() {
+//   return typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isBinance)
+// }
 
 const walletsConfig = ({
   chainId,
@@ -56,7 +55,7 @@ const walletsConfig = ({
   chainId: number
   connect: (connectorID: ConnectorNames) => void
 }): WalletConfigV2<ConnectorNames>[] => {
-  const qrCode = createQrCode(chainId, connect)
+  // const qrCode = createQrCode(chainId, connect)
   return [
     {
       id: 'metamask',
@@ -68,7 +67,7 @@ const walletsConfig = ({
       },
       connectorId: ConnectorNames.MetaMask,
       // deepLink: 'https://metamask.app.link/dapp/pancakeswap.finance/',
-      qrCode,
+      // qrCode,
       // downloadLink: 'https://metamask.app.link/dapp/pancakeswap.finance/',
     },
     // {
