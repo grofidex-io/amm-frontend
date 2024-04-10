@@ -50,7 +50,7 @@ export function getV3Subgraphs({ noderealApiKey }: SubgraphParams) {
 
 export function getV2Subgraphs({ noderealApiKey }: SubgraphParams) {
   return {
-    [ChainId.BSC]: 'https://proxy-worker-api.pancakeswap.com/bsc-exchange',
+    // [ChainId.BSC]: 'https://proxy-worker-api.pancakeswap.com/bsc-exchange',
     [ChainId.ETHEREUM]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exhange-eth',
     [ChainId.POLYGON_ZKEVM]: 'https://api.studio.thegraph.com/query/45376/exchange-v2-polygon-zkevm/version/latest',
     [ChainId.ZKSYNC_TESTNET]: 'https://api.studio.thegraph.com/query/45376/exchange-v2-zksync-testnet/version/latest',

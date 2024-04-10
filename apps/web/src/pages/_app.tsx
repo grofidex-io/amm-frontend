@@ -18,7 +18,6 @@ import { DefaultSeo } from 'next-seo'
 import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
-import Script from 'next/script'
 import { Fragment } from 'react'
 import { PersistGate } from 'redux-persist/integration/react'
 
@@ -27,7 +26,7 @@ import { useLoadExperimentalFeatures } from 'hooks/useExperimentalFeatureEnabled
 import { useInitGlobalWorker } from 'hooks/useWorker'
 import { persistor, useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
-import { Blocklist, Updaters } from '..'
+import { Updaters } from '..'
 import { SEO } from '../../next-seo.config'
 import Providers from '../Providers'
 import Menu from '../components/Menu'
@@ -102,7 +101,7 @@ function MyApp(props: AppProps<{ initialReduxState: any; dehydratedState: any }>
           <App {...props} />
         </PersistGate>
       </Providers>
-      <Script
+      {/* <Script
         strategy="afterInteractive"
         id="google-tag"
         dangerouslySetInnerHTML={{
@@ -114,7 +113,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','${process.env.NEXT_PUBLIC_NEW_GTAG}');
         `,
         }}
-      />
+      /> */}
     </>
   )
 }
@@ -153,7 +152,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const Layout = Component.Layout || Fragment
   const ShowMenu = Component.mp ? Fragment : Menu
   const isShowScrollToTopButton = Component.isShowScrollToTopButton || true
-  const shouldScreenWallet = Component.screen || false
+  // const shouldScreenWallet = Component.screen || false
 
   return (
     <ProductionErrorBoundary>
@@ -168,7 +167,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
       <NetworkModal pageSupportedChains={Component.chains} />
       <TransactionsDetailModal />
       {isShowScrollToTopButton && <ScrollToTopButtonV2 />}
-      {shouldScreenWallet && <Blocklist />}
+      {/* {shouldScreenWallet && <Blocklist />} */}
     </ProductionErrorBoundary>
   )
 }

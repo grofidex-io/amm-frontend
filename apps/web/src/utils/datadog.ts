@@ -1,19 +1,19 @@
 import { datadogLogs, LogsInitConfiguration } from '@datadog/browser-logs'
 import { datadogRum as ddRum } from '@datadog/browser-rum'
 
-try {
-  datadogLogs.init({
-    clientToken: process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN || '',
-    env: process.env.NEXT_PUBLIC_VERCEL_ENV,
-    version: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA,
-    site: process.env.NEXT_PUBLIC_DD_RUM_SITE || '',
-    forwardErrorsToLogs: true,
-    sessionSampleRate: 100,
-    service: 'pancakeswap-web',
-  })
-} catch (e) {
-  console.error(e)
-}
+// try {
+//   datadogLogs.init({
+//     clientToken: process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN || '',
+//     env: process.env.NEXT_PUBLIC_VERCEL_ENV,
+//     version: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA,
+//     site: process.env.NEXT_PUBLIC_DD_RUM_SITE || '',
+//     forwardErrorsToLogs: true,
+//     sessionSampleRate: 100,
+//     service: 'pancakeswap-web',
+//   })
+// } catch (e) {
+//   console.error(e)
+// }
 
 export function getLogger(name: string, config?: Partial<LogsInitConfiguration>) {
   const logger = datadogLogs.getLogger(name)
@@ -34,7 +34,7 @@ export const logger = getLogger('main')
 export const tracker = getLogger('perf', { forwardErrorsToLogs: false })
 
 function createDatadogRumManager() {
-  let initialized = false
+  let initialized = true
 
   function init() {
     if (initialized) {

@@ -93,19 +93,25 @@ const BasicChart = ({
 }) => {
   const [chartType, setChartType] = useState<number>(CHART_TYPE.LINE)
   const [timeWindow, setTimeWindow] = useState<PairDataTimeWindowEnum | number>(0)
+  const [resolutionIndex, setResolutionIndex] = useState<number>(0)
   const [resolution, setResolution] = useState<string>('1')
   const LIST_RESOLUTION = chartType === CHART_TYPE.CANDLE ? RESOLUTION_CANDLE : RESOLUTION_LINE
   const handleSetChartType = (type: number) => {
     if(type === CHART_TYPE.CANDLE) {
       setResolution('15')
-      setTimeWindow(2)
+      setTimeWindow(0)
+      setResolutionIndex(2)
     } else {
       setTimeWindow(0)
     }
     setChartType(type)
   }
   const handleSetTimeWindow = (timeDay: PairDataTimeWindowEnum | number) => {
-    setTimeWindow(timeDay)
+    if(chartType === CHART_TYPE.LINE) {
+      setTimeWindow(timeDay)
+    } else {
+      setResolutionIndex(timeDay)
+    }
     switch(timeDay) {
       case 0:
         setResolution('1')
@@ -254,10 +260,10 @@ const BasicChart = ({
           </Flex>
           <StyledListButton>
             {LIST_RESOLUTION.length > 0 && (
-              <ButtonMenu activeIndex={timeWindow} onItemClick={handleSetTimeWindow} scale="sm">
+              <ButtonMenu activeIndex={chartType === CHART_TYPE.CANDLE ? resolutionIndex : timeWindow} onItemClick={handleSetTimeWindow} scale="sm">
                   {
                     LIST_RESOLUTION.map((item: string) => {
-                      return <StyledButtonMenuItem>{t(item)}</StyledButtonMenuItem>
+                      return <StyledButtonMenuItem key={item}>{t(item)}</StyledButtonMenuItem>
                     })
                   }
               </ButtonMenu>
