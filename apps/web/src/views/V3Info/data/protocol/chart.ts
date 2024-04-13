@@ -63,7 +63,9 @@ export async function fetchChartData(client: GraphQLClient) {
         date: dayData.date,
         volumeUSD: parseFloat(dayData.volumeUSD),
         tvlUSD: parseFloat(dayData.tvlUSD),
-        feesUSD: parseFloat(dayData.feesUSD)
+        feesUSD: parseFloat(dayData.feesUSD),
+        tvlUSDFull: dayData.tvlUSD
+
       }
       return accum
     }, {})
@@ -82,7 +84,8 @@ export async function fetchChartData(client: GraphQLClient) {
           date: nextDay,
           volumeUSD: 0,
           tvlUSD: latestTvl,
-          feesUSD: 0
+          feesUSD: 0,
+          tvlUSDFull: latestTvl
         }
       } else {
         latestTvl = formattedExisting[currentDayIndex].tvlUSD
