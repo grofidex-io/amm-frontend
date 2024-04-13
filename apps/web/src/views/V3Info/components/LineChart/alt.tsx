@@ -31,6 +31,7 @@ export type LineChartProps = {
   height?: number | undefined
   minHeight?: number
   setValue?: Dispatch<SetStateAction<number | undefined>> // used for value on hover
+  setIndexLiquidityHover?: Dispatch<SetStateAction<number | undefined>>
   setLabel?: Dispatch<SetStateAction<string | undefined>> // used for label of value
   value?: number
   label?: string
@@ -47,6 +48,7 @@ const Chart = ({
   label,
   setValue,
   setLabel,
+  setIndexLiquidityHover,
   topLeft,
   topRight,
   bottomLeft,
@@ -84,6 +86,7 @@ const Chart = ({
             onMouseLeave={() => {
               if (setLabel) setLabel(undefined)
               if (setValue) setValue(undefined)
+              if(setIndexLiquidityHover) setIndexLiquidityHover(undefined)
             }}
           >
             <defs>
@@ -102,11 +105,12 @@ const Chart = ({
             <Tooltip
               cursor={{ stroke: theme.colors.backgroundAlt2 }}
               contentStyle={{ display: 'none' }}
-              formatter={(tooltipValue, name, props) => {
-                if (setValue && parsedValue !== props.payload.value) {
-                  setValue(props.payload.value)
+              formatter={(tooltipValue, name, item) => {
+                if (setValue) {
+                  setValue(item.payload.value)
+                  if(setIndexLiquidityHover) setIndexLiquidityHover(item.payload.index)
                 }
-                const formattedTime = dayjs(props.payload.time).format('MMM D, YYYY')
+                const formattedTime = dayjs(item.payload.time).format('MMM D, YYYY')
                 if (setLabel && label !== formattedTime) setLabel(formattedTime)
                 return null
               }}

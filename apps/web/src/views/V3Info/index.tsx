@@ -24,6 +24,7 @@ import {
 } from './hooks'
 import { useTransformedVolumeData } from './hooks/chart'
 import { VolumeWindow } from './types'
+import { getPercentChange } from './utils/data'
 import { unixToDate } from './utils/date'
 import { formatDollarAmount } from './utils/numbers'
 
@@ -68,6 +69,7 @@ export default function Home() {
 
   const [volumeHover, setVolumeHover] = useState<{value: number | undefined, feesUSD: number | undefined }>({value: undefined, feesUSD: undefined})
   const [liquidityHover, setLiquidityHover] = useState<number | undefined>()
+  const [indexLiquidityHover, setIndexLiquidityHover] = useState<number | undefined>()
   const [leftLabel, setLeftLabel] = useState<string | undefined>()
   const [rightLabel, setRightLabel] = useState<string | undefined>()
   const now = dayjs()
@@ -85,10 +87,12 @@ export default function Home() {
 
   const formattedTvlData = useMemo(() => {
     if (chartData) {
-      return chartData.map((day) => {
+      return chartData.map((day, index) => {
         return {
           time: unixToDate(day.date),
           value: day.tvlUSD,
+          tvlUSDFull: day.tvlUSDFull,
+          index
         }
       })
     }
@@ -133,6 +137,16 @@ export default function Home() {
     return formatDollarAmount(liquidityHover, 2, true)
   }, [liquidityHover])
 
+  const tvlUSDChange = useMemo(() => {
+    if(indexLiquidityHover && formattedTvlData[indexLiquidityHover - 1] && indexLiquidityHover !== (formattedTvlData.length - 1)) {
+
+      const _tvlUSDChange = getPercentChange(formattedTvlData[indexLiquidityHover].tvlUSDFull?.toString(), formattedTvlData[indexLiquidityHover-1].tvlUSDFull?.toString())
+
+      return _tvlUSDChange
+    }
+    return protocolData?.tvlUSDChange
+  }, [formattedTvlData, indexLiquidityHover, protocolData?.tvlUSDChange])
+
   return (
     <Page>
       <Heading scale="lg" mb="16px">
@@ -148,6 +162,7 @@ export default function Home() {
             value={liquidityHover}
             label={leftLabel}
             setValue={setLiquidityHover}
+            setIndexLiquidityHover={setIndexLiquidityHover}
             setLabel={setLeftLabel}
             topLeft={
               <AutoColumn gap="4px">
@@ -155,7 +170,7 @@ export default function Home() {
                 <StyledTextTitle>
                   <Flex>
                     <MonoSpace>{tvlValue}</MonoSpace>
-                    {protocolData?.tvlUSDChange && <StyledPercent value={protocolData?.tvlUSDChange} wrap />}
+                    {tvlUSDChange !== undefined && <StyledPercent value={tvlUSDChange} wrap />}
                   </Flex>
                 </StyledTextTitle>
                 <Text fontSize="12px" height="14px">

@@ -20,6 +20,7 @@ export interface ChartDayData {
   volumeUSD: number
   tvlUSD: number
   feesUSD: number
+  tvlUSDFull?: string | number
 }
 
 export enum VolumeWindow {
