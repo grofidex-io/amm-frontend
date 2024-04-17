@@ -172,9 +172,9 @@ function MobileModal<T>({
             {t('Haven’t got a crypto wallet yet?')}
           </Text>
         </AtomBox>
-        <Button as="a" href={docLink} variant="subtle" width="100%" external>
+        {/* <Button as="a" href={docLink} variant="subtle" width="100%" external>
           {docText}
-        </Button>
+        </Button> */}
       </AtomBox>
     </AtomBox>
   )

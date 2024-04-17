@@ -8,8 +8,10 @@ import useAuth from 'hooks/useAuth'
 import { useActiveHandle } from 'hooks/useEagerConnect.bmp.ts'
 
 import { ChainId } from '@pancakeswap/chains'
+import { WalletModalV2 } from '@pancakeswap/ui-wallets'
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
+import { logGTMWalletConnectEvent } from 'utils/customGTMEventTracking'
 import { useConnect } from 'wagmi'
 import Trans from './Trans'
 
@@ -51,7 +53,7 @@ const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
           z-index: 99;
         }
       `}</style>
-      {/* <WalletModalV2
+      <WalletModalV2
         docText={t('Learn How to Connect')}
         docLink={docLink}
         isOpen={open}
@@ -59,7 +61,7 @@ const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
         login={login}
         onDismiss={() => setOpen(false)}
         onWalletConnectCallBack={logGTMWalletConnectEvent}
-      /> */}
+      />
     </>
   )
 }
