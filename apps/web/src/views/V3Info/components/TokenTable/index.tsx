@@ -36,34 +36,38 @@ const ResponsiveGrid = styled.div`
 
   grid-template-columns: 30px 3fr repeat(4, 1fr);
   padding: 0 24px;
+  > * {
+    &:not(:first-child) {
+      min-width: 120px;
+    }
+    &:nth-child(2) {
+      min-width: 250px;
+      @media screen and (max-width: 575px) {
+        min-width: 100px;
+      }
+    }
+    &:nth-child(3), &:nth-child(6) {
+      min-width: 100px;
+    }
+    &:nth-child(4) {
+      min-width: 130px;
+    }
+  }
   & :nth-child(3), & :nth-child(6) {
     max-width: 300px;
     word-break: break-word;
   }
-  @media screen and (max-width: 991px) {
-    grid-template-columns: 30px 1.5fr repeat(3, 1fr);
-    & :nth-child(4) {
-      display: none;
-    }
-  }
-
-  @media screen and (max-width: 767px) {
-    grid-template-columns: 30px 2fr repeat(2, 1fr);
-    & :nth-child(6) {
-      display: none;
-    }
-  }
 
   @media screen and (max-width: 575px) {
-    grid-template-columns: 1.3fr 1fr;
     padding: 0 20px;
-    > *:first-child {
-      display: none;
-    }
-    > *:nth-child(3) {
-      display: none;
-    }
   }
+`
+
+const LayoutScroll = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-x: auto;
 `
 
 const LinkWrapper = styled(NextLinkFromReactRouter)`
@@ -75,9 +79,12 @@ const LinkWrapper = styled(NextLinkFromReactRouter)`
 `
 
 const ResponsiveLogo = styled(CurrencyLogo)`
-  @media screen and (max-width: 670px) {
-    width: 16px;
-    height: 16px;
+  --size: 24px;
+  min-width: var(--size);
+  width: var(--size);
+  height: var(--size);
+  @media screen and (max-width: 991px) {
+    --size: 20px;
   }
 `
 
@@ -112,12 +119,12 @@ const DataRow = ({ tokenData, index, chainPath }: { tokenData: TokenData; index:
             </RowFixed>
           </Text>
         </Flex>
-        <Text fontWeight={400}>{formatDollarAmount(tokenData.priceUSD)}</Text>
-        <Text fontWeight={400}>
+        <Text textAlign="right" fontWeight={400}>{formatDollarAmount(tokenData.priceUSD)}</Text>
+        <Text textAlign="right" fontWeight={400}>
           <Percent value={tokenData.priceUSDChange} fontWeight={400} />
         </Text>
-        <Text fontWeight={400}>{formatDollarAmount(tokenData.volumeUSD)}</Text>
-        <Text fontWeight={400}>{formatDollarAmount(tokenData.tvlUSD)}</Text>
+        <Text textAlign="right" fontWeight={400}>{formatDollarAmount(tokenData.volumeUSD)}</Text>
+        <Text textAlign="right" fontWeight={400}>{formatDollarAmount(tokenData.tvlUSD)}</Text>
       </ResponsiveGrid>{' '}
     </LinkWrapper>
   )
@@ -195,81 +202,84 @@ export default function TokenTable({
   return (
     <TableWrapper>
       {sortedTokens.length > 0 ? (
-        <AutoColumn gap="16px">
-          <ResponsiveGrid>
-            <Text color="textSubtle">{t('NO.')}</Text>
-            <ClickableColumnHeader color="textSubtle">
-              {t('Name')}
-              <SortButton
-                scale="sm"
-                variant="subtle"
-                onClick={() => handleSort(SORT_FIELD.name)}
-                className={getSortFieldClassName(SORT_FIELD.name)}
-              >
-                <SortArrowIcon />
-              </SortButton>
-            </ClickableColumnHeader>
-            <ClickableColumnHeader color="textSubtle">
-              {t('Price')}
-              <SortButton
-                scale="sm"
-                variant="subtle"
-                onClick={() => handleSort(SORT_FIELD.priceUSD)}
-                className={getSortFieldClassName(SORT_FIELD.priceUSD)}
-              >
-                <SortArrowIcon />
-              </SortButton>
-            </ClickableColumnHeader>
-            <ClickableColumnHeader color="textSubtle">
-              {t('Price Change')}
-              <SortButton
-                scale="sm"
-                variant="subtle"
-                onClick={() => handleSort(SORT_FIELD.priceUSDChange)}
-                className={getSortFieldClassName(SORT_FIELD.priceUSDChange)}
-              >
-                <SortArrowIcon />
-              </SortButton>
-            </ClickableColumnHeader>
-            {/* <ClickableText onClick={() => handleSort(SORT_FIELD.priceUSDChangeWeek)}>
-            7d {arrow(SORT_FIELD.priceUSDChangeWeek)}
-          </ClickableText> */}
-            <ClickableColumnHeader color="textSubtle">
-              {t('Volume 24H')}
-              <SortButton
-                scale="sm"
-                variant="subtle"
-                onClick={() => handleSort(SORT_FIELD.volumeUSD)}
-                className={getSortFieldClassName(SORT_FIELD.volumeUSD)}
-              >
-                <SortArrowIcon />
-              </SortButton>
-            </ClickableColumnHeader>
-            <ClickableColumnHeader color="textSubtle">
-              {t('TVL')}
-              <SortButton
-                scale="sm"
-                variant="subtle"
-                onClick={() => handleSort(SORT_FIELD.tvlUSD)}
-                className={getSortFieldClassName(SORT_FIELD.tvlUSD)}
-              >
-                <SortArrowIcon />
-              </SortButton>
-            </ClickableColumnHeader>
-          </ResponsiveGrid>
-
-          <Break />
-          {sortedTokens.map((data, i) => {
-            if (data) {
-              return (
-                <React.Fragment key={`${data.address}_sortedTokens`}>
-                  <DataRow index={(page - 1) * MAX_ITEMS + i} tokenData={data} chainPath={chainPath} />
-                  <Break />
-                </React.Fragment>
-              )
-            }
-            return null
-          })}
+        <>
+          <LayoutScroll>
+            <ResponsiveGrid>
+              <Text color="textSubtle">{t('NO.')}</Text>
+              <ClickableColumnHeader color="textSubtle">
+                {t('Name')}
+                <SortButton
+                  scale="sm"
+                  variant="subtle"
+                  onClick={() => handleSort(SORT_FIELD.name)}
+                  className={getSortFieldClassName(SORT_FIELD.name)}
+                >
+                  <SortArrowIcon />
+                </SortButton>
+              </ClickableColumnHeader>
+              <ClickableColumnHeader color="textSubtle" style={{ justifyContent: 'flex-end' }}>
+                {t('Price')}
+                <SortButton
+                  scale="sm"
+                  variant="subtle"
+                  onClick={() => handleSort(SORT_FIELD.priceUSD)}
+                  className={getSortFieldClassName(SORT_FIELD.priceUSD)}
+                >
+                  <SortArrowIcon />
+                </SortButton>
+              </ClickableColumnHeader>
+              <ClickableColumnHeader color="textSubtle" style={{ justifyContent: 'flex-end' }}>
+                {t('Price Change')}
+                <SortButton
+                  scale="sm"
+                  variant="subtle"
+                  onClick={() => handleSort(SORT_FIELD.priceUSDChange)}
+                  className={getSortFieldClassName(SORT_FIELD.priceUSDChange)}
+                >
+                  <SortArrowIcon />
+                </SortButton>
+              </ClickableColumnHeader>
+              {/* <ClickableText onClick={() => handleSort(SORT_FIELD.priceUSDChangeWeek)}>
+              7d {arrow(SORT_FIELD.priceUSDChangeWeek)}
+            </ClickableText> */}
+              <ClickableColumnHeader color="textSubtle" style={{ justifyContent: 'flex-end' }}>
+                {t('Volume 24H')}
+                <SortButton
+                  scale="sm"
+                  variant="subtle"
+                  onClick={() => handleSort(SORT_FIELD.volumeUSD)}
+                  className={getSortFieldClassName(SORT_FIELD.volumeUSD)}
+                >
+                  <SortArrowIcon />
+                </SortButton>
+              </ClickableColumnHeader>
+              <ClickableColumnHeader color="textSubtle" style={{ justifyContent: 'flex-end' }}>
+                {t('TVL')}
+                <SortButton
+                  scale="sm"
+                  variant="subtle"
+                  onClick={() => handleSort(SORT_FIELD.tvlUSD)}
+                  className={getSortFieldClassName(SORT_FIELD.tvlUSD)}
+                >
+                  <SortArrowIcon />
+                </SortButton>
+              </ClickableColumnHeader>
+            </ResponsiveGrid>
+            <AutoColumn gap="16px">
+              <Break />
+              {sortedTokens.map((data, i) => {
+                if (data) {
+                  return (
+                    <React.Fragment key={`${data.address}_sortedTokens`}>
+                      <DataRow index={(page - 1) * MAX_ITEMS + i} tokenData={data} chainPath={chainPath} />
+                      <Break />
+                    </React.Fragment>
+                  )
+                }
+                return null
+              })}
+            </AutoColumn>
+          </LayoutScroll>
           <PageButtons>
             <Box
               onClick={() => {
@@ -291,7 +301,7 @@ export default function TokenTable({
               </Arrow>
             </Box>
           </PageButtons>
-        </AutoColumn>
+        </>
       ) : (
         <StyledLoadingRows>
           <div />
