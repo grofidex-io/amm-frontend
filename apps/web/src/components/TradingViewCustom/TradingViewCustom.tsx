@@ -178,7 +178,7 @@ const TrandingViewCustom = ({ symbol, resolution }: TradingViewProps) => {
     <Box overflow="hidden" height="100%" className="tradingview_container">
       {/* <div ref={chartContainerRef} /> */}
       {isLoading && <ContainerLoading><Loading width={40} height={40}/></ContainerLoading> }
-      <div style={{height: "100%"}} ref={chartContainerRef}  />
+      <div style={{height: "100%", minHeight: '250px'}} ref={chartContainerRef}  />
     </Box> 
   )
 }

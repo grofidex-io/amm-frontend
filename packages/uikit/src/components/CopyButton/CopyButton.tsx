@@ -1,8 +1,8 @@
 import { ElementType, useCallback, useEffect, useState } from "react";
-import { copyText } from "./copyText";
-import { CopyIcon, SvgProps } from "../Svg";
 import { useTooltip } from "../../hooks";
 import { IconButton } from "../Button";
+import { CopyIcon, SvgProps } from "../Svg";
+import { copyText } from "./copyText";
 
 interface CopyButtonProps extends SvgProps {
   text: string;
@@ -31,7 +31,8 @@ export const CopyButton: React.FC<React.PropsWithChildren<CopyButtonProps>> = ({
     setIsTooltipDisplayed(true);
   }, []);
 
-  const handleOnClick = useCallback(() => {
+  const handleOnClick = useCallback((event:any) => {
+    event.preventDefault()
     copyText(text, displayTooltip);
   }, [text, displayTooltip]);
 
