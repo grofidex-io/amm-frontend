@@ -35,8 +35,6 @@ const ResponsiveGrid = styled.div<{ widthfirstcol?: number }>`
   grid-template-columns: ${({ widthfirstcol }) =>
     widthfirstcol ? `${widthfirstcol}fr repeat(5, 1fr)` : '0.5fr repeat(5, 1fr)'};
   padding: 0 24px;
-  @media screen and (max-width: 575px) {
-  }
   > * {
     min-width: 160px;
     @media screen and (max-width: 767px) {
@@ -46,24 +44,9 @@ const ResponsiveGrid = styled.div<{ widthfirstcol?: number }>`
       min-width: 120px;
     }
   }
-  @media screen and (max-width: 991px) {
-    grid-template-columns: repeat(5, 1fr);
-    & > *:nth-child(5) {
-      display: none;
-    }
-  }
-
-  @media screen and (max-width: 767px) {
-    & > *:nth-child(2) {
-      display: none;
-    }
-  }
 
   @media screen and (max-width: 575px) {
     padding: 0 20px;
-    & > *:nth-child(5) {
-      display: none;
-    }
   }
 `
 
@@ -202,11 +185,11 @@ const DataRow = ({
         </StyledScanLink>
       </Flex>
 
-      <Text fontWeight={400}>{formatDollarAmount(transaction.amountUSD)}</Text>
-      <Text fontWeight={400}>
+      <Text textAlign="right" fontWeight={400}>{formatDollarAmount(transaction.amountUSD)}</Text>
+      <Text textAlign="right" fontWeight={400}>
         <HoverInlineText text={`${formatAmount(abs0)}  ${token0Symbol}`} maxCharacters={16} />
       </Text>
-      <Text fontWeight={400}>
+      <Text textAlign="right" fontWeight={400}>
         <HoverInlineText text={`${formatAmount(abs1)}  ${token1Symbol}`} maxCharacters={16} />
       </Text>
       <Text fontWeight={400}>
@@ -217,7 +200,7 @@ const DataRow = ({
           {shortenAddress(transaction.sender)}
         </ScanLink>
       </Text>
-      <Text fontWeight={400}>{convertDate(Number(transaction.timestamp))}</Text>
+      <Text textAlign="right" fontWeight={400}>{convertDate(Number(transaction.timestamp))}</Text>
     </ResponsiveGrid>
   )
 }
@@ -354,7 +337,7 @@ export default function TransactionTable({
             <Text color="textSubtle">
               {t('Type')}
             </Text>
-            <ClickableColumnHeader color="textSubtle">
+            <ClickableColumnHeader color="textSubtle" style={{ justifyContent: 'flex-end' }}>
               {t('Total Value')}
               <SortButton
                 scale="sm"
@@ -365,7 +348,7 @@ export default function TransactionTable({
                 <SortArrowIcon />
               </SortButton>
             </ClickableColumnHeader>
-            <ClickableColumnHeader color="textSubtle">
+            <ClickableColumnHeader color="textSubtle" style={{ justifyContent: 'flex-end' }}>
               {t('Token%index% Amount', { index: '0' })}
               <SortButton
                 scale="sm"
@@ -376,7 +359,7 @@ export default function TransactionTable({
                 <SortArrowIcon />
               </SortButton>
             </ClickableColumnHeader>
-            <ClickableColumnHeader color="textSubtle">
+            <ClickableColumnHeader color="textSubtle" style={{ justifyContent: 'flex-end' }}>
               {t('Token%index% Amount', { index: '1' })}
               <SortButton
                 scale="sm"
@@ -398,7 +381,7 @@ export default function TransactionTable({
                 <SortArrowIcon />
               </SortButton>
             </ClickableColumnHeader>
-            <ClickableColumnHeader color="textSubtle">
+            <ClickableColumnHeader color="textSubtle" style={{ justifyContent: 'flex-end' }}>
               {`${t('Time')} `}
               <SortButton
                 scale="sm"

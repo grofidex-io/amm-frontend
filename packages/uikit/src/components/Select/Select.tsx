@@ -23,14 +23,18 @@ const DropDownListContainer = styled.div`
   height: 0;
   position: absolute;
   overflow: hidden;
-  background: ${({ theme }) => theme.colors.dropdownBlur};
-  backdrop-filter: blur(12px) saturate(200%) contrast(80%) brightness(80%);
+  background: ${({ theme }) => theme.colors.backgroundItem};
   z-index: ${({ theme }) => theme.zIndices.dropdown};
   transition: transform 0.15s, opacity 0.15s;
   transform: scaleY(0);
   transform-origin: top;
   opacity: 0;
   width: 100%;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    backdrop-filter: blur(12px) saturate(200%) contrast(80%) brightness(80%);
+    background-color: ${({ theme }) => theme.colors.dropdownBlur};
+  }
 `;
 
 const DropDownContainer = styled(Box)<{ isOpen: boolean }>`

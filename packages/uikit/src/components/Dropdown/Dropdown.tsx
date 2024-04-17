@@ -29,7 +29,7 @@ const DropdownContent = styled.div.withConfig({
   transform: translate(-50%, 0);
   left: ${getLeft};
   bottom: ${getBottom};
-  background-color: ${({ theme }) => theme.colors.dropdownBlur};
+  background-color: ${({ theme }) => theme.colors.backgroundItem};
   padding: 16px;
   max-height: 0px;
   overflow: hidden;
@@ -39,8 +39,12 @@ const DropdownContent = styled.div.withConfig({
   transition: max-height 0s 0.3s, opacity 0.3s ease-in-out;
   will-change: opacity;
   pointer-events: none;
-  backdrop-filter: blur(12px) saturate(200%) contrast(80%) brightness(80%);
   box-shadow: ${({ theme }) => theme.shadows.dropdown};
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    backdrop-filter: blur(12px) saturate(200%) contrast(80%) brightness(80%);
+    background-color: ${({ theme }) => theme.colors.dropdownBlur};
+  }
 `;
 
 const Container = styled.div<{ $scrolling: boolean }>`
