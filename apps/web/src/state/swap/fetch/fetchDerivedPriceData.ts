@@ -200,7 +200,10 @@ const fetchDerivedPriceData = async (
       console.error('Error fetching blocks for timestamps', timestamps)
       return null
     }
-    blocks.pop() // the bsc graph is 32 block behind so pop the last
+    if(chainId && chainId === ChainId.BSC) {
+      blocks.pop() // the bsc graph is 32 block behind so pop the last
+    }
+
     const [token0DerivedUSD, token1DerivedUSD] = await Promise.all([
       getTokenDerivedUSDCPrices(token0Address, blocks, SWAP_INFO_BY_CHAIN[chainId][protocol0]),
       getTokenDerivedUSDCPrices(token1Address, blocks, SWAP_INFO_BY_CHAIN[chainId][protocol1]),
