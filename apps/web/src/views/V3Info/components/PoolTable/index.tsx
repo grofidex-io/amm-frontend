@@ -1,7 +1,7 @@
 import { ChainDefault } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { NATIVE, WNATIVE } from '@pancakeswap/sdk'
-import { ArrowBackIcon, ArrowForwardIcon, Box, SortArrowIcon, Text } from '@pancakeswap/uikit'
+import { ArrowBackIcon, ArrowForwardIcon, AutoColumn, Box, SortArrowIcon, Text } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import NextLink from 'next/link'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
@@ -23,33 +23,34 @@ const ResponsiveGrid = styled.div`
   display: grid;
   grid-gap: 1em;
   align-items: center;
-
   grid-template-columns: 30px 3.5fr repeat(3, 1fr);
   padding: 0 24px;
+  > * {
+    &:not(:first-child) {
+      min-width: 120px;
+    }
+    &:nth-child(2) {
+      min-width: 200px;
+    }
+    &:nth-child(3) {
+      min-width: 100px;
+    }
+  }
   & :nth-child(3) {
     max-width: 300px;
     word-break: break-word;
   }
-  @media screen and (max-width: 900px) {
-    grid-template-columns: 30px 1.5fr repeat(2, 1fr);
-    & :nth-child(3) {
-      display: none;
-    }
-  }
 
-  @media screen and (max-width: 500px) {
-    grid-template-columns: 30px 1.5fr repeat(1, 1fr);
-    & :nth-child(5) {
-      display: none;
-    }
+  @media screen and (max-width: 575px) {
+    padding: 0 20px;
   }
+`
 
-  @media screen and (max-width: 480px) {
-    grid-template-columns: 1.3fr 1fr;
-    > *:nth-child(1) {
-      display: none;
-    }
-  }
+const LayoutScroll = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-x: auto;
 `
 
 const LinkWrapper = styled(NextLink)`
@@ -62,6 +63,28 @@ const LinkWrapper = styled(NextLink)`
 
 const StyledLoadingRows = styled(LoadingRows)`
   margin: 0 16px;
+`
+
+const StyledTextHeader = styled(Text)`
+  @media screen and (max-width: 575px) {
+    font-size: 14px;
+  }
+  @media screen and (max-width: 374px) {
+    font-size: 13px;
+  }
+`
+
+const StyleRowFixed = styled(RowFixed)`
+  @media screen and (max-width: 374px) {
+    flex-wrap: wrap;
+  }
+`
+
+const StyleGreyBadge = styled(GreyBadge) `
+  font-size: 14px;
+  @media screen and (max-width: 424px) {
+    font-size: 12px;
+  }
 `
 
 const SORT_FIELD = {
@@ -80,25 +103,25 @@ const DataRow = ({ poolData, index, chainPath }: { poolData: PoolData; index: nu
   return (
     <LinkWrapper href={`/${v3InfoPath}${chainPath}/pairs/${poolData.address}`}>
       <ResponsiveGrid>
-        <Text fontWeight={400}>{index + 1}</Text>
-        <Text fontWeight={400}>
-          <RowFixed>
+        <StyledTextHeader fontWeight={400}>{index + 1}</StyledTextHeader>
+        <StyledTextHeader fontWeight={400}>
+          <StyleRowFixed>
             <DoubleCurrencyLogo
               address0={poolData.token0.address}
               address1={poolData.token1.address}
               chainName={chainName}
             />
-            <Text ml="8px">
+            <Text mx="8px">
               {token0symbol}/{token1symbol}
             </Text>
-            <GreyBadge ml="10px" style={{ fontSize: 14 }}>
+            <StyleGreyBadge style={{ display: 'block', whiteSpace: 'nowrap' }}>
               {feeTierPercent(poolData.feeTier)}
-            </GreyBadge>
-          </RowFixed>
-        </Text>
-        <Text fontWeight={400}>{formatDollarAmount(poolData.tvlUSD)}</Text>
-        <Text fontWeight={400}>{formatDollarAmount(poolData.volumeUSD)}</Text>
-        <Text fontWeight={400}>{formatDollarAmount(poolData.volumeUSDWeek)}</Text>
+            </StyleGreyBadge>
+          </StyleRowFixed>
+        </StyledTextHeader>
+        <StyledTextHeader fontWeight={400} textAlign="right">{formatDollarAmount(poolData.tvlUSD)}</StyledTextHeader>
+        <StyledTextHeader fontWeight={400} textAlign="right">{formatDollarAmount(poolData.volumeUSD)}</StyledTextHeader>
+        <StyledTextHeader fontWeight={400} textAlign="right">{formatDollarAmount(poolData.volumeUSDWeek)}</StyledTextHeader>
       </ResponsiveGrid>
     </LinkWrapper>
   )
@@ -162,65 +185,70 @@ export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDat
     <TableWrapper>
       {sortedPools.length > 0 ? (
         <>
-          <ResponsiveGrid>
-            <Text color="textSubtle">{t('NO.')}</Text>
-            <ClickableColumnHeader color="textSubtle">
-              {t('Pair')}
-              <SortButton
-                scale="sm"
-                variant="subtle"
-                onClick={() => handleSort(SORT_FIELD.feeTier)}
-                className={getSortFieldClassName(SORT_FIELD.feeTier)}
-              >
-                <SortArrowIcon />
-              </SortButton>
-            </ClickableColumnHeader>
-            <ClickableColumnHeader color="textSubtle">
-              {t('TVL')}
-              <SortButton
-                scale="sm"
-                variant="subtle"
-                onClick={() => handleSort(SORT_FIELD.tvlUSD)}
-                className={getSortFieldClassName(SORT_FIELD.tvlUSD)}
-              >
-                <SortArrowIcon />
-              </SortButton>
-            </ClickableColumnHeader>
-            <ClickableColumnHeader color="textSubtle">
-              {t('Volume 24H')}
-              <SortButton
-                scale="sm"
-                variant="subtle"
-                onClick={() => handleSort(SORT_FIELD.volumeUSD)}
-                className={getSortFieldClassName(SORT_FIELD.volumeUSD)}
-              >
-                <SortArrowIcon />
-              </SortButton>
-            </ClickableColumnHeader>
-            <ClickableColumnHeader color="textSubtle">
-              {t('Volume 7D')}
-              <SortButton
-                scale="sm"
-                variant="subtle"
-                onClick={() => handleSort(SORT_FIELD.volumeUSDWeek)}
-                className={getSortFieldClassName(SORT_FIELD.volumeUSDWeek)}
-              >
-                <SortArrowIcon />
-              </SortButton>
-            </ClickableColumnHeader>
-          </ResponsiveGrid>
-          <Break />
-          {sortedPools.map((poolData, i) => {
-            if (poolData) {
-              return (
-                <React.Fragment key={`${poolData?.address}_Row`}>
-                  <DataRow index={(page - 1) * MAX_ITEMS + i} poolData={poolData} chainPath={chainPath} />
-                  <Break />
-                </React.Fragment>
-              )
-            }
-            return null
-          })}
+          <LayoutScroll>
+            <ResponsiveGrid>
+              <Text color="textSubtle">{t('NO.')}</Text>
+              <ClickableColumnHeader color="textSubtle">
+                {t('Pair')}
+                <SortButton
+                  scale="sm"
+                  variant="subtle"
+                  onClick={() => handleSort(SORT_FIELD.feeTier)}
+                  className={getSortFieldClassName(SORT_FIELD.feeTier)}
+                >
+                  <SortArrowIcon />
+                </SortButton>
+              </ClickableColumnHeader>
+              <ClickableColumnHeader color="textSubtle" style={{ justifyContent: 'flex-end' }}>
+                {t('TVL')}
+                <SortButton
+                  scale="sm"
+                  variant="subtle"
+                  onClick={() => handleSort(SORT_FIELD.tvlUSD)}
+                  className={getSortFieldClassName(SORT_FIELD.tvlUSD)}
+                >
+                  <SortArrowIcon />
+                </SortButton>
+              </ClickableColumnHeader>
+              <ClickableColumnHeader color="textSubtle" style={{ justifyContent: 'flex-end' }}>
+                {t('Volume 24H')}
+                <SortButton
+                  scale="sm"
+                  variant="subtle"
+                  onClick={() => handleSort(SORT_FIELD.volumeUSD)}
+                  className={getSortFieldClassName(SORT_FIELD.volumeUSD)}
+                >
+                  <SortArrowIcon />
+                </SortButton>
+              </ClickableColumnHeader>
+              <ClickableColumnHeader color="textSubtle" style={{ justifyContent: 'flex-end' }}>
+                {t('Volume 7D')}
+                <SortButton
+                  scale="sm"
+                  variant="subtle"
+                  onClick={() => handleSort(SORT_FIELD.volumeUSDWeek)}
+                  className={getSortFieldClassName(SORT_FIELD.volumeUSDWeek)}
+                >
+                  <SortArrowIcon />
+                </SortButton>
+              </ClickableColumnHeader>
+            </ResponsiveGrid>
+            <AutoColumn gap="16px">
+              <Break />
+              {sortedPools.map((poolData, i) => {
+                if (poolData) {
+                  return (
+                    <React.Fragment key={`${poolData?.address}_Row`}>
+                      <DataRow index={(page - 1) * MAX_ITEMS + i} poolData={poolData} chainPath={chainPath} />
+                      <Break />
+                    </React.Fragment>
+                  )
+                }
+                return null
+              })}
+            </AutoColumn>
+
+          </LayoutScroll>
           <PageButtons>
             <Box
               onClick={() => {
@@ -243,6 +271,7 @@ export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDat
             </Box>
           </PageButtons>
         </>
+
       ) : (
         <StyledLoadingRows>
           <div />

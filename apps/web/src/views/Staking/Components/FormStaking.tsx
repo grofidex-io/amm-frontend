@@ -12,11 +12,18 @@ import { replaceStakingState, resetStakingState, updateCalculateApr, updateSlipp
 import { useStakingState } from 'state/staking/hooks'
 import { stakingReducerAtom } from 'state/staking/reducer'
 import { useCurrencyBalance } from 'state/wallet/hooks'
+import styled from 'styled-components'
 import { validator } from 'utils/calls/staking'
 import { aprSubgraphClients } from 'utils/graphql'
 import { useAccount } from 'wagmi'
 import useStakingConfig from '../Hooks/useStakingConfig'
 import { StyledButton } from '../style'
+
+const StyledText = styled(Text)`
+  @media screen and (max-width: 344px) {
+    display: none;
+  }
+`
 
 let timeFlag = Date.now()
 
@@ -155,9 +162,9 @@ const FormStaking = () => {
     <>
       <Box>
         <Flex alignItems="center" justifyContent="space-between" mb="8px">
-          <Text display={["none", "block"]} fontSize="16px" fontWeight="600" color="textSubtle">
+          <StyledText fontSize={["12px", "14px", "16px"]} fontWeight="600" color="textSubtle">
             {t('Staking amount')}
-          </Text>
+          </StyledText>
           <Flex alignItems="center">
             <Text fontSize="12px" color="textSubtle" ml="3px">
               {t('%symbol% Available', {symbol: currency.symbol})}
