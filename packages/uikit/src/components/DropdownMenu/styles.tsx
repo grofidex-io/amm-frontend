@@ -67,7 +67,7 @@ export const DropdownMenuDivider = styled.hr`
 `;
 
 export const StyledDropdownMenu = styled.div<{ $isOpen: boolean; $isBottomNav: boolean }>`
-  background-color: ${({ theme }) => theme.colors.dropdownBlur};
+  background-color: ${({ theme }) => theme.colors.backgroundItem};
   // border: 2px solid ${({ theme }) => theme.colors.cardBorder};
   border-radius: 8px;
   padding-bottom: 4px;
@@ -77,7 +77,6 @@ export const StyledDropdownMenu = styled.div<{ $isOpen: boolean; $isBottomNav: b
   width: ${({ $isBottomNav }) => ($isBottomNav ? "calc(100% - 32px)" : "280px")};
   visibility: visible;
   z-index: 1001;
-  backdrop-filter: blur(12px) saturate(200%) contrast(80%) brightness(80%);
   box-shadow: ${({ theme }) => theme.shadows.dropdown};
 
   ${({ $isOpen }) =>
@@ -86,6 +85,11 @@ export const StyledDropdownMenu = styled.div<{ $isOpen: boolean; $isBottomNav: b
     pointer-events: none;
     visibility: hidden;
   `}
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    backdrop-filter: blur(12px) saturate(200%) contrast(80%) brightness(80%);
+    background-color: ${({ theme }) => theme.colors.dropdownBlur};
+  }
 `;
 
 export const LinkStatus = styled(Text)<{ color: keyof Colors }>`

@@ -42,7 +42,7 @@ export const LabelText = styled.div`
 `;
 
 const Menu = styled.div<{ $isOpen: boolean }>`
-  background-color: ${({ theme }) => theme.colors.dropdownBlur};
+  background-color: ${({ theme }) => theme.colors.backgroundItem};
   // border: 2px solid ${({ theme }) => theme.colors.cardBorder};
   border-radius: 8px;
   padding-bottom: 4px;
@@ -51,7 +51,6 @@ const Menu = styled.div<{ $isOpen: boolean }>`
   width: 280px;
   visibility: visible;
   z-index: 1001;
-  backdrop-filter: blur(12px) saturate(200%) contrast(80%) brightness(80%);
   box-shadow: ${({ theme }) => theme.shadows.dropdown};
   ${({ $isOpen }) =>
     !$isOpen &&
@@ -66,6 +65,11 @@ const Menu = styled.div<{ $isOpen: boolean }>`
 
   ${UserMenuItem}:last-child {
     border-radius: 0 0 8px 8px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    backdrop-filter: blur(12px) saturate(200%) contrast(80%) brightness(80%);
+    background-color: ${({ theme }) => theme.colors.dropdownBlur};
   }
 `;
 const StyledArrowIcon = styled.div`

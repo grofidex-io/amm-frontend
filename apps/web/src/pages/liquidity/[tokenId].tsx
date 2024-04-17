@@ -959,11 +959,11 @@ function PositionHistory_({
         {isExpanded ? t('Hide') : t('History')}
       </ExpandableLabel>
       {isExpanded && (
-        <AtomBox display={["flex", "grid"]} gap="16px" justifyContent={["space-between", "stretch"]}>
-          <AtomBox display={["block", "grid"]} style={{ gridTemplateColumns: '1fr 1fr 1fr' }} alignItems="center">
-            <PreTitle mb={["8px", "8px", "0px"]} height={["22px", "22px", "auto"]} textAlign={["left", "left", "center"]} color="textSubtle">{t('Timestamp')}</PreTitle>
-            <PreTitle mb={["8px", "8px", "0px"]} height={["22px", "22px", "auto"]} textAlign={["left", "left", "center"]} color="textSubtle">{t('Action')}</PreTitle>
-            <PreTitle height={["22px", "22px", "auto"]} textAlign={["left", "left", "center"]} color="textSubtle">{t('Token Transferred')}</PreTitle>
+        <AtomBox display={["grid"]} gap="16px">
+          <AtomBox display={["none", "grid"]} style={{ gridTemplateColumns: '1fr 1fr 1fr' }} alignItems="center">
+            <PreTitle color="textSubtle">{t('Timestamp')}</PreTitle>
+            <PreTitle color="textSubtle">{t('Action')}</PreTitle>
+            <PreTitle color="textSubtle">{t('Token Transferred')}</PreTitle>
           </AtomBox>
 
           {data.map((d) => {
@@ -1053,7 +1053,7 @@ function PositionHistoryRow({
   currency1: Currency
 }) {
   const { isMobile } = useMatchBreakpoints()
-
+  const { t } = useTranslation()
   const isPlus = type !== 'burn'
 
   const date = useMemo(() => dayjs.unix(+positionTx.timestamp), [positionTx.timestamp])
@@ -1086,46 +1086,57 @@ function PositionHistoryRow({
   if (isMobile) {
     return (
       <Box>
-        <AutoRow mb={["8px", "8px", "0px"]} justifyContent="flex-end">
+        <AutoRow
+          borderTop="1"
+          pt="12px"
+          justifyContent="space-between"
+        >
+          <Text color='textSubtle' fontSize="14px">{t('Timestamp')}</Text>
           <ScanLink
             useBscCoinFallback={chainId ? ChainLinkSupportChains.includes(chainId) : false}
             href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}
           >
             <Flex alignItems="center" justifyContent="flex-end" ml="auto">
-              <Text fontSize={["14px", "14px", "15px"]} color='secondary' ellipsis>{mobileDate}</Text>
-              <Text display={["none", "block"]} fontSize={["14px", "14px", "15px"]} color='secondary' ellipsis>{mobileTime}</Text>
+              <Text color='secondary' ellipsis>{mobileDate}</Text>
+              <Text display={["none", "block"]} color='secondary' ellipsis>, {mobileTime}</Text>
             </Flex>
           </ScanLink>
         </AutoRow>
-        <Text textAlign="right" mb={["8px", "8px", "0px"]}>{positionHistoryTypeText[type]}</Text>
-        <AutoColumn gap="4px">
-          {+positionTx.amount0 > 0 && (
-            <AutoRow flexWrap="nowrap" gap={["8px", "12px"]} justifyContent="space-between">
-              <AutoRow width="auto" flexWrap="nowrap" gap="4px">
-                <AtomBox minWidth="24px">
-                  <CurrencyLogo currency={currency0} />
-                </AtomBox>
-                <Text display={['none', 'none', 'block']}>{currency0.symbol}</Text>
+        <AutoRow justifyContent="space-between" mt="6px">
+          <Text color='textSubtle' fontSize="14px">{t('Action')}</Text>
+          <Text fontSize={["14px", "14px", "15px"]} textAlign="right">{positionHistoryTypeText[type]}</Text>
+        </AutoRow>
+        <AutoRow alignItems="flex-start" justifyContent="space-between" mt="6px">
+          <Text color='textSubtle' fontSize="14px" lineHeight="26px">{t('Token Transferred')}</Text>
+          <AutoColumn gap="4px">
+            {+positionTx.amount0 > 0 && (
+              <AutoRow flexWrap="nowrap" gap={["6px", "12px"]} justifyContent="flex-end">
+                <Text bold ellipsis title={positionTx.amount0}>
+                  {isPlus ? '+' : '-'} {position0AmountString}
+                </Text>
+                <AutoRow width="auto" flexWrap="nowrap" gap="4px">
+                  <AtomBox minWidth="24px">
+                    <CurrencyLogo currency={currency0} />
+                  </AtomBox>
+                  <Text display={['none', 'none', 'block']}>{currency0.symbol}</Text>
+                </AutoRow>
               </AutoRow>
-              <Text bold ellipsis title={positionTx.amount0}>
-                {isPlus ? '+' : '-'} {position0AmountString}
-              </Text>
-            </AutoRow>
-          )}
-          {+positionTx.amount1 > 0 && (
-            <AutoRow flexWrap="nowrap" gap={["8px", "12px"]} justifyContent="space-between">
-              <AutoRow width="auto" flexWrap="nowrap" gap="4px">
-                <AtomBox minWidth="24px">
-                  <CurrencyLogo currency={currency1} />
-                </AtomBox>
-                <Text display={['none', 'none', 'block']}>{currency1.symbol}</Text>
+            )}
+            {+positionTx.amount1 > 0 && (
+              <AutoRow flexWrap="nowrap" gap={["6px", "12px"]} justifyContent="flex-end">
+                <Text bold ellipsis title={positionTx.amount1}>
+                  {isPlus ? '+' : '-'} {position1AmountString}
+                </Text>
+                <AutoRow width="auto" flexWrap="nowrap" gap="4px">
+                  <AtomBox minWidth="24px">
+                    <CurrencyLogo currency={currency1} />
+                  </AtomBox>
+                  <Text display={['none', 'none', 'block']}>{currency1.symbol}</Text>
+                </AutoRow>
               </AutoRow>
-              <Text bold ellipsis title={positionTx.amount1}>
-                {isPlus ? '+' : '-'} {position1AmountString}
-              </Text>
-            </AutoRow>
-          )}
-        </AutoColumn>
+            )}
+          </AutoColumn>
+        </AutoRow>
       </Box>
     )
   }
@@ -1158,7 +1169,7 @@ function PositionHistoryRow({
               <AtomBox minWidth="24px">
                 <CurrencyLogo currency={currency0} />
               </AtomBox>
-              <Text display={['none', 'none', 'block']}>{currency0.symbol}</Text>
+              <Text display={['none', 'none', 'none', 'block']}>{currency0.symbol}</Text>
             </AutoRow>
           </AutoRow>
         )}
@@ -1171,7 +1182,7 @@ function PositionHistoryRow({
               <AtomBox minWidth="24px">
                 <CurrencyLogo currency={currency1} />
               </AtomBox>
-              <Text display={['none', 'none', 'block']}>{currency1.symbol}</Text>
+              <Text display={['none', 'none', 'none', 'block']}>{currency1.symbol}</Text>
             </AutoRow>
           </AutoRow>
         )}

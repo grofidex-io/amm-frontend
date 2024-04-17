@@ -7,7 +7,7 @@ const Wrapper = styled(Flex)<{ fullWidth?: boolean; customWidth?: boolean; isSho
 --rounded: 8px;  
 border-bottom: ${({ isShowBorderBottom, theme }) =>
     isShowBorderBottom ? `2px solid ${theme.colors.input}` : "none"};
-  overflow-x: auto;
+  overflow-x: ${({ fullWidth }) => (fullWidth ? '' : 'auto')};
   border: ${({ customWidth, theme }) => (customWidth ? "0" : `2px solid ${theme.colors.cardBorder}`)};
   background: ${({ customWidth, theme }) => (customWidth ? theme.colors.transparent : theme.colors.backgroundItem)};
   padding: ${({ fullWidth, customWidth }) => (fullWidth || customWidth ? 0 : "16px 16px 0 16px")};
