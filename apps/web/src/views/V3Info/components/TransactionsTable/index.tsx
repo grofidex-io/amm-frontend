@@ -36,12 +36,21 @@ const ResponsiveGrid = styled.div<{ widthfirstcol?: number }>`
     widthfirstcol ? `${widthfirstcol}fr repeat(5, 1fr)` : '0.5fr repeat(5, 1fr)'};
   padding: 0 24px;
   > * {
-    min-width: 160px;
-    @media screen and (max-width: 767px) {
-      min-width: 140px;
-    }
-    @media screen and (max-width: 575px) {
+    min-width: 140px;
+    &:nth-child(2) {
       min-width: 120px;
+    }
+    &:nth-child(6) {
+      min-width: 160px;
+    }
+    ${({ widthfirstcol }) =>
+      widthfirstcol === 1.5 ? `
+
+      ` : `
+        &:nth-child(1) {
+          min-width: 65px;
+        }
+      `
     }
   }
 
@@ -194,6 +203,7 @@ const DataRow = ({
       </Text>
       <Text fontWeight={400}>
         <ScanLink
+          style={{ marginLeft: 'auto' }}
           useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
           href={getBlockExploreLink(transaction.sender, 'address', multiChainId[chainName])}
         >
@@ -370,7 +380,7 @@ export default function TransactionTable({
                 <SortArrowIcon />
               </SortButton>
             </ClickableColumnHeader>
-            <ClickableColumnHeader color="textSubtle">
+            <ClickableColumnHeader color="textSubtle" style={{ justifyContent: 'flex-end' }}>
               {t('Account')}
               <SortButton
                 scale="sm"

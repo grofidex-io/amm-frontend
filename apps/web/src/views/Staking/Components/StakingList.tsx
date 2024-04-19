@@ -22,7 +22,7 @@ function StakingList() {
         <Box ml={["0", "0", "12px", "12px", "12px", "16px"]} mt={["6px", "8px", "0px"]}>
           <StyledTextTitle fontSize="10px">{t(title)}</StyledTextTitle>
           {loading ? <Skeleton m={["auto", "auto", "unset"]} height={12} width={60}/> : <Text style={{ textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '120px' }} textAlign={["center", "center", "left"]} fontSize="16px" fontWeight="600">
-            {value ?? '--'}
+            {value ?? '0'}
           </Text>}
         </Box>
       </Flex>
@@ -36,7 +36,7 @@ function StakingList() {
           {renderHeaderItem({
             image: "/images/staking/icon-package.svg", 
             title: 'Total Package', 
-            value: data?.totalPackage?.toString() ?? '0'
+            value: data?.totalPackage?.toString()
           })}
           {renderHeaderItem({
             image: "/images/staking/icon-amount.svg", 
