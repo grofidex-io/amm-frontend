@@ -221,12 +221,14 @@ export default function TransactionTable({
   type,
   filterFn,
   toggleFilter,
+  account
 }: {
   transactions: Transaction[]
   maxItems?: number
   type?: string
   filterFn?: () => void
   toggleFilter?: boolean
+  account?: string | undefined
 }) {
   const { t } = useTranslation()
 
@@ -332,7 +334,7 @@ export default function TransactionTable({
             </SortText>
           </RowFixed>
         )}
-        {filterFn && (
+        {filterFn && account && (
           <Flex alignItems="center">
             <Toggle scale="sm" checked={toggleFilter} onChange={filterFn} />
             <Text ml="16px" small color="textSubtle">
