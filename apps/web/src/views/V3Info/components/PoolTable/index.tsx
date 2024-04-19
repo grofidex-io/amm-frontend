@@ -23,7 +23,7 @@ const ResponsiveGrid = styled.div`
   display: grid;
   grid-gap: 1em;
   align-items: center;
-  grid-template-columns: 30px 3.5fr repeat(3, 1fr);
+  grid-template-columns: 30px repeat(4, 1fr);
   padding: 0 24px;
   > * {
     &:not(:first-child) {
