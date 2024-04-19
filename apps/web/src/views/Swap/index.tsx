@@ -231,6 +231,7 @@ export default function Swap() {
               type="SWAP_TRANSACTION"
               filterFn={handleFilter}
               toggleFilter={isOnlyMyTransaction}
+              account={account}
             />
           )}
           {tab === 1 && <TopHolders />}
