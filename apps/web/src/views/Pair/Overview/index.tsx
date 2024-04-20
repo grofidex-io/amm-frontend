@@ -1,7 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, Flex, Heading, Link, Tab, TabMenu, Text } from '@pancakeswap/uikit'
+import { Box, Button, Flex, Heading, Tab, TabMenu, Text } from '@pancakeswap/uikit'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import Container from 'components/Layout/Container'
+import InternalLink from 'components/Links'
 import { useRouter } from 'next/router'
 import Liquidity from 'pages/liquidity'
 import { useEffect, useState } from 'react'
@@ -100,7 +101,7 @@ const StyledButton = styled(Button)`
     width: 100%;
   }
 `
-const StylesInternalLink = styled(Link)`
+const StylesInternalLink = styled(InternalLink)`
   width: auto;
   &:hover {
     text-decoration: none;
