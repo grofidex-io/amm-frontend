@@ -6,6 +6,7 @@ import { useMemo } from 'react'
 import { MMLiquidityWarning } from 'views/Swap/MMLinkPools/components/MMLiquidityWarning'
 import { shouldShowMMLiquidityError } from 'views/Swap/MMLinkPools/utils/exchange'
 
+import { Currency } from '@pancakeswap/sdk'
 import { EXPERIMENTAL_FEATURES } from 'config/experimentalFeatures'
 import { useExperimentalFeatureEnabled } from 'hooks/useExperimentalFeatureEnabled'
 import { useDerivedBestTradeWithMM } from '../MMLinkPools/hooks/useDerivedSwapInfoWithMM'
@@ -24,7 +25,16 @@ import { SwapCommitButton } from './containers/SwapCommitButton'
 import { useSwapBestTrade } from './hooks'
 import { useCheckInsufficientError } from './hooks/useCheckSufficient'
 
-export function V3SwapForm() {
+
+export function V3SwapForm({
+  inputCurrency,
+  outputCurrency,
+  onCurrencySelectClick,
+}:{
+  inputCurrency?: Currency
+  outputCurrency?: Currency
+  onCurrencySelectClick?: () => void
+}) {
   const { isLoading, trade, refresh, syncing, isStale, error } = useSwapBestTrade()
   const mm = useDerivedBestTradeWithMM(trade)
   const throttledHandleRefresh = useMemo(
@@ -66,7 +76,13 @@ export function V3SwapForm() {
 
   return (
     <>
-      <FormHeader onRefresh={throttledHandleRefresh} refreshDisabled={!tradeLoaded || syncing || !isStale} />
+      <FormHeader
+        onRefresh={throttledHandleRefresh}
+        refreshDisabled={!tradeLoaded || syncing || !isStale}
+        inputCurrency={inputCurrency}
+        outputCurrency={outputCurrency}
+        onCurrencySelectClick={onCurrencySelectClick}
+      />
       <FormMain
         tradeLoading={mm.isMMBetter ? false : !tradeLoaded}
         pricingAndSlippage={

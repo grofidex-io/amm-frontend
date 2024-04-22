@@ -246,7 +246,11 @@ export default function Swap() {
           <StyledSwapContainer $isChartExpanded={isChartExpanded} margin={['auto', 'auto', 'auto', 'auto', 'unset']}>
             <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
               <AppBody>
-                <V3SwapForm />
+                <V3SwapForm
+                  onCurrencySelectClick={onCurrencySelectClick}
+                  inputCurrency={currencies[Field.INPUT]}
+                  outputCurrency={currencies[Field.OUTPUT]}
+                />
               </AppBody>
             </StyledInputCurrencyWrapper>
           </StyledSwapContainer>

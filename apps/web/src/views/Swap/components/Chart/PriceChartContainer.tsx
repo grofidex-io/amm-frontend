@@ -25,6 +25,11 @@ type PriceChartContainerProps = {
   onCurrencySelectClick?: () => void
 }
 
+const StyledFlex = styled(Flex)`
+  @media screen and (max-width: 991px) {
+    display: none;
+  }
+`
 const FlexPointer = styled(Flex)`
   cursor: pointer;
   align-items: center;
@@ -92,7 +97,7 @@ const PriceChartContainer: React.FC<React.PropsWithChildren<PriceChartContainerP
 
   return (
     <BorderLayout>
-      <Flex justifyContent="space-between" mb="12px">
+      <StyledFlex justifyContent="space-between" mb="12px">
         <FlexPointer
           className="border-neubrutal"
           onClick={onCurrencySelectClick}
@@ -111,7 +116,7 @@ const PriceChartContainer: React.FC<React.PropsWithChildren<PriceChartContainerP
             <SyncAltIcon color="primary" />
           </StyledIconButton>
         </FlexPointer>
-      </Flex>
+      </StyledFlex>
       {isWrap || isRewardWrap ? (
         <BnbWbnbNotice isDark={isDark} isChartExpanded />
       ) : (
