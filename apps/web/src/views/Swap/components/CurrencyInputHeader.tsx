@@ -1,31 +1,36 @@
-import { useTranslation } from '@pancakeswap/localization'
+import { useTranslation } from '@pancakeswap/localization';
+import { Currency } from '@pancakeswap/sdk';
 import {
   Flex,
   HistoryIcon,
   IconButton,
   NotificationDot,
+  SyncAltIcon,
   Text,
   TooltipText,
   useModal,
-  useTooltip,
-} from '@pancakeswap/uikit'
-import { useExpertMode } from '@pancakeswap/utils/user'
-import { Swap } from '@pancakeswap/widgets-internal'
-import TransactionsModal from 'components/App/Transactions/TransactionsModal'
-import InternalLink from 'components/Links'
-import GlobalSettings from 'components/Menu/GlobalSettings'
-import RefreshIcon from 'components/Svg/RefreshIcon'
-import { CHAIN_REFRESH_TIME } from 'config/constants/exchange'
-import { SUPPORT_BUY_CRYPTO } from 'config/constants/supportChains'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useAtom } from 'jotai'
-import Image from 'next/image'
-import { ReactElement, memo, useCallback, useEffect, useState } from 'react'
-import { isMobile } from 'react-device-detect'
-import { useRoutingSettingChanged } from 'state/user/smartRouter'
-import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
-import BuyCryptoIcon from '../../../../public/images/moneyBangs.svg'
-import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
+  useTooltip
+} from '@pancakeswap/uikit';
+import { useExpertMode } from '@pancakeswap/utils/user';
+import { Swap } from '@pancakeswap/widgets-internal';
+import TransactionsModal from 'components/App/Transactions/TransactionsModal';
+import InternalLink from 'components/Links';
+import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo';
+import GlobalSettings from 'components/Menu/GlobalSettings';
+import RefreshIcon from 'components/Svg/RefreshIcon';
+import { CHAIN_REFRESH_TIME } from 'config/constants/exchange';
+import { SUPPORT_BUY_CRYPTO } from 'config/constants/supportChains';
+import { useActiveChainId } from 'hooks/useActiveChainId';
+import { useAtom } from 'jotai';
+import Image from 'next/image';
+import { ReactElement, memo, useCallback, useEffect, useState } from 'react';
+import { isMobile } from 'react-device-detect';
+import { useRoutingSettingChanged } from 'state/user/smartRouter';
+import styled from 'styled-components';
+import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch';
+import BuyCryptoIcon from '../../../../public/images/moneyBangs.svg';
+import { SettingsMode } from '../../../components/Menu/GlobalSettings/types';
+
 
 interface Props {
   title: string | ReactElement
@@ -35,7 +40,46 @@ interface Props {
   isChartDisplayed?: boolean
   hasAmount: boolean
   onRefreshPrice: () => void
+  inputCurrency?: Currency
+  outputCurrency?: Currency
+  onCurrencySelectClick?: () => void
 }
+
+const FlexPointer = styled(Flex)`
+  cursor: pointer;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 4px;
+  background: ${({ theme }) => theme.colors.backgroundItem};
+  display: none;
+  margin-right: auto;
+  box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 1);
+  border: 2px solid ${({ theme }) => theme.colors.cardBorder};
+  @media screen and (max-width: 991px) {
+    display: flex;
+  }
+  @media screen and (max-width: 374px) {
+    padding: 3px 10px;
+  }
+`
+const StyledIconButton = styled(IconButton)`
+  --size: 24px;
+  width: var(--size);
+  height: var(--size);
+  margin-left: 12px;
+  @media screen and (max-width: 575px) {
+    --size: 20px;
+    margin-left: 8px;
+  }
+  @media screen and (max-width: 374px) {
+    margin-left: 0;
+  }
+`
+const StyledText = styled(Text)`
+  @media screen and (max-width: 374px) {
+    display: none;
+  }
+`
 
 // const ColoredIconButton = styled(IconButton)`
 //   color: ${({ theme }) => theme.colors.textSubtle};
@@ -46,7 +90,7 @@ interface Props {
 const mobileShowOnceTokenHighlightAtom = atomWithStorageWithErrorCatch('pcs::mobileShowOnceTokenHighlightV2', true)
 
 const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
-  ({ subtitle, title, hasAmount, onRefreshPrice }) => {
+  ({ subtitle, title, hasAmount, onRefreshPrice, inputCurrency, outputCurrency, onCurrencySelectClick }) => {
     const { t } = useTranslation()
     const { chainId } = useActiveChainId()
     const [mobileTooltipShowOnce, setMobileTooltipShowOnce] = useAtom(mobileShowOnceTokenHighlightAtom)
@@ -100,10 +144,10 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
         <Flex flexDirection="column" alignItems="flex-start" width="100%" marginBottom={15}>
           <Swap.CurrencyInputHeaderTitle>{title}</Swap.CurrencyInputHeaderTitle>
         </Flex>
-        <Flex justifyContent="start" width="100%" height="17px" alignItems="center" mb={["6px", "6px", "10px", "10px", "14px"]}>
+        <Flex justifyContent="start" width="100%" height="17px" alignItems="center" mb={["10px", "10px", "10px", "10px", "14px"]}>
           <Swap.CurrencyInputHeaderSubTitle>{subtitle}</Swap.CurrencyInputHeaderSubTitle>
         </Flex>
-        <Flex width="100%" justifyContent="end">
+        <Flex width="100%" justifyContent="end" alignItems="center">
           {chainId && SUPPORT_BUY_CRYPTO.includes(chainId) ? (
             <Flex alignItems="center" justifyContent="center" px="4px" mt="5px">
               <TooltipText
@@ -167,6 +211,23 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
               )}
             </ColoredIconButton>
           )} */}
+          <FlexPointer
+            onClick={onCurrencySelectClick}
+          >
+            {outputCurrency ? (
+              <DoubleCurrencyLogo currency0={inputCurrency} currency1={outputCurrency} size={24} margin />
+            ) : (
+              inputCurrency && <CurrencyLogo currency={inputCurrency} size="24px" style={{ marginRight: '8px' }} />
+            )}
+            {inputCurrency && (
+              <StyledText fontSize={['14px', '14px', '15px']} color="text" bold>
+                {outputCurrency ? `${inputCurrency.symbol}/${outputCurrency.symbol}` : inputCurrency.symbol}
+              </StyledText>
+            )}
+            <StyledIconButton variant="text" onClick={onCurrencySelectClick}>
+              <SyncAltIcon color="primary" />
+            </StyledIconButton>
+          </FlexPointer>
           <NotificationDot show={expertMode || isRoutingSettingChange}>
             <GlobalSettings
               color="textSubtle"
