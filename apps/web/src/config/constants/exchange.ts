@@ -31,7 +31,7 @@ export {
   ADDITIONAL_BASES,
   BASES_TO_CHECK_TRADES_AGAINST,
   CUSTOM_BASES,
-  V2_ROUTER_ADDRESS,
+  V2_ROUTER_ADDRESS
 } from '@pancakeswap/smart-router/evm'
 
 export const CHAIN_REFRESH_TIME = {
@@ -185,4 +185,4 @@ export const GENERIC_GAS_LIMIT_ORDER_EXECUTION = 500000n
 
 export const LIMIT_ORDERS_DOCS_URL = 'https://docs.pancakeswap.finance/products/pancakeswap-exchange/limit-orders'
 
-export const EXCHANGE_PAGE_PATHS = ['/swap', '/limit-orders', 'liquidity', '/add', '/find', '/remove', '/stable', '/v2']
+export const EXCHANGE_PAGE_PATHS = ['/swap', '/trade','/limit-orders', 'liquidity', '/add', '/find', '/remove', '/stable', '/v2']

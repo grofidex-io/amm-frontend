@@ -426,7 +426,7 @@ const CakeSection: React.FC = () => {
         </Text>
       </Flex>
       <Flex justifyContent="center" style={{ gap: 14 }}>
-        <Link href="https://u2dex.finance/swap?outputCurrency=0x6d7ce523d59C59De27BB755A1981f4043e79C70E&chainId=56">
+        <Link href="https://u2dex.finance/trade?outputCurrency=0x6d7ce523d59C59De27BB755A1981f4043e79C70E&chainId=56">
           <Button variant="primary">{t('Buy U2U')}</Button>
         </Link>
         <Link href="https://docs.u2dex.finance/governance-and-tokenomics/cake-tokenomics">

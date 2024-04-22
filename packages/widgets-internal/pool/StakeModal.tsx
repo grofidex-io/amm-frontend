@@ -1,29 +1,29 @@
 import { useTranslation } from "@pancakeswap/localization";
 
-import BigNumber from "bignumber.js";
-import { useCallback, useEffect, useState } from "react";
-import { styled, useTheme } from "styled-components";
-import { getInterestBreakdown } from "@pancakeswap/utils/compoundApyHelpers";
-import { formatNumber, getDecimalAmount, getFullDisplayBalance } from "@pancakeswap/utils/formatBalance";
-import removeTrailingZeros from "@pancakeswap/utils/removeTrailingZeros";
-import getThemeValue from "@pancakeswap/uikit/util/getThemeValue";
 import {
-  Box,
   AutoRenewIcon,
   BalanceInput,
+  Box,
   Button,
   CalculateIcon,
   Flex,
   IconButton,
   Image,
   Link,
+  Modal,
+  RoiCalculatorModal,
   Skeleton,
   Slider,
   Text,
-  RoiCalculatorModal,
   TextProps,
-  Modal,
 } from "@pancakeswap/uikit";
+import getThemeValue from "@pancakeswap/uikit/util/getThemeValue";
+import { getInterestBreakdown } from "@pancakeswap/utils/compoundApyHelpers";
+import { formatNumber, getDecimalAmount, getFullDisplayBalance } from "@pancakeswap/utils/formatBalance";
+import removeTrailingZeros from "@pancakeswap/utils/removeTrailingZeros";
+import BigNumber from "bignumber.js";
+import { useCallback, useEffect, useState } from "react";
+import { styled, useTheme } from "styled-components";
 
 import PercentageButton from "./PercentageButton";
 
@@ -130,7 +130,7 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
   const annualRoi = interestBreakdown[3] * earningTokenPrice;
   const formattedAnnualRoi = formatNumber(annualRoi, annualRoi > 10000 ? 0 : 2, annualRoi > 10000 ? 0 : 2);
 
-  const getTokenLink = stakingTokenAddress ? `/swap?outputCurrency=${stakingTokenAddress}` : "/swap";
+  const getTokenLink = stakingTokenAddress ? `/trade?outputCurrency=${stakingTokenAddress}` : "/trade";
 
   useEffect(() => {
     if (stakingLimit.gt(0) && !isRemovingStake) {

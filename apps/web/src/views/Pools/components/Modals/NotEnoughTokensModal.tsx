@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { styled } from 'styled-components'
-import { Modal, Text, Button, OpenNewIcon, Link } from '@pancakeswap/uikit'
+import { Button, Link, Modal, OpenNewIcon, Text } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
+import { styled } from 'styled-components'
 
 interface NotEnoughTokensModalProps {
   tokenSymbol: string
@@ -34,7 +34,7 @@ const NotEnoughTokensModal: React.FC<React.PropsWithChildren<NotEnoughTokensModa
           symbol: tokenSymbol,
         })}
       </Text>
-      <Button mt="24px" as="a" external href="/swap">
+      <Button mt="24px" as="a" external href="/trade">
         {t('Buy')} {tokenSymbol}
       </Button>
       <StyledLink href="https://yieldwatch.net" external>

@@ -167,7 +167,7 @@ const BattleCta: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
     }
     // Registered and competition is live
     if (hasRegistered && isCompetitionLive) {
-      router.push('/swap')
+      router.push('/trade')
     }
     // Registered and competition has finished
     if (hasRegistered && hasCompetitionEnded) {

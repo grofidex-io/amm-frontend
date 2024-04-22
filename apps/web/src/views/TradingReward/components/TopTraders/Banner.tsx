@@ -163,7 +163,7 @@ const TopTradersBanner = () => {
             {t('Earn U2U while trading your favorite tokens on GroFi DEX by being the top traders!')}
           </Text>
           <Flex alignSelf={['center', 'center', 'center', 'auto']}>
-            <Link href="/swap?showTradingReward=true" external>
+            <Link href="/trade?showTradingReward=true" external>
               <Button>{t('Start Trading')}</Button>
             </Link>
             <Link href="#howToEarn">

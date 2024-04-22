@@ -1,25 +1,25 @@
 import { useCallback, useMemo } from "react";
-import { styled, css } from "styled-components";
+import { css, styled } from "styled-components";
 
 import { useTranslation } from "@pancakeswap/localization";
-import BigNumber from "bignumber.js";
-import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
 import {
-  Box,
-  Text,
-  CalculateIcon,
-  Skeleton,
-  FlexProps,
-  Button,
-  RoiCalculatorModal,
+  AlpIcon,
   Balance,
   BalanceWithLoading,
-  useModal,
+  Box,
+  Button,
+  CalculateIcon,
   Flex,
-  AlpIcon,
+  FlexProps,
+  RoiCalculatorModal,
+  Skeleton,
+  Text,
   useMatchBreakpoints,
+  useModal,
   useTooltip,
 } from "@pancakeswap/uikit";
+import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
+import BigNumber from "bignumber.js";
 
 import { DeserializedPool } from "./types";
 
@@ -87,7 +87,7 @@ export function Apr<T>({
   );
 
   const apyModalLink = useMemo(
-    () => (stakingToken?.address ? `/swap?outputCurrency=${stakingToken.address}` : "/swap"),
+    () => (stakingToken?.address ? `/trade?outputCurrency=${stakingToken.address}` : "/trade"),
     [stakingToken]
   );
 

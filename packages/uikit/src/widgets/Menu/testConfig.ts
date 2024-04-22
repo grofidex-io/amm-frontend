@@ -1,17 +1,17 @@
 import noop from "lodash/noop";
-import { LinkStatus } from "./types";
-import { MenuItemsType } from "../../components/MenuItems/types";
 import {
-  SwapIcon,
-  SwapFillIcon,
-  EarnIcon,
-  EarnFillIcon,
-  TrophyIcon,
-  TrophyFillIcon,
-  MoreIcon,
   DropdownMenuItems,
+  EarnFillIcon,
+  EarnIcon,
+  MoreIcon,
+  SwapFillIcon,
+  SwapIcon,
+  TrophyFillIcon,
+  TrophyIcon,
 } from "../../components";
 import { DropdownMenuItemType } from "../../components/DropdownMenu/types";
+import { MenuItemsType } from "../../components/MenuItems/types";
+import { LinkStatus } from "./types";
 
 export const status: { NEW: LinkStatus; SOON: LinkStatus; LIVE: LinkStatus } = {
   LIVE: {
@@ -31,13 +31,13 @@ export const status: { NEW: LinkStatus; SOON: LinkStatus; LIVE: LinkStatus } = {
 export const links: MenuItemsType[] = [
   {
     label: "Trade",
-    href: "/swap",
+    href: "/trade",
     icon: SwapIcon,
     fillIcon: SwapFillIcon,
     items: [
       {
         label: "Exchange",
-        href: "/swap",
+        href: "/trade",
       },
       {
         label: "Liquidity",

@@ -96,7 +96,7 @@ const config: (
       label: t('Trade'),
       icon: SwapIcon,
       fillIcon: SwapFillIcon,
-      href: '/swap',
+      href: '/trade',
       showItemsOnMobile: false,
       // items: [
       //   {
