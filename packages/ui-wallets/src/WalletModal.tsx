@@ -132,7 +132,7 @@ function MobileModal<T>({
   })
 
   return (
-    <AtomBox width="100%">
+    <AtomBox width="100%" style={{height: '320px'}}>
       {error ? (
         <AtomBox
           display="flex"
@@ -148,13 +148,13 @@ function MobileModal<T>({
           </div>
         </AtomBox>
       ) : (
-        <Text color="textSubtle" small p="24px">
+        <Text color="textSubtle" small p="24px" pt="50px">
           {t(
             'Start by connecting with one of the wallets below. Be sure to store your private keys or seed phrase securely. Never share them with anyone.',
           )}
         </Text>
       )}
-      <AtomBox flex={1} py="16px" style={{ maxHeight: '230px' }} overflow="auto">
+      <AtomBox flex={1} py="16px"  overflow="auto" >
         <WalletSelect
           displayCount={MOBILE_DEFAULT_DISPLAY_COUNT}
           wallets={walletsToShow}
@@ -166,7 +166,7 @@ function MobileModal<T>({
           }}
         />
       </AtomBox>
-      <AtomBox p="24px" borderTop="1">
+      {/* <AtomBox p="24px" borderTop="1">
         <AtomBox>
           <Text textAlign="center" color="textSubtle" as="p" mb="24px">
             {t('Haven’t got a crypto wallet yet?')}
@@ -174,8 +174,8 @@ function MobileModal<T>({
         </AtomBox>
         {/* <Button as="a" href={docLink} variant="subtle" width="100%" external>
           {docText}
-        </Button> */}
-      </AtomBox>
+        </Button>
+      </AtomBox> */}
     </AtomBox>
   )
 }
