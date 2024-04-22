@@ -136,14 +136,19 @@ const config = {
       //   destination: '/info',
       //   permanent: true,
       // },
-      {
-        source: '/send',
-        destination: '/swap',
+       {
+        source: '/swap',
+        destination: '/trade',
         permanent: true,
       },
       {
-        source: '/swap/:outputCurrency',
-        destination: '/swap?outputCurrency=:outputCurrency',
+        source: '/send',
+        destination: '/trade',
+        permanent: true,
+      },
+      {
+        source: '/trade/:outputCurrency',
+        destination: '/trade?outputCurrency=:outputCurrency',
         permanent: true,
       },
       {

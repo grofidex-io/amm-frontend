@@ -2,19 +2,19 @@ import {
   Box,
   ButtonMenu,
   ButtonMenuItem,
+  CalculatorMode,
   RoiCalculatorModal,
   RoiCalculatorModalProps,
-  CalculatorMode,
 } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
 
 import { useTranslation } from '@pancakeswap/localization'
-import { useVaultApy } from 'hooks/useVaultApy'
-import { useEffect, useState, useMemo } from 'react'
-import { VaultKey } from 'state/types'
-import { useVaultPoolByKey } from 'state/pools/hooks'
-import { getRoi } from '@pancakeswap/utils/compoundApyHelpers'
 import { Token } from '@pancakeswap/sdk'
+import { getRoi } from '@pancakeswap/utils/compoundApyHelpers'
+import { useVaultApy } from 'hooks/useVaultApy'
+import { useEffect, useMemo, useState } from 'react'
+import { useVaultPoolByKey } from 'state/pools/hooks'
+import { VaultKey } from 'state/types'
 
 import { useAccount } from 'wagmi'
 import LockDurationField from '../LockedPool/Common/LockDurationField'
@@ -64,7 +64,7 @@ export const VaultRoiCalculatorModal = ({
           compounding: false, // no compounding if apy is specify
         },
       }}
-      linkHref="/swap"
+      linkHref="/trade"
       linkLabel={t('Get %symbol%', { symbol: pool.stakingToken.symbol })}
       earningTokenPrice={pool.earningTokenPrice}
       stakingTokenPrice={pool.stakingTokenPrice}

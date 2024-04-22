@@ -21,7 +21,7 @@ const Congratulations = () => {
         <Text color="textSubtle" fontSize="14px" mb="24px">
           {t('Start trading and enjoy referral discounts!')}
         </Text>
-        <Link external href="/swap" width="100% !important">
+        <Link external href="/trade" width="100% !important">
           <Button width="100%">{t('Start Trading')}</Button>
         </Link>
         <Link

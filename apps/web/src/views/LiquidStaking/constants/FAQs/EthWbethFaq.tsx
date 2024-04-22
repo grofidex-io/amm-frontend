@@ -73,7 +73,7 @@ export const EthWbethFaq = () => [
     description: (
       <>
         <Trans>You can convert wBETH to ETH through</Trans>
-        <Link m="0 4px" style={{ display: 'inline' }} href="/swap">
+        <Link m="0 4px" style={{ display: 'inline' }} href="/trade">
           <Trans>our swap page</Trans>.
         </Link>
         <Trans>

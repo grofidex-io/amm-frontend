@@ -251,7 +251,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                     </StyledButton>
                   </NextLinkFromReactRouter>
                   <NextLinkFromReactRouter
-                    to={`/swap?outputCurrency=${address}&chain=${CHAIN_QUERY_NAME[multiChainId[chainName]]}`}
+                    to={`/trade?outputCurrency=${address}&chain=${CHAIN_QUERY_NAME[multiChainId[chainName]]}`}
                   >
                     <StyledButton className="button-hover">{t('Trade')}</StyledButton>
                   </NextLinkFromReactRouter>
