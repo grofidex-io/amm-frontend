@@ -148,7 +148,7 @@ function MobileModal<T>({
           </div>
         </AtomBox>
       ) : (
-        <Text color="textSubtle" small p="24px">
+        <Text color="textSubtle" small p="24px" pt="50px">
           {t(
             'Start by connecting with one of the wallets below. Be sure to store your private keys or seed phrase securely. Never share them with anyone.',
           )}
