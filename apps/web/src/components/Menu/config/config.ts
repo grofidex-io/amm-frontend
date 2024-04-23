@@ -245,6 +245,13 @@ const config: (
       hideSubNav: true,
     },
     {
+      label: 'Loans',
+      href: '/loans',
+      icon: TrophyIcon,
+      fillIcon: TrophyFillIcon,
+      hideSubNav: true,
+    },
+    {
       label: 'Faucet',
       href: 'https://faucet.uniultra.xyz/',
       icon: VoteIcon,
