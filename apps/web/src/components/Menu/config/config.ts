@@ -1,5 +1,6 @@
 import { ContextApi } from '@pancakeswap/localization'
 import {
+  CurrencyIcon,
   DropdownMenuItemType,
   DropdownMenuItems,
   EarnFillIcon,
@@ -10,7 +11,6 @@ import {
   ResourcesIcon,
   SwapFillIcon,
   SwapIcon,
-  TrophyFillIcon,
   TrophyIcon,
   VoteIcon,
 } from '@pancakeswap/uikit'
@@ -241,15 +241,15 @@ const config: (
       label: 'Staking',
       href: '/staking',
       icon: TrophyIcon,
-      fillIcon: TrophyFillIcon,
       hideSubNav: true,
+      isExpanse: true
     },
     {
       label: 'Loans',
       href: '/loans',
-      icon: TrophyIcon,
-      fillIcon: TrophyFillIcon,
+      icon: CurrencyIcon,
       hideSubNav: true,
+      isExpanse: true
     },
     {
       label: 'Faucet',
@@ -257,6 +257,7 @@ const config: (
       icon: VoteIcon,
       hideSubNav: true,
       type: DropdownMenuItemType.EXTERNAL_LINK,
+      isExpanse: true
     },
   ].map((item) => addMenuItemSupported(item, chainId))
 

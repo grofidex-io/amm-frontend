@@ -12,6 +12,12 @@ const StyledBottomNav = styled(Flex)`
     padding-bottom: 45px;
   }
   z-index: 20;
+  @media screen and (max-width: 575px) {
+    overflow-x: auto;
+  }
+  &::-webkit-scrollbar {
+    height: 5px;
+  }
 `;
 
 export default StyledBottomNav;
