@@ -73,7 +73,7 @@ const FormStakingBtn = () => {
         return
       }
       setIsStaking(true)
-      const contractId = await getContractId() ?? '0x0000000000000000000000000000000000000000'
+      const contractId = '0x0000000000000000000000000000000000000000' //await getContractId() ?? '0x0000000000000000000000000000000000000000'
       const value = BigNumber(stakingAmount).multipliedBy(bigIntToBigNumber(10n ** BigInt(currency?.decimals ?? 18)))
       const receipt = await fetchWithCatchTxError(() => stake(stakingContract, value.toFixed(0, BigNumber.ROUND_DOWN), contractId))
       if (receipt?.status) {

@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Flex, Text, useToast } from '@pancakeswap/uikit'
+import { Button, Flex, Text, useModal, useToast } from '@pancakeswap/uikit'
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -9,6 +10,7 @@ import styled from 'styled-components'
 import { claimReward, unStake, withdraw } from 'utils/calls/staking'
 import useStakingConfig from '../Hooks/useStakingConfig'
 import { StakedInfo, useStakingList } from '../Hooks/useStakingList'
+import ConfirmRewardModal from '../Modal/ConfirmRewardModal'
 import { BorderLayout, StyledBox, StyledTextTitle } from '../style'
 import { UnStakeActions } from './UnStakeActions'
 
@@ -71,6 +73,7 @@ const StakingItem = ({ stakedInfo, periodTime, isUnStake }: StakingProps) => {
   const { currency } = useStakingConfig()
   const { refresh } = useStakingList()
 
+  
   const handUnStake = async () => {
     if (isUnStaking) return
     setIsUnStaking(true)
@@ -86,6 +89,11 @@ const StakingItem = ({ stakedInfo, periodTime, isUnStake }: StakingProps) => {
     }
     setIsUnStaking(false)
   }
+
+
+  const [onUnstakeConfirm] = useModal(
+    <ConfirmRewardModal title="Confirm Unstake" stakedInfo={stakedInfo} onConfirm={handUnStake}/>
+  )
 
   async function handleClaim() {
     if (isClaiming) return
@@ -125,9 +133,8 @@ const StakingItem = ({ stakedInfo, periodTime, isUnStake }: StakingProps) => {
         <StyledButton
           height="40px"
           variant="secondary"
-          disabled={enableClaim}
           className="button-hover"
-          onClick={handUnStake}
+          onClick={onUnstakeConfirm}
         >
           {isUnStaking ? t('Unstaking...') : t('Unstake')}
         </StyledButton>
@@ -142,6 +149,7 @@ const StakingItem = ({ stakedInfo, periodTime, isUnStake }: StakingProps) => {
       />
     )
   }
+  
 
   return (
     <BorderLayout p={["16px 20px", "20px", "20px", "20px", "20px 24px"]}>
@@ -150,7 +158,7 @@ const StakingItem = ({ stakedInfo, periodTime, isUnStake }: StakingProps) => {
           <StyledTextTitle fontSize={["16px", "18px", "18px", "20px"]}>{t('Staked Amount')} ({currency.symbol})</StyledTextTitle>
           <Flex flexWrap="wrap" alignItems="center" justifyContent="space-between" mt={["12px", "16px", "20px"]} width="100%">
             <StyledText>
-              {stakedInfo.amountDisplay}
+              { formatNumber(Number(stakedInfo.amountDisplay)) }
             </StyledText>
             {renderAction()}
           </Flex>
