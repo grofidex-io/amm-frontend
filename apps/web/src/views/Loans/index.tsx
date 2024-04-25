@@ -1,11 +1,16 @@
 import { InfoPageLayout } from './Layout'
+import { LoanProvider } from './LoanContext'
 import { Overview } from './Overview'
 
-const InfoPage = () => {
-  return <Overview />
+const LoanPage = () => {
+  return (
+    <LoanProvider>
+      <Overview />
+    </LoanProvider>
+  )
 }
 
-InfoPage.Layout = InfoPageLayout
-InfoPage.chains = [] // set all
+LoanPage.Layout = InfoPageLayout
+LoanPage.chains = [] // set all
 
-export default InfoPage
+export default LoanPage

@@ -52,6 +52,7 @@ export function useStakingList() {
   }
 
   async function fetchStakingList(address: string | undefined) {
+    console.log("🚀 ~ fetchStakingList ~ address:", address)
     const periodTime = await fetchWithdrawPeriodTime()
     if (address == null) {
       return {
@@ -78,6 +79,9 @@ export function useStakingList() {
           }
         }
       `
+      console.log("🚀 ~ fetchStakingList ~ ammStakingClients:", ammStakingClients)
+
+
       const { user } = await ammStakingClients.request<{ user: StakingResponse | null }>(STAKING_LIST_QUERY, {
         address,
       })
@@ -87,6 +91,7 @@ export function useStakingList() {
           periodTime,
         }
       }
+
       user.totalPackage = user.staked.length + user.unStake.length
       user.totalStakedAmount = BigNumber(0)
       user.totalReward = BigNumber(0)

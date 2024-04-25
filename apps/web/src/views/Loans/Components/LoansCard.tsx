@@ -1,7 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, Flex, Input, OptionProps, Select, Slider, Text } from '@pancakeswap/uikit'
+import { Box, Button, Dots, Flex, OptionProps, Select, Slider, Text } from '@pancakeswap/uikit'
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
+import { NumericalInput } from '@pancakeswap/widgets-internal'
 import { useCallback, useState } from 'react'
 import styled from 'styled-components'
+import { StakedInfo } from 'views/Staking/Hooks/useStakingList'
 
 const CardLayout = styled(Box)`
   border-radius: 8px;
@@ -42,12 +45,25 @@ const StyledText = styled(Text)`
     text-align: right;
   }
 `
-const StyledInput = styled(Input)`
-  max-width: 180px;
-  @media screen and (max-width: 1199px) {
-    max-width: 100%;
-    height: 44px;
+
+const StyledInput = styled(NumericalInput)`
+  background-color: rgba(191, 252, 251, 0.2);
+  border-radius: 4px;
+  box-shadow: 2px 2px 0 0 ${({ theme }) => theme.colors.cardBorder};
+  color: rgba(159, 159, 159, 1);
+  display: block;
+  font-size: 16px;
+  height: 40px;
+  outline: 0;
+  padding: 0 14px;
+  width: 100%;
+  border: 2px solid ${({ theme }) => theme.colors.cardBorder};
+  text-align: right;
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.textSubtle};
   }
+  max-width: 180px;
+
 `
 const StyledSlider = styled(Slider)`
   width: 70%;
@@ -78,22 +94,37 @@ const FlexInput = styled(Flex)`
 `
 
 type LoansProps = {
-  type?: boolean
+  type?: boolean,
+  stakeInfo: StakedInfo,
+  isLoading: boolean,
+  isApproved?: boolean,
+  checkApproved?: () => void,
+  approveForAll?: () => void
 }
 
-const LoansCard = ({ type }: LoansProps) => {
+const LoansCard = ({ type, stakeInfo, isApproved, isLoading, approveForAll }: LoansProps) => {
   const { t } = useTranslation()
   const [ isRepay, setIsRepay ] = useState(true)
-
   const [sortOption, setSortOption] = useState('1')
   const handleSortOptionChange = (option: OptionProps): void => {
     setSortOption(option.value)
   }
+
+  const [localValue, setLocalValue] = useState('')
+  const [useLocalValue, setUseLocalValue] = useState(false)
   const [percentForSlider, onPercentSelectForSlider] = useState(0)
   const handleChangePercent = useCallback(
     (value: any) => onPercentSelectForSlider(Math.ceil(value)),
     [onPercentSelectForSlider],
   )
+
+  const handleAction = () => {
+    if(isApproved) {
+      //
+    } else {
+      approveForAll && approveForAll()
+    }
+  }
 
   // const { percent } = useLocalSelector<{ percent: number }>((s) => s) as { percent: number }
   // const { onPercentSelect } = useBurnV3ActionHandlers()
@@ -110,7 +141,7 @@ const LoansCard = ({ type }: LoansProps) => {
         <Text fontFamily="'Metuo', sans-serif" fontSize="20px" fontWeight="900" lineHeight="24px" color='textSubtle' mr="10px">{t('Staked Amount')}</Text>
         <Flex mt={type ? ['4px', '4px', '8px', '8px','12px'] : '0'} alignItems="flex-end" justifyContent="space-between" style={{ flexWrap: 'wrap' }}>
           <Text fontSize={["20px", "20px", "22px", "22px", "24px"]} fontWeight="700" lineHeight="24px" color='text'>
-            1.000.000
+            {formatNumber(Number(stakeInfo?.amountDisplay || 0))}
             <Span>U2U</Span>
           </Text>
           {type && (
@@ -144,7 +175,7 @@ const LoansCard = ({ type }: LoansProps) => {
             </Box>
             <FlexInput>
               <StyledText color='textSubtle'>{t('Borrow amount (Max)')}</StyledText>
-              <StyledInput
+              {/* <StyledInput
                 scale="lg"
                 inputMode="decimal"
                 pattern="^[0-9]*[.,]?[0-9]{0,6}$"
@@ -154,6 +185,13 @@ const LoansCard = ({ type }: LoansProps) => {
                 // onChange={parseAmountChange}
                 // isWarning={!!borrowAmountError}
                 style={{ textAlign: 'right' }}
+              /> */}
+              <StyledInput     
+                value={localValue}
+                placeholder="0"
+                fontSize="20px"
+                align="center"
+                onUserInput={setLocalValue}
               />
             </FlexInput>
             <Flex alignItems="center" justifyContent="space-between" mb={["20px", "20px", "22px"]}>
@@ -181,9 +219,14 @@ const LoansCard = ({ type }: LoansProps) => {
             </Flex>
             <StyledButton
               width="100%"
-              className="button-hover"
+              className="button-hover btn-loading"
+              isLoading={isLoading}
+              onClick={handleAction}
             >
-              {t('Borrow Now')}
+             {isLoading ? 
+             <Dots>{'Approving' }</Dots> : 
+              isApproved ? t('Borrow Now') : 'Approve' 
+             }
             </StyledButton>
           </>
         )}
