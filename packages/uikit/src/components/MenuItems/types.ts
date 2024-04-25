@@ -13,6 +13,7 @@ export type MenuItemsType = {
   showOnMobile?: boolean;
   showItemsOnMobile?: boolean;
   type?: number;
+  isExpanse?: boolean;
 };
 
 export interface MenuItemsProps extends BoxProps {

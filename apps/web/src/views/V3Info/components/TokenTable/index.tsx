@@ -112,7 +112,7 @@ const DataRow = ({ tokenData, index, chainPath }: { tokenData: TokenData; index:
             <RowFixed>
               {isMobile ? <HoverInlineText text={tokenSymbol} /> : <HoverInlineText text={tokenName} />}
               {!isMobile && (
-                <Text ml="8px" color={theme.colors.text99}>
+                <Text ml="8px" color={theme.colors.text}>
                   ({tokenSymbol})
                 </Text>
               )}
