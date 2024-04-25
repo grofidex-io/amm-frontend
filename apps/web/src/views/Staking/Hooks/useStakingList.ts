@@ -52,7 +52,6 @@ export function useStakingList() {
   }
 
   async function fetchStakingList(address: string | undefined) {
-    console.log("🚀 ~ fetchStakingList ~ address:", address)
     const periodTime = await fetchWithdrawPeriodTime()
     if (address == null) {
       return {
@@ -79,8 +78,6 @@ export function useStakingList() {
           }
         }
       `
-      console.log("🚀 ~ fetchStakingList ~ ammStakingClients:", ammStakingClients)
-
 
       const { user } = await ammStakingClients.request<{ user: StakingResponse | null }>(STAKING_LIST_QUERY, {
         address,

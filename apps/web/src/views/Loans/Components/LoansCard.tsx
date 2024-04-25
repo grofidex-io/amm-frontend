@@ -1,10 +1,19 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, Dots, Flex, OptionProps, Select, Slider, Text } from '@pancakeswap/uikit'
+import { Box, Button, Dots, Flex, Select, Slider, Text, useToast } from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { NumericalInput } from '@pancakeswap/widgets-internal'
-import { useCallback, useState } from 'react'
+import { ToastDescriptionWithTx } from 'components/Toast'
+import dayjs from 'dayjs'
+import { formatEther, parseEther } from 'ethers/lib/utils'
+import useCatchTxError from 'hooks/useCatchTxError'
+import { useBorrowContract, useStakingContract } from 'hooks/useContract'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { formatDate } from 'views/CakeStaking/components/DataSet/format'
 import { StakedInfo } from 'views/Staking/Hooks/useStakingList'
+import LoanContext from '../LoanContext'
+import { BorrowItem } from '../data/fetchListBorrowing'
+import { LoansPackageItem } from '../data/listLoansPackage'
 
 const CardLayout = styled(Box)`
   border-radius: 8px;
@@ -46,6 +55,12 @@ const StyledText = styled(Text)`
   }
 `
 
+const MaxButton = styled.a`
+  color: ${({ theme }) => theme.colors.primary};
+  cursor: pointer;
+  text-decoration: underline;
+`
+
 const StyledInput = styled(NumericalInput)`
   background-color: rgba(191, 252, 251, 0.2);
   border-radius: 4px;
@@ -66,7 +81,7 @@ const StyledInput = styled(NumericalInput)`
 
 `
 const StyledSlider = styled(Slider)`
-  width: 70%;
+  width: 66%;
   height: 22px;
 `
 const FlexInput = styled(Flex)`
@@ -96,43 +111,130 @@ const FlexInput = styled(Flex)`
 type LoansProps = {
   type?: boolean,
   stakeInfo: StakedInfo,
-  isLoading: boolean,
-  isApproved?: boolean,
-  checkApproved?: () => void,
-  approveForAll?: () => void
+  borrowing?: BorrowItem,
+  refreshListLoans?: () => void
 }
 
-const LoansCard = ({ type, stakeInfo, isApproved, isLoading, approveForAll }: LoansProps) => {
+const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps) => {
   const { t } = useTranslation()
-  const [ isRepay, setIsRepay ] = useState(true)
-  const [sortOption, setSortOption] = useState('1')
-  const handleSortOptionChange = (option: OptionProps): void => {
-    setSortOption(option.value)
+  const { toastSuccess } = useToast()
+  const [period, setPeriod] = useState<LoansPackageItem | undefined>(undefined)
+  const borrowContract = useBorrowContract()
+  const stakingContract = useStakingContract()
+  const handleChangePeriod = (option: any): void => {
+    setBorrowValue('')
+    onPercentSelectForSlider(0)
+    setPeriod(option.item)
   }
 
-  const [localValue, setLocalValue] = useState('')
-  const [useLocalValue, setUseLocalValue] = useState(false)
+  const { isApproved, isLoading, loansPackages, approveForAll } = useContext(LoanContext)
+
+  const { fetchWithCatchTxError } = useCatchTxError()
+
+  const listPeriod = loansPackages.map((item: LoansPackageItem) => {
+    return {
+      label: `${Number(item.period) / 86400} days`,
+      value: item.id,
+      item
+    }
+  })
+  const [amountStake, setAmountStake] = useState('0') 
+  const [borrowValue, setBorrowValue] = useState('')
   const [percentForSlider, onPercentSelectForSlider] = useState(0)
+  const [isCallContract, setIsCallContract] = useState(false)
+  let  totalInterest = 0
+  let repaymentAmount = 0
+  let maxBorrowU2U: string | number = 0
+  if(borrowing?.id) {
+    totalInterest = Number(formatEther(borrowing?.borrowAmount)) * Number(borrowing?.loanPackage.annualRate)
+    repaymentAmount = Number(totalInterest) + Number(amountStake)
+  } else {
+    maxBorrowU2U = period?.maxBorrowRatio && stakeInfo?.amountDisplay ? formatNumber(Number(stakeInfo?.amountDisplay) * (Number(period.maxBorrowRatio) / 100), 2, 6) : 0
+    totalInterest = period?.annualRate && borrowValue?.length > 0 ? Number(borrowValue) * Number(period.annualRate) : 0
+    repaymentAmount = Number(totalInterest) + Number(borrowValue)
+  }
+  const disableRepay = borrowing?.repayTime && borrowing.repayTime > Date.now() ?  true : false
   const handleChangePercent = useCallback(
-    (value: any) => onPercentSelectForSlider(Math.ceil(value)),
-    [onPercentSelectForSlider],
+    (value: any) => {
+      if(period?.maxBorrowRatio) {
+        const percent = (Math.ceil(value) * Number(period?.maxBorrowRatio)) / 100
+        const borrowValue = Number(formatEther(stakeInfo.amount)) * (percent / 100)
+        setBorrowValue(borrowValue ? formatNumber(borrowValue, 2, 6) : '0')
+      }
+      onPercentSelectForSlider(Math.ceil(value))
+    },
+    [onPercentSelectForSlider, period],
   )
+
+  const callSmartContract = async (action: any, message: string) => {
+    if(!borrowContract.account) return
+    setIsCallContract(true)
+    const receipt = await fetchWithCatchTxError(() => action)
+    if (receipt?.status) {
+      setBorrowValue('')
+      onPercentSelectForSlider(0)
+      toastSuccess(
+        t('Success!'),
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t(message)}
+        </ToastDescriptionWithTx>,
+      )
+    }
+    setIsCallContract(false)
+  }
+
+  const handleBorrow = async () => {
+    await callSmartContract(borrowContract.write.borrow([parseEther(borrowValue), stakeInfo.id, period?.id]), 'You have successfully borrow.')
+    refreshListLoans && refreshListLoans()
+  }
+
+  const handleRepay = async () => {
+    const mustReturn: any = await borrowContract.read.mustReturn([borrowing?.id])
+    await callSmartContract(borrowContract.write.returnStakingNFT([ borrowing?.id], {value: mustReturn}), 'You have successfully repay.')
+    refreshListLoans && refreshListLoans()
+  }
 
   const handleAction = () => {
     if(isApproved) {
-      //
+      handleBorrow()
     } else {
       approveForAll && approveForAll()
     }
   }
+  useEffect(() => {
+    if(loansPackages?.length > 0) {
+      setPeriod(loansPackages[0])
+    }
+  }, [loansPackages])
 
-  // const { percent } = useLocalSelector<{ percent: number }>((s) => s) as { percent: number }
-  // const { onPercentSelect } = useBurnV3ActionHandlers()
-  // const [percentForSlider, onPercentSelectForSlider] = useDebouncedChangeHandler(percent, onPercentSelect)
-  // const handleChangePercent = useCallback(
-  //   (value: any) => onPercentSelectForSlider(Math.ceil(value)),
-  //   [onPercentSelectForSlider],
-  // )
+  const onMax = () => {
+    const borrowValue = Number(formatEther(stakeInfo.amount)) * (Number(period?.maxBorrowRatio) / 100)
+    setBorrowValue(borrowValue ? formatNumber(borrowValue, 2, 6) : '0')
+    onPercentSelectForSlider(100)
+  }
+
+  const onBorrowInput = (_value) => {
+    let value = _value
+    if(Number(value) > Number(maxBorrowU2U)) {
+      value = maxBorrowU2U
+    }
+    setBorrowValue(value)
+    if(value.length > 0) {
+      console.log(Number(formatEther(stakeInfo.amount)))
+      const percent = (((Number(value) / Number(formatEther(stakeInfo.amount))) * 100)/ Number(period?.maxBorrowRatio)) * 100
+      onPercentSelectForSlider(percent)
+    }
+  }
+
+  const getAmountStake = async (id: string | number) => {
+    const res: any = await stakingContract.read.uriInfoById([id])
+    setAmountStake(formatEther(res[0]))
+  }
+
+  if(borrowing?.stakeId && stakingContract.account) {
+    getAmountStake(borrowing.stakeId)
+  }
+
 
 
   return (
@@ -141,11 +243,11 @@ const LoansCard = ({ type, stakeInfo, isApproved, isLoading, approveForAll }: Lo
         <Text fontFamily="'Metuo', sans-serif" fontSize="20px" fontWeight="900" lineHeight="24px" color='textSubtle' mr="10px">{t('Staked Amount')}</Text>
         <Flex mt={type ? ['4px', '4px', '8px', '8px','12px'] : '0'} alignItems="flex-end" justifyContent="space-between" style={{ flexWrap: 'wrap' }}>
           <Text fontSize={["20px", "20px", "22px", "22px", "24px"]} fontWeight="700" lineHeight="24px" color='text'>
-            {formatNumber(Number(stakeInfo?.amountDisplay || 0))}
+            {formatNumber(Number(stakeInfo?.amountDisplay || amountStake), 2, 6)}
             <Span>U2U</Span>
           </Text>
           {type && (
-            <Text color='#c4c4c4' fontSize="10px" fontStyle="italic">{t('Maximum borrow: 700000 U2U (LTV 70%)')}</Text>
+            <Text color='#c4c4c4' fontSize="10px" fontStyle="italic">{`Maximum borrow: ${formatNumber(Number(amountStake) * (Number(borrowing?.loanPackage.maxBorrowRatio) / 100), 2, 6)} U2U (LTV ${borrowing?.loanPackage.maxBorrowRatio}%)`}</Text>
           )}
         </Flex>
       </CardHeader>
@@ -155,43 +257,20 @@ const LoansCard = ({ type, stakeInfo, isApproved, isLoading, approveForAll }: Lo
             <Box mb={["20px", "20px", "24px", "24px", "28px"]}>
               <StyledText color='textSubtle' mb={["6px", "6px", "8px", "8px", "10px", "12px"]}>{t('Interest Period')}</StyledText>
               <Select
-                options={[
-                  {
-                    label: t('1 days'),
-                    value: '1'
-                  },
-                  {
-                    label: t('7 days'),
-                    value: '7'
-                  },
-                  {
-                    label: t('30 days'),
-                    value: '30'
-                  },
-                ]}
-                onOptionChange={handleSortOptionChange}
+                options={listPeriod}
+                onOptionChange={handleChangePeriod}
               />
-              <Text fontSize="12px" fontStyle="italic" lineHeight="14px" color='textExtra' mt="12px">{t('Maximum borrow: 700.000 U2U (LTV 70%)')}</Text>
+              <Text fontSize="12px" fontStyle="italic" lineHeight="14px" color='textExtra' mt="12px">{t(`Maximum borrow: ${maxBorrowU2U} U2U (LTV ${period?.maxBorrowRatio || '_'}%)`)}</Text>
             </Box>
             <FlexInput>
-              <StyledText color='textSubtle'>{t('Borrow amount (Max)')}</StyledText>
-              {/* <StyledInput
-                scale="lg"
-                inputMode="decimal"
-                pattern="^[0-9]*[.,]?[0-9]{0,6}$"
-                placeholder="0"
-                // value={borrowAmount}
-                maxLength={20}
-                // onChange={parseAmountChange}
-                // isWarning={!!borrowAmountError}
-                style={{ textAlign: 'right' }}
-              /> */}
+              <StyledText color='textSubtle'>{t('Borrow amount') } (<MaxButton onClick={onMax}>Max</MaxButton>)</StyledText>
+
               <StyledInput     
-                value={localValue}
+                value={borrowValue}
                 placeholder="0"
                 fontSize="20px"
                 align="center"
-                onUserInput={setLocalValue}
+                onUserInput={onBorrowInput}
               />
             </FlexInput>
             <Flex alignItems="center" justifyContent="space-between" mb={["20px", "20px", "22px"]}>
@@ -203,28 +282,29 @@ const LoansCard = ({ type, stakeInfo, isApproved, isLoading, approveForAll }: Lo
                 onValueChanged={handleChangePercent}
                 mb="16px"
               />
-              <Text fontSize="14px" fontWeight="500" fontStyle="italic" color='text' mt="10px">LTV 50%</Text>
+              <Text fontSize="14px" fontWeight="500" fontStyle="italic" color='text' mt="10px">LTV {period?.maxBorrowRatio || '_'}%</Text>
             </Flex>
             <Flex justifyContent="space-between" alignItems="center" mb="12px">
               <StyledText color='textSubtle'>{t('Annual Interest Rate')}</StyledText>
-              <StyledText color='text'>10%</StyledText>
+              <StyledText color='text'>{period?.annualRate || '_'}%</StyledText>
             </Flex>
             <Flex justifyContent="space-between" alignItems="center" mb="12px">
               <StyledText color='textSubtle'>{t('Total Interest')}</StyledText>
-              <StyledText color='text'>50.000 U2U</StyledText>
+              <StyledText color='text'>{formatNumber(totalInterest)} U2U</StyledText>
             </Flex>
             <Flex justifyContent="space-between" alignItems="center">
               <StyledText color='textSubtle'>{t('Repayment Amount')}</StyledText>
-              <StyledText color='text'>550.000 U2U</StyledText>
+              <StyledText color='text'>{formatNumber(repaymentAmount)} U2U</StyledText>
             </Flex>
             <StyledButton
               width="100%"
               className="button-hover btn-loading"
-              isLoading={isLoading}
+              isLoading={isLoading || isCallContract}
+              disabled={isApproved && borrowValue.length === 0}
               onClick={handleAction}
             >
-             {isLoading ? 
-             <Dots>{'Approving' }</Dots> : 
+             {isLoading || isCallContract ? 
+             <Dots>{isApproved ? 'Borrowing' : 'Approving' }</Dots> : 
               isApproved ? t('Borrow Now') : 'Approve' 
              }
             </StyledButton>
@@ -234,42 +314,45 @@ const LoansCard = ({ type, stakeInfo, isApproved, isLoading, approveForAll }: Lo
           <>
             <Flex justifyContent="space-between" mb="12px">
               <StyledText color='textSubtle'>{t('Interest Period')}</StyledText>
-              <StyledText color='text'>30 days</StyledText>
+              <StyledText color='text'>{borrowing?.loanPackage.period ? borrowing?.loanPackage?.period / 86400 : 0} days</StyledText>
             </Flex>
             <Flex justifyContent="space-between" mb="12px">
               <StyledText color='textSubtle'>{t('Borrow amount')}</StyledText>
-              <StyledText color='text'>500.000 U2U</StyledText>
+              <StyledText color='text'>{formatNumber(formatEther(borrowing?.borrowAmount))} U2U</StyledText>
             </Flex>
             <Flex justifyContent="space-between" mb="12px">
               <StyledText color='textSubtle'>{t('LTV')}</StyledText>
-              <StyledText color='text'>50%</StyledText>
+              <StyledText color='text'>{borrowing?.loanPackage.maxBorrowRatio}%</StyledText>
             </Flex>
             <Flex justifyContent="space-between" mb="12px">
               <StyledText color='textSubtle'>{t('Annual Interest Rate')}</StyledText>
-              <StyledText color='text'>30%</StyledText>
+              <StyledText color='text'>{borrowing?.loanPackage.annualRate}%</StyledText>
             </Flex>
             <Flex justifyContent="space-between" mb="12px">
               <StyledText color='textSubtle'>{t('Total Interest')}</StyledText>
-              <StyledText color='text'>50.000 U2U</StyledText>
+              <StyledText color='text'>{formatNumber(totalInterest)} U2U</StyledText>
             </Flex>
             <Flex justifyContent="space-between" mb="12px">
               <StyledText color='textSubtle'>{t('Repayment Amount')}</StyledText>
-              <StyledText color='text'>550.000 U2U</StyledText>
+              <StyledText color='text'>{formatNumber(repaymentAmount)} U2U</StyledText>
             </Flex>
             <Flex justifyContent="space-between" mb="12px">
               <StyledText color='textSubtle'>{t('Loan Time')}</StyledText>
-              <StyledText color='text'>2024/04/20 13:46:00 UTC</StyledText>
+              <StyledText color='text'>{borrowing?.borrowTime ? formatDate(dayjs.unix(Number(borrowing.borrowTime))): '_'} UTC</StyledText>
             </Flex>
             <Flex justifyContent="space-between">
               <StyledText color='textSubtle'>{t('Repayable Time')}</StyledText>
-              <StyledText color='text'>2024/04/20 13:46:00 UTC</StyledText>
+              <StyledText color='text'>{borrowing?.repayTime ? formatDate(dayjs.unix(Number(borrowing.repayTime))): '_'} UTC</StyledText>
             </Flex>
             <StyledButton
               width="100%"
               className="button-hover"
-              disabled={isRepay}
+              disabled={disableRepay}
+              onClick={handleRepay}
             >
-              {isRepay ? t('It has been foreclosed') : t('Repay Now')}
+              {isCallContract ? <Dots>{'Repaying' }</Dots> : (
+                disableRepay ? t('It has been foreclosed') : t('Repay Now')
+              )}
             </StyledButton>
           </>
         )}
