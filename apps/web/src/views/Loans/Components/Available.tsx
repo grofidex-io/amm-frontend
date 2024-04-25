@@ -10,8 +10,8 @@ export default function Available() {
     <>
       <CardLayout>
         {loading ? <LoanLoading/> : (
-          data?.staked.map((item, index) => (
-            <LoansCard stakeInfo={item} key={index} refreshListLoans={refresh}/>
+          data?.staked.map((item) => (
+            <LoansCard stakeInfo={item} key={item.id} refreshListLoans={refresh}/>
           ))
         )}
       </CardLayout>

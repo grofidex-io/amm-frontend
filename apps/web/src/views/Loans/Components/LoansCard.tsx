@@ -121,11 +121,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
   const [period, setPeriod] = useState<LoansPackageItem | undefined>(undefined)
   const borrowContract = useBorrowContract()
   const stakingContract = useStakingContract()
-  const handleChangePeriod = (option: any): void => {
-    setBorrowValue('')
-    onPercentSelectForSlider(0)
-    setPeriod(option.item)
-  }
+
 
   const { isApproved, isLoading, loansPackages, approveForAll } = useContext(LoanContext)
 
@@ -153,17 +149,22 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
     totalInterest = period?.annualRate && borrowValue?.length > 0 ? Number(borrowValue) * Number(period.annualRate) : 0
     repaymentAmount = Number(totalInterest) + Number(borrowValue)
   }
-  const disableRepay = borrowing?.repayTime && borrowing.repayTime > Date.now() ?  true : false
+  const disableRepay = !!(borrowing?.repayTime && borrowing.repayTime > Date.now())
+  const handleChangePeriod = (option: any): void => {
+    setBorrowValue('')
+    onPercentSelectForSlider(0)
+    setPeriod(option.item)
+  }
   const handleChangePercent = useCallback(
     (value: any) => {
       if(period?.maxBorrowRatio) {
         const percent = (Math.ceil(value) * Number(period?.maxBorrowRatio)) / 100
-        const borrowValue = Number(formatEther(stakeInfo.amount)) * (percent / 100)
-        setBorrowValue(borrowValue ? formatNumber(borrowValue, 2, 6) : '0')
+        const _borrowValue = Number(formatEther(stakeInfo.amount)) * (percent / 100)
+        setBorrowValue(_borrowValue ? formatNumber(_borrowValue, 2, 6) : '0')
       }
       onPercentSelectForSlider(Math.ceil(value))
     },
-    [onPercentSelectForSlider, period],
+    [period?.maxBorrowRatio, stakeInfo.amount],
   )
 
   const callSmartContract = async (action: any, message: string) => {
@@ -185,21 +186,25 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
 
   const handleBorrow = async () => {
     await callSmartContract(borrowContract.write.borrow([parseEther(borrowValue), stakeInfo.id, period?.id]), 'You have successfully borrow.')
-    refreshListLoans && refreshListLoans()
+    if(refreshListLoans){ 
+     refreshListLoans()
+    }
   }
 
   const handleRepay = async () => {
     const mustReturn: any = await borrowContract.read.mustReturn([borrowing?.id])
     await callSmartContract(borrowContract.write.returnStakingNFT([ borrowing?.id], {value: mustReturn}), 'You have successfully repay.')
-    refreshListLoans && refreshListLoans()
+    if(refreshListLoans){ 
+      refreshListLoans()
+     }
   }
 
   const handleAction = () => {
     if(isApproved) {
       handleBorrow()
-    } else {
-      approveForAll && approveForAll()
-    }
+    } else if(approveForAll) {
+        approveForAll()
+      }
   }
   useEffect(() => {
     if(loansPackages?.length > 0) {
@@ -208,8 +213,8 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
   }, [loansPackages])
 
   const onMax = () => {
-    const borrowValue = Number(formatEther(stakeInfo.amount)) * (Number(period?.maxBorrowRatio) / 100)
-    setBorrowValue(borrowValue ? formatNumber(borrowValue, 2, 6) : '0')
+    const _borrowValue = Number(formatEther(stakeInfo.amount)) * (Number(period?.maxBorrowRatio) / 100)
+    setBorrowValue(_borrowValue ? formatNumber(_borrowValue, 2, 6) : '0')
     onPercentSelectForSlider(100)
   }
 
@@ -220,7 +225,6 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
     }
     setBorrowValue(value)
     if(value.length > 0) {
-      console.log(Number(formatEther(stakeInfo.amount)))
       const percent = (((Number(value) / Number(formatEther(stakeInfo.amount))) * 100)/ Number(period?.maxBorrowRatio)) * 100
       onPercentSelectForSlider(percent)
     }
@@ -318,7 +322,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
             </Flex>
             <Flex justifyContent="space-between" mb="12px">
               <StyledText color='textSubtle'>{t('Borrow amount')}</StyledText>
-              <StyledText color='text'>{formatNumber(formatEther(borrowing?.borrowAmount))} U2U</StyledText>
+              <StyledText color='text'>{formatNumber(Number(formatEther(borrowing?.borrowAmount)))} U2U</StyledText>
             </Flex>
             <Flex justifyContent="space-between" mb="12px">
               <StyledText color='textSubtle'>{t('LTV')}</StyledText>
@@ -350,7 +354,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
               disabled={disableRepay}
               onClick={handleRepay}
             >
-              {isCallContract ? <Dots>{'Repaying' }</Dots> : (
+              {isCallContract ? <Dots>Repaying</Dots> : (
                 disableRepay ? t('It has been foreclosed') : t('Repay Now')
               )}
             </StyledButton>

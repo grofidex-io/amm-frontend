@@ -20,22 +20,13 @@ import {
 import { LightGreyCard } from 'components/Card'
 import { CurrencyLogo } from 'components/Logo'
 import styled from 'styled-components'
+
 const StyledLightGreyCard = styled(LightGreyCard)`
   border-width: 2px;
   border-radius: 8px;
   box-shadow: ${({ theme }) => theme.shadows.card};
 `
-const StyledButton = styled(Button)`
-  border-radius: 4px !important;
-  @media screen and (max-width: 424px) {
-    height: 32px;
-    padding: 0 12px;
-  }
-  @media screen and (max-width: 374px) {
-    height: 30px;
-    padding: 0 10px;
-  }
-`
+
 type ConfirmModalProps = {
   stakedInfo: {
     amountDisplay: string,
@@ -90,9 +81,7 @@ const ConfirmRewardModal: React.FC<React.PropsWithChildren<ConfirmModalProps>> =
             </Flex>
           </Flex>
           <Flex justifyContent="flex-end" mb="8px">
-            <Text fontSize="10px" color="textSubtle" ml="4px">
- 
-            </Text>
+            <Text fontSize="10px" color="textSubtle" ml="4px" />
           </Flex>
    
           {/* <Divider /> */}
