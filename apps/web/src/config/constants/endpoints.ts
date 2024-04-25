@@ -20,7 +20,8 @@ export const GRAPH_API_PREDICTION_V1 = 'https://api.thegraph.com/subgraphs/name/
 
 export const INFO_CLIENT = 'https://proxy-worker-api.pancakeswap.com/bsc-exchange'
 export const V3_BSC_INFO_CLIENT = `https://subgraph-amm-dev.uniultra.xyz/subgraphs/name/u2u-amm/u2dex-v1`
-export const AMM_STAKING_CLIENT = `https://subgraph-amm-dev.uniultra.xyz/subgraphs/name/u2u-amm/staking`
+export const AMM_STAKING_CLIENT = `https://subgraph-amm-dev.uniultra.xyz/subgraphs/name/u2u-amm/staking-v2`
+export const AMM_LOAN_CLIENT = `https://subgraph-amm-dev.uniultra.xyz/subgraphs/name/u2u-amm/loans`
 export const APR_SUBGRAPH = `https://testnet-staking-graphql.uniultra.xyz/graphql`
 
 export const INFO_CLIENT_ETH = 'https://api.thegraph.com/subgraphs/name/pancakeswap/exhange-eth'

@@ -30,13 +30,9 @@ const getBaseThumbStyles = ({ $isMax, disabled }: StyledInputProps) => `
   box-shadow: none;
   border: 0;
   cursor: ${getCursorStyle};
-  width: 15px;
-  height: 40px;
+  width: 17px;
+  height: 41px;
   filter: ${disabled ? "grayscale(100%)" : "none"};
-  transition: 200ms opacity;
-  &:hover {
-    opacity: ${disabled ? 1 : 0.8}
-  }
 `;
 
 export const SliderLabelContainer = styled.div`
@@ -57,10 +53,11 @@ export const SliderLabel = styled(Text)<SliderLabelProps>`
 
 export const BunnyButt = styled.div<DisabledProp>`
   background: url(${bunnyButt}) no-repeat center;
-  height: 40px;
+  height: 41px;
   filter: ${({ disabled }) => (disabled ? "grayscale(100%)" : "none")};
   position: absolute;
-  width: 15px;
+  width: 17px;
+  z-index: 1;
 `;
 
 export const BunnySlider = styled.div`
@@ -88,16 +85,19 @@ export const StyledInput = styled.input<StyledInputProps>`
 export const BarBackground = styled.div<DisabledProp>`
   background-color: ${({ theme, disabled }) => theme.colors[disabled ? "textDisabled" : "backgroundItem"]};
   height: 10px;
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  box-shadow: ${({ theme }) => theme.shadows.input};
   position: absolute;
-  top: 22px;
+  top: 18px;
   width: 100%;
-  border-radius: 4px;
+  border-radius: 16px;
 `;
 
 export const BarProgress = styled.div<DisabledProp>`
-  background-color: ${({ theme }) => theme.colors.hover};
+  background-color: ${({ theme }) => theme.colors.secondary};
   filter: ${({ disabled }) => (disabled ? "grayscale(100%)" : "none")};
   height: 10px;
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   position: absolute;
-  top: 22px;
+  top: 18px;
 `;

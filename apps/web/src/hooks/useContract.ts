@@ -16,6 +16,7 @@ import {
   getBCakeFarmBoosterV3Contract,
   getBCakeFarmBoosterVeCakeContract,
   getBCakeProxyContract,
+  getBorrowContract,
   getBunnyFactoryContract,
   getCakeFlexibleSideVaultV2Contract,
   getCakeVaultV2Contract,
@@ -545,4 +546,10 @@ export const useRevenueSharingPoolGatewayContract = () => {
   const { data: signer } = useWalletClient()
 
   return useMemo(() => getRevenueSharingPoolGatewayContract(signer ?? undefined, chainId), [signer, chainId])
+}
+
+export const useBorrowContract = () => {
+  const { chainId } = useActiveChainId()
+  const { data: signer } = useWalletClient()
+  return useMemo(() => getBorrowContract(signer ?? undefined, chainId), [signer, chainId])
 }

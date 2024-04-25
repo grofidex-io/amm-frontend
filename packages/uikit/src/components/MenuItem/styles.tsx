@@ -54,9 +54,6 @@ const StyledMenuItem = styled.a<StyledMenuItemProps>`
       ? `
     height: 36px;
     padding: 0 16px;
-    @media screen and (max-width: 1199px) {
-      padding: 0 14px;
-    }
     `
       : `
     padding-left: 4px;
@@ -72,6 +69,7 @@ const StyledMenuItem = styled.a<StyledMenuItemProps>`
       border: 2px solid ${theme.colors.cardBorder};
       background: ${theme.colors.secondary};
       border-radius: 8px;
+
     `
       : $isActive
       ? `
@@ -86,6 +84,7 @@ const StyledMenuItem = styled.a<StyledMenuItemProps>`
     // ${({ $variant }) => $variant === "default" && "border-radius: 16px;"};
     color: ${({ $isActive, $isHeaderMenu, theme }) =>
       $isActive && $isHeaderMenu ? theme.colors.black : $isActive ? theme.colors.secondary : theme.colors.hover};
+
   }
 `;
 

@@ -21,9 +21,6 @@ export const StyledBottomNavItem = styled.button`
   @media screen and (max-width: 479px) {
     padding: 0 8px;
   }
-  @media screen and (max-width: 424px) {
-    padding: 0 6px;
-  }
 `;
 
 export const StyledBottomNavText = styled(Text)`

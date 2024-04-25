@@ -244,7 +244,7 @@ export const SwapModalFooter = memo(function SwapModalFooter({
           {isMM && !isRFQReady ? (
             <Dots>{t('Checking RFQ with MM')}</Dots>
           ) : severity > 2 || (tradeType === TradeType.EXACT_OUTPUT && !isEnoughInputBalance) ? (
-            (typeSwap !== undefined ? typeSwap === TYPE_SWAP.BUY ? 'Buy Anyway' : 'Sell Anyway' : 'Swap Anyway')
+            (typeSwap !== undefined ? typeSwap === TYPE_SWAP.BUY ? 'Confirm Buy' : 'Confirm Sell' : 'Confirm Swap')
           ) : (
             (typeSwap !== undefined ? typeSwap === TYPE_SWAP.BUY ? 'Confirm Buy' : 'Confirm Sell' : 'Confirm Swap')
           )}

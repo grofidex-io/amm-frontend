@@ -6,6 +6,7 @@ import { AtomBox } from "../../components/AtomBox";
 import BottomNav from "../../components/BottomNav";
 import { Box } from "../../components/Box";
 import Flex from "../../components/Box/Flex";
+import { MenuDropdown } from "../../components/MenuDropdown";
 import MenuItems from "../../components/MenuItems/MenuItems";
 import { SubMenuItems } from "../../components/SubMenuItems";
 import { useMatchBreakpoints } from "../../contexts";
@@ -127,6 +128,9 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
 
   // Find the home link if provided
   const homeLink = links.find((link) => link.label === "Home");
+  const linkMenu = links.filter((link) => !link.isExpanse)
+  const linkExpanse = links.filter((link) => link.isExpanse)
+
 
   const subLinksWithoutMobile = useMemo(() => subLinks?.filter((subLink) => !subLink.isMobileOnly), [subLinks]);
   const subLinksMobileOnly = useMemo(() => subLinks?.filter((subLink) => subLink.isMobileOnly), [subLinks]);
@@ -146,8 +150,12 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
             <StyledNav>
               <Flex>
                 <Logo href={homeLink?.href ?? "/"} />
-                <AtomBox display={{ xs: "none", lg: "block" }}>
-                  <MenuItems items={links} activeItem={activeItem} activeSubItem={activeSubItem} headerMenu ml={["16px", "20px", "20px", "20px", "12px","20pxpx", "24px"]} />
+                <AtomBox display={{ xs: "none", xl: "block" }}>
+                  <MenuItems items={links} activeItem={activeItem} activeSubItem={activeSubItem} headerMenu ml={["16px", "20px", "20px", "20px", "20px","20px", "24px"]} />
+                </AtomBox>
+                <AtomBox display={{ xs: "none", lg: "flex", xl: "none" }} style={{ alignItems: 'center' }}>
+                  <MenuItems items={linkMenu} activeItem={activeItem} activeSubItem={activeSubItem} headerMenu ml={["16px", "20px", "20px", "20px", "20px","20px", "24px"]} />
+                  <MenuDropdown items={linkExpanse} activeItem={activeItem} activeSubItem={activeSubItem}/>
                 </AtomBox>
               </Flex>
               <Flex alignItems="center" height="100%">

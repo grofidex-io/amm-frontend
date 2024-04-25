@@ -16,16 +16,16 @@ const getDisabledStyles = ({ $isLoading, theme }: TransientButtonProps) => {
     return `
       &:disabled,
       &.pancake-button--disabled {
-        background-color: ${theme.colors.backgroundDisabled};
+        background-color: ${theme.colors.textSubtle};
         box-shadow: none;
-        color: ${theme.colors.textDisabled};
-        border-color: ${theme.colors.backgroundDisabled};
+        color: ${theme.colors.black};
+        border-color: ${theme.colors.cardBorder};
         cursor: not-allowed;
         &:hover {
-          background-color: ${theme.colors.backgroundDisabled};
+          background-color: ${theme.colors.textSubtle};
           box-shadow: none;
-          color: ${theme.colors.textDisabled};
-          border-color: ${theme.colors.backgroundDisabled};
+          color: ${theme.colors.black};
+          border-color: ${theme.colors.cardBorder};
         }
       }
     `;
@@ -34,16 +34,16 @@ const getDisabledStyles = ({ $isLoading, theme }: TransientButtonProps) => {
   return `
     &:disabled,
     &.pancake-button--disabled {
-      background-color: ${theme.colors.backgroundDisabled};
-      border-color: ${theme.colors.backgroundDisabled};
+      background-color: ${theme.colors.textSubtle};
+      border-color: ${theme.colors.cardBorder};
       box-shadow: none;
-      color: ${theme.colors.textDisabled};
+      color: ${theme.colors.black};
       cursor: not-allowed;
       &:hover {
-        background-color: ${theme.colors.backgroundDisabled};
+        background-color: ${theme.colors.textSubtle};
         box-shadow: none;
-        color: ${theme.colors.textDisabled};
-        border-color: ${theme.colors.backgroundDisabled};
+        color: ${theme.colors.black};
+        border-color: ${theme.colors.cardBorder};
       }
     }
   `;

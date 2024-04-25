@@ -78,6 +78,7 @@ export function useStakingList() {
           }
         }
       `
+
       const { user } = await ammStakingClients.request<{ user: StakingResponse | null }>(STAKING_LIST_QUERY, {
         address,
       })
@@ -87,6 +88,7 @@ export function useStakingList() {
           periodTime,
         }
       }
+
       user.totalPackage = user.staked.length + user.unStake.length
       user.totalStakedAmount = BigNumber(0)
       user.totalReward = BigNumber(0)
