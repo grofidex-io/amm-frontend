@@ -123,7 +123,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
   const [period, setPeriod] = useState<LoansPackageItem | undefined>(undefined)
   const borrowContract = useBorrowContract()
   const stakingContract = useStakingContract()
-  const { isApproved, isLoading, loansPackages, totalRepayableU2U, totalInterestForBorrowingU2U ,approveForAll, setTotalCollateral, setTotalRepayable } = useContext(LoanContext)
+  const { isApproved, isLoading, loansPackages, totalRepayableU2U, totalInterestForBorrowingU2U, lastDueDate ,approveForAll, setTotalCollateral, setTotalRepayable } = useContext(LoanContext)
   const { fetchWithCatchTxError } = useCatchTxError()
   const listPeriod = loansPackages.map((item: LoansPackageItem) => {
     return {
@@ -246,6 +246,13 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
   useEffect(() => {
     if(borrowing?.stakeId && stakingContract.account) {
       getAmountStake(borrowing.stakeId)
+      if(lastDueDate?.current) {
+        if(borrowing.repayTime < lastDueDate.current) {
+          lastDueDate.current = borrowing.repayTime
+        }
+      } else {
+        lastDueDate.current = borrowing.repayTime
+      }
     }
   }, [borrowing?.stakeId, stakingContract.account])
 
