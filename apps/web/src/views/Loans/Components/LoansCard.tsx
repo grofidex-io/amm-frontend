@@ -123,7 +123,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
   const [period, setPeriod] = useState<LoansPackageItem | undefined>(undefined)
   const borrowContract = useBorrowContract()
   const stakingContract = useStakingContract()
-  const { isApproved, isLoading, loansPackages, totalRepayableU2U, totalInterestForBorrowingU2U ,approveForAll, setTotalCollateral, setTotalRepayable } = useContext(LoanContext)
+  const { isApproved, isLoading, loansPackages, totalRepayableU2U, totalInterestForBorrowingU2U, lastDueDate ,approveForAll, setTotalCollateral, setTotalRepayable } = useContext(LoanContext)
   const { fetchWithCatchTxError } = useCatchTxError()
   const listPeriod = loansPackages.map((item: LoansPackageItem) => {
     return {
@@ -168,8 +168,8 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
     (value: any) => {
       if(period?.maxBorrowRatio) {
         const percent = (Math.ceil(value) * Number(period?.maxBorrowRatio)) / 100
-        const _borrowValue = Number(formatEther(stakeInfo.amount)) * (percent / 100)
-        setBorrowValue(_borrowValue.toString() || '0')
+        const _borrowValue: string = (Number(formatEther(stakeInfo.amount)) * (percent / 100)).toFixed(6)
+        setBorrowValue(_borrowValue || '0')
       }
       onPercentSelectForSlider(Math.ceil(value))
     },
@@ -246,6 +246,13 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
   useEffect(() => {
     if(borrowing?.stakeId && stakingContract.account) {
       getAmountStake(borrowing.stakeId)
+      if(lastDueDate?.current) {
+        if(borrowing.repayTime < lastDueDate.current) {
+          lastDueDate.current = borrowing.repayTime
+        }
+      } else {
+        lastDueDate.current = borrowing.repayTime
+      }
     }
   }, [borrowing?.stakeId, stakingContract.account])
 
@@ -373,11 +380,11 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
             </Flex>
             <Flex justifyContent="space-between" mb="12px">
               <StyledText color='textSubtle'>{t('Loan Time')}</StyledText>
-              <StyledText color='text'>{borrowing?.borrowTime ? formatDate(dayjs.unix(Number(borrowing.borrowTime))): '_'} UTC</StyledText>
+              <StyledText color='text'>{borrowing?.borrowTime ? formatDate(dayjs.unix(Number(borrowing.borrowTime)).utc()): '_'} UTC</StyledText>
             </Flex>
             <Flex justifyContent="space-between">
               <StyledText color='textSubtle'>{t('Repayable Time')}</StyledText>
-              <StyledText color='text'>{borrowing?.repayTime ? formatDate(dayjs.unix(Number(borrowing.repayTime))): '_'} UTC</StyledText>
+              <StyledText color='text'>{borrowing?.repayTime ? formatDate(dayjs.unix(Number(borrowing.repayTime)).utc()): '_'} UTC</StyledText>
             </Flex>
             <StyledButton
               width="100%"

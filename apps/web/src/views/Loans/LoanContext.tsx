@@ -12,19 +12,21 @@ export interface ContextApi {
   totalCollateral: number,
   totalRepayable: number,
   totalRepayableU2U: MutableRefObject<{[key: string] : number}> | undefined
-  totalInterestForBorrowingU2U: MutableRefObject<{[key: string] : number}> | undefined
+  totalInterestForBorrowingU2U: MutableRefObject<{[key: string] : number}> | undefined,
+  lastDueDate: MutableRefObject<number>
   checkApproved?: () => void,
   approveForAll?: () => void,
   setTotalCollateral?: (value: number) => void,
   setTotalRepayable?: (value: number) => void,
 }
-const LoanContext = createContext<ContextApi>({isApproved: false, isLoading: false, loansPackages: [], totalCollateral: 0, totalRepayable: 0, totalRepayableU2U: undefined, totalInterestForBorrowingU2U: undefined});
+const LoanContext = createContext<ContextApi>({isApproved: false, isLoading: false, loansPackages: [], totalCollateral: 0, totalRepayable: 0, totalRepayableU2U: undefined, totalInterestForBorrowingU2U: undefined, lastDueDate: 0});
 // Provide Context
 export const LoanProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [isApproved, setApprove] = useState<boolean>(false)
   const [isLoading, setLoading] = useState<boolean>(false)
   const totalRepayableU2U = useRef({})
   const totalInterestForBorrowingU2U = useRef({})
+  const lastDueDate = useRef(0)
   const [totalCollateral, setTotalCollateral] = useState<number>(0)
   const [totalRepayable, setTotalRepayable] = useState<number>(0)
   const [loansPackages, setLoansPackages] = useState<LoansPackageItem[]>([])
@@ -65,7 +67,7 @@ export const LoanProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
 
 
   return (
-    <LoanContext.Provider value={{isApproved, isLoading, loansPackages, totalCollateral, totalRepayable, totalRepayableU2U, totalInterestForBorrowingU2U, checkApproved, approveForAll, setTotalCollateral, setTotalRepayable}}>
+    <LoanContext.Provider value={{isApproved, isLoading, loansPackages, totalCollateral, totalRepayable, totalRepayableU2U, totalInterestForBorrowingU2U, lastDueDate, checkApproved, approveForAll, setTotalCollateral, setTotalRepayable}}>
       {children}
     </LoanContext.Provider>
   )
