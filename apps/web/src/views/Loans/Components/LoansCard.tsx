@@ -373,11 +373,11 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
             </Flex>
             <Flex justifyContent="space-between" mb="12px">
               <StyledText color='textSubtle'>{t('Loan Time')}</StyledText>
-              <StyledText color='text'>{borrowing?.borrowTime ? formatDate(dayjs.unix(Number(borrowing.borrowTime))): '_'} UTC</StyledText>
+              <StyledText color='text'>{borrowing?.borrowTime ? formatDate(dayjs.unix(Number(borrowing.borrowTime)).utc()): '_'} UTC</StyledText>
             </Flex>
             <Flex justifyContent="space-between">
               <StyledText color='textSubtle'>{t('Repayable Time')}</StyledText>
-              <StyledText color='text'>{borrowing?.repayTime ? formatDate(dayjs.unix(Number(borrowing.repayTime))): '_'} UTC</StyledText>
+              <StyledText color='text'>{borrowing?.repayTime ? formatDate(dayjs.unix(Number(borrowing.repayTime)).utc()): '_'} UTC</StyledText>
             </Flex>
             <StyledButton
               width="100%"
