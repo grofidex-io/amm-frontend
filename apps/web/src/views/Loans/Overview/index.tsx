@@ -133,8 +133,14 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
   const [tab, setTab] = useState<number>(0)
   const [firstInit, setFirstInit] = useState<boolean>(false)
   const { account } = useActiveWeb3React()
-  const { totalCollateral, totalRepayable, totalRepayableU2U, totalInterestForBorrowingU2U, lastDueDate } = useContext(LoanContext)
+  const { totalCollateral, totalRepayable, totalRepayableU2U, totalInterestForBorrowingU2U, lastDueDate, setTotalCollateral, setTotalRepayable } = useContext(LoanContext)
   useEffect(() => {
+    if(setTotalCollateral) {
+      setTotalCollateral(0)
+    }
+    if(setTotalRepayable) {
+      setTotalRepayable(0)
+    }
     if(totalRepayableU2U?.current) {
       totalRepayableU2U.current = {}
     }

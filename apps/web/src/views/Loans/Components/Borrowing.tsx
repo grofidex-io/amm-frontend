@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js'
+import NoData from 'components/NoData'
 import { useListBorrowing } from '../hooks/useListBorrowing'
 import { CardLayout } from '../styles'
 import LoanLoading from './LoanLoading'
@@ -15,6 +16,11 @@ export default function Borrowing() {
     timestamp: 0,
     reward: BigNumber(0),
     rewardDisplay: '',
+  }
+  if(!isLoading && data?.length === 0) {
+    return (
+      <NoData/>
+    )
   }
   return (
     <>
