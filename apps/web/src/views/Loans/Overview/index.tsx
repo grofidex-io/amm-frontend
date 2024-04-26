@@ -2,6 +2,7 @@ import { useTranslation } from "@pancakeswap/localization"
 import { Box, Flex, Heading, PageHeader, Tab, TabMenu, Text } from "@pancakeswap/uikit"
 import { formatNumber } from "@pancakeswap/utils/formatBalance"
 import Page from 'components/Layout/Page'
+import useActiveWeb3React from "hooks/useActiveWeb3React"
 import { useContext, useEffect, useState } from 'react'
 import styled from "styled-components"
 import Available from "views/Loans/Components/Available"
@@ -128,14 +129,20 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const [tab, setTab] = useState<number>(0)
   const [firstInit, setFirstInit] = useState<boolean>(false)
-  const { totalCollateral, totalRepayable } = useContext(LoanContext)
+  const { account } = useActiveWeb3React()
+  const { totalCollateral, totalRepayable, totalRepayableU2U, totalInterestForBorrowingU2U } = useContext(LoanContext)
   useEffect(() => {
-
+    if(totalRepayableU2U?.current) {
+      totalRepayableU2U.current = {}
+    }
+    if(totalInterestForBorrowingU2U?.current) {
+      totalInterestForBorrowingU2U.current = {}
+    }
     setFirstInit(true)
     setTimeout(() => {
       setFirstInit(false)
     }, 3000)
-  }, [])
+  }, [account])
 
   const handleChangeTab = (value: number) => {
     setTab(value)

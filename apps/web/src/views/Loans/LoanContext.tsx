@@ -1,7 +1,7 @@
 import useAccountActiveChain from 'hooks/useAccountActiveChain';
 import useCatchTxError from 'hooks/useCatchTxError';
 import { useStakingContract } from 'hooks/useContract';
-import { createContext, useEffect, useState } from 'react';
+import { MutableRefObject, createContext, useEffect, useRef, useState } from 'react';
 import { getBorrowAddress } from 'utils/addressHelpers';
 import { LoansPackageItem, fetchLoansPackages } from './data/listLoansPackage';
 // Initiate Context
@@ -11,16 +11,20 @@ export interface ContextApi {
   loansPackages: LoansPackageItem[],
   totalCollateral: number,
   totalRepayable: number,
+  totalRepayableU2U: MutableRefObject<{[key: string] : number}> | undefined
+  totalInterestForBorrowingU2U: MutableRefObject<{[key: string] : number}> | undefined
   checkApproved?: () => void,
   approveForAll?: () => void,
   setTotalCollateral?: (value: number) => void,
   setTotalRepayable?: (value: number) => void,
 }
-const LoanContext = createContext<ContextApi>({isApproved: false, isLoading: false, loansPackages: [], totalCollateral: 0, totalRepayable: 0});
+const LoanContext = createContext<ContextApi>({isApproved: false, isLoading: false, loansPackages: [], totalCollateral: 0, totalRepayable: 0, totalRepayableU2U: undefined, totalInterestForBorrowingU2U: undefined});
 // Provide Context
 export const LoanProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [isApproved, setApprove] = useState<boolean>(false)
   const [isLoading, setLoading] = useState<boolean>(false)
+  const totalRepayableU2U = useRef({})
+  const totalInterestForBorrowingU2U = useRef({})
   const [totalCollateral, setTotalCollateral] = useState<number>(0)
   const [totalRepayable, setTotalRepayable] = useState<number>(0)
   const [loansPackages, setLoansPackages] = useState<LoansPackageItem[]>([])
@@ -41,9 +45,7 @@ export const LoanProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
     setApprove(status)
   }
 
-  const handleUpdateTotalCollateral = (value: number) => {
-    setTotalCollateral(value + totalCollateral)
-  }
+
 
   const approveForAll = async () => {
     if(!stakingContract.account) return
@@ -63,7 +65,7 @@ export const LoanProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
 
 
   return (
-    <LoanContext.Provider value={{isApproved, isLoading, loansPackages, totalCollateral, totalRepayable, checkApproved, approveForAll, setTotalCollateral, setTotalRepayable}}>
+    <LoanContext.Provider value={{isApproved, isLoading, loansPackages, totalCollateral, totalRepayable, totalRepayableU2U, totalInterestForBorrowingU2U, checkApproved, approveForAll, setTotalCollateral, setTotalRepayable}}>
       {children}
     </LoanContext.Provider>
   )
