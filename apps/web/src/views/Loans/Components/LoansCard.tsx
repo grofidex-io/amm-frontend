@@ -110,6 +110,16 @@ const FlexInput = styled(Flex)`
   }
 `
 
+const ErrorMessage = styled.div`
+  color: red;
+  position: absolute;
+  right: 0;
+  bottom: -20px;
+  font-size: 12px;
+  font-style: italic;
+}
+`
+
 type LoansProps = {
   type?: boolean,
   stakeInfo: StakedInfo,
@@ -137,9 +147,10 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
   const [percentForSlider, onPercentSelectForSlider] = useState(0)
   const [isCallContract, setIsCallContract] = useState(false)
   const [isFocusInput, setIsFocusInput] = useState(false)
+  const [errorMinBorrow, setErrorMinBorrow] = useState(false)
   const onMax = () => {
-    const _borrowValue = Number(formatEther(stakeInfo.amount)) * (Number(period?.maxBorrowRatio) / 100)
-    setBorrowValue(_borrowValue.toString() || '0')
+    const _borrowValue = (Number(formatEther(stakeInfo.amount)) * (Number(period?.maxBorrowRatio) / 100)).toFixed(6)
+    setBorrowValue(Number(_borrowValue).toString() || '0')
     onPercentSelectForSlider(100)
   }
 
@@ -169,7 +180,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
       if(period?.maxBorrowRatio) {
         const percent = (Math.ceil(value) * Number(period?.maxBorrowRatio)) / 100
         const _borrowValue: string = (Number(formatEther(stakeInfo.amount)) * (percent / 100)).toFixed(6)
-        setBorrowValue(_borrowValue || '0')
+        setBorrowValue(Number(_borrowValue).toString() || '0')
       }
       onPercentSelectForSlider(Math.ceil(value))
     },
@@ -209,6 +220,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
   }
 
   const handleAction = () => {
+    if(errorMinBorrow) return
     if(isApproved) {
       handleBorrow()
     } else if(approveForAll) {
@@ -236,25 +248,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
     setAmountStake(formatEther(res[0]))
   }
 
-  useEffect(() => {
-    if(loansPackages?.length > 0) {
-      setPeriod(loansPackages[0])
-    }
-  }, [loansPackages])
 
-
-  useEffect(() => {
-    if(borrowing?.stakeId && stakingContract.account) {
-      getAmountStake(borrowing.stakeId)
-      if(lastDueDate?.current) {
-        if(borrowing.repayTime < lastDueDate.current) {
-          lastDueDate.current = borrowing.repayTime
-        }
-      } else {
-        lastDueDate.current = borrowing.repayTime
-      }
-    }
-  }, [borrowing?.stakeId, stakingContract.account])
 
   const calculator = (list: MutableRefObject<{[key: string] : number}>) => {
     let total: number = 0
@@ -275,6 +269,36 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
     const total: number = calculator(totalInterestForBorrowingU2U)
     setTotalCollateral(total)
   }
+
+  useEffect(() => {
+    if(loansPackages?.length > 0) {
+      setPeriod(loansPackages[0])
+    }
+  }, [loansPackages])
+
+
+  useEffect(() => {
+    if(borrowing?.stakeId && stakingContract.account) {
+      getAmountStake(borrowing.stakeId)
+      if(lastDueDate?.current) {
+        if(borrowing.repayTime < lastDueDate.current) {
+          lastDueDate.current = borrowing.repayTime
+        }
+      } else {
+        lastDueDate.current = borrowing.repayTime
+      }
+    }
+  }, [borrowing?.stakeId, stakingContract.account])
+
+  useEffect(() => {
+    if(period?.minBorrow && Number(borrowValue) && Number(borrowValue) < Number(formatEther(period?.minBorrow))) {
+      setErrorMinBorrow(true)
+    } else {
+      setErrorMinBorrow(false)
+    }
+  }, [borrowValue, period?.minBorrow])
+
+
 
 
   return (
@@ -302,6 +326,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
               />
               <Text fontSize="12px" fontStyle="italic" lineHeight="14px" color='textExtra' mt="12px">{t(`Maximum borrow: ${formatNumber(maxBorrowU2U, 2,6)} U2U (LTV ${period?.maxBorrowRatio || '_'}%)`)}</Text>
             </Box>
+            <div style={{'position': 'relative'}}>
             <FlexInput>
               <StyledText color='textSubtle'>{t('Borrow amount') } (<MaxButton onClick={onMax}>Max</MaxButton>)</StyledText>
 
@@ -315,6 +340,8 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
                 onUserInput={onBorrowInput}
               />
             </FlexInput>
+            {errorMinBorrow && <ErrorMessage>Minimum borrow is {formatNumber(formatEther(period?.minBorrow), 2, 6) }</ErrorMessage>} 
+            </div>
             <Flex alignItems="center" justifyContent="space-between" mb={["20px", "20px", "22px"]}>
               <StyledSlider
                 name="lp-amount"
@@ -342,7 +369,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
               width="100%"
               className="button-hover btn-loading"
               isLoading={isLoading || isCallContract}
-              disabled={isApproved && borrowValue.length === 0}
+              disabled={(isApproved && borrowValue.length === 0) || Number(borrowValue) === 0 || errorMinBorrow}
               onClick={handleAction}
             >
             {isLoading || isCallContract ? 
