@@ -69,8 +69,9 @@ const Menu = styled.div`
     margin-top: 0;
     width: 700px;
     max-height: 600px;
+    left: 30%;
   }
-  ${({ theme }) => theme.mediaQueries.xl} {
+  ${({ theme }) => theme.mediaQueries.lg} {
     right: 0;
     transform: unset;
     left: auto;
