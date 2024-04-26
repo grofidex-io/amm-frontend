@@ -7,7 +7,7 @@ import dayjs from 'dayjs'
 import { formatEther, parseEther } from 'ethers/lib/utils'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useBorrowContract, useStakingContract } from 'hooks/useContract'
-import { useCallback, useContext, useEffect, useState } from 'react'
+import { MutableRefObject, useCallback, useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { formatDate } from 'views/CakeStaking/components/DataSet/format'
 import { StakedInfo } from 'views/Staking/Hooks/useStakingList'
@@ -112,20 +112,16 @@ type LoansProps = {
   type?: boolean,
   stakeInfo: StakedInfo,
   borrowing?: BorrowItem,
-  totalInterestForBorrowing?: number
-  totalRepayable?: number
   refreshListLoans?: () => void
 }
 
 const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
-  // const totalInterestForBorrowing = useRef<number>(0)
-  // const totalRepayable = useRef<number>(0)
   const [period, setPeriod] = useState<LoansPackageItem | undefined>(undefined)
   const borrowContract = useBorrowContract()
   const stakingContract = useStakingContract()
-  const { isApproved, isLoading, loansPackages, approveForAll, setTotalCollateral, setTotalRepayable } = useContext(LoanContext)
+  const { isApproved, isLoading, loansPackages, totalRepayableU2U, totalInterestForBorrowingU2U ,approveForAll, setTotalCollateral, setTotalRepayable } = useContext(LoanContext)
   const { fetchWithCatchTxError } = useCatchTxError()
   const listPeriod = loansPackages.map((item: LoansPackageItem) => {
     return {
@@ -152,9 +148,9 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
   if(borrowing?.id) {
     totalInterest = Number(formatEther(borrowing?.borrowAmount)) * (Number(borrowing?.loanPackage.annualRate)/100)
     repaymentAmount = Number(totalInterest) + Number(amountStake)
-    // totalRepayable.current += repaymentAmount
-    // console.log("🚀 ~ LoansCard ~ totalRepayable.current:", totalRepayable.current)
-
+    if(totalRepayableU2U?.current) {
+      totalRepayableU2U.current[borrowing.id] = repaymentAmount
+    }
   } else {
     maxBorrowU2U = period?.maxBorrowRatio && stakeInfo?.amountDisplay ? Number(stakeInfo?.amountDisplay) * (Number(period.maxBorrowRatio) / 100) : 0
     totalInterest = period?.annualRate && borrowValue?.toString().length > 0 ? Number(borrowValue) * (Number(period.annualRate) / 100) : 0
@@ -234,16 +230,10 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
 
   const getAmountStake = async (id: string | number) => {
     const res: any = await stakingContract.read.uriInfoById([id])
-      // totalInterestForBorrowing += Number(formatEther(res[0]))
-      // if(setTotalCollateral) {
-      //   setTotalCollateral(totalInterestForBorrowing)
-      // }
-    // console.log("🚀 ~ getAmountStake ~ totalRepayable.current:", totalRepayable.current)
+    if(totalInterestForBorrowingU2U?.current) {
+      totalInterestForBorrowingU2U.current[id] = Number(formatEther(res[0]))
+    }
 
-    // if(setTotalRepayable) {
-
-    //   setTotalRepayable(totalRepayable.current)
-    // }
     setAmountStake(formatEther(res[0]))
   }
 
@@ -260,14 +250,25 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
     }
   }, [borrowing?.stakeId, stakingContract.account])
 
+  const calculator = (list: MutableRefObject<{[key: string] : number}>) => {
+    let total: number = 0
+    for (const key in list.current) {
+      if (Object.prototype.hasOwnProperty.call(list?.current, key)) {
+        total += list?.current[key]
+      }
+    }
+    return total
+  }
 
-  // useEffect(() => {
-  //   console.log("🚀 ~ LoansCard ~ totalRepayable:", totalRepayable.current)
+  if(totalRepayableU2U?.current && setTotalRepayable) {
+    const total: number = calculator(totalRepayableU2U)
+    setTotalRepayable(total)
+  }
 
-  //   // if(setTotalRepayable && borrowing?.id && totalRepayable.current) {
-  //   //   setTotalRepayable(totalRepayable.current)
-  //   // }
-  // }, [totalRepayable.current, borrowing])
+  if(totalInterestForBorrowingU2U?.current && setTotalCollateral) {
+    const total: number = calculator(totalInterestForBorrowingU2U)
+    setTotalCollateral(total)
+  }
 
 
   return (
