@@ -78,7 +78,9 @@ const StyledInput = styled(NumericalInput)`
     color: ${({ theme }) => theme.colors.textSubtle};
   }
   max-width: 180px;
-
+  @media screen and (max-width: 1199px) {
+    max-width: 100%;
+  }
 `
 const StyledSlider = styled(Slider)`
   width: 66%;
@@ -336,10 +338,10 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
               disabled={isApproved && borrowValue.length === 0}
               onClick={handleAction}
             >
-             {isLoading || isCallContract ? 
-             <Dots>{isApproved ? 'Borrowing' : 'Approving' }</Dots> : 
+            {isLoading || isCallContract ? 
+            <Dots>{isApproved ? 'Borrowing' : 'Approving' }</Dots> : 
               isApproved ? t('Borrow Now') : 'Approve' 
-             }
+            }
             </StyledButton>
           </>
         )}
