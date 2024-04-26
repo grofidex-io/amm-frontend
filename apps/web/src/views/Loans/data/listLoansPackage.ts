@@ -10,6 +10,7 @@ export const LOANS_PACKAGES = gql`
       maxBorrowRatio
       minBorrow
       period
+      symbolTime
     }
   }
 `
@@ -19,7 +20,8 @@ export interface LoansPackageItem {
   id: string | number,
   maxBorrowRatio: string | number,
   minBorrow: string | number,
-  period: string | number
+  period: string | number,
+  symbolTime: string
 }
 
 export interface LoansResponses {
