@@ -141,7 +141,7 @@ export function useStakingList() {
     refetchOnWindowFocus: false,
     retry: 3,
     retryDelay: 3000,
-    refetchOnMount: false,
+    refetchOnMount: true,
   })
   
   return {
