@@ -168,8 +168,8 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
     (value: any) => {
       if(period?.maxBorrowRatio) {
         const percent = (Math.ceil(value) * Number(period?.maxBorrowRatio)) / 100
-        const _borrowValue = Number(formatEther(stakeInfo.amount)) * (percent / 100)
-        setBorrowValue(_borrowValue.toString() || '0')
+        const _borrowValue: string = (Number(formatEther(stakeInfo.amount)) * (percent / 100)).toFixed(6)
+        setBorrowValue(_borrowValue || '0')
       }
       onPercentSelectForSlider(Math.ceil(value))
     },
