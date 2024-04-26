@@ -31,10 +31,10 @@ const DropDownListContainer = styled.div`
   opacity: 0;
   width: 100%;
 
-  ${({ theme }) => theme.mediaQueries.sm} {
-    backdrop-filter: blur(12px) saturate(200%) contrast(80%) brightness(80%);
-    background-color: ${({ theme }) => theme.colors.dropdownBlur};
-  }
+  // ${({ theme }) => theme.mediaQueries.sm} {
+  //   backdrop-filter: blur(12px) saturate(200%) contrast(80%) brightness(80%);
+  //   background-color: ${({ theme }) => theme.colors.dropdownBlur};
+  // }
 `;
 
 const DropDownContainer = styled(Box)<{ isOpen: boolean }>`

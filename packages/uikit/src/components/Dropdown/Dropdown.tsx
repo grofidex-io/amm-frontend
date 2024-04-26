@@ -51,10 +51,10 @@ const DropdownContent = styled.div.withConfig({
   pointer-events: none;
   box-shadow: ${({ theme }) => theme.shadows.dropdown};
 
-  ${({ theme }) => theme.mediaQueries.sm} {
-    backdrop-filter: blur(12px) saturate(200%) contrast(80%) brightness(80%);
-    background-color: ${({ theme }) => theme.colors.dropdownBlur};
-  }
+  // ${({ theme }) => theme.mediaQueries.sm} {
+  //   backdrop-filter: blur(12px) saturate(200%) contrast(80%) brightness(80%);
+  //   background-color: ${({ theme }) => theme.colors.dropdownBlur};
+  // }
   @media screen and (min-width: 992px) and (max-width: 1199px) {
     background-color: ${({ theme }) => theme.colors.backgroundItem};
   }

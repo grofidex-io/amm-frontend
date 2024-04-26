@@ -86,10 +86,10 @@ export const StyledDropdownMenu = styled.div<{ $isOpen: boolean; $isBottomNav: b
     visibility: hidden;
   `}
 
-  ${({ theme }) => theme.mediaQueries.sm} {
-    backdrop-filter: blur(12px) saturate(200%) contrast(80%) brightness(80%);
-    background-color: ${({ theme }) => theme.colors.dropdownBlur};
-  }
+  // ${({ theme }) => theme.mediaQueries.sm} {
+  //   backdrop-filter: blur(12px) saturate(200%) contrast(80%) brightness(80%);
+  //   background-color: ${({ theme }) => theme.colors.dropdownBlur};
+  // }
 `;
 
 export const LinkStatus = styled(Text)<{ color: keyof Colors }>`
