@@ -340,7 +340,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
                 onUserInput={onBorrowInput}
               />
             </FlexInput>
-            {errorMinBorrow && <ErrorMessage>Minimum borrow is {formatNumber(formatEther(period?.minBorrow), 2, 6) }</ErrorMessage>} 
+            {errorMinBorrow && <ErrorMessage>Minimum borrow is {period?.minBorrow ? formatNumber(Number(formatEther(period?.minBorrow)), 2, 6) : 0 }</ErrorMessage>} 
             </div>
             <Flex alignItems="center" justifyContent="space-between" mb={["20px", "20px", "22px"]}>
               <StyledSlider
