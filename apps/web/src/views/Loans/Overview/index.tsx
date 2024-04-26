@@ -141,7 +141,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
     setFirstInit(true)
     setTimeout(() => {
       setFirstInit(false)
-    }, 3000)
+    }, 1000)
   }, [account])
 
   const handleChangeTab = (value: number) => {
@@ -199,7 +199,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
             </StyledTab>
           </TabMenu>
           {tab === 0 && <Available/>}
-          {(tab === 1 || firstInit) && <Borrowing/>}
+          {(tab === 1 || firstInit) && <div style={{"display": !firstInit ? 'block' : 'none'}}><Borrowing/></div> }
         
           {/* <div style={{"display": tab === 0 ? 'block': 'none' }}>
             <Available />
