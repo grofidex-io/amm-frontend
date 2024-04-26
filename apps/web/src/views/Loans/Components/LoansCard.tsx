@@ -112,24 +112,24 @@ type LoansProps = {
   type?: boolean,
   stakeInfo: StakedInfo,
   borrowing?: BorrowItem,
+  totalInterestForBorrowing?: number
+  totalRepayable?: number
   refreshListLoans?: () => void
 }
 
 const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
+  // const totalInterestForBorrowing = useRef<number>(0)
+  // const totalRepayable = useRef<number>(0)
   const [period, setPeriod] = useState<LoansPackageItem | undefined>(undefined)
   const borrowContract = useBorrowContract()
   const stakingContract = useStakingContract()
-
-
-  const { isApproved, isLoading, loansPackages, approveForAll } = useContext(LoanContext)
-
+  const { isApproved, isLoading, loansPackages, approveForAll, setTotalCollateral, setTotalRepayable } = useContext(LoanContext)
   const { fetchWithCatchTxError } = useCatchTxError()
-
   const listPeriod = loansPackages.map((item: LoansPackageItem) => {
     return {
-      label: `${Number(item.period) / 86400} days`,
+      label: item.symbolTime,
       value: item.id,
       item
     }
@@ -138,15 +138,26 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
   const [borrowValue, setBorrowValue] = useState('')
   const [percentForSlider, onPercentSelectForSlider] = useState(0)
   const [isCallContract, setIsCallContract] = useState(false)
+  const [isFocusInput, setIsFocusInput] = useState(false)
+  const onMax = () => {
+    const _borrowValue = Number(formatEther(stakeInfo.amount)) * (Number(period?.maxBorrowRatio) / 100)
+    setBorrowValue(_borrowValue.toString() || '0')
+    onPercentSelectForSlider(100)
+  }
+
   let  totalInterest = 0
   let repaymentAmount = 0
   let maxBorrowU2U: string | number = 0
+
   if(borrowing?.id) {
-    totalInterest = Number(formatEther(borrowing?.borrowAmount)) * Number(borrowing?.loanPackage.annualRate)
+    totalInterest = Number(formatEther(borrowing?.borrowAmount)) * (Number(borrowing?.loanPackage.annualRate)/100)
     repaymentAmount = Number(totalInterest) + Number(amountStake)
+    // totalRepayable.current += repaymentAmount
+    // console.log("🚀 ~ LoansCard ~ totalRepayable.current:", totalRepayable.current)
+
   } else {
-    maxBorrowU2U = period?.maxBorrowRatio && stakeInfo?.amountDisplay ? formatNumber(Number(stakeInfo?.amountDisplay) * (Number(period.maxBorrowRatio) / 100), 2, 6) : 0
-    totalInterest = period?.annualRate && borrowValue?.length > 0 ? Number(borrowValue) * Number(period.annualRate) : 0
+    maxBorrowU2U = period?.maxBorrowRatio && stakeInfo?.amountDisplay ? Number(stakeInfo?.amountDisplay) * (Number(period.maxBorrowRatio) / 100) : 0
+    totalInterest = period?.annualRate && borrowValue?.toString().length > 0 ? Number(borrowValue) * (Number(period.annualRate) / 100) : 0
     repaymentAmount = Number(totalInterest) + Number(borrowValue)
   }
   const disableRepay = !!(borrowing?.repayTime && borrowing.repayTime > Date.now())
@@ -160,7 +171,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
       if(period?.maxBorrowRatio) {
         const percent = (Math.ceil(value) * Number(period?.maxBorrowRatio)) / 100
         const _borrowValue = Number(formatEther(stakeInfo.amount)) * (percent / 100)
-        setBorrowValue(_borrowValue ? formatNumber(_borrowValue, 2, 6) : '0')
+        setBorrowValue(_borrowValue.toString() || '0')
       }
       onPercentSelectForSlider(Math.ceil(value))
     },
@@ -206,17 +217,6 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
         approveForAll()
       }
   }
-  useEffect(() => {
-    if(loansPackages?.length > 0) {
-      setPeriod(loansPackages[0])
-    }
-  }, [loansPackages])
-
-  const onMax = () => {
-    const _borrowValue = Number(formatEther(stakeInfo.amount)) * (Number(period?.maxBorrowRatio) / 100)
-    setBorrowValue(_borrowValue ? formatNumber(_borrowValue, 2, 6) : '0')
-    onPercentSelectForSlider(100)
-  }
 
   const onBorrowInput = (_value) => {
     let value = _value
@@ -224,21 +224,50 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
       value = maxBorrowU2U
     }
     setBorrowValue(value)
-    if(value.length > 0) {
-      const percent = (((Number(value) / Number(formatEther(stakeInfo.amount))) * 100)/ Number(period?.maxBorrowRatio)) * 100
-      onPercentSelectForSlider(percent)
-    }
+    const percent = (((Number(value) / Number(formatEther(stakeInfo.amount))) * 100)/ Number(period?.maxBorrowRatio)) * 100
+    onPercentSelectForSlider(percent)
   }
+
+
+
+
 
   const getAmountStake = async (id: string | number) => {
     const res: any = await stakingContract.read.uriInfoById([id])
+      // totalInterestForBorrowing += Number(formatEther(res[0]))
+      // if(setTotalCollateral) {
+      //   setTotalCollateral(totalInterestForBorrowing)
+      // }
+    // console.log("🚀 ~ getAmountStake ~ totalRepayable.current:", totalRepayable.current)
+
+    // if(setTotalRepayable) {
+
+    //   setTotalRepayable(totalRepayable.current)
+    // }
     setAmountStake(formatEther(res[0]))
   }
 
-  if(borrowing?.stakeId && stakingContract.account) {
-    getAmountStake(borrowing.stakeId)
-  }
+  useEffect(() => {
+    if(loansPackages?.length > 0) {
+      setPeriod(loansPackages[0])
+    }
+  }, [loansPackages])
 
+
+  useEffect(() => {
+    if(borrowing?.stakeId && stakingContract.account) {
+      getAmountStake(borrowing.stakeId)
+    }
+  }, [borrowing?.stakeId, stakingContract.account])
+
+
+  // useEffect(() => {
+  //   console.log("🚀 ~ LoansCard ~ totalRepayable:", totalRepayable.current)
+
+  //   // if(setTotalRepayable && borrowing?.id && totalRepayable.current) {
+  //   //   setTotalRepayable(totalRepayable.current)
+  //   // }
+  // }, [totalRepayable.current, borrowing])
 
 
   return (
@@ -264,14 +293,16 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
                 options={listPeriod}
                 onOptionChange={handleChangePeriod}
               />
-              <Text fontSize="12px" fontStyle="italic" lineHeight="14px" color='textExtra' mt="12px">{t(`Maximum borrow: ${maxBorrowU2U} U2U (LTV ${period?.maxBorrowRatio || '_'}%)`)}</Text>
+              <Text fontSize="12px" fontStyle="italic" lineHeight="14px" color='textExtra' mt="12px">{t(`Maximum borrow: ${formatNumber(maxBorrowU2U, 2,6)} U2U (LTV ${period?.maxBorrowRatio || '_'}%)`)}</Text>
             </Box>
             <FlexInput>
               <StyledText color='textSubtle'>{t('Borrow amount') } (<MaxButton onClick={onMax}>Max</MaxButton>)</StyledText>
 
               <StyledInput     
-                value={borrowValue}
+                value={isFocusInput ? borrowValue :  formatNumber(Number(borrowValue), 2, 6)}
                 placeholder="0"
+                onFocus={() => {setIsFocusInput(true)}}
+                onBlur={() => {setIsFocusInput(false)}}
                 fontSize="20px"
                 align="center"
                 onUserInput={onBorrowInput}
@@ -294,11 +325,11 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
             </Flex>
             <Flex justifyContent="space-between" alignItems="center" mb="12px">
               <StyledText color='textSubtle'>{t('Total Interest')}</StyledText>
-              <StyledText color='text'>{formatNumber(totalInterest)} U2U</StyledText>
+              <StyledText color='text'>{formatNumber(totalInterest, 2,6)} U2U</StyledText>
             </Flex>
             <Flex justifyContent="space-between" alignItems="center">
               <StyledText color='textSubtle'>{t('Repayment Amount')}</StyledText>
-              <StyledText color='text'>{formatNumber(repaymentAmount)} U2U</StyledText>
+              <StyledText color='text'>{formatNumber(repaymentAmount, 2, 6)} U2U</StyledText>
             </Flex>
             <StyledButton
               width="100%"
@@ -334,11 +365,11 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
             </Flex>
             <Flex justifyContent="space-between" mb="12px">
               <StyledText color='textSubtle'>{t('Total Interest')}</StyledText>
-              <StyledText color='text'>{formatNumber(totalInterest)} U2U</StyledText>
+              <StyledText color='text'>{formatNumber(totalInterest, 2, 6)} U2U</StyledText>
             </Flex>
             <Flex justifyContent="space-between" mb="12px">
               <StyledText color='textSubtle'>{t('Repayment Amount')}</StyledText>
-              <StyledText color='text'>{formatNumber(repaymentAmount)} U2U</StyledText>
+              <StyledText color='text'>{formatNumber(repaymentAmount, 2, 6)} U2U</StyledText>
             </Flex>
             <Flex justifyContent="space-between" mb="12px">
               <StyledText color='textSubtle'>{t('Loan Time')}</StyledText>
