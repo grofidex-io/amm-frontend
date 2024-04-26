@@ -6,7 +6,7 @@ const QUERY_SETTINGS_IMMUTABLE = {
   retry: 3,
   retryDelay: 3000,
   refetchInterval: 30000, // milliseconds
-  refetchOnMount: false,
+  refetchOnMount: true,
   refetchOnReconnect: false,
   refetchOnWindowFocus: false,
 }
