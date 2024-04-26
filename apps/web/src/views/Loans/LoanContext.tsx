@@ -19,7 +19,7 @@ export interface ContextApi {
   setTotalCollateral?: (value: number) => void,
   setTotalRepayable?: (value: number) => void,
 }
-const LoanContext = createContext<ContextApi>({isApproved: false, isLoading: false, loansPackages: [], totalCollateral: 0, totalRepayable: 0, totalRepayableU2U: undefined, totalInterestForBorrowingU2U: undefined, lastDueDate: 0});
+const LoanContext = createContext<ContextApi>({isApproved: false, isLoading: false, loansPackages: [], totalCollateral: 0, totalRepayable: 0, totalRepayableU2U: undefined, totalInterestForBorrowingU2U: undefined, lastDueDate: { current: 0 }});
 // Provide Context
 export const LoanProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [isApproved, setApprove] = useState<boolean>(false)
