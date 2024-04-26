@@ -147,7 +147,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
 
   if(borrowing?.id) {
     totalInterest = Number(formatEther(borrowing?.borrowAmount)) * (Number(borrowing?.loanPackage.annualRate)/100)
-    repaymentAmount = Number(totalInterest) + Number(amountStake)
+    repaymentAmount = Number(totalInterest) + Number(formatEther(borrowing?.borrowAmount))
     if(totalRepayableU2U?.current) {
       totalRepayableU2U.current[borrowing.id] = repaymentAmount
     }
@@ -156,7 +156,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
     totalInterest = period?.annualRate && borrowValue?.toString().length > 0 ? Number(borrowValue) * (Number(period.annualRate) / 100) : 0
     repaymentAmount = Number(totalInterest) + Number(borrowValue)
   }
-  const disableRepay = !!(borrowing?.repayTime && borrowing.repayTime > Date.now())
+  const disableRepay = borrowing?.repayTime && borrowing.repayTime * 1000 < Date.now();
   const handleChangePeriod = (option: any): void => {
     setBorrowValue('')
     onPercentSelectForSlider(0)
@@ -223,9 +223,6 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
     const percent = (((Number(value) / Number(formatEther(stakeInfo.amount))) * 100)/ Number(period?.maxBorrowRatio)) * 100
     onPercentSelectForSlider(percent)
   }
-
-
-
 
 
   const getAmountStake = async (id: string | number) => {
@@ -350,7 +347,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
           <>
             <Flex justifyContent="space-between" mb="12px">
               <StyledText color='textSubtle'>{t('Interest Period')}</StyledText>
-              <StyledText color='text'>{borrowing?.loanPackage.period ? borrowing?.loanPackage?.period / 86400 : 0} days</StyledText>
+              <StyledText color='text'>{ borrowing?.loanPackage?.symbolTime}</StyledText>
             </Flex>
             <Flex justifyContent="space-between" mb="12px">
               <StyledText color='textSubtle'>{t('Borrow amount')}</StyledText>
