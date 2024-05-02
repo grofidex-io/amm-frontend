@@ -65,7 +65,7 @@ export const multiChainBlocksClient: Record<MultiChainNameExtend, string> = {
   // LINEA: BLOCKS_CLIENT_LINEA,
   // BASE: BLOCKS_CLIENT_BASE,
   // OPBNB: BLOCKS_CLIENT_OPBNB,
-  U2U_NEBULAS: 'https://subgraph-amm-dev.uniultra.xyz/subgraphs/name/u2u-amm/f-blocks',
+  U2U_NEBULAS: 'https://subgraph-amm-testnet.grofidex.io/subgraphs/name/amm/blocks',
 }
 
 export const multiChainStartTime = {
