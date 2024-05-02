@@ -583,7 +583,7 @@ export default function V3FormView({
                   <br />
                   <br />
 
-                  <b>{t('Fee-on transfer tokens and rebasing tokens are NOT compatible with V3.')}</b>
+                  {/* <b>{t('Fee-on transfer tokens and rebasing tokens are NOT compatible with V3.')}</b> */}
                 </MessageText>
               </Message>
               <StyledInput className="start-price-input" value={startPriceTypedValue} onUserInput={onStartPriceInput} />

@@ -239,7 +239,7 @@ export default function PoolListPage({ isPair }: { isPair?: boolean }) {
     const sections = showAllPositionButton
     ? [filteredWithQueryFilter]
     : [v3PairsSection, stablePairsSection, v2PairsSection]
-    const noData = sections.flat(1).filter(n => n).length === 0
+    const noData = sections.flat(1)?.filter(n => n)?.length === 0
     if (v3Loading || v2Loading) {
       resultSection = (
         <Text color="textSubtle" textAlign="center">
