@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, Dots, Flex, Select, Slider, Text, useToast } from '@pancakeswap/uikit'
+import { Box, Button, Dots, Flex, Select, Slider, Text, useModal, useToast } from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { NumericalInput } from '@pancakeswap/widgets-internal'
 import { ToastDescriptionWithTx } from 'components/Toast'
@@ -14,6 +14,7 @@ import { StakedInfo } from 'views/Staking/Hooks/useStakingList'
 import LoanContext from '../LoanContext'
 import { BorrowItem } from '../data/fetchListBorrowing'
 import { LoansPackageItem } from '../data/listLoansPackage'
+import LoansModal, { LoansView } from './LoansModal'
 
 const CardLayout = styled(Box)`
   border-radius: 8px;
@@ -133,7 +134,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
   const [period, setPeriod] = useState<LoansPackageItem | undefined>(undefined)
   const borrowContract = useBorrowContract()
   const stakingContract = useStakingContract()
-  const { isApproved, isLoading, loansPackages, totalRepayableU2U, totalInterestForBorrowingU2U, lastDueDate, balanceVault,approveForAll, setTotalCollateral, setTotalRepayable } = useContext(LoanContext)
+  const { isApproved, isLoading, loansPackages, totalRepayableU2U, totalInterestForBorrowingU2U, lastDueDate, balanceVault, approveForAll, setTotalCollateral, setTotalRepayable } = useContext(LoanContext)
   const { fetchWithCatchTxError } = useCatchTxError()
   const listPeriod = loansPackages.map((item: LoansPackageItem) => {
     return {
@@ -204,8 +205,8 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
     setIsCallContract(false)
   }
 
-  const handleBorrow = async () => {
-    await callSmartContract(borrowContract.write.borrow([parseEther(borrowValue), stakeInfo.id, period?.id]), 'You have successfully borrow.')
+  const handleBorrow = async (value?: string) => {
+    await callSmartContract(borrowContract.write.borrow([parseEther(value || borrowValue), stakeInfo.id, period?.id]), 'You have successfully borrow.')
     if(refreshListLoans){ 
      refreshListLoans()
     }
@@ -219,11 +220,24 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
      }
   }
 
+  const handleBorrowWithVault = () => {
+    handleBorrow(balanceVault.toString())
+  }
+
+  const [onShowLoansModal] = useModal(
+    <LoansModal
+      initialView={balanceVault <= 0 ? LoansView.BORROWING : LoansView.AVAILABLE}
+      borrowValue={borrowValue}
+      balanceVault={formatNumber(balanceVault, 2, 6)}
+      onConfirm={handleBorrowWithVault}
+    />,
+  )
+
   const handleAction = () => {
     if(errorMinBorrow) return
     if(isApproved) {
       if(Number(borrowValue) > balanceVault) {
-        /// error
+        onShowLoansModal()
         return
       }
       handleBorrow()

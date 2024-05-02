@@ -99,18 +99,29 @@ const LoansInfo = styled.div`
 const StyledPage = styled(Page)`
   max-width: 1408px;
 `
+const StyledBoxTab = styled(Box)`
+  > div {
+    > div {
+      @media screen and (max-width: 479px) {
+        display: block;
+      }
+    }
+  }
+`
 const StyledTab = styled(Tab)`
   text-transform: capitalize;
   font-size: 20px;
   align-items: center;
   padding: 12px;
   font-weight: 700;
+  margin-left: 0 !important;
   @media screen and (max-width: 991px) {
     font-size: 18px;
     padding: 10px 12px;
   }
   @media screen and (max-width: 424px) {
     font-size: 16px;
+    padding: 8px 12px;
   }
   svg {
     --size: 24px;
@@ -156,6 +167,8 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
     }, 1000)
   }, [account])
 
+
+
   return (
     <>
       <PageHeader>
@@ -187,7 +200,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
         </Flex>
       </PageHeader>
       <StyledPage>
-        <Box>
+        <StyledBoxTab>
           <TabMenu activeIndex={tab} onItemClick={setTab} customWidth isShowBorderBottom={false}>
             <StyledTab>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" fill="none">
@@ -208,14 +221,14 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
           </TabMenu>
           {tab === 0 && <Available/>}
           {(tab === 1 || firstInit) && <div style={{"display": !firstInit ? 'block' : 'none'}}><Borrowing/></div> }
-        
+          {/* {tab === 2  && <div><Liquidation/></div> } */}
           {/* <div style={{"display": tab === 0 ? 'block': 'none' }}>
             <Available />
           </div>
           <div style={{"display": tab === 1 ? 'block': 'none' }}>
             <Borrowing />
           </div> */}
-        </Box>
+        </StyledBoxTab>
       </StyledPage>
     </>
   )
