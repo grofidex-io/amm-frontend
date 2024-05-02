@@ -29,7 +29,7 @@ export default function Borrowing() {
         totalInterestForBorrowingU2U.current = {}
         setTotalCollateral(0)
       }
-  }, [data, totalInterestForBorrowingU2U, totalRepayableU2U, setTotalRepayable])
+  }, [data, totalInterestForBorrowingU2U, totalRepayableU2U, setTotalRepayable, setTotalCollateral])
 
   if(!isLoading && data?.length === 0) {
     return (
@@ -42,7 +42,7 @@ export default function Borrowing() {
       {
         isLoading ? <LoanLoading/> : (
           data && data?.map((item) => (
-            <LoansCard type isBorrowing stakeInfo={stakeInfo}  borrowing={item} key={item.id} refreshListLoans={refetch} />
+            <LoansCard type stakeInfo={stakeInfo}  borrowing={item} key={item.id} refreshListLoans={refetch} />
           ))
         )
       }
