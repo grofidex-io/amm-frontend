@@ -1,4 +1,3 @@
-import { getLlamaChainName } from '@pancakeswap/chains'
 import { Currency, ERC20Token, WU2U } from '@pancakeswap/sdk'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { tickToPrice } from '@pancakeswap/v3-sdk'
@@ -436,19 +435,19 @@ export const fetchTokenUSDValues = async (currencies: Currency[] = []): Promise<
     return commonTokenUSDValue
   }
 
-  if (currencies.length > 0) {
-    const list = currencies
-      .map((currency) => `${getLlamaChainName(currency.chainId)}:${currency.wrapped.address}`)
-      .join(',')
-    const result: { coins: { [key: string]: { price: string } } } = await fetch(
-      `https://coins.llama.fi/prices/current/${list}`,
-    ).then((res) => res.json())
+  // if (currencies.length > 0) {
+  //   const list = currencies
+  //     .map((currency) => `${getLlamaChainName(currency.chainId)}:${currency.wrapped.address}`)
+  //     .join(',')
+  //   const result: { coins: { [key: string]: { price: string } } } = await fetch(
+  //     `https://coins.llama.fi/prices/current/${list}`,
+  //   ).then((res) => res.json())
 
-    Object.entries(result.coins || {}).forEach(([key, value]) => {
-      const [, address] = key.split(':')
-      commonTokenUSDValue[address] = value.price
-    })
-  }
+  //   Object.entries(result.coins || {}).forEach(([key, value]) => {
+  //     const [, address] = key.split(':')
+  //     commonTokenUSDValue[address] = value.price
+  //   })
+  // }
 
   return commonTokenUSDValue
 }

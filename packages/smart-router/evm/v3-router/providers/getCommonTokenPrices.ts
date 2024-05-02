@@ -124,19 +124,20 @@ const createGetTokenPriceFromLlmaWithCache = ({
       return cachedResults
     }
 
-    const list = addressesToFetch
-      .map((address) => `${getLlamaChainName(chainId)}:${address.toLocaleLowerCase()}`)
-      .join(',')
-    const result: { coins?: { [key: string]: { price: string } } } = await fetch(`${endpoint}/${list}`).then((res) =>
-      res.json(),
-    )
+    // const list = addressesToFetch
+    //   .map((address) => `${getLlamaChainName(chainId)}:${address.toLocaleLowerCase()}`)
+    //   .join(',')
+    // const result: { coins?: { [key: string]: { price: string } } } = await fetch(`${endpoint}/${list}`).then((res) =>
+    //   res.json(),
+    // )
+    const result: {coins?: { [key: string]: { price: string } }} = {coins: {}}
 
     const { coins = {} } = result
     return [
       ...cachedResults,
       ...Object.entries(coins).map(([key, value]) => {
         const [, address] = key.split(':')
-        const tokenPrice = { address, priceUSD: value.price }
+        const tokenPrice = { address, priceUSD: value?.price }
         cache.set(getAddress(address), tokenPrice)
         return tokenPrice
       }),
