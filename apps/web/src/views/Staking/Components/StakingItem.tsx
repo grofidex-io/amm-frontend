@@ -131,6 +131,7 @@ const StakingItem = ({ stakedInfo, periodTime, isUnStake }: StakingProps) => {
     if (!isUnStake) {
       return (
         <StyledButton
+          ml="auto"
           height="40px"
           variant="secondary"
           className="button-hover"
@@ -174,7 +175,7 @@ const StakingItem = ({ stakedInfo, periodTime, isUnStake }: StakingProps) => {
             <StyledText>
               {stakedInfo.rewardDisplay}
             </StyledText>
-            <StyledButton disabled={!enableClaim} className="button-hover" onClick={handleClaim}>
+            <StyledButton disabled={!enableClaim} ml="auto" className="button-hover" onClick={handleClaim}>
               {isClaiming ? t('Claiming...'): t('Claim')}
             </StyledButton>
           </Flex>
