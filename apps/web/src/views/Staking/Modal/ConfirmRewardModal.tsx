@@ -89,12 +89,12 @@ const ConfirmRewardModal: React.FC<React.PropsWithChildren<ConfirmModalProps>> =
             <Flex alignItems="center">
               <CurrencyLogo currency={WNATIVE[ChainDefault]} size='20px'/>
               <Text small color="textSubtle" id="remove-liquidity-tokena-symbol" ml="4px">
-                 {t('Total Reward')}
+                 {t('Reward')}
               </Text>
             </Flex>
             <Flex>
               <Text small>
-                {parseFloat(stakedInfo.amountDisplay) + parseFloat(stakedInfo.rewardDisplay)} U2U
+                {parseFloat(stakedInfo.rewardDisplay)} U2U
                 {/* <FormattedCurrencyAmount currencyAmount={feeValue0} /> */}
               </Text>
             </Flex>
