@@ -1,6 +1,6 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { AtomBox, Box, Button, Flex, InjectedModalProps, ModalWrapper, Text } from "@pancakeswap/uikit";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
 const StyledTitle = styled(Text)`
@@ -30,16 +30,25 @@ export enum LoansView {
 }
 
 interface LoansModalProps extends InjectedModalProps {
-  initialView?: LoansView
+  initialView: LoansView,
+  borrowValue: string
+  balanceVault: string,
+  onConfirm: () => void;
 }
 
 const LoansModal: React.FC<React.PropsWithChildren<LoansModalProps>> = ({
-  initialView = LoansView.AVAILABLE,
+  initialView,
+  borrowValue,
+  balanceVault,
+  onConfirm,
   onDismiss,
 
 }) => {
   const { t } = useTranslation()
-  const [view, setView] = useState(initialView)
+  const handleConfirm = () => {
+    onConfirm()
+    onDismiss()
+  }
 
   return (
     <ModalWrapper maxWidth="525px" m="auto">
@@ -57,33 +66,34 @@ const LoansModal: React.FC<React.PropsWithChildren<LoansModalProps>> = ({
               {t('System does not have enough tokens')}
             </StyledTitle>
             <Flex alignItems="center" mt="20px">
-              {view === LoansView.AVAILABLE && (
+              {initialView === LoansView.AVAILABLE && (
                 <Box mr="40px">
                   <Text fontSize="14px" lineHeight="24px" mb="10px" color="textSubtle">
-                    Sorry, the system does not have enough funds left to process your <Span>1000 U2U</Span> borrow request.
+                    Sorry, the system does not have enough funds left to process your <Span>{borrowValue} U2U</Span> borrow request.
                   </Text>
                   <Text fontSize="14px" lineHeight="24px" mb="10px" color="textSubtle">
-                    The system can lend you <Span>600 U2U</Span> token.
+                    The system can lend you <Span>{balanceVault} U2U</Span> token.
                   </Text>
                   <Text fontSize="14px" lineHeight="24px" color="textSubtle">
-                    Click “<Span>Borrow 600 U2U</Span>” to proceed or “<Span>Cancel</Span>” to cancelled
+                    Click “<Span>Borrow {balanceVault} U2U</Span>” to proceed or “<Span>Cancel</Span>” to cancelled
                   </Text>
                 </Box>
               )}
-              {view === LoansView.BORROWING && (
+              {initialView === LoansView.BORROWING && (
                 <Text fontSize="14px" lineHeight="24px" mr="40px" color="textSubtle">{t('Sorry, the system no longer has tokens to perform your transaction. Please come back another time to make the transaction.')}</Text>
               )}
               <StyledImage src="/images/loans-borrow.png" alt=""/>
             </Flex>
             <Box mt="24px">
-              {view === LoansView.AVAILABLE && (
+              {initialView === LoansView.AVAILABLE && (
                 <Flex>
                   <StyledButton
                     width="100%"
                     className="button-hover"
                     mr="8px"
+                    onClick={handleConfirm}
                   >
-                    {t('Borrow 600 U2U')}
+                    {t(`Borrow ${balanceVault} U2U`)}
                   </StyledButton>
                   <StyledButton
                     width="100%"
@@ -96,10 +106,11 @@ const LoansModal: React.FC<React.PropsWithChildren<LoansModalProps>> = ({
                   </StyledButton>
                 </Flex>
               )}
-              {view === LoansView.BORROWING && (
+              {initialView === LoansView.BORROWING && (
                 <StyledButton
                   width="100%"
                   className="button-hover"
+                  onClick={onDismiss}
                 >
                   {t('OK! I understand')}
                 </StyledButton>

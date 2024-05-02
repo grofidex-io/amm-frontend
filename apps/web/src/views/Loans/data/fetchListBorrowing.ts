@@ -3,8 +3,8 @@ import { loansClients } from 'utils/graphql'
 
 
 export const LIST_BORROWING = gql`
-  query listBorrowing($account: String!)  {
-    loans(where: {user_: {id: $account}}, orderBy: repayTime, orderDirection: asc) {
+  query listBorrowing($account: String!, $time: Int!)  {
+    loans(where: {user_: {id: $account}, repayTime_gte: $time}, orderBy: repayTime, orderDirection: asc) {
       borrowAmount
       borrowTime
       id
@@ -21,6 +21,8 @@ export const LIST_BORROWING = gql`
     }
   }
 `
+
+
 
 export interface BorrowItem {
   borrowAmount: string | number,
@@ -56,6 +58,7 @@ export async function fetchListBorrowing(account: any): Promise<{
     const data = await loansClients.request<BorrowResponses>(LIST_BORROWING, {
       client: loansClients,
       account: account?.toLowerCase(),
+      time:  Math.ceil(Date.now() / 1000),
       fetchPolicy: 'cache-first',
     })
 

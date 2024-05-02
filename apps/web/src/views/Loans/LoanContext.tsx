@@ -47,7 +47,6 @@ export const LoanProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
   }
 
 
-
   const initData = async () => {
     const listPackage = await fetchLoansPackages()
     if(listPackage.data?.length > 0) {
