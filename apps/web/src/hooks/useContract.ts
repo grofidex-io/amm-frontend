@@ -61,7 +61,7 @@ import {
   getV3AirdropContract,
   getV3MigratorContract,
   getVCakeContract,
-  getVeCakeContract,
+  getVeCakeContract
 } from 'utils/contractHelpers'
 
 import { ChainId } from '@pancakeswap/chains'

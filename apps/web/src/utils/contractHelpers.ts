@@ -44,7 +44,7 @@ import {
   getV3AirdropAddress,
   getV3MigratorAddress,
   getVCakeAddress,
-  getVeCakeAddress,
+  getVeCakeAddress
 } from 'utils/addressHelpers'
 
 // ABI

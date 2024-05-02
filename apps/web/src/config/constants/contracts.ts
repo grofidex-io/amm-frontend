@@ -250,4 +250,7 @@ export default {
   borrow: {
     [ChainId.U2U_NEBULAS]: '0x51B886C6a588cB01eD24da991bBb238823EBc645',
   },
+  vault: {
+    [ChainId.U2U_NEBULAS]: '0x4012e1E304B3a125ABAa51D5B7191f1FD34C8bFC',
+  }
 } as const satisfies Record<string, Record<number, `0x${string}`>>
