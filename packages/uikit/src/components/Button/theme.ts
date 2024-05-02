@@ -76,6 +76,7 @@ export const styleVariants = {
   [variants.SILVER]: {
     background: vars.colors.silver,
     color: "black",
+    border: "2px solid #000",
   },
   [variants.HOVER]: {
     background: vars.colors.hover,
