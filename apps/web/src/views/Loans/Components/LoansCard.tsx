@@ -150,9 +150,9 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
   const [isFocusInput, setIsFocusInput] = useState(false)
   const [errorMinBorrow, setErrorMinBorrow] = useState(false)
   const onMax = () => {
-    const _borrowValue = (Number(formatEther(stakeInfo.amount)) * (Number(period?.maxBorrowRatio) / 100)).toFixed(6)
-    setBorrowValue(Number(_borrowValue).toString() || '0')
-    onPercentSelectForSlider(100)
+    const _borrowValue = (Number(formatEther(stakeInfo.amount)) * (Number(period?.maxBorrowRatio) / 100))
+    setBorrowValue(_borrowValue.toFixed(7) || '0')
+    onPercentSelectForSlider(Number(period?.maxBorrowRatio))
   }
 
   let  totalInterest = 0
@@ -178,8 +178,8 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
     (value: any) => {
       if(period?.maxBorrowRatio) {
         const percent = (value * Number(period?.maxBorrowRatio)) / 100
-        const _borrowValue: string = (Number(formatEther(stakeInfo.amount)) * (percent / 100)).toFixed(6)
-        setBorrowValue(Number(_borrowValue).toString() || '0')
+        const _borrowValue: number = (Number(formatEther(stakeInfo.amount)) * (percent / 100))
+        setBorrowValue(_borrowValue.toFixed(7) || '0')
         onPercentSelectForSlider(percent || Math.ceil(value))
       }
     },
