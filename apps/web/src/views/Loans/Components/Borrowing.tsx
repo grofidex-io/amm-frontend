@@ -29,7 +29,7 @@ export default function Borrowing() {
         totalInterestForBorrowingU2U.current = {}
         setTotalCollateral(0)
       }
-      if(lastDueDate.current) {
+      if(lastDueDate.current && data?.length === 0) {
         lastDueDate.current = 0
       }
   }, [data, totalInterestForBorrowingU2U, totalRepayableU2U, setTotalRepayable, setTotalCollateral, lastDueDate])
