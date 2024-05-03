@@ -3,13 +3,15 @@ import { Box, Flex, Heading, PageHeader, Tab, TabMenu, Text } from "@pancakeswap
 import { formatNumber } from "@pancakeswap/utils/formatBalance"
 import Page from 'components/Layout/Page'
 import dayjs from "dayjs"
-import useActiveWeb3React from "hooks/useActiveWeb3React"
 import { useContext, useEffect, useState } from 'react'
 import styled from "styled-components"
+import { formatEther } from "viem"
 import { formatDate } from "views/CakeStaking/components/DataSet/format"
 import Available from "views/Loans/Components/Available"
-import Borrowing from "views/Loans/Components/Borrowing"
+import Borrowing from "../Components/Borrowing"
 import LoanContext from "../LoanContext"
+import { BorrowItem } from "../data/fetchListBorrowing"
+import { useListBorrowing } from "../hooks/useListBorrowing"
 
 export const LoansH1 = styled(Heading)`
   font-size: 26px;
@@ -142,30 +144,63 @@ const StyledTab = styled(Tab)`
 export const Overview: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const [tab, setTab] = useState<number>(0)
-  const [firstInit, setFirstInit] = useState<boolean>(false)
-  const { account } = useActiveWeb3React()
-  const { totalCollateral, totalRepayable, totalRepayableU2U, totalInterestForBorrowingU2U, lastDueDate, setTotalCollateral, setTotalRepayable } = useContext(LoanContext)
+  const listBorrowing  = useListBorrowing()
+  const { totalRepayable, totalRepayableU2U, totalInterestForBorrowingU2U, lastDueDate, totalCollateral, setTotalCollateral, setTotalRepayable } = useContext(LoanContext)
+
   useEffect(() => {
-    if(setTotalCollateral) {
-      setTotalCollateral(0)
-    }
-    if(setTotalRepayable) {
-      setTotalRepayable(0)
-    }
     if(totalRepayableU2U?.current) {
-      totalRepayableU2U.current = {}
+      totalRepayableU2U.current = 0
     }
     if(totalInterestForBorrowingU2U?.current) {
-      totalInterestForBorrowingU2U.current = {}
+      totalInterestForBorrowingU2U.current = 0
     }
-    if(lastDueDate.current) {
-      lastDueDate.current = 0
+  }, [])
+
+
+
+  useEffect(() => {
+    if(listBorrowing.data?.length === 0) {
+      if(setTotalRepayable) {
+        setTotalRepayable(0)
+      }
+      if(setTotalCollateral) {
+        setTotalCollateral(0)
+      }
+      if(lastDueDate.current) {
+        lastDueDate.current = 0
+      }
+    } else {
+      if(lastDueDate.current) {
+        lastDueDate.current = 0
+      }
+      if(totalRepayableU2U?.current) {
+        totalRepayableU2U.current = 0
+      }
+      if(totalInterestForBorrowingU2U?.current) {
+        totalInterestForBorrowingU2U.current = 0
+      }
+      listBorrowing.data?.forEach((item: BorrowItem) => {
+        if(lastDueDate?.current) {
+          if(item.repayTime < lastDueDate.current) {
+            lastDueDate.current = item.repayTime
+          }
+        } else {
+          lastDueDate.current = item.repayTime
+        }
+        totalInterestForBorrowingU2U.current += Number(formatEther(item.stakeAmount))
+        if(setTotalCollateral) {
+          setTotalCollateral(totalInterestForBorrowingU2U.current)
+        }
+        const totalInterest = Number(formatEther(item?.borrowAmount)) * (Number(item?.loanPackage.annualRate)/100)
+        const repaymentAmount = Number(totalInterest) + Number(formatEther(item?.borrowAmount))
+        totalRepayableU2U.current += repaymentAmount
+        if(setTotalRepayable) {
+          setTotalRepayable(totalRepayableU2U.current)
+        }
+      })
+      
     }
-    setFirstInit(true)
-    setTimeout(() => {
-      setFirstInit(false)
-    }, 1000)
-  }, [account])
+  }, [lastDueDate, listBorrowing.data, setTotalCollateral, setTotalRepayable, totalInterestForBorrowingU2U, totalRepayableU2U])
 
 
 
@@ -223,8 +258,8 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
               {t('Borrowing')}
             </StyledTab>
           </TabMenu>
-          {tab === 0 && <Available/>}
-          {(tab === 1 || firstInit) && <div style={{"display": !firstInit ? 'block' : 'none'}}><Borrowing/></div> }
+          {tab === 0 && <Available refreshListBorrowing={listBorrowing.refetch}/>}
+          {tab === 1 && <Borrowing {...listBorrowing} /> }
           {/* {tab === 2  && <div><Liquidation/></div> } */}
           {/* <div style={{"display": tab === 0 ? 'block': 'none' }}>
             <Available />

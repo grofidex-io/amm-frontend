@@ -2,12 +2,13 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, Dots, Flex, Select, Slider, Text, useModal, useToast } from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { NumericalInput } from '@pancakeswap/widgets-internal'
+import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import dayjs from 'dayjs'
 import { formatEther, parseEther } from 'ethers/lib/utils'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { useBorrowContract, useStakingContract } from 'hooks/useContract'
-import { MutableRefObject, useCallback, useContext, useEffect, useState } from 'react'
+import { useBorrowContract } from 'hooks/useContract'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { formatDate } from 'views/CakeStaking/components/DataSet/format'
 import { StakedInfo } from 'views/Staking/Hooks/useStakingList'
@@ -125,7 +126,7 @@ type LoansProps = {
   type?: boolean,
   stakeInfo: StakedInfo,
   borrowing?: BorrowItem,
-  refreshListLoans?: () => void
+  refreshListLoans?: (options?: RefetchOptions | undefined) => Promise<QueryObserverResult<{ data: BorrowItem[]; }, Error>>;
 }
 
 const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps) => {
@@ -133,8 +134,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
   const { toastSuccess } = useToast()
   const [period, setPeriod] = useState<LoansPackageItem | undefined>(undefined)
   const borrowContract = useBorrowContract()
-  const stakingContract = useStakingContract()
-  const { isApproved, isLoading, loansPackages, totalRepayableU2U, totalInterestForBorrowingU2U, lastDueDate, balanceVault, approveForAll, setTotalCollateral, setTotalRepayable } = useContext(LoanContext)
+  const { isApproved, isLoading, loansPackages, lastDueDate, balanceVault, approveForAll, setTotalCollateral, setTotalRepayable } = useContext(LoanContext)
   const { fetchWithCatchTxError } = useCatchTxError()
   const listPeriod = loansPackages.map((item: LoansPackageItem) => {
     return {
@@ -143,7 +143,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
       item
     }
   })
-  const [amountStake, setAmountStake] = useState('0') 
+  // const [amountStake, setAmountStake] = useState('0') 
   const [borrowValue, setBorrowValue] = useState('')
   const [percentForSlider, onPercentSelectForSlider] = useState(0)
   const [isCallContract, setIsCallContract] = useState(false)
@@ -162,9 +162,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
   if(borrowing?.id) {
     totalInterest = Number(formatEther(borrowing?.borrowAmount)) * (Number(borrowing?.loanPackage.annualRate)/100)
     repaymentAmount = Number(totalInterest) + Number(formatEther(borrowing?.borrowAmount))
-    if(totalRepayableU2U?.current) {
-      totalRepayableU2U.current[borrowing.id] = repaymentAmount
-    }
+
   } else {
     maxBorrowU2U = period?.maxBorrowRatio && stakeInfo?.amountDisplay ? Number(stakeInfo?.amountDisplay) * (Number(period.maxBorrowRatio) / 100) : 0
     totalInterest = period?.annualRate && borrowValue?.toString().length > 0 ? Number(borrowValue) * (Number(period.annualRate) / 100) : 0
@@ -215,6 +213,8 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
   const handleRepay = async () => {
     const mustReturn: any = await borrowContract.read.mustReturn([borrowing?.id])
     await callSmartContract(borrowContract.write.returnStakingNFT([ borrowing?.id], {value: mustReturn}), 'You have successfully repay.')
+    console.log("🚀 ~ handleRepay ~ refreshListLoans:", refreshListLoans)
+   
     if(refreshListLoans){ 
       refreshListLoans()
      }
@@ -257,36 +257,28 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
   }
 
 
-  const getAmountStake = async (id: string | number) => {
-    const res: any = await stakingContract.read.uriInfoById([id])
-    if(totalInterestForBorrowingU2U?.current) {
-      totalInterestForBorrowingU2U.current[id] = Number(formatEther(res[0]))
-    }
-
-    setAmountStake(formatEther(res[0]))
-  }
+  // const getAmountStake = async (id: string | number) => {
+  //   const res: any = await stakingContract.read.uriInfoById([id])
+  //   setAmountStake(formatEther(res[0]))
+  // }
 
 
 
-  const calculator = (list: MutableRefObject<{[key: string] : number}>) => {
-    let total: number = 0
-    for (const key in list.current) {
-      if (Object.prototype.hasOwnProperty.call(list?.current, key)) {
-        total += list?.current[key]
-      }
-    }
-    return total
-  }
+  // const calculator = (list: MutableRefObject<{[key: string] : number}>) => {
+  //   let total: number = 0
+  //   for (const key in list.current) {
+  //     if (Object.prototype.hasOwnProperty.call(list?.current, key)) {
+  //       total += list?.current[key]
+  //     }
+  //   }
+  //   return total
+  // }
 
-  if(totalRepayableU2U?.current && setTotalRepayable) {
-    const total: number = calculator(totalRepayableU2U)
-    setTotalRepayable(total)
-  }
+  // if(totalRepayableU2U?.current && setTotalRepayable) {
+  //   const total: number = calculator(totalRepayableU2U)
+  //   setTotalRepayable(total)
+  // }
 
-  if(totalInterestForBorrowingU2U?.current && setTotalCollateral) {
-    const total: number = calculator(totalInterestForBorrowingU2U)
-    setTotalCollateral(total)
-  }
 
   useEffect(() => {
     if(loansPackages?.length > 0) {
@@ -295,20 +287,20 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
   }, [loansPackages])
 
 
-  useEffect(() => {
-    if(borrowing?.stakeId && stakingContract.account) {
-      getAmountStake(borrowing.stakeId)
-      if(lastDueDate?.current) {
-        if(borrowing.repayTime < lastDueDate.current) {
-          lastDueDate.current = borrowing.repayTime
-        }
-      } else {
-        lastDueDate.current = borrowing.repayTime
-      }
-    } else {
-      lastDueDate.current = 0
-    }
-  }, [borrowing?.stakeId, stakingContract.account])
+  // useEffect(() => {
+  //   if(borrowing?.stakeId && stakingContract.account) {
+  //     // getAmountStake(borrowing.stakeId)
+  //     if(lastDueDate?.current) {
+  //       if(borrowing.repayTime < lastDueDate.current) {
+  //         lastDueDate.current = borrowing.repayTime
+  //       }
+  //     } else {
+  //       lastDueDate.current = borrowing.repayTime
+  //     }
+  //   } else {
+  //     lastDueDate.current = 0
+  //   }
+  // }, [borrowing?.stakeId, stakingContract.account])
 
   useEffect(() => {
     if(period?.minBorrow && Number(borrowValue) && Number(borrowValue) < Number(formatEther(period?.minBorrow))) {
@@ -326,11 +318,11 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
         <Text fontFamily="'Metuo', sans-serif" fontSize="20px" fontWeight="900" lineHeight="24px" color='textSubtle' mr="10px">{t('Staked Amount')}</Text>
         <Flex mt={type ? ['4px', '4px', '8px', '8px','12px'] : '0'} alignItems="flex-end" justifyContent="space-between" style={{ flexWrap: 'wrap' }}>
           <Text fontSize={["20px", "20px", "22px", "22px", "24px"]} fontWeight="700" lineHeight="24px" color='text'>
-            {formatNumber(Number(stakeInfo?.amountDisplay || amountStake), 2, 6)}
+            {formatNumber(Number(stakeInfo?.amountDisplay || formatEther(borrowing?.stakeAmount)), 2, 6)}
             <Span>U2U</Span>
           </Text>
           {type && (
-            <Text color='#c4c4c4' fontSize="10px" fontStyle="italic">{`Maximum borrow: ${formatNumber(Number(amountStake) * (Number(borrowing?.loanPackage.maxBorrowRatio) / 100), 2, 6)} U2U (LTV ${borrowing?.loanPackage.maxBorrowRatio}%)`}</Text>
+            <Text color='#c4c4c4' fontSize="10px" fontStyle="italic">{`Maximum borrow: ${formatNumber(Number(formatEther(borrowing?.stakeAmount)) * (Number(borrowing?.loanPackage.maxBorrowRatio) / 100), 2, 6)} U2U (LTV ${borrowing?.loanPackage.maxBorrowRatio}%)`}</Text>
           )}
         </Flex>
       </CardHeader>
@@ -410,7 +402,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
             </Flex>
             <Flex justifyContent="space-between" mb="12px">
               <StyledText color='textSubtle'>{t('LTV')}</StyledText>
-              <StyledText color='text'>{(formatNumber((Number(formatEther(borrowing?.borrowAmount)) / Number(amountStake)) * 100))}%</StyledText>
+              <StyledText color='text'>{(formatNumber((Number(formatEther(borrowing?.borrowAmount)) / Number(formatEther(borrowing?.stakeAmount))) * 100))}%</StyledText>
             </Flex>
             <Flex justifyContent="space-between" mb="12px">
               <StyledText color='textSubtle'>{t('Annual Interest Rate')}</StyledText>

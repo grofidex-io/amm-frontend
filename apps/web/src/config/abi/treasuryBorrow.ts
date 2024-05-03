@@ -156,6 +156,18 @@ export const treasuryBorrowABI = [
         "internalType": "uint256",
         "name": "stakeId",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "rewardUser",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "rewardVault",
+        "type": "uint256"
       }
     ],
     "name": "PayOff",
@@ -364,19 +376,6 @@ export const treasuryBorrowABI = [
       }
     ],
     "name": "balanceOf",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "balanceOfVault",
     "outputs": [
       {
         "internalType": "uint256",
