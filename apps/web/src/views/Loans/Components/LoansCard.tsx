@@ -134,7 +134,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
   const { toastSuccess } = useToast()
   const [period, setPeriod] = useState<LoansPackageItem | undefined>(undefined)
   const borrowContract = useBorrowContract()
-  const { isApproved, isLoading, loansPackages, lastDueDate, balanceVault, approveForAll, setTotalCollateral, setTotalRepayable } = useContext(LoanContext)
+  const { isApproved, isLoading, loansPackages, balanceVault, approveForAll } = useContext(LoanContext)
   const { fetchWithCatchTxError } = useCatchTxError()
   const listPeriod = loansPackages.map((item: LoansPackageItem) => {
     return {
@@ -213,7 +213,6 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
   const handleRepay = async () => {
     const mustReturn: any = await borrowContract.read.mustReturn([borrowing?.id])
     await callSmartContract(borrowContract.write.returnStakingNFT([ borrowing?.id], {value: mustReturn}), 'You have successfully repay.')
-    console.log("🚀 ~ handleRepay ~ refreshListLoans:", refreshListLoans)
    
     if(refreshListLoans){ 
       refreshListLoans()
@@ -257,28 +256,6 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
   }
 
 
-  // const getAmountStake = async (id: string | number) => {
-  //   const res: any = await stakingContract.read.uriInfoById([id])
-  //   setAmountStake(formatEther(res[0]))
-  // }
-
-
-
-  // const calculator = (list: MutableRefObject<{[key: string] : number}>) => {
-  //   let total: number = 0
-  //   for (const key in list.current) {
-  //     if (Object.prototype.hasOwnProperty.call(list?.current, key)) {
-  //       total += list?.current[key]
-  //     }
-  //   }
-  //   return total
-  // }
-
-  // if(totalRepayableU2U?.current && setTotalRepayable) {
-  //   const total: number = calculator(totalRepayableU2U)
-  //   setTotalRepayable(total)
-  // }
-
 
   useEffect(() => {
     if(loansPackages?.length > 0) {
@@ -287,20 +264,6 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
   }, [loansPackages])
 
 
-  // useEffect(() => {
-  //   if(borrowing?.stakeId && stakingContract.account) {
-  //     // getAmountStake(borrowing.stakeId)
-  //     if(lastDueDate?.current) {
-  //       if(borrowing.repayTime < lastDueDate.current) {
-  //         lastDueDate.current = borrowing.repayTime
-  //       }
-  //     } else {
-  //       lastDueDate.current = borrowing.repayTime
-  //     }
-  //   } else {
-  //     lastDueDate.current = 0
-  //   }
-  // }, [borrowing?.stakeId, stakingContract.account])
 
   useEffect(() => {
     if(period?.minBorrow && Number(borrowValue) && Number(borrowValue) < Number(formatEther(period?.minBorrow))) {
