@@ -179,11 +179,11 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
   const handleChangePercent = useCallback(
     (value: any) => {
       if(period?.maxBorrowRatio) {
-        const percent = (Math.ceil(value) * Number(period?.maxBorrowRatio)) / 100
+        const percent = (value * Number(period?.maxBorrowRatio)) / 100
         const _borrowValue: string = (Number(formatEther(stakeInfo.amount)) * (percent / 100)).toFixed(6)
         setBorrowValue(Number(_borrowValue).toString() || '0')
+        onPercentSelectForSlider(percent || Math.ceil(value))
       }
-      onPercentSelectForSlider(Math.ceil(value))
     },
     [period?.maxBorrowRatio, stakeInfo.amount],
   )
@@ -411,7 +411,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
             </Flex>
             <Flex justifyContent="space-between" mb="12px">
               <StyledText color='textSubtle'>{t('LTV')}</StyledText>
-              <StyledText color='text'>{borrowing?.loanPackage.maxBorrowRatio}%</StyledText>
+              <StyledText color='text'>{Number(formatNumber((Number(formatEther(borrowing?.borrowAmount)) / Number(amountStake)) * 100))}%</StyledText>
             </Flex>
             <Flex justifyContent="space-between" mb="12px">
               <StyledText color='textSubtle'>{t('Annual Interest Rate')}</StyledText>
