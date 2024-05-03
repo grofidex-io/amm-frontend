@@ -251,7 +251,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
     if(Number(value) > Number(maxBorrowU2U)) {
       value = maxBorrowU2U
     }
-    setBorrowValue(value)
+    setBorrowValue(formatNumber(value, 2, 6))
     const percent = (((Number(value) / Number(formatEther(stakeInfo.amount))) * 100)/ Number(period?.maxBorrowRatio)) * 100
     onPercentSelectForSlider(percent)
   }
@@ -305,6 +305,8 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
       } else {
         lastDueDate.current = borrowing.repayTime
       }
+    } else {
+      lastDueDate.current = 0
     }
   }, [borrowing?.stakeId, stakingContract.account])
 
@@ -369,7 +371,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
                 onValueChanged={handleChangePercent}
                 mb="16px"
               />
-              <Text fontSize="14px" fontWeight="500" fontStyle="italic" color='text' mt="10px">LTV {period?.maxBorrowRatio || '_'}%</Text>
+              <Text fontSize="14px" fontWeight="500" fontStyle="italic" color='text' mt="10px">LTV {Number(formatNumber(percentForSlider)) || '_'}%</Text>
             </Flex>
             <Flex justifyContent="space-between" alignItems="center" mb="12px">
               <StyledText color='textSubtle'>{t('Annual Interest Rate')}</StyledText>
