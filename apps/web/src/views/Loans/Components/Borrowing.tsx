@@ -10,7 +10,7 @@ import LoansCard from "./LoansCard"
 
 export default function Borrowing() {
   const {data, isLoading, refetch}  = useListBorrowing()
-  const {totalRepayableU2U, totalInterestForBorrowingU2U, setTotalRepayable, setTotalCollateral} = useContext(LoanContext)
+  const {totalRepayableU2U, totalInterestForBorrowingU2U, lastDueDate, setTotalRepayable, setTotalCollateral} = useContext(LoanContext)
   const stakeInfo = {
     id: '',
     amount: '',
@@ -29,7 +29,10 @@ export default function Borrowing() {
         totalInterestForBorrowingU2U.current = {}
         setTotalCollateral(0)
       }
-  }, [data, totalInterestForBorrowingU2U, totalRepayableU2U, setTotalRepayable, setTotalCollateral])
+      if(lastDueDate.current) {
+        lastDueDate.current = 0
+      }
+  }, [data, totalInterestForBorrowingU2U, totalRepayableU2U, setTotalRepayable, setTotalCollateral, lastDueDate])
 
   if(!isLoading && data?.length === 0) {
     return (
