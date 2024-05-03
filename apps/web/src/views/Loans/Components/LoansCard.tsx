@@ -251,8 +251,8 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
     if(Number(value) > Number(maxBorrowU2U)) {
       value = maxBorrowU2U
     }
-    setBorrowValue(formatNumber(value, 2, 6))
-    const percent = (((Number(value) / Number(formatEther(stakeInfo.amount))) * 100)/ Number(period?.maxBorrowRatio)) * 100
+    setBorrowValue(value)
+    const percent = ((Number(value) / Number(maxBorrowU2U)) * Number(period?.maxBorrowRatio))
     onPercentSelectForSlider(percent)
   }
 
@@ -320,7 +320,6 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
 
 
 
-
   return (
     <CardLayout>
       <CardHeader alignItems={!type ? 'center' : ''} flexDirection={type ? 'column' : 'row'}>
@@ -371,7 +370,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
                 onValueChanged={handleChangePercent}
                 mb="16px"
               />
-              <Text fontSize="14px" fontWeight="500" fontStyle="italic" color='text' mt="10px">LTV {Number(formatNumber(percentForSlider)) || '_'}%</Text>
+              <Text fontSize="14px" fontWeight="500" fontStyle="italic" color='text' mt="10px">LTV {formatNumber(percentForSlider, 2, 2) || '_'}%</Text>
             </Flex>
             <Flex justifyContent="space-between" alignItems="center" mb="12px">
               <StyledText color='textSubtle'>{t('Annual Interest Rate')}</StyledText>
@@ -407,11 +406,11 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
             </Flex>
             <Flex justifyContent="space-between" mb="12px">
               <StyledText color='textSubtle'>{t('Borrow amount')}</StyledText>
-              <StyledText color='text'>{formatNumber(Number(formatEther(borrowing?.borrowAmount)))} U2U</StyledText>
+              <StyledText color='text'>{formatNumber(Number(formatEther(borrowing?.borrowAmount)), 2, 6)} U2U</StyledText>
             </Flex>
             <Flex justifyContent="space-between" mb="12px">
               <StyledText color='textSubtle'>{t('LTV')}</StyledText>
-              <StyledText color='text'>{Number(formatNumber((Number(formatEther(borrowing?.borrowAmount)) / Number(amountStake)) * 100))}%</StyledText>
+              <StyledText color='text'>{(formatNumber((Number(formatEther(borrowing?.borrowAmount)) / Number(amountStake)) * 100))}%</StyledText>
             </Flex>
             <Flex justifyContent="space-between" mb="12px">
               <StyledText color='textSubtle'>{t('Annual Interest Rate')}</StyledText>
