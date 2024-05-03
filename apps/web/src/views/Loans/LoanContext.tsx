@@ -14,21 +14,21 @@ export interface ContextApi {
   totalCollateral: number,
   totalRepayable: number,
   balanceVault: number,
-  totalRepayableU2U: MutableRefObject<{[key: string] : number}> | undefined
-  totalInterestForBorrowingU2U: MutableRefObject<{[key: string] : number}> | undefined,
+  totalRepayableU2U: MutableRefObject<number>,
+  totalInterestForBorrowingU2U: MutableRefObject<number>,
   lastDueDate: MutableRefObject<number>
   checkApproved?: () => void,
   approveForAll?: () => void,
   setTotalCollateral?: (value: number) => void,
   setTotalRepayable?: (value: number) => void,
 }
-const LoanContext = createContext<ContextApi>({isApproved: false, isLoading: false, loansPackages: [], totalCollateral: 0, totalRepayable: 0, totalRepayableU2U: undefined, totalInterestForBorrowingU2U: undefined, lastDueDate: { current: 0 }, balanceVault: 0});
+const LoanContext = createContext<ContextApi>({isApproved: false, isLoading: false, loansPackages: [], totalCollateral: 0, totalRepayable: 0, totalRepayableU2U: {current: 0}, totalInterestForBorrowingU2U: {current: 0}, lastDueDate: { current: 0 }, balanceVault: 0});
 // Provide Context
 export const LoanProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [isApproved, setApprove] = useState<boolean>(false)
   const [isLoading, setLoading] = useState<boolean>(false)
-  const totalRepayableU2U = useRef({})
-  const totalInterestForBorrowingU2U = useRef({})
+  const totalRepayableU2U = useRef(0)
+  const totalInterestForBorrowingU2U = useRef(0)
   const lastDueDate = useRef(0)
   const [totalCollateral, setTotalCollateral] = useState<number>(0)
   const [balanceVault, setBalanceVault] = useState<number>(0)

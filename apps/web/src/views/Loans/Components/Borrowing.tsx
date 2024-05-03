@@ -1,16 +1,19 @@
+import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
 import NoData from 'components/NoData'
-import { useContext, useEffect } from 'react'
-import LoanContext from '../LoanContext'
-import { useListBorrowing } from '../hooks/useListBorrowing'
+import { BorrowItem } from '../data/fetchListBorrowing'
 import { CardLayout } from '../styles'
 import LoanLoading from './LoanLoading'
 import LoansCard from "./LoansCard"
 
 
-export default function Borrowing() {
-  const {data, isLoading, refetch}  = useListBorrowing()
-  const {totalRepayableU2U, totalInterestForBorrowingU2U, lastDueDate, setTotalRepayable, setTotalCollateral} = useContext(LoanContext)
+export default function Borrowing(props: {  
+    data: BorrowItem[] | undefined;
+    isLoading: boolean;
+    refetch: (options?: RefetchOptions | undefined) => Promise<QueryObserverResult<{ data: BorrowItem[]; }, Error>>;
+  }) {
+  const {data, isLoading } = props
+  // const {totalRepayableU2U, totalInterestForBorrowingU2U, lastDueDate, setTotalRepayable, setTotalCollateral} = useContext(LoanContext)
   const stakeInfo = {
     id: '',
     amount: '',
@@ -19,20 +22,7 @@ export default function Borrowing() {
     reward: BigNumber(0),
     rewardDisplay: '',
   }
-  
-  useEffect(() => {
-      if(totalRepayableU2U?.current && setTotalRepayable) {
-        totalRepayableU2U.current = {}
-          setTotalRepayable(0)
-      }
-      if(totalInterestForBorrowingU2U?.current && setTotalCollateral) {
-        totalInterestForBorrowingU2U.current = {}
-        setTotalCollateral(0)
-      }
-      if(lastDueDate.current && data?.length === 0) {
-        lastDueDate.current = 0
-      }
-  }, [data, totalInterestForBorrowingU2U, totalRepayableU2U, setTotalRepayable, setTotalCollateral, lastDueDate])
+
 
   if(!isLoading && data?.length === 0) {
     return (
@@ -45,7 +35,7 @@ export default function Borrowing() {
       {
         isLoading ? <LoanLoading/> : (
           data && data?.map((item) => (
-            <LoansCard type stakeInfo={stakeInfo}  borrowing={item} key={item.id} refreshListLoans={refetch} />
+            <LoansCard type stakeInfo={stakeInfo}  borrowing={item} key={item.id} refreshListLoans={props.refetch} />
           ))
         )
       }

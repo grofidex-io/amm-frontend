@@ -8,6 +8,7 @@ export const LIST_BORROWING = gql`
       borrowAmount
       borrowTime
       id
+      stakeAmount
       repayTime
       stakeId
       loanPackage {
@@ -25,9 +26,10 @@ export const LIST_BORROWING = gql`
 
 
 export interface BorrowItem {
-  borrowAmount: string | number,
+  borrowAmount: any,
   borrowTime: string | number,
   id: string | number,
+  stakeAmount: any,
   repayAmount: string | number,
   repayTime: number ,
   stakeId: number | string,
