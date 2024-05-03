@@ -192,9 +192,13 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
                 <Text fontSize={["20px", "24px", "24px", "28px", "32px"]} fontWeight="600" lineHeight="1" color="text" mt={["4px", "6px", "6px", "8px"]}>≈ {formatNumber(totalCollateral, 2, 6)}</Text>
               </Box>
             </LoansInfo>
-            <StyledDate onClick={() => setTab(1)}>
-              Latest due date<Text color="hover" fontSize="12px" lineHeight="14px" ml="4px">{formatDate(dayjs.unix(lastDueDate.current || (Date.now()/ 1000)).utc())}</Text>
-            </StyledDate>
+            {
+              Boolean(lastDueDate.current) && (
+                <StyledDate onClick={() => setTab(1)}>
+                  Latest due date<Text color="hover" fontSize="12px" lineHeight="14px" ml="4px">{formatDate(dayjs.unix(lastDueDate.current || (Date.now()/ 1000)).utc())}</Text>
+                </StyledDate>
+              )
+            }
           </StyledBox>
           <Image src="/images/loans-image.svg"/>
         </Flex>
