@@ -3,6 +3,7 @@ import { Box, Button, Dots, Flex, Select, Slider, Text, useModal, useToast } fro
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { NumericalInput } from '@pancakeswap/widgets-internal'
 import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query'
+import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import dayjs from 'dayjs'
 import { formatEther, parseEther } from 'ethers/lib/utils'
@@ -207,6 +208,9 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
     await callSmartContract(borrowContract.write.borrow([parseEther(value || borrowValue), stakeInfo.id, period?.id]), 'You have successfully borrow.')
     if(refreshListLoans){ 
      refreshListLoans()
+     if(getVaultLoansBalance) {
+      getVaultLoansBalance()
+     }
     }
   }
 
@@ -225,9 +229,9 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
 
   const [onShowLoansModal] = useModal(
     <LoansModal
-      initialView={formatNumber(balanceVault, 2, 6) === '0.00' ? LoansView.BORROWING : LoansView.AVAILABLE}
+      initialView={new BigNumber(balanceVault).isZero() ? LoansView.BORROWING : LoansView.AVAILABLE}
       borrowValue={borrowValue}
-      balanceVault={formatNumber(balanceVault, 2, 6)}
+      balanceVault={formatNumber(Number(balanceVault), 2, 6)}
       onConfirm={handleBorrowWithVault}
     />,
   )
@@ -242,7 +246,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
           _balanceValue = vault
         }
       }
-      if(Number(borrowValue) > _balanceValue) {
+      if(new BigNumber(borrowValue).isGreaterThan(new BigNumber(_balanceValue))) {
         onShowLoansModal()
         return
       }
