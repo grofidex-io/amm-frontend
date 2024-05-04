@@ -67,6 +67,13 @@ const TableLoader: React.FC<React.PropsWithChildren> = () => {
       {loadingRow}
       {loadingRow}
       {loadingRow}
+      {loadingRow}
+      {loadingRow}
+      {loadingRow}
+      {loadingRow}
+      {loadingRow}
+      {loadingRow}
+      {loadingRow}
     </>
   )
 }
@@ -74,14 +81,12 @@ export function LoansHistory() {
   const { t } = useTranslation()
 
   const [page, setPage] = useState(1)
-  const { data } = useLoansHistory(page)
+  const { data, isLoading } = useLoansHistory(page)
   const disableNext = data ? data?.length === 0 || data?.length < 10 : false
   // const getPercent = (value: string) => {
   //   return (Number(value) / Number(data?.token.totalSupply)) * 100
   // }
-  if(data?.length === 0) {
-    return <TableLoader />
-  }
+
   return (
     <div>
     <Wrapper>
@@ -109,7 +114,7 @@ export function LoansHistory() {
         </ResponsiveGrid>
         <AutoColumn gap="16px">
         <Break />
-
+            {isLoading ? <TableLoader/> : <>
             {data?.map((item) => {
               if (item) {
                 const refund: any = Number(item.stakeAmount) - Number(item.repayAmount) + Number(item.rewardUser)
@@ -141,6 +146,8 @@ export function LoansHistory() {
                 <Text>{t('No History')}</Text>
               </Flex>
             )}
+            </>}
+    
           </AutoColumn>
         </LayoutScroll>
             <PageButtons>

@@ -15,7 +15,7 @@ export const useLoansHistory = (page: number) => {
   const { account } = useActiveWeb3React()
   const { data, isLoading, refetch } = useQuery({
     queryKey: [`fetchLoansHistory`, account, page],
-    queryFn: () => fetchLoansHistory(account, page),
+    queryFn: () => fetchLoansHistory(account?.toLowerCase(), page),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return {data: data?.data, isLoading, refetch}
