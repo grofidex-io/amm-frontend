@@ -5,7 +5,6 @@ import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { AppBody } from 'components/App'
 import { useCallback, useContext, useMemo, useState } from 'react'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
-import { currencyId } from 'utils/currencyId'
 
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import CurrencySearchModal from 'components/SearchModal/CurrencySearchModal'
@@ -119,20 +118,20 @@ export default function Swap() {
   useDefaultsFromURLSearch()
   const { onCurrencySelection } = useSwapActionHandlers()
 
-  const handleOutputSelect = useCallback(
-    (newCurrencyOutput: Currency) => {
-      onCurrencySelection(Field.OUTPUT, newCurrencyOutput)
-      warningSwapHandler(newCurrencyOutput)
+  // const handleOutputSelect = useCallback(
+  //   (newCurrencyOutput: Currency) => {
+  //     onCurrencySelection(Field.OUTPUT, newCurrencyOutput)
+  //     warningSwapHandler(newCurrencyOutput)
 
-      const newCurrencyOutputId = currencyId(newCurrencyOutput)
-      if (newCurrencyOutputId === inputCurrencyId) {
-        replaceBrowserHistory('inputCurrency', outputCurrencyId)
-      }
-      replaceBrowserHistory('outputCurrency', newCurrencyOutputId)
-    },
+  //     const newCurrencyOutputId = currencyId(newCurrencyOutput)
+  //     if (newCurrencyOutputId === inputCurrencyId) {
+  //       replaceBrowserHistory('inputCurrency', outputCurrencyId)
+  //     }
+  //     replaceBrowserHistory('outputCurrency', newCurrencyOutputId)
+  //   },
 
-    [inputCurrencyId, outputCurrencyId, onCurrencySelection, warningSwapHandler],
-  )
+  //   [inputCurrencyId, outputCurrencyId, onCurrencySelection, warningSwapHandler],
+  // )
 
   const topPoolsData = useTopPoolsData()
 

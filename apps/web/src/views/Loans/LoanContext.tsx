@@ -21,6 +21,7 @@ export interface ContextApi {
   approveForAll?: () => void,
   setTotalCollateral?: (value: number) => void,
   setTotalRepayable?: (value: number) => void,
+  getVaultLoansBalance?: () => Promise<number | undefined>
 }
 const LoanContext = createContext<ContextApi>({isApproved: false, isLoading: false, loansPackages: [], totalCollateral: 0, totalRepayable: 0, totalRepayableU2U: {current: 0}, totalInterestForBorrowingU2U: {current: 0}, lastDueDate: { current: 0 }, balanceVault: 0});
 // Provide Context
@@ -38,12 +39,14 @@ export const LoanProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
   const { account, chainId } = useAccountActiveChain()
   const stakingContract = useStakingContract()
 
-  const getVaultLoansBalance = async () => {
+  const getVaultLoansBalance = async (): Promise<number | undefined> => {
     const client = publicClient({ chainId})
     if(client) {
       const balance = await client.getBalance({address: getVaultLoansAddress(chainId)})
       setBalanceVault(Number(formatEther(balance))) 
+      return Number(formatEther(balance))
     }
+    return undefined
   }
 
 
@@ -85,7 +88,7 @@ export const LoanProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
 
 
   return (
-    <LoanContext.Provider value={{isApproved, isLoading, loansPackages, totalCollateral, totalRepayable, totalRepayableU2U, totalInterestForBorrowingU2U, lastDueDate, balanceVault, checkApproved, approveForAll, setTotalCollateral, setTotalRepayable}}>
+    <LoanContext.Provider value={{isApproved, isLoading, loansPackages, totalCollateral, totalRepayable, totalRepayableU2U, totalInterestForBorrowingU2U, lastDueDate, balanceVault, checkApproved, approveForAll, setTotalCollateral, setTotalRepayable, getVaultLoansBalance}}>
       {children}
     </LoanContext.Provider>
   )
