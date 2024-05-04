@@ -121,7 +121,7 @@ export function LoansHistory() {
                 return (
                   <ResponsiveGrid key={item.id}>
                     <Text>{formatNumber(Number(formatEther(item.borrowAmount)))} U2U</Text>
-                    <Text>{formatNumber(Number(formatEther(item.stakeAmount)))} U2U</Text>
+                    <Text>{formatNumber(Number(formatEther(item.stakeAmount)))} U2U (#{item.stakeId})</Text>
                     <Text>{item.type}</Text>
                     <Text>
                       <Flex flexDirection="column">

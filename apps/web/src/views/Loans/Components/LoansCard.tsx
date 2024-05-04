@@ -205,7 +205,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
   }
 
   const handleBorrow = async (value?: string) => {
-    await callSmartContract(borrowContract.write.borrow([parseEther(value || borrowValue), stakeInfo.id, period?.id]), 'You have successfully borrow.')
+    await callSmartContract(borrowContract.write.borrow([parseEther(value || Number(borrowValue).toFixed(18)), stakeInfo.id, period?.id]), 'You have successfully borrow.')
     if(refreshListLoans){ 
      refreshListLoans()
      if(getVaultLoansBalance) {
