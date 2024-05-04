@@ -5,7 +5,7 @@ import { fetchLoansHistory } from "../data/fetchLoansHistory"
 const QUERY_SETTINGS_IMMUTABLE = {
   retry: 3,
   retryDelay: 3000,
-  refetchInterval: 30000, // milliseconds
+  refetchInterval: 10000, // milliseconds
   refetchOnMount: true,
   refetchOnReconnect: false,
   refetchOnWindowFocus: false,
