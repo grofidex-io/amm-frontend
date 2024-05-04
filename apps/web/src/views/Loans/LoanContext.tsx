@@ -13,7 +13,7 @@ export interface ContextApi {
   loansPackages: LoansPackageItem[],
   totalCollateral: number,
   totalRepayable: number,
-  balanceVault: number,
+  balanceVault: string,
   totalRepayableU2U: MutableRefObject<number>,
   totalInterestForBorrowingU2U: MutableRefObject<number>,
   lastDueDate: MutableRefObject<number>
@@ -21,9 +21,9 @@ export interface ContextApi {
   approveForAll?: () => void,
   setTotalCollateral?: (value: number) => void,
   setTotalRepayable?: (value: number) => void,
-  getVaultLoansBalance?: () => Promise<number | undefined>
+  getVaultLoansBalance?: () => Promise<string | undefined>
 }
-const LoanContext = createContext<ContextApi>({isApproved: false, isLoading: false, loansPackages: [], totalCollateral: 0, totalRepayable: 0, totalRepayableU2U: {current: 0}, totalInterestForBorrowingU2U: {current: 0}, lastDueDate: { current: 0 }, balanceVault: 0});
+const LoanContext = createContext<ContextApi>({isApproved: false, isLoading: false, loansPackages: [], totalCollateral: 0, totalRepayable: 0, totalRepayableU2U: {current: 0}, totalInterestForBorrowingU2U: {current: 0}, lastDueDate: { current: 0 }, balanceVault: '0'});
 // Provide Context
 export const LoanProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [isApproved, setApprove] = useState<boolean>(false)
@@ -32,19 +32,19 @@ export const LoanProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
   const totalInterestForBorrowingU2U = useRef(0)
   const lastDueDate = useRef(0)
   const [totalCollateral, setTotalCollateral] = useState<number>(0)
-  const [balanceVault, setBalanceVault] = useState<number>(0)
+  const [balanceVault, setBalanceVault] = useState<string>('0')
   const [totalRepayable, setTotalRepayable] = useState<number>(0)
   const [loansPackages, setLoansPackages] = useState<LoansPackageItem[]>([])
   const { fetchWithCatchTxError } = useCatchTxError()
   const { account, chainId } = useAccountActiveChain()
   const stakingContract = useStakingContract()
 
-  const getVaultLoansBalance = async (): Promise<number | undefined> => {
+  const getVaultLoansBalance = async (): Promise<string | undefined> => {
     const client = publicClient({ chainId})
     if(client) {
       const balance = await client.getBalance({address: getVaultLoansAddress(chainId)})
-      setBalanceVault(Number(formatEther(balance))) 
-      return Number(formatEther(balance))
+      setBalanceVault(formatEther(balance))
+      return formatEther(balance)
     }
     return undefined
   }

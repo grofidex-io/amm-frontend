@@ -1,5 +1,6 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { AtomBox, Box, Button, Flex, InjectedModalProps, ModalWrapper, Text } from "@pancakeswap/uikit";
+import { formatNumber } from "@pancakeswap/utils/formatBalance";
 import React from "react";
 import styled from "styled-components";
 
@@ -69,7 +70,7 @@ const LoansModal: React.FC<React.PropsWithChildren<LoansModalProps>> = ({
               {initialView === LoansView.AVAILABLE && (
                 <Box mr="40px">
                   <Text fontSize="14px" lineHeight="24px" mb="10px" color="textSubtle">
-                    Sorry, the system does not have enough funds left to process your <Span>{borrowValue} U2U</Span> borrow request.
+                    Sorry, the system does not have enough funds left to process your <Span>{formatNumber(Number(borrowValue))} U2U</Span> borrow request.
                   </Text>
                   <Text fontSize="14px" lineHeight="24px" mb="10px" color="textSubtle">
                     The system can lend you <Span>{balanceVault} U2U</Span> token.
