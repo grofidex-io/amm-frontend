@@ -3,7 +3,7 @@ import { loansClients } from 'utils/graphql'
 
 export const LOANS_HISTORY = gql`
   query loanHistories($account: String!, $skip: Int)  {
-    loanHistories(skip: $skip , first: 10) {
+    loanHistories(where: {user_: {id: $account}}, skip: $skip , first: 10) {
       borrowAmount
       borrowTime
       repayAmount
