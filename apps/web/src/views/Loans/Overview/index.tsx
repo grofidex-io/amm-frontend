@@ -9,6 +9,7 @@ import { formatEther } from "viem"
 import { formatDate } from "views/CakeStaking/components/DataSet/format"
 import Available from "views/Loans/Components/Available"
 import Borrowing from "../Components/Borrowing"
+import { LoansHistory } from "../Components/History"
 import LoanContext from "../LoanContext"
 import { BorrowItem } from "../data/fetchListBorrowing"
 import { useListBorrowing } from "../hooks/useListBorrowing"
@@ -268,6 +269,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
             <Borrowing />
           </div> */}
         </StyledBoxTab>
+        <LoansHistory/>
       </StyledPage>
     </>
   )

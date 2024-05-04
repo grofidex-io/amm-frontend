@@ -134,7 +134,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
   const { toastSuccess } = useToast()
   const [period, setPeriod] = useState<LoansPackageItem | undefined>(undefined)
   const borrowContract = useBorrowContract()
-  const { isApproved, isLoading, loansPackages, balanceVault, approveForAll } = useContext(LoanContext)
+  const { isApproved, isLoading, loansPackages, balanceVault, approveForAll, getVaultLoansBalance } = useContext(LoanContext)
   const { fetchWithCatchTxError } = useCatchTxError()
   const listPeriod = loansPackages.map((item: LoansPackageItem) => {
     return {
@@ -225,17 +225,24 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
 
   const [onShowLoansModal] = useModal(
     <LoansModal
-      initialView={balanceVault <= 0 ? LoansView.BORROWING : LoansView.AVAILABLE}
+      initialView={formatNumber(balanceVault, 2, 6) === '0.00' ? LoansView.BORROWING : LoansView.AVAILABLE}
       borrowValue={borrowValue}
       balanceVault={formatNumber(balanceVault, 2, 6)}
       onConfirm={handleBorrowWithVault}
     />,
   )
 
-  const handleAction = () => {
+  const handleAction = async () => {
     if(errorMinBorrow) return
     if(isApproved) {
-      if(Number(borrowValue) > balanceVault) {
+      let _balanceValue = balanceVault
+      if(getVaultLoansBalance) {
+        const vault = await getVaultLoansBalance()
+        if(vault) {
+          _balanceValue = vault
+        }
+      }
+      if(Number(borrowValue) > _balanceValue) {
         onShowLoansModal()
         return
       }
