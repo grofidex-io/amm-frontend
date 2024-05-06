@@ -11,6 +11,7 @@ export const LOANS_HISTORY = gql`
       repayTime
       rewardUser
       processTime
+      txn
       stakeAmount
       stakeId
       type
@@ -29,6 +30,7 @@ export interface HistoryItem {
   rewardUser: number,
   processTime: string | number,
   stakeAmount: any,
+  txn: string,
   type: string,
   stakeId: string,
   id: string
