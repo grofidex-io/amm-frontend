@@ -13,7 +13,7 @@ import { useLoansHistory } from '../hooks/useLoansHistory'
 
 const Wrapper = styled.div`
   width: 100%;
-  margin-top: 20px;
+  margin-top: 40px;
 `
 
 const LayoutScroll = styled(Box)`
@@ -30,11 +30,11 @@ const ResponsiveGrid = styled.div`
   padding: 0 24px;
   > * {
     min-width: 140px;
-    &:nth-child(6) {
-      min-width: 160px;
+    &:first-child {
+      min-width: 100px;
     }
-    &:nth-child(5) {
-      min-width: 160px;
+    &:last-child {
+      min-width: 170px;
     }
   }
 
@@ -51,6 +51,10 @@ const ResponsiveGrid = styled.div`
   //   }
   // }
 
+`
+
+const Image = styled.img`
+  margin-bottom: 12px;
 `
 
 const SORT_FIELD = {
@@ -165,29 +169,32 @@ export function LoansHistory() {
               if (item) {
                 const refund: any = Number(item.stakeAmount) - Number(item.repayAmount) + Number(item.rewardUser)
                 return (
-                  <ResponsiveGrid key={item.id}>
-                   <Text
-                    textTransform="uppercase"
-                    fontWeight={400}
-                    color={
-                      item.type === 'BORROW'
-                        ? '#fff'
-                        : item.type === 'REPAY'
-                        ? '#00B58D' 
-                        : '#FE5300'
-                    }>
-                      {item.type}
-                    </Text>
-                    <Text textAlign="right">{formatNumber(Number(formatEther(item.borrowAmount)))} U2U</Text>
-                    <Text textAlign="right">
-                      <Flex flexDirection="column">
-                        {formatNumber(Number(formatEther(item.repayAmount)))} U2U
-                        <Text color='gray' fontSize={12}>{item.type === 'LIQUIDATION' ? `Refund ${formatNumber(Number(formatEther(refund.toString())))} U2U` : ''}</Text>
-                      </Flex>
-                    </Text>
-                    <Text textAlign="right">{formatNumber(Number(formatEther(item.stakeAmount)))} U2U (#{item.stakeId})</Text>
-                    <Text textAlign="right">{ item?.processTime ? formatDate(dayjs.unix(Number(item.processTime)).utc()): '_'} UTC</Text>
-                  </ResponsiveGrid>
+                  <>
+                    <ResponsiveGrid key={item.id}>
+                      <Text
+                        textTransform="uppercase"
+                        fontWeight={400}
+                        color={
+                          item.type === 'BORROW'
+                            ? '#fff'
+                            : item.type === 'REPAY'
+                            ? '#00B58D' 
+                            : '#FE5300'
+                      }>
+                        {item.type}
+                      </Text>
+                      <Text textAlign="right">{formatNumber(Number(formatEther(item.borrowAmount)))} U2U</Text>
+                      <Text textAlign="right">
+                        <Flex flexDirection="column">
+                          {formatNumber(Number(formatEther(item.repayAmount)))} U2U
+                          <Text color='gray' fontSize={12}>{item.type === 'LIQUIDATION' ? `Refund ${formatNumber(Number(formatEther(refund.toString())))} U2U` : ''}</Text>
+                        </Flex>
+                      </Text>
+                      <Text textAlign="right">{formatNumber(Number(formatEther(item.stakeAmount)))} U2U (#{item.stakeId})</Text>
+                      <Text textAlign="right">{ item?.processTime ? formatDate(dayjs.unix(Number(item.processTime)).utc()): '_'} UTC</Text>
+                    </ResponsiveGrid>
+                    <Break />
+                  </>
                   // eslint-disable-next-line react/no-array-index-key
                   // <Fragment key={index}>
                   //   <DataRow transaction={transaction} />
@@ -198,8 +205,9 @@ export function LoansHistory() {
               return null
             })}
             {data?.length === 0 && (
-              <Flex justifyContent="center">
-                <Text>{t('No History')}</Text>
+              <Flex my="16px" flexDirection="column" alignItems="center" justifyContent="center">
+                <Image src='/images/no-data.svg' />
+                <Text color='textSubtle'>{t('No History')}</Text>
               </Flex>
             )}
             </>}
