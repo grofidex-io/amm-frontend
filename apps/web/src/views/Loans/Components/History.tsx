@@ -1,12 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ArrowBackIcon, ArrowForwardIcon, AutoColumn, Box, Flex, Skeleton, Text } from '@pancakeswap/uikit'
+import { ArrowBackIcon, ArrowForwardIcon, AutoColumn, Box, Flex, Skeleton, SortArrowIcon, Text } from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import dayjs from 'dayjs'
 import { formatEther } from 'ethers/lib/utils'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { formatDate } from 'views/CakeStaking/components/DataSet/format'
-import { Arrow, Break, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
+import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
+import { SortButton, useSortFieldClassName } from 'views/V3Info/components/SortButton'
 import { useLoansHistory } from '../hooks/useLoansHistory'
 
 
@@ -25,10 +26,10 @@ const ResponsiveGrid = styled.div`
   display: grid;
   grid-gap: 1em;
   align-items: center;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: 0.3fr repeat(4, 1fr);
   padding: 0 24px;
   > * {
-    min-width: 120px;
+    min-width: 140px;
     &:nth-child(6) {
       min-width: 160px;
     }
@@ -38,7 +39,7 @@ const ResponsiveGrid = styled.div`
   }
 
   // @media screen and (max-width: 800px) {
-  //   grid-template-columns: 0.8fr repeat(5, 1fr);
+  //   grid-template-columns: 0.8fr repeat(4, 1fr);
   //   & > *:nth-child(5) {
   //     display: none;
   //   }
@@ -51,6 +52,14 @@ const ResponsiveGrid = styled.div`
   // }
 
 `
+
+const SORT_FIELD = {
+  borrowAmount: 'borrowAmount',
+  processTime: 'processTime',
+  repayAmount: 'repayAmount',
+  stakeAmount: 'stakeAmount'
+}
+
 const TableLoader: React.FC<React.PropsWithChildren> = () => {
   const loadingRow = (
     <ResponsiveGrid>
@@ -78,14 +87,22 @@ const TableLoader: React.FC<React.PropsWithChildren> = () => {
   )
 }
 export function LoansHistory() {
+  // for sorting
+  const [sortField, setSortField] = useState(SORT_FIELD.processTime)
+  const [sortDirection, setSortDirection] = useState<boolean>(true)
   const { t } = useTranslation()
-
+  const handleSort = useCallback(
+    (newField: string) => {
+      setSortField(newField)
+      setSortDirection(sortField !== newField ? true : !sortDirection)
+    },
+    [sortDirection, sortField],
+  )
   const [page, setPage] = useState(1)
-  const { data, isLoading } = useLoansHistory(page)
+  const { data, isLoading } = useLoansHistory(page, sortField, sortDirection)
   const disableNext = data ? data?.length === 0 || data?.length < 10 : false
-  // const getPercent = (value: string) => {
-  //   return (Number(value) / Number(data?.token.totalSupply)) * 100
-  // }
+
+  const getSortFieldClassName = useSortFieldClassName(sortField, sortDirection)
 
   return (
     <div>
@@ -93,24 +110,53 @@ export function LoansHistory() {
       <TableWrapper>
       <LayoutScroll>
         <ResponsiveGrid>
-          <Text color="secondary" fontSize="12px" bold textTransform="uppercase">
-            {t('Loan Amount')}
-          </Text>
-          <Text color="secondary" fontSize="12px" bold textTransform="uppercase">
-            {t('Stake Amount')}
-          </Text>
-          <Text color="secondary" fontSize="12px" bold textTransform="uppercase">
+          <Text color="textSubtle" >
             {t('Type')}
           </Text>
-          <Text color="secondary" fontSize="12px" bold textTransform="uppercase">
+          <ClickableColumnHeader color="textSubtle" style={{ justifyContent: 'flex-end' }}>
+            {t('Loan Amount')}
+            <SortButton
+              scale="sm"
+              variant="subtle"
+              onClick={() => handleSort(SORT_FIELD.borrowAmount)}
+              className={getSortFieldClassName(SORT_FIELD.borrowAmount)}
+            >
+              <SortArrowIcon />
+            </SortButton>
+          </ClickableColumnHeader>
+          <ClickableColumnHeader color="textSubtle" style={{ justifyContent: 'flex-end' }}>
             {t('Repay Amount')}
-          </Text>
-          <Text color="secondary" fontSize="12px" bold textTransform="uppercase">
-            {t('Loan Time')}
-          </Text>
-          <Text color="secondary" fontSize="12px" bold textTransform="uppercase">
-            {t('Repay Time')}
-          </Text>
+            <SortButton
+              scale="sm"
+              variant="subtle"
+              onClick={() => handleSort(SORT_FIELD.repayAmount)}
+              className={getSortFieldClassName(SORT_FIELD.repayAmount)}
+            >
+              <SortArrowIcon />
+            </SortButton>
+          </ClickableColumnHeader>
+          <ClickableColumnHeader color="textSubtle" style={{ justifyContent: 'flex-end' }}>
+            {t('Stake Amount')}
+            <SortButton
+              scale="sm"
+              variant="subtle"
+              onClick={() => handleSort(SORT_FIELD.stakeAmount)}
+              className={getSortFieldClassName(SORT_FIELD.stakeAmount)}
+            >
+              <SortArrowIcon />
+            </SortButton>
+          </ClickableColumnHeader>
+          <ClickableColumnHeader color="textSubtle" style={{ justifyContent: 'flex-end' }}>
+            {t('Time')}
+            <SortButton
+              scale="sm"
+              variant="subtle"
+              onClick={() => handleSort(SORT_FIELD.processTime)}
+              className={getSortFieldClassName(SORT_FIELD.processTime)}
+            >
+              <SortArrowIcon />
+            </SortButton>
+          </ClickableColumnHeader>
         </ResponsiveGrid>
         <AutoColumn gap="16px">
         <Break />
@@ -120,17 +166,27 @@ export function LoansHistory() {
                 const refund: any = Number(item.stakeAmount) - Number(item.repayAmount) + Number(item.rewardUser)
                 return (
                   <ResponsiveGrid key={item.id}>
-                    <Text>{formatNumber(Number(formatEther(item.borrowAmount)))} U2U</Text>
-                    <Text>{formatNumber(Number(formatEther(item.stakeAmount)))} U2U (#{item.stakeId})</Text>
-                    <Text>{item.type}</Text>
-                    <Text>
+                   <Text
+                    textTransform="uppercase"
+                    fontWeight={400}
+                    color={
+                      item.type === 'BORROW'
+                        ? '#fff'
+                        : item.type === 'REPAY'
+                        ? '#00B58D' 
+                        : '#FE5300'
+                    }>
+                      {item.type}
+                    </Text>
+                    <Text textAlign="right">{formatNumber(Number(formatEther(item.borrowAmount)))} U2U</Text>
+                    <Text textAlign="right">
                       <Flex flexDirection="column">
                         {formatNumber(Number(formatEther(item.repayAmount)))} U2U
                         <Text color='gray' fontSize={12}>{item.type === 'LIQUIDATION' ? `Refund ${formatNumber(Number(formatEther(refund.toString())))} U2U` : ''}</Text>
                       </Flex>
                     </Text>
-                    <Text>{ item?.borrowTime ? formatDate(dayjs.unix(Number(item.borrowTime)).utc()): '_'} UTC</Text>
-                    <Text>{ item?.repayTime ? formatDate(dayjs.unix(Number(item.repayTime)).utc()): '_'} UTC</Text>
+                    <Text textAlign="right">{formatNumber(Number(formatEther(item.stakeAmount)))} U2U (#{item.stakeId})</Text>
+                    <Text textAlign="right">{ item?.processTime ? formatDate(dayjs.unix(Number(item.processTime)).utc()): '_'} UTC</Text>
                   </ResponsiveGrid>
                   // eslint-disable-next-line react/no-array-index-key
                   // <Fragment key={index}>
