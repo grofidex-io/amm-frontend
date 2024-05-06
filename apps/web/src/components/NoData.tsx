@@ -18,7 +18,7 @@ const StyledImage = styled.svg`
 
 const NoData = () => {
   return (
-    <StyledFlex mt={["60px", "60px", "80px"]} mb="20px" flexDirection="column" alignItems="center" justifyContent="center">
+    <StyledFlex mt={["60px", "60px", "80px"]} mb="60px" flexDirection="column" alignItems="center" justifyContent="center">
       <StyledImage viewBox="0 0 126 126" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g filter="url(#filter0_d_1193_6672)">
         <circle cx="62" cy="62" r="61" stroke="black" stroke-width="2" shape-rendering="crispEdges"/>
