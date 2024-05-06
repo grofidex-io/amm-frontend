@@ -2,14 +2,15 @@ import { gql } from 'graphql-request'
 import { loansClients } from 'utils/graphql'
 
 export const LOANS_HISTORY = gql`
-  query loanHistories($account: String!, $skip: Int)  {
-    loanHistories(where: {user_: {id: $account}}, skip: $skip , first: 10, orderBy: borrowTime
-      orderDirection: desc) {
+  query loanHistories($account: String!, $skip: Int, $sortField: String!, $sortDirection: String!)  {
+    loanHistories(where: {user_: {id: $account}}, skip: $skip , first: 10, orderBy: $sortField
+      orderDirection: $sortDirection) {
       borrowAmount
       borrowTime
       repayAmount
       repayTime
       rewardUser
+      processTime
       stakeAmount
       stakeId
       type
@@ -26,6 +27,7 @@ export interface HistoryItem {
   repayAmount: string | number,
   repayTime: number,
   rewardUser: number,
+  processTime: string | number,
   stakeAmount: any,
   type: string,
   stakeId: string,
@@ -39,14 +41,16 @@ export interface HistoryResponses {
 /**
  * Fetch top addresses by volume
  */
-export async function fetchLoansHistory(account: any, page: number): Promise<{
+export async function fetchLoansHistory(account: any, page: number, sortField: string, sortDirection: boolean): Promise<{
   data: HistoryItem[]
 }> {
   try {
     const data = await loansClients.request<HistoryResponses>(LOANS_HISTORY, {
       client: loansClients,
       account,
-      skip: (page - 1) * 10
+      skip: (page - 1) * 10,
+      sortField,
+      sortDirection: sortDirection ? 'desc' : 'asc'
     })
 
     return {

@@ -11,11 +11,11 @@ const QUERY_SETTINGS_IMMUTABLE = {
   refetchOnWindowFocus: false,
 }
 // Approve contract borrow
-export const useLoansHistory = (page: number) => {
+export const useLoansHistory = (page: number, sortField: string, sortDirection: boolean ) => {
   const { account } = useActiveWeb3React()
   const { data, isLoading, refetch } = useQuery({
-    queryKey: [`fetchLoansHistory`, account, page],
-    queryFn: () => fetchLoansHistory(account?.toLowerCase(), page),
+    queryKey: [`fetchLoansHistory`, account, page, sortField, sortDirection],
+    queryFn: () => fetchLoansHistory(account?.toLowerCase(), page, sortField, sortDirection),
     ...QUERY_SETTINGS_IMMUTABLE,
   })
   return {data: data?.data, isLoading, refetch}

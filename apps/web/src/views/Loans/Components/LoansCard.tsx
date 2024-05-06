@@ -220,6 +220,9 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
    
     if(refreshListLoans){ 
       refreshListLoans()
+    }
+    if(getVaultLoansBalance) {
+      getVaultLoansBalance()
      }
   }
 
