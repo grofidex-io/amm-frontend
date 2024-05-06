@@ -269,6 +269,9 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
             <Borrowing />
           </div> */}
         </StyledBoxTab>
+        <Heading scale="lg" mt="40px" mb="16px">
+          {t('Transactions')}
+        </Heading>
         <LoansHistory/>
       </StyledPage>
     </>

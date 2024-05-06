@@ -16,7 +16,6 @@ import { useLoansHistory } from '../hooks/useLoansHistory'
 
 const Wrapper = styled.div`
   width: 100%;
-  margin-top: 40px;
 `
 
 const LayoutScroll = styled(Box)`
@@ -206,14 +205,14 @@ export function LoansHistory() {
                       </Text>
                       </StyledScanLink>
                       </Flex>
-                      <Text textAlign="right">{formatNumber(Number(formatEther(item.borrowAmount)))} U2U</Text>
+                      <Text textAlign="right">{formatNumber(Number(formatEther(item.borrowAmount)), 2, 6)} U2U</Text>
                       <Text textAlign="right">
                         <Flex flexDirection="column">
-                          {formatNumber(Number(formatEther(item.repayAmount)))} U2U
-                          <Text color='gray' fontSize={12}>{item.type === 'LIQUIDATION' ? `Refund ${formatNumber(Number(formatEther(refund.toString())))} U2U` : ''}</Text>
+                          {formatNumber(Number(formatEther(item.repayAmount)), 2, 6)} U2U
+                          <Text color='gray' fontSize={12}>{item.type === 'LIQUIDATION' ? `Refund ${formatNumber(Number(formatEther(refund.toString())), 2, 6)} U2U` : ''}</Text>
                         </Flex>
                       </Text>
-                      <Text textAlign="right">{formatNumber(Number(formatEther(item.stakeAmount)))} U2U (#{item.stakeId})</Text>
+                      <Text textAlign="right">{formatNumber(Number(formatEther(item.stakeAmount)), 2, 6)} U2U (#{item.stakeId})</Text>
                       <Text textAlign="right">{ item?.processTime ? formatDate(dayjs.unix(Number(item.processTime)).utc()): '_'} UTC</Text>
                     </ResponsiveGrid>
                     <Break />
