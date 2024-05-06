@@ -41,7 +41,7 @@ const ResponsiveGrid = styled.div<{ widthfirstcol?: number }>`
       min-width: 120px;
     }
     &:nth-child(6) {
-      min-width: 170px;
+      min-width: 160px;
     }
     ${({ widthfirstcol }) =>
       widthfirstcol === 1.5 ? `

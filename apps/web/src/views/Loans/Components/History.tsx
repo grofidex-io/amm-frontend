@@ -1,10 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ArrowBackIcon, ArrowForwardIcon, AutoColumn, Box, Flex, Skeleton, SortArrowIcon, Text } from '@pancakeswap/uikit'
+import { ArrowBackIcon, ArrowForwardIcon, AutoColumn, Box, Flex, ScanLink, Skeleton, SortArrowIcon, Text } from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import dayjs from 'dayjs'
 import { formatEther } from 'ethers/lib/utils'
 import { useCallback, useState } from 'react'
+import { multiChainId } from 'state/info/constant'
+import { useChainNameByQuery } from 'state/info/hooks'
 import styled from 'styled-components'
+import { getBlockExploreLink } from 'utils'
 import { formatDate } from 'views/CakeStaking/components/DataSet/format'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import { SortButton, useSortFieldClassName } from 'views/V3Info/components/SortButton'
@@ -53,6 +56,19 @@ const ResponsiveGrid = styled.div`
 
 `
 
+const StyledScanLink = styled(ScanLink)`
+  transition: 0.3s ease;
+  &:hover {
+    text-decoration: none;
+    opacity: 0.65;
+  }
+  > div {
+    @media screen and (max-width: 575px) {
+      font-size: 14px;
+    }
+  }
+`
+
 const Image = styled.img`
   margin-bottom: 12px;
 `
@@ -95,6 +111,7 @@ export function LoansHistory() {
   const [sortField, setSortField] = useState(SORT_FIELD.processTime)
   const [sortDirection, setSortDirection] = useState<boolean>(true)
   const { t } = useTranslation()
+  const chainName = useChainNameByQuery()
   const handleSort = useCallback(
     (newField: string) => {
       setSortField(newField)
@@ -171,6 +188,10 @@ export function LoansHistory() {
                 return (
                   <>
                     <ResponsiveGrid key={item.id}>
+                      <Flex>
+                      <StyledScanLink
+                        href={getBlockExploreLink(item.txn, 'transaction', multiChainId[chainName])}
+                      >
                       <Text
                         textTransform="uppercase"
                         fontWeight={400}
@@ -183,6 +204,8 @@ export function LoansHistory() {
                       }>
                         {item.type}
                       </Text>
+                      </StyledScanLink>
+                      </Flex>
                       <Text textAlign="right">{formatNumber(Number(formatEther(item.borrowAmount)))} U2U</Text>
                       <Text textAlign="right">
                         <Flex flexDirection="column">
