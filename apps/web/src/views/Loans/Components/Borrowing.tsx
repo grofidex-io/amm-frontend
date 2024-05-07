@@ -1,6 +1,8 @@
 import { QueryObserverResult, RefetchOptions } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
 import NoData from 'components/NoData'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
+import { useBalance } from 'wagmi'
 import { BorrowItem } from '../data/fetchListBorrowing'
 import { CardLayout } from '../styles'
 import LoanLoading from './LoanLoading'
@@ -13,6 +15,8 @@ export default function Borrowing(props: {
     refetch: (options?: RefetchOptions | undefined) => Promise<QueryObserverResult<{ data: BorrowItem[]; }, Error>>;
   }) {
   const {data, isLoading } = props
+  const { account } = useAccountActiveChain()
+  const nativeBalance = useBalance({ address: account ?? undefined, watch: true })
   // const {totalRepayableU2U, totalInterestForBorrowingU2U, lastDueDate, setTotalRepayable, setTotalCollateral} = useContext(LoanContext)
   const stakeInfo = {
     id: '',
@@ -35,7 +39,7 @@ export default function Borrowing(props: {
       {
         isLoading ? <LoanLoading/> : (
           data && data?.map((item) => (
-            <LoansCard type stakeInfo={stakeInfo}  borrowing={item} key={item.id} refreshListLoans={props.refetch} />
+            <LoansCard type stakeInfo={stakeInfo}  borrowing={item} key={item.id} refreshListLoans={props.refetch} nativeBalance={nativeBalance}/>
           ))
         )
       }

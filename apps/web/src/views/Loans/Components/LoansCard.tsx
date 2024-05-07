@@ -127,16 +127,18 @@ type LoansProps = {
   type?: boolean,
   stakeInfo: StakedInfo,
   borrowing?: BorrowItem,
+  nativeBalance?: any,
   refreshListLoans?: (options?: RefetchOptions | undefined) => Promise<QueryObserverResult<{ data: BorrowItem[]; }, Error>>;
 }
 
-const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps) => {
+const LoansCard = ({ type, stakeInfo, borrowing, nativeBalance, refreshListLoans }: LoansProps) => {
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
   const [period, setPeriod] = useState<LoansPackageItem | undefined>(undefined)
   const borrowContract = useBorrowContract()
-  const { isApproved, isLoading, loansPackages, balanceVault, nativeBalance, approveForAll, getVaultLoansBalance } = useContext(LoanContext)
+  const { isApproved, isLoading, loansPackages, balanceVault, approveForAll, getVaultLoansBalance } = useContext(LoanContext)
   const { fetchWithCatchTxError } = useCatchTxError()
+
   const listPeriod = loansPackages.map((item: LoansPackageItem) => {
     return {
       label: item.symbolTime,
@@ -218,10 +220,11 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
      }
     }
   }
+  
 
-  const handleRepay = async () => {
+  const handleRepay =  async () => {
     const _repaymentAmount = ((borrowing?.borrowAmount * 1) * (Number(borrowing?.loanPackage.annualRate)/100)) + (borrowing?.borrowAmount * 1)
-    if(new BigNumber(_repaymentAmount).isGreaterThan(new BigNumber(nativeBalance.data?.value))) {
+    if(new BigNumber(_repaymentAmount).isGreaterThan(new BigNumber(nativeBalance?.data?.value))) {
       toastError(t('Failed'), 'Account balance is not enough')
       return 
     }
