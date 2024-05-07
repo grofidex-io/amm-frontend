@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/iframe-has-title */
 import { FARMS_API } from 'config/constants/endpoints'
-import Document, { Html, Head, Main, NextScript, DocumentContext } from 'next/document'
+import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
 
 class MyDocument extends Document {
@@ -40,7 +40,7 @@ class MyDocument extends Document {
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link rel="preconnect" href={FARMS_API} />
           <link
-            href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;800&amp;display=swap"
+            href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800&display=swap"
             rel="stylesheet"
           />
           <link rel="shortcut icon" href="/favicon.ico" />
