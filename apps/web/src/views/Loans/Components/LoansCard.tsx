@@ -132,10 +132,10 @@ type LoansProps = {
 
 const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps) => {
   const { t } = useTranslation()
-  const { toastSuccess } = useToast()
+  const { toastSuccess, toastError } = useToast()
   const [period, setPeriod] = useState<LoansPackageItem | undefined>(undefined)
   const borrowContract = useBorrowContract()
-  const { isApproved, isLoading, loansPackages, balanceVault, approveForAll, getVaultLoansBalance } = useContext(LoanContext)
+  const { isApproved, isLoading, loansPackages, balanceVault, nativeBalance, approveForAll, getVaultLoansBalance } = useContext(LoanContext)
   const { fetchWithCatchTxError } = useCatchTxError()
   const listPeriod = loansPackages.map((item: LoansPackageItem) => {
     return {
@@ -190,16 +190,21 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
   const callSmartContract = async (action: any, message: string) => {
     if(!borrowContract.account) return
     setIsCallContract(true)
+    try {
     const receipt = await fetchWithCatchTxError(() => action)
-    if (receipt?.status) {
-      setBorrowValue('')
-      onPercentSelectForSlider(0)
-      toastSuccess(
-        t('Success!'),
-        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {t(message)}
-        </ToastDescriptionWithTx>,
-      )
+      if (receipt?.status) {
+        setBorrowValue('')
+        onPercentSelectForSlider(0)
+        toastSuccess(
+          t('Success!'),
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t(message)}
+          </ToastDescriptionWithTx>,
+        )
+      }
+    }catch(error: any) {
+      const errorDescription = `${error.message} - ${error.data?.message}`
+      toastError(t('Failed'), errorDescription)
     }
     setIsCallContract(false)
   }
@@ -215,6 +220,11 @@ const LoansCard = ({ type, stakeInfo, borrowing, refreshListLoans }: LoansProps)
   }
 
   const handleRepay = async () => {
+    const _repaymentAmount = ((borrowing?.borrowAmount * 1) * (Number(borrowing?.loanPackage.annualRate)/100)) + (borrowing?.borrowAmount * 1)
+    if(new BigNumber(_repaymentAmount).isGreaterThan(new BigNumber(nativeBalance.data?.value))) {
+      toastError(t('Failed'), 'Account balance is not enough')
+      return 
+    }
     const mustReturn: any = await borrowContract.read.mustReturn([borrowing?.id])
     await callSmartContract(borrowContract.write.returnStakingNFT([ borrowing?.id], {value: mustReturn}), 'You have successfully repay.')
    
