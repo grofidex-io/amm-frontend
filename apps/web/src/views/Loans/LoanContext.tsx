@@ -5,6 +5,7 @@ import { useStakingContract } from 'hooks/useContract';
 import { MutableRefObject, createContext, useEffect, useRef, useState } from 'react';
 import { getBorrowAddress, getVaultLoansAddress } from 'utils/addressHelpers';
 import { publicClient } from 'utils/client';
+import { useBalance } from 'wagmi';
 import { LoansPackageItem, fetchLoansPackages } from './data/listLoansPackage';
 // Initiate Context
 export interface ContextApi {
@@ -22,8 +23,9 @@ export interface ContextApi {
   setTotalCollateral?: (value: number) => void,
   setTotalRepayable?: (value: number) => void,
   getVaultLoansBalance?: () => Promise<string | undefined>
+  nativeBalance: any
 }
-const LoanContext = createContext<ContextApi>({isApproved: false, isLoading: false, loansPackages: [], totalCollateral: 0, totalRepayable: 0, totalRepayableU2U: {current: 0}, totalInterestForBorrowingU2U: {current: 0}, lastDueDate: { current: 0 }, balanceVault: '0'});
+const LoanContext = createContext<ContextApi>({isApproved: false, isLoading: false, loansPackages: [], totalCollateral: 0, totalRepayable: 0, totalRepayableU2U: {current: 0}, totalInterestForBorrowingU2U: {current: 0}, lastDueDate: { current: 0 }, balanceVault: '0', nativeBalance: {}});
 // Provide Context
 export const LoanProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [isApproved, setApprove] = useState<boolean>(false)
@@ -37,6 +39,7 @@ export const LoanProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
   const [loansPackages, setLoansPackages] = useState<LoansPackageItem[]>([])
   const { fetchWithCatchTxError } = useCatchTxError()
   const { account, chainId } = useAccountActiveChain()
+  const nativeBalance = useBalance({ address: account ?? undefined })
   const stakingContract = useStakingContract()
 
   const getVaultLoansBalance = async (): Promise<string | undefined> => {
@@ -88,7 +91,7 @@ export const LoanProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
 
 
   return (
-    <LoanContext.Provider value={{isApproved, isLoading, loansPackages, totalCollateral, totalRepayable, totalRepayableU2U, totalInterestForBorrowingU2U, lastDueDate, balanceVault, checkApproved, approveForAll, setTotalCollateral, setTotalRepayable, getVaultLoansBalance}}>
+    <LoanContext.Provider value={{isApproved, isLoading, loansPackages, totalCollateral, totalRepayable, totalRepayableU2U, totalInterestForBorrowingU2U, lastDueDate, balanceVault, nativeBalance, checkApproved, approveForAll, setTotalCollateral, setTotalRepayable, getVaultLoansBalance}}>
       {children}
     </LoanContext.Provider>
   )
