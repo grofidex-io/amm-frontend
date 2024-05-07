@@ -417,7 +417,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, nativeBalance, refreshListLoans
             <StyledButton
               width="100%"
               className="button-hover"
-              disabled={disableRepay}
+              disabled={disableRepay || isLoading || isCallContract}
               onClick={handleRepay}
             >
               {isCallContract ? <Dots>Repaying</Dots> : (
