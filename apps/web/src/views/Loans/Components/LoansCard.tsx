@@ -137,6 +137,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, nativeBalance, refreshListLoans
   const [period, setPeriod] = useState<LoansPackageItem | undefined>(undefined)
   const borrowContract = useBorrowContract()
   const { isApproved, isLoading, loansPackages, balanceVault, approveForAll, getVaultLoansBalance } = useContext(LoanContext)
+  const [ currentBalanceValue, setCurrentBalanceValue ] = useState(balanceVault)
   const { fetchWithCatchTxError } = useCatchTxError()
   const listPeriod: any = []
 
@@ -219,9 +220,6 @@ const LoansCard = ({ type, stakeInfo, borrowing, nativeBalance, refreshListLoans
     await callSmartContract(borrowContract.write.borrow([parseEther(new BigNumber(_value).toFixed(18)), stakeInfo.id, period?.id]), 'You have successfully borrow.')
     if(refreshListLoans){ 
      refreshListLoans()
-     if(getVaultLoansBalance) {
-      getVaultLoansBalance()
-     }
     }
   }
   
@@ -238,20 +236,19 @@ const LoansCard = ({ type, stakeInfo, borrowing, nativeBalance, refreshListLoans
     if(refreshListLoans){ 
       refreshListLoans()
     }
-    if(getVaultLoansBalance) {
-      getVaultLoansBalance()
-     }
+
   }
 
   const handleBorrowWithVault = () => {
     handleBorrow(balanceVault.toString())
   }
 
+
   const [onShowLoansModal] = useModal(
     <LoansModal
       initialView={new BigNumber(balanceVault).isZero() ? LoansView.BORROWING : LoansView.AVAILABLE}
       borrowValue={borrowValue}
-      balanceVault={formatNumber(Number(balanceVault), 2, 6)}
+      balanceVault={formatNumber(Number(currentBalanceValue), 2, 6)}
       onConfirm={handleBorrowWithVault}
     />,
   )
@@ -265,9 +262,12 @@ const LoansCard = ({ type, stakeInfo, borrowing, nativeBalance, refreshListLoans
         if(vault) {
           _balanceValue = vault
         }
+        setCurrentBalanceValue(_balanceValue)
       }
       if(new BigNumber(borrowValue).isGreaterThan(new BigNumber(_balanceValue))) {
-        onShowLoansModal()
+        setTimeout(() => {
+          onShowLoansModal()
+        })
         return
       }
       handleBorrow()
@@ -275,6 +275,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, nativeBalance, refreshListLoans
         approveForAll()
       }
   }
+  
 
   const onBorrowInput = (_value) => {
     let value = _value
@@ -285,6 +286,8 @@ const LoansCard = ({ type, stakeInfo, borrowing, nativeBalance, refreshListLoans
     const percent = ((Number(value) / Number(maxBorrowU2U)) * Number(period?.maxBorrowRatio))
     onPercentSelectForSlider(percent)
   }
+
+
 
 
 
