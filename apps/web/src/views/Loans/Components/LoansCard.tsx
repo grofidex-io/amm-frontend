@@ -138,12 +138,15 @@ const LoansCard = ({ type, stakeInfo, borrowing, nativeBalance, refreshListLoans
   const borrowContract = useBorrowContract()
   const { isApproved, isLoading, loansPackages, balanceVault, approveForAll, getVaultLoansBalance } = useContext(LoanContext)
   const { fetchWithCatchTxError } = useCatchTxError()
+  const listPeriod: any = []
 
-  const listPeriod = loansPackages.map((item: LoansPackageItem) => {
-    return {
-      label: item.symbolTime,
-      value: item.id,
-      item
+  loansPackages.forEach((item: LoansPackageItem) => {
+    if(item.period) {
+      listPeriod.push({
+        label: item.symbolTime,
+        value: item.id,
+        item
+      })
     }
   })
   // const [amountStake, setAmountStake] = useState('0') 
