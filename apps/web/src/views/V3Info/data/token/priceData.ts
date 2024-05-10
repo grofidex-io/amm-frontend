@@ -435,6 +435,7 @@ export async function fetchPairPriceChartTokenData(
       }
     })
     averagePrice /= formattedHistory.length
+
     return {
       data: formattedHistory,
       maxPrice: parseFloat(maxQueryPrice),

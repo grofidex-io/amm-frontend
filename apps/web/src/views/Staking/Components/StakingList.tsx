@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Skeleton, Text } from '@pancakeswap/uikit'
+import NoData from 'components/NoData'
 import { useStakingList } from '../Hooks/useStakingList'
 import { BorderLayout, StyledIcon, StyledIconImage, StyledTextTitle } from '../style'
 import StakingItem from './StakingItem'
@@ -54,6 +55,11 @@ function StakingList() {
   }
 
   const renderList = () => {
+    if(!loading && (data?.staked.length === 0 && data?.unStake.length === 0 || !data)) {
+      return (
+        <NoData/>
+      )
+    }
     return (
       <>
         {data?.staked.map((e) => {

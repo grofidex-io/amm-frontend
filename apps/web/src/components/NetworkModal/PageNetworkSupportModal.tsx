@@ -24,7 +24,7 @@ export function PageNetworkSupportModal() {
   const historyManager = useHistory()
 
   const lastValidPath = historyManager?.history?.find((h) =>
-    ['/swap', 'liquidity', '/', '/info', '/v3Info'].includes(h),
+    ['/swap','/trade', 'liquidity', '/', '/info', '/v3Info'].includes(h),
   )
 
   const menuItems = useMenuItems()

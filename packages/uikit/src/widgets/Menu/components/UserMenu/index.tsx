@@ -67,10 +67,10 @@ const Menu = styled.div<{ $isOpen: boolean }>`
     border-radius: 0 0 8px 8px;
   }
 
-  ${({ theme }) => theme.mediaQueries.sm} {
-    backdrop-filter: blur(12px) saturate(200%) contrast(80%) brightness(80%);
-    background-color: ${({ theme }) => theme.colors.dropdownBlur};
-  }
+  // ${({ theme }) => theme.mediaQueries.sm} {
+  //   backdrop-filter: blur(12px) saturate(200%) contrast(80%) brightness(80%);
+  //   background-color: ${({ theme }) => theme.colors.dropdownBlur};
+  // }
 `;
 const StyledArrowIcon = styled.div`
   display: none;

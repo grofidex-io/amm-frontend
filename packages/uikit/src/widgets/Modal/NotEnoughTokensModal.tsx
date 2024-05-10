@@ -1,9 +1,9 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { styled, useTheme } from "styled-components";
+import { Button, OpenNewIcon, Text } from "../../components";
+import { Link } from "../../components/Link";
 import getThemeValue from "../../util/getThemeValue";
 import Modal from "./Modal";
-import { Link } from "../../components/Link";
-import { Text, Button, OpenNewIcon } from "../../components";
 
 interface NotEnoughTokensModalProps {
   tokenSymbol: string;
@@ -40,7 +40,7 @@ const NotEnoughTokensModal: React.FC<React.PropsWithChildren<NotEnoughTokensModa
           symbol: tokenSymbol,
         })}
       </Text>
-      <Button mt="24px" as="a" external href={tokenAddress ? `/swap?outputCurrency=${tokenAddress}` : "/swap"}>
+      <Button mt="24px" as="a" external href={tokenAddress ? `/trade?outputCurrency=${tokenAddress}` : "/trade"}>
         {t("Buy")} {tokenSymbol}
       </Button>
       {hideLocateAddress ? null : (

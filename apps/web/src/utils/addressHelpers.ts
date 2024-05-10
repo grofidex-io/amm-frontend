@@ -190,3 +190,11 @@ export const getRevenueSharingPoolGatewayAddress = (chainId?: number) => {
 export const getStakingAddress = (chainId?: number) => {
   return getAddressFromMap(addresses.staking, chainId)
 }
+
+export const getBorrowAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.borrow, chainId)
+}
+
+export const getVaultLoansAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.vault, chainId)
+}

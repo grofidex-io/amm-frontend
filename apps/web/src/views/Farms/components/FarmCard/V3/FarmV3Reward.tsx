@@ -13,7 +13,7 @@ export function FarmV3Reward() {
   const router = useRouter()
   const { data: balance } = useRewardBalance()
   const handleCollect = () => {
-    router.push(`/swap?outputCurrency=U2U&inputCurrency=${CAKE[ChainId.U2U_NEBULAS].address.toLowerCase()}`)
+    router.push(`/trade?outputCurrency=U2U&inputCurrency=${CAKE[ChainId.U2U_NEBULAS].address.toLowerCase()}`)
   }
 
   return (

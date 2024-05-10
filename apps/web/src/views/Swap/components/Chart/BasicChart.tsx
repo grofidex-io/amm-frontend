@@ -15,13 +15,34 @@ enum CHART_TYPE {
   CANDLE = 2
 }
 
+const StyledBox = styled(Box)`
+  --space: 75px;
+  height: calc(100% - var(--space));
+  width: 100%;
+  padding: 10px 0;
+  @media screen and (max-width: 991px) {
+    --space: 110px;
+  }
+  @media screen and (max-width: 575px) {
+    --space: 65px;
+    padding: 5px 0;
+  }
+`
 const StyledFlex  = styled(Flex)`
   width: 100%;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   @media screen and (max-width: 575px) {
     flex-direction: column;
     align-items: flex-start;
+  }
+`
+const StyledDisplayFlex = styled(Flex)`
+  --height: 75px;
+  min-height: var(--height);
+  @media screen and (max-width: 575px) {
+    --height: 65px;
   }
 `
 const IconImage = styled.div`
@@ -206,7 +227,7 @@ const BasicChart = ({
 
   return (
     <>
-      <Flex position="absolute" right="0" top={["-55px", "-55px", "-60px"]}>
+      <Flex justifyContent={["flex-end"]} position={["relative", "relative", "relative", "relative", "absolute"]} right="0" top={["auto", "auto", "auto", "auto", "-60px"]}>
         <IconImage onClick={() => { handleSetChartType(CHART_TYPE.LINE) }} className={chartType === CHART_TYPE.LINE ? 'active' : ''}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 21" fill="none">
             <g clip-path="url(#clip0_70_5252)">
@@ -244,7 +265,7 @@ const BasicChart = ({
         flexWrap="wrap"
       >
         <StyledFlex>
-          <Flex flexDirection="column" pt="12px" minHeight="77px">
+          <StyledDisplayFlex flexDirection="column" pt="12px">
             <PairPriceDisplay
               value={pairPrices?.length > 0 && valueToDisplay}
               inputSymbol={inputCurrency?.symbol}
@@ -257,7 +278,7 @@ const BasicChart = ({
             <Text small color="secondary">
               {hoverDate || currentDate}
             </Text>
-          </Flex>
+          </StyledDisplayFlex>
           <StyledListButton>
             {LIST_RESOLUTION.length > 0 && (
               <ButtonMenu activeIndex={chartType === CHART_TYPE.CANDLE ? resolutionIndex : timeWindow} onItemClick={handleSetTimeWindow} scale="sm">
@@ -271,7 +292,7 @@ const BasicChart = ({
           </StyledListButton>
         </StyledFlex>
       </Flex>
-      <Box height={isMobile ? '100%' : chartHeight} p={isMobile ? '0px' : '16px 0'} width="100%">
+      <StyledBox>
         {chartType === CHART_TYPE.LINE ? (
           <SwapLineChart
             data={pairPrices}
@@ -284,7 +305,7 @@ const BasicChart = ({
         ) : (
           <TrandingViewCustom resolution={resolution} symbol={`${inputCurrency?.symbol}/${outputCurrency?.symbol}-${inputCurrency?.wrapped.address}_${outputCurrency?.wrapped.address}`}/>
         )}
-      </Box>
+      </StyledBox>
       <Script src="../../../charting_library/charting_library.js" strategy="lazyOnload"/>
     </>
   )

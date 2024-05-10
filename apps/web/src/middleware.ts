@@ -11,6 +11,7 @@ export const config = {
   matcher: [
     '/',
     '/swap',
+    '/trade',
     '/liquidity',
     '/pools',
     '/cake-staking',

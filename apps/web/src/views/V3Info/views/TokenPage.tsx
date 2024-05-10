@@ -189,9 +189,10 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                   <NextLinkFromReactRouter to={`/${v3InfoPath}${chainPath}${infoTypeParam}`}>
                     <Text color="primary">{t('Info')}</Text>
                   </NextLinkFromReactRouter>
-                  <NextLinkFromReactRouter to={`/${v3InfoPath}${chainPath}/tokens${infoTypeParam}`}>
+                  <Text color="text">{t('Tokens')}</Text>
+                  {/* <NextLinkFromReactRouter to={`/${v3InfoPath}${chainPath}/tokens${infoTypeParam}`}>
                     <Text color="primary">{t('Tokens')}</Text>
-                  </NextLinkFromReactRouter>
+                  </NextLinkFromReactRouter> */}
                   <Flex>
                     <Text mr="8px">{tokenSymbol}</Text>
                     <Text>{`(${truncateHash(address)})`}</Text>
@@ -251,7 +252,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                     </StyledButton>
                   </NextLinkFromReactRouter>
                   <NextLinkFromReactRouter
-                    to={`/swap?outputCurrency=${address}&chain=${CHAIN_QUERY_NAME[multiChainId[chainName]]}`}
+                    to={`/trade?outputCurrency=${address}&chain=${CHAIN_QUERY_NAME[multiChainId[chainName]]}`}
                   >
                     <StyledButton className="button-hover">{t('Trade')}</StyledButton>
                   </NextLinkFromReactRouter>

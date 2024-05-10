@@ -1,4 +1,3 @@
-import { ChainId } from '@pancakeswap/chains'
 import dayjs, { ManipulateType } from 'dayjs'
 import { GraphQLClient } from 'graphql-request'
 import { useMemo } from 'react'
@@ -9,6 +8,7 @@ import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { v3InfoClients } from 'utils/graphql'
 import { useBlockFromTimeStampQuery } from 'views/Info/hooks/useBlocksFromTimestamps'
 
+import { ChainId } from '@pancakeswap/chains'
 import { useQuery } from '@tanstack/react-query'
 import BigNumber from 'bignumber.js'
 import { DURATION_INTERVAL, SUBGRAPH_START_BLOCK } from '../constants'

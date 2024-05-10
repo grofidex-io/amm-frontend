@@ -19,6 +19,7 @@ const getPathList = (t: ContextApi['t']): PathList => {
     paths: {
       '/': { title: t('Home') },
       '/swap': { basePath: true, title: t('Exchange') },
+      '/trade': { basePath: true, title: t('Exchange') },
       '/limit-orders': { basePath: true, title: t('Limit Orders') },
       '/add': { basePath: true, title: t('Add Liquidity') },
       '/remove': { basePath: true, title: t('Remove Liquidity') },
@@ -55,6 +56,7 @@ const getPathList = (t: ContextApi['t']): PathList => {
       '/pancake-squad': { basePath: true, title: t('GroFi DEX Squad') },
       '/pottery': { basePath: true, title: t('Pottery') },
       '/staking': { title: t('Staking') },
+      '/loans': { title: t('Loans') },
     },
     defaultTitleSuffix: t('GroFi DEX'),
   }

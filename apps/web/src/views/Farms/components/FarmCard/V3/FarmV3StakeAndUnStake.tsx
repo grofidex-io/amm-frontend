@@ -260,6 +260,7 @@ const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<Far
           <StyledButton
             className="button-hover"
             width={['120px']}
+            ml="auto"
             style={{ alignSelf: 'center' }}
             disabled={isPending}
             onClick={handleStake}
@@ -271,6 +272,7 @@ const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<Far
             className="button-hover"
             variant="secondary"
             width={['120px']}
+            ml="auto"
             style={{ alignSelf: 'center' }}
             disabled={isPending}
             onClick={handleUnStake}

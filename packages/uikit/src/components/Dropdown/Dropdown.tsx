@@ -9,6 +9,9 @@ const getLeft = ({ position }: PositionProps) => {
   if (position === "top-right") {
     return "100%";
   }
+  if (position === "bottom-left") {
+    return "0";
+  }
   return "50%";
 };
 
@@ -19,6 +22,13 @@ const getBottom = ({ position }: PositionProps) => {
   return "auto";
 };
 
+const getTransform = ({ position }: PositionProps) => {
+  if (position === "bottom-left") {
+    return "unset";
+  }
+  return "translate(-50%, 0)";
+};
+
 const DropdownContent = styled.div.withConfig({
   shouldForwardProp,
 })<{ position: Position }>`
@@ -26,11 +36,11 @@ const DropdownContent = styled.div.withConfig({
   display: flex;
   flex-direction: column;
   position: absolute;
-  transform: translate(-50%, 0);
+  transform: ${getTransform};
   left: ${getLeft};
   bottom: ${getBottom};
   background-color: ${({ theme }) => theme.colors.backgroundItem};
-  padding: 16px;
+  padding: ${({ position }) => (position === 'bottom-left' ? '0' : '16px')};
   max-height: 0px;
   overflow: hidden;
   z-index: ${({ theme }) => theme.zIndices.dropdown};
@@ -41,9 +51,12 @@ const DropdownContent = styled.div.withConfig({
   pointer-events: none;
   box-shadow: ${({ theme }) => theme.shadows.dropdown};
 
-  ${({ theme }) => theme.mediaQueries.sm} {
-    backdrop-filter: blur(12px) saturate(200%) contrast(80%) brightness(80%);
-    background-color: ${({ theme }) => theme.colors.dropdownBlur};
+  // ${({ theme }) => theme.mediaQueries.sm} {
+  //   backdrop-filter: blur(12px) saturate(200%) contrast(80%) brightness(80%);
+  //   background-color: ${({ theme }) => theme.colors.dropdownBlur};
+  // }
+  @media screen and (min-width: 992px) and (max-width: 1199px) {
+    background-color: ${({ theme }) => theme.colors.backgroundItem};
   }
 `;
 

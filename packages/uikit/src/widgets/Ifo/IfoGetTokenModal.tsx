@@ -1,11 +1,11 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { useMatchBreakpoints } from "../../contexts";
-import { Modal, ModalBody } from "../Modal";
-import { Text } from "../../components/Text";
-import { Link } from "../../components/Link";
 import { Button } from "../../components/Button";
 import { Image } from "../../components/Image";
+import { Link } from "../../components/Link";
 import { OpenNewIcon } from "../../components/Svg";
+import { Text } from "../../components/Text";
+import { useMatchBreakpoints } from "../../contexts";
+import { Modal, ModalBody } from "../Modal";
 
 interface Props {
   symbol: string;
@@ -27,7 +27,7 @@ const IfoGetTokenModal: React.FC<React.PropsWithChildren<Props>> = ({ symbol, ad
         <Button
           as={Link}
           external
-          href={`/swap?outputCurrency=${address}`}
+          href={`/trade?outputCurrency=${address}`}
           color="invertedContrast"
           endIcon={<OpenNewIcon color="invertedContrast" />}
           minWidth="100%" // Bypass the width="fit-content" on Links

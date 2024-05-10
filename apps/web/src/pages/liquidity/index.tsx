@@ -235,23 +235,25 @@ export default function PoolListPage({ isPair }: { isPair?: boolean }) {
 
   const mainSection = useMemo(() => {
     let resultSection: null | ReactNode | (ReactNode[] | null | undefined)[] = null
+    // Order should be v3, stable, v2
+    const sections = showAllPositionButton
+    ? [filteredWithQueryFilter]
+    : [v3PairsSection, stablePairsSection, v2PairsSection]
+    const noData = sections.flat(1)?.filter(n => n)?.length === 0
     if (v3Loading || v2Loading) {
       resultSection = (
         <Text color="textSubtle" textAlign="center">
           <Dots>{t('Loading')}</Dots>
         </Text>
       )
-    } else if (!v2PairsSection && !stablePairsSection && !filteredWithQueryFilter) {
+    } else if (noData) {
       resultSection = (
         <Text color="textSubtle" textAlign="center">
           {t('No liquidity found.')}
         </Text>
       )
     } else {
-      // Order should be v3, stable, v2
-      const sections = showAllPositionButton
-        ? [filteredWithQueryFilter]
-        : [v3PairsSection, stablePairsSection, v2PairsSection]
+
 
       resultSection = selectedTypeIndex ? sections.filter((_, index) => selectedTypeIndex === index + 1) : sections
     }

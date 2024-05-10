@@ -1,7 +1,5 @@
 import { ChainId } from '@pancakeswap/chains'
 import { useQuery } from '@tanstack/react-query'
-import BigNumber from 'bignumber.js'
-import { TRADING_REWARD_API } from 'config/constants/endpoints'
 import { RewardType } from 'views/TradingReward/hooks/useAllTradingRewardPair'
 
 export interface CampaignVolume {
@@ -51,25 +49,32 @@ const useCampaignIdInfo = ({ campaignId, type }: UseCampaignIdInfoProps): Campai
 
     queryFn: async () => {
       try {
-        const response = await fetch(`${TRADING_REWARD_API}/campaign/campaignId/${campaignId}/address/0x/type/${type}`)
-        const { data }: { data: CampaignIdInfoResponse } = await response.json()
-        const totalVolume = data.tradingFeeArr
-          .map((i) => i.volume)
-          .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
+        // const response = await fetch(`${TRADING_REWARD_API}/campaign/campaignId/${campaignId}/address/0x/type/${type}`)
+        // const { data }: { data: CampaignIdInfoResponse } = await response.json()
+        // const totalVolume = data.tradingFeeArr
+        //   .map((i) => i.volume)
+        //   .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
 
-        const totalEstimateRewardUSD = data.tradingFeeArr
-          .map((i) => i.estimateRewardUSD)
-          .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
+        // const totalEstimateRewardUSD = data.tradingFeeArr
+        //   .map((i) => i.estimateRewardUSD)
+        //   .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
 
-        const totalTradingFee = data.tradingFeeArr
-          .map((i) => i.tradingFee)
-          .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
+        // const totalTradingFee = data.tradingFeeArr
+        //   .map((i) => i.tradingFee)
+        //   .reduce((a, b) => new BigNumber(a).plus(b).toNumber(), 0)
 
+        // const newData: CampaignIdInfoDetail = {
+        //   ...data,
+        //   totalVolume,
+        //   totalEstimateRewardUSD,
+        //   totalTradingFee,
+        // }
         const newData: CampaignIdInfoDetail = {
-          ...data,
-          totalVolume,
-          totalEstimateRewardUSD,
-          totalTradingFee,
+          total: 0,
+          totalVolume: 0,
+          totalEstimateRewardUSD: 0,
+          totalTradingFee: 0,
+          tradingFeeArr: []
         }
         return newData
       } catch (error) {

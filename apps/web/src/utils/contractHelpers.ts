@@ -8,6 +8,7 @@ import {
   getBCakeFarmBoosterProxyFactoryAddress,
   getBCakeFarmBoosterV3Address,
   getBCakeFarmBoosterVeCakeAddress,
+  getBorrowAddress,
   getBunnyFactoryAddress,
   getCakeFlexibleSideVaultAddress,
   getCakeVaultAddress,
@@ -43,7 +44,7 @@ import {
   getV3AirdropAddress,
   getV3MigratorAddress,
   getVCakeAddress,
-  getVeCakeAddress,
+  getVeCakeAddress
 } from 'utils/addressHelpers'
 
 // ABI
@@ -96,6 +97,7 @@ import { tradingCompetitionFanTokenABI } from 'config/abi/tradingCompetitionFanT
 import { tradingCompetitionMoDABI } from 'config/abi/tradingCompetitionMoD'
 import { tradingCompetitionMoboxABI } from 'config/abi/tradingCompetitionMobox'
 import { tradingRewardABI } from 'config/abi/tradingReward'
+import { treasuryBorrowABI } from 'config/abi/treasuryBorrow'
 import { v3AirdropABI } from 'config/abi/v3Airdrop'
 import { v3MigratorABI } from 'config/abi/v3Migrator'
 import { vCakeABI } from 'config/abi/vCake'
@@ -543,6 +545,15 @@ export const getStakingContract = (signer?: WalletClient, chainId?: number) => {
   return getContract({
     abi: groFiStakingManagerAbi,
     address: getStakingAddress(chainId),
+    signer,
+    chainId,
+  })
+}
+
+export const getBorrowContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: treasuryBorrowABI,
+    address: getBorrowAddress(chainId),
     signer,
     chainId,
   })

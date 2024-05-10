@@ -156,23 +156,27 @@ const useAllTradingRewardPair = ({ status, type }: UseAllTradingRewardPairProps)
 
     queryFn: async () => {
       try {
-        const campaignsResponse = await fetch(`${TRADING_REWARD_API}/campaign/status/${status}/type/${type}`)
-        const campaignsResult = await campaignsResponse.json()
-        const campaignIds: Array<string> = campaignsResult.data
+        // const campaignsResponse = await fetch(`${TRADING_REWARD_API}/campaign/status/${status}/type/${type}`)
+        // const campaignsResult = await campaignsResponse.json()
+        const campaignIds: Array<string> = []
 
-        const [campaignPairs, campaignIdsIncentive, qualification, rewardInfo] = await Promise.all([
-          fetchCampaignPairs(campaignIds, type),
-          fetchCampaignIdsIncentive(contract, campaignIds),
-          fetUserQualification(contract),
-          fetchRewardInfo(campaignIds, type),
-        ])
+        // const [campaignPairs, campaignIdsIncentive, qualification, rewardInfo] = await Promise.all([
+        //   fetchCampaignPairs(campaignIds, type),
+        //   fetchCampaignIdsIncentive(contract, campaignIds),
+        //   fetUserQualification(contract),
+        //   fetchRewardInfo(campaignIds, type),
+        // ])
 
         return {
           campaignIds,
-          campaignPairs,
-          campaignIdsIncentive,
-          qualification,
-          rewardInfo,
+          campaignPairs: {},
+          campaignIdsIncentive: [],
+          qualification: {
+            thresholdLockTime: 0,// new BigNumber(result[0].toString()).toNumber(),
+            thresholdLockAmount: 0,// new BigNumber(result[1].toString()).toNumber(),
+            minAmountUSD: "",// new BigNumber(result[3].toString()).toJSON(),
+          },
+          rewardInfo: {},
         }
       } catch (error) {
         console.info(`Fetch All trading Reward Pair Error: ${error}`)

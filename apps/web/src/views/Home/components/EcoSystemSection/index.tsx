@@ -174,7 +174,7 @@ const useTradeBlockData = () => {
         ctaTitle: t('Trade Now'),
         image: `${ASSET_CDN}/web/landing/trade-swap.png`,
         defaultImage: `${ASSET_CDN}/web/landing/trade-swap-purple.png`,
-        path: '/swap',
+        path: '/trade',
       },
       {
         title: t('Liquidity'),
