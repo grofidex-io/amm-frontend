@@ -221,6 +221,9 @@ const LoansCard = ({ type, stakeInfo, borrowing, nativeBalance, refreshListLoans
     if(refreshListLoans){ 
      refreshListLoans()
     }
+    if(getVaultLoansBalance) {
+      getVaultLoansBalance()
+    }
   }
   
 
@@ -236,7 +239,9 @@ const LoansCard = ({ type, stakeInfo, borrowing, nativeBalance, refreshListLoans
     if(refreshListLoans){ 
       refreshListLoans()
     }
-
+    if(getVaultLoansBalance) {
+      getVaultLoansBalance()
+    }
   }
 
   const handleBorrowWithVault = () => {
