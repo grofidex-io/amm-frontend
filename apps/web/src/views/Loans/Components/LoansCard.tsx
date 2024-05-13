@@ -251,7 +251,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, nativeBalance, refreshListLoans
 
   const [onShowLoansModal] = useModal(
     <LoansModal
-      initialView={new BigNumber(balanceVault).isZero() ? LoansView.BORROWING : LoansView.AVAILABLE}
+      initialView={new BigNumber(currentBalanceValue).isZero() ? LoansView.BORROWING : LoansView.AVAILABLE}
       borrowValue={borrowValue}
       balanceVault={formatNumber(Number(currentBalanceValue), 2, 6)}
       onConfirm={handleBorrowWithVault}
