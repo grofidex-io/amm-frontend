@@ -221,8 +221,8 @@ const LoansCard = ({ type, stakeInfo, borrowing, nativeBalance, refreshListLoans
     if(refreshListLoans){ 
      refreshListLoans()
     }
-    if(getVaultLoansBalance) {
-      getVaultLoansBalance()
+    if(_fetchBalanceVault) {
+      _fetchBalanceVault()
     }
   }
   
@@ -239,8 +239,8 @@ const LoansCard = ({ type, stakeInfo, borrowing, nativeBalance, refreshListLoans
     if(refreshListLoans){ 
       refreshListLoans()
     }
-    if(getVaultLoansBalance) {
-      getVaultLoansBalance()
+    if(_fetchBalanceVault) {
+      _fetchBalanceVault()
     }
   }
 
@@ -258,21 +258,26 @@ const LoansCard = ({ type, stakeInfo, borrowing, nativeBalance, refreshListLoans
     />,
   )
 
+  const _fetchBalanceVault = async () => {
+    let _balanceValue: any = balanceVault
+    if(getVaultLoansBalance) {
+      const vault = await getVaultLoansBalance()
+      if(vault) {
+        _balanceValue = vault
+      }
+      setCurrentBalanceValue(_balanceValue)
+    }
+    return _balanceValue
+  }
+
   const handleAction = async () => {
     if(errorMinBorrow) return
     if(isApproved) {
-      let _balanceValue = balanceVault
-      if(getVaultLoansBalance) {
-        const vault = await getVaultLoansBalance()
-        if(vault) {
-          _balanceValue = vault
-        }
-        setCurrentBalanceValue(_balanceValue)
-      }
+      const _balanceValue = await _fetchBalanceVault()
       if(new BigNumber(borrowValue).isGreaterThan(new BigNumber(_balanceValue))) {
         setTimeout(() => {
           onShowLoansModal()
-        })
+        }, 500)
         return
       }
       handleBorrow()
