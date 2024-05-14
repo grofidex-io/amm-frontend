@@ -1,7 +1,7 @@
-import React from 'react'
-import { styled } from 'styled-components'
 import { Flex, HelpIcon, Text, useTooltip } from '@pancakeswap/uikit'
 import { Pool } from '@pancakeswap/widgets-internal'
+import React from 'react'
+import { styled } from 'styled-components'
 
 import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
@@ -34,7 +34,7 @@ const Liquidity: React.FC<React.PropsWithChildren<LiquidityProps>> = ({ liquidit
   const { t } = useTranslation()
   const displayLiquidity =
     liquidity && liquidity.gt(0)
-      ? `$${Number(liquidity).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+      ? `$${Number(liquidity).toLocaleString('en-US', { maximumFractionDigits: 0 })}`
       : `$0`
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t('Total value of the funds in this farm’s liquidity pair'),

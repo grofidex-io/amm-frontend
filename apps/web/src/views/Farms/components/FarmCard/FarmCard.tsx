@@ -73,7 +73,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
 
   const totalValueFormatted =
     liquidity && liquidity.gt(0)
-      ? `$${liquidity.toNumber().toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+      ? `$${liquidity.toNumber().toLocaleString('en-US', { maximumFractionDigits: 0 })}`
       : ''
 
   const lpLabel = farm.lpSymbol && farm.lpSymbol.replace(/pancake/gi, '')

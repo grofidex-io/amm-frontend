@@ -294,12 +294,12 @@ export function AprCalculator({
   const combinedAprWithBoosted = hasFarmApr
     ? +apr.toSignificant(6) + +positionFarmApr * (isBoosted ? boostMultiplier : 1)
     : +apr.toSignificant(6)
-  const aprDisplay = combinedApr.toLocaleString(undefined, {
+  const aprDisplay = combinedApr.toLocaleString('en-US', {
     maximumFractionDigits: 2,
     minimumFractionDigits: 0,
   })
 
-  const boostedAprDisplay = combinedAprWithBoosted.toLocaleString(undefined, {
+  const boostedAprDisplay = combinedAprWithBoosted.toLocaleString('en-US', {
     maximumFractionDigits: 2,
     minimumFractionDigits: 0,
   })

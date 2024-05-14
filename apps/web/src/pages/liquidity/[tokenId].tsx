@@ -1064,7 +1064,7 @@ function PositionHistoryRow({
   const position0AmountString = useMemo(() => {
     const amount0Number = +positionTx.amount0
     if (amount0Number > 0) {
-      return amount0Number.toLocaleString(undefined, {
+      return amount0Number.toLocaleString('en-US', {
         maximumFractionDigits: 6,
         maximumSignificantDigits: 6,
       })
@@ -1075,7 +1075,7 @@ function PositionHistoryRow({
   const position1AmountString = useMemo(() => {
     const amount1Number = +positionTx.amount1
     if (amount1Number > 0) {
-      return amount1Number.toLocaleString(undefined, {
+      return amount1Number.toLocaleString('en-US', {
         maximumFractionDigits: 6,
         maximumSignificantDigits: 6,
       })

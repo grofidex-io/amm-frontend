@@ -1,4 +1,4 @@
-import { RowType } from '@pancakeswap/uikit'
+import { Flex, RowType, Text } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { formatBigInt, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import latinise from '@pancakeswap/utils/latinise'
@@ -71,6 +71,9 @@ const TableBody = styled.tbody`
 `
 const TableContainer = styled.div`
   position: relative;
+`
+const Image = styled.img`
+  margin-bottom: 12px;
 `
 
 const getV2FarmEarnings = (farm: V2Farm) => {
@@ -266,6 +269,8 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
     return rowData.map(generateSortedRow)
   }, [farms, generateRow])
 
+
+
   return (
     <Container id="farms-table">
       {header}
@@ -295,6 +300,13 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
                   />
                 )
               })}
+
+            {sortedRows.length === 0 && (
+              <Flex mt="16px" mb="20px" flexDirection="column" alignItems="center" justifyContent="center">
+                <Image src='/images/no-data.svg' />
+                <Text>No Data</Text>
+              </Flex>
+            )}
             </TableBody>
           </StyledTable>
         </TableWrapper>

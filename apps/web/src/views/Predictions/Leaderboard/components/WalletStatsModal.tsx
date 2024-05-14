@@ -129,7 +129,7 @@ const WalletStatsModal: React.FC<React.PropsWithChildren<WalletStatsModalProps>>
               {isLoading ? (
                 <Skeleton />
               ) : (
-                <Text fontWeight="bold">{`${result?.winRate?.toLocaleString(undefined, {
+                <Text fontWeight="bold">{`${result?.winRate?.toLocaleString('en-US', {
                   minimumFractionDigits: 0,
                   maximumFractionDigits: 2,
                 })}%`}</Text>
