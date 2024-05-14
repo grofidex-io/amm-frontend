@@ -149,7 +149,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({ f
               removed={removed}
               scanAddress={{ link: getBlockExploreLink(lpAddress, 'address', chainId), chainId }}
               infoAddress={infoUrl}
-              totalValueFormatted={`$${parseInt(farm.activeTvlUSD ?? '0').toLocaleString(undefined, {
+              totalValueFormatted={`$${parseInt(farm.activeTvlUSD ?? '0').toLocaleString('en-US', {
                 maximumFractionDigits: 0,
               })}`}
               totalValueLabel={t('Staked Liquidity')}

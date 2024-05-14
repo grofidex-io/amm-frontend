@@ -63,7 +63,7 @@ export const UnitDisplay: React.FC<React.PropsWithChildren> = () => {
 
   const cakeToUSD = (input: string) => {
     const convertedToUSD = parseFloat(input) * CAKE_PRICE;
-    return `~${convertedToUSD.toLocaleString(undefined, {
+    return `~${convertedToUSD.toLocaleString('en-US', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     })} USD`;
@@ -108,7 +108,7 @@ export const SwitchUnits: React.FC<React.PropsWithChildren> = () => {
   });
 
   const currencyValue = !Number.isNaN(parseFloat(values[conversionUnit]))
-    ? parseFloat(values[conversionUnit]).toLocaleString(undefined, {
+    ? parseFloat(values[conversionUnit]).toLocaleString('en-US', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       })

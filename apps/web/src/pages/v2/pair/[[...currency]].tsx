@@ -160,7 +160,7 @@ export default function PoolV2Page() {
                 <Text fontSize="24px" fontWeight={600}>
                   $
                   {totalUSDValue
-                    ? totalUSDValue.toLocaleString(undefined, {
+                    ? totalUSDValue.toLocaleString('en-US', {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       })

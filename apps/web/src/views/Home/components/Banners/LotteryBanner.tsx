@@ -84,7 +84,7 @@ const LotteryPrice: React.FC<React.PropsWithChildren> = () => {
           <Skeleton height={20} width={90} display="inline-block" />
         ) : (
           t('Win $%prize% in Lottery', {
-            prize: prizeTotal.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }),
+            prize: prizeTotal.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }),
           })
         )}
       </>

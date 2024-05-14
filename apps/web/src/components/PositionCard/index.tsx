@@ -1,23 +1,23 @@
-import { useMemo, useContext } from 'react'
-import { Currency, CurrencyAmount, Pair, Percent } from '@pancakeswap/sdk'
-import { Text, Card, CardBody, Flex, CardProps, TooltipText, useTooltip, Link, AutoColumn } from '@pancakeswap/uikit'
-import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import useTotalSupply from 'hooks/useTotalSupply'
-import { useStablecoinPriceAmount } from 'hooks/useStablecoinPrice'
-import { useAccount } from 'wagmi'
+import { Currency, CurrencyAmount, Pair, Percent } from '@pancakeswap/sdk'
+import { AutoColumn, Card, CardBody, CardProps, Flex, Link, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
+import { useStablecoinPriceAmount } from 'hooks/useStablecoinPrice'
+import useTotalSupply from 'hooks/useTotalSupply'
+import { useContext, useMemo } from 'react'
+import { styled } from 'styled-components'
 import { useGetRemovedTokenAmounts } from 'views/RemoveLiquidity/RemoveStableLiquidity/hooks/useStableDerivedBurnInfo'
 import { StableConfigContext } from 'views/Swap/hooks/useStableConfig'
+import { useAccount } from 'wagmi'
 
 import { useLPApr } from 'state/swap/useLPApr'
 import { useTokenBalance } from 'state/wallet/hooks'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 
-import { LightCard } from '../Card'
-import { DoubleCurrencyLogo } from '../Logo'
-import { RowBetween, RowFixed } from '../Layout/Row'
 import { formatAmount } from '../../utils/formatInfoNumbers'
+import { LightCard } from '../Card'
+import { RowBetween, RowFixed } from '../Layout/Row'
+import { DoubleCurrencyLogo } from '../Logo'
 
 const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -166,7 +166,7 @@ function MinimalPositionCardView({
                   <Flex flexDirection="column" alignItems="flex-end">
                     <Text>{userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}</Text>
                     {Number.isFinite(totalUSDValue) && (
-                      <Text small color="textSubtle">{`(~${totalUSDValue.toLocaleString(undefined, {
+                      <Text small color="textSubtle">{`(~${totalUSDValue.toLocaleString('en-US', {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       })} USD)`}</Text>

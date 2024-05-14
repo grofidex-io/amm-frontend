@@ -1,15 +1,15 @@
-import { Skeleton, Heading, Text } from '@pancakeswap/uikit'
-import { styled } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import ScoreHeader from '../../../components/YourScore/ScoreHeader'
+import { Heading, Skeleton, Text } from '@pancakeswap/uikit'
+import { styled } from 'styled-components'
+import { LIVE } from '../../../../../config/constants/trading-competition/phases'
 import RibbonWithImage from '../../../components/RibbonWithImage'
-import { UserLeaderboardSharedInformation, CompetitionProps } from '../../../types'
+import ScoreCard from '../../../components/YourScore/ScoreCard'
+import ScoreHeader from '../../../components/YourScore/ScoreHeader'
+import UserRankBox from '../../../components/YourScore/UserRankBox'
+import CakersShare from '../../../pngs/MoD-cakers-share.png'
 import FlippersShare from '../../../pngs/MoD-flippers-share.png'
 import StormShare from '../../../pngs/MoD-storm-share.png'
-import CakersShare from '../../../pngs/MoD-cakers-share.png'
-import ScoreCard from '../../../components/YourScore/ScoreCard'
-import UserRankBox from '../../../components/YourScore/UserRankBox'
-import { LIVE } from '../../../../../config/constants/trading-competition/phases'
+import { CompetitionProps, UserLeaderboardSharedInformation } from '../../../types'
 import ModUserPrizeGrid from './ModUserPrizeGrid'
 
 const Wrapper = styled.div`
@@ -74,7 +74,7 @@ const ModYourScore: React.FC<React.PropsWithChildren<MoDYourScoreProps>> = ({
                 </Heading>
                 <Text>
                   $
-                  {(userLeaderboardInformation.darVolume as unknown as number).toLocaleString(undefined, {
+                  {(userLeaderboardInformation.darVolume as unknown as number).toLocaleString('en-US', {
                     maximumFractionDigits: 2,
                     minimumFractionDigits: 0,
                   })}

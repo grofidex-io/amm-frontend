@@ -63,7 +63,7 @@ export const PayoutRow: React.FC<React.PropsWithChildren<PayoutRowProps>> = ({
   ...props
 }) => {
   const { t } = useTranslation()
-  const formattedMultiplier = `${multiplier.toLocaleString(undefined, { maximumFractionDigits: 2 })}x`
+  const formattedMultiplier = `${multiplier.toLocaleString('en-US', { maximumFractionDigits: 2 })}x`
   const config = useConfig()
 
   return (
