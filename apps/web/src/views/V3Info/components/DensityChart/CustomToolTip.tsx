@@ -42,7 +42,7 @@ function CustomToolTip({ chartProps, poolData, currentPrice }: CustomToolTipProp
           </Text>
           <Text>
             {price0
-              ? Number(price0).toLocaleString(undefined, {
+              ? Number(price0).toLocaleString('en-US', {
                   minimumSignificantDigits: 1,
                 })
               : ''}{' '}
@@ -55,7 +55,7 @@ function CustomToolTip({ chartProps, poolData, currentPrice }: CustomToolTipProp
           </Text>
           <Text>
             {price1
-              ? Number(price1).toLocaleString(undefined, {
+              ? Number(price1).toLocaleString('en-US', {
                   minimumSignificantDigits: 1,
                 })
               : ''}{' '}

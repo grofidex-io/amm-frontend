@@ -1,3 +1,4 @@
+import NoData from 'components/NoData'
 import { SUPPORT_FARMS } from 'config/constants/supportChains'
 import { useContext } from 'react'
 import { FarmsV3Context, FarmsV3PageLayout } from 'views/Farms'
@@ -14,7 +15,10 @@ const FarmsHistoryPage = () => {
   const { chosenFarmsMemoized } = useContext(FarmsV3Context)
   // const cakePrice = useCakePrice()
   const cakePrice = useETHPriceData()
-
+  if(chosenFarmsMemoized?.length === 0) {
+    return <NoData/>
+  }
+  
   return (
     <>
       {chosenFarmsMemoized?.map((farm) => {

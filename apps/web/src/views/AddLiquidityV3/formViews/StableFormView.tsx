@@ -190,7 +190,7 @@ export default function StableFormView({
             <Text fontSize="24px" fontWeight={500} mb="8px">
               $
               {totalLiquidityUSD
-                ? totalLiquidityUSD.toLocaleString(undefined, {
+                ? totalLiquidityUSD.toLocaleString('en-US', {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                   })

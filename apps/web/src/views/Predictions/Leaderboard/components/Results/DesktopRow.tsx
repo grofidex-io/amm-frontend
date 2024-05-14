@@ -32,7 +32,7 @@ const DesktopRow: React.FC<React.PropsWithChildren<DesktopRowProps>> = ({ rank, 
       />
     </Td>
     <Td textAlign="center">
-      {`${user.winRate.toLocaleString(undefined, {
+      {`${user.winRate.toLocaleString('en-US', {
         minimumFractionDigits: 0,
         maximumFractionDigits: 2,
       })}%`}

@@ -38,10 +38,10 @@ export const NetWinningsView: React.FC<React.PropsWithChildren<NetWinningsProps>
   return (
     <Flex flexDirection="column" alignItems="flex-end" {...props}>
       <Text fontWeight="bold" color={textColor}>
-        {`${textPrefix}${amount.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 6 })}`}
+        {`${textPrefix}${amount.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 6 })}`}
       </Text>
       <Text fontSize="12px" color="textSubtle" lineHeight={1}>
-        {`~$${value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+        {`~$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
       </Text>
     </Flex>
   )

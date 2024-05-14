@@ -149,7 +149,7 @@ export default function StablePoolPage() {
                 <Text fontSize="24px" fontWeight={600}>
                   $
                   {totalUSDValue
-                    ? totalUSDValue.toLocaleString(undefined, {
+                    ? totalUSDValue.toLocaleString('en-US', {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       })
@@ -187,7 +187,7 @@ export default function StablePoolPage() {
                 <Text fontSize="24px" fontWeight={600}>
                   $
                   {totalLiquidityUSD
-                    ? totalLiquidityUSD.toLocaleString(undefined, {
+                    ? totalLiquidityUSD.toLocaleString('en-US', {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       })

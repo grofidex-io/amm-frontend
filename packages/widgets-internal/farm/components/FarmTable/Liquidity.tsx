@@ -82,7 +82,7 @@ const LiquidityComp = ({
 } & TooltipRefs) => {
   const displayLiquidity =
     liquidity && liquidity.gt(0) ? (
-      `$${Number(liquidity).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+      `$${Number(liquidity).toLocaleString('en-US', { maximumFractionDigits: 0 })}`
     ) : (
       <Skeleton width={60} />
     );
