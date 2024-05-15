@@ -217,6 +217,11 @@ const LoansCard = ({ type, stakeInfo, borrowing, nativeBalance, refreshListLoans
 
   const handleBorrow = async (value?: string) => {
     const _value: any = value || borrowValue
+    if(period?.minBorrow && new BigNumber(_value).isLessThan(new BigNumber(formatEther(period?.minBorrow)))) {
+      setErrorMinBorrow(true)
+      toastError(t('Failed'), `Minimum borrow is ${period?.minBorrow ? formatNumber(Number(formatEther(period?.minBorrow)), 2, 6) : 0 }`)
+      return
+    }
     await callSmartContract(borrowContract.write.borrow([parseEther(new BigNumber(_value).toFixed(18)), stakeInfo.id, period?.id]), 'You have successfully borrow.')
     if(refreshListLoans){ 
      refreshListLoans()
@@ -310,7 +315,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, nativeBalance, refreshListLoans
 
 
   useEffect(() => {
-    if(period?.minBorrow && Number(borrowValue) && Number(borrowValue) < Number(formatEther(period?.minBorrow))) {
+    if(period?.minBorrow && new BigNumber(borrowValue).isLessThan(new BigNumber(formatEther(period?.minBorrow)))) {
       setErrorMinBorrow(true)
     } else {
       setErrorMinBorrow(false)
