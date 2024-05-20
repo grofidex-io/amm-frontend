@@ -118,7 +118,7 @@ const ErrorMessage = styled.div`
   position: absolute;
   right: 0;
   bottom: -20px;
-  font-size: 12px;
+  font-size: 14px;
   font-style: italic;
 }
 `
@@ -219,7 +219,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, nativeBalance, refreshListLoans
     const _value: any = value || borrowValue
     if(period?.minBorrow && new BigNumber(_value).isLessThan(new BigNumber(formatEther(period?.minBorrow)))) {
       setErrorMinBorrow(true)
-      toastError(t('Failed'), `Minimum borrow is ${period?.minBorrow ? formatNumber(Number(formatEther(period?.minBorrow)), 2, 6) : 0 }`)
+      toastError(t('Failed'), `Minimum borrow is ${period?.minBorrow ? Number(formatNumber(Number(formatEther(period?.minBorrow)), 2, 6)) : 0 }`)
       return
     }
     await callSmartContract(borrowContract.write.borrow([parseEther(new BigNumber(_value).toFixed(18)), stakeInfo.id, period?.id]), 'You have successfully borrow.')
@@ -363,7 +363,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, nativeBalance, refreshListLoans
                 onUserInput={onBorrowInput}
               />
             </FlexInput>
-            {errorMinBorrow && <ErrorMessage>Minimum borrow is {period?.minBorrow ? formatNumber(Number(formatEther(period?.minBorrow)), 2, 6) : 0 }</ErrorMessage>} 
+            {errorMinBorrow && <ErrorMessage>Minimum borrow is {period?.minBorrow ? Number(formatNumber(Number(formatEther(period?.minBorrow)), 2, 6)) : 0 }</ErrorMessage>} 
             </div>
             <Flex alignItems="center" justifyContent="space-between" mb={["20px", "20px", "22px"]}>
               <StyledSlider
