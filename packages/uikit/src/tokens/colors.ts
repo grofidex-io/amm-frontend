@@ -22,7 +22,10 @@ export const additionalColors = {
   gold: "#FFC700",
   silver: "#B2B2B2",
   bronze: "#E7974D",
-  yellow: "#D67E0A",
+  yellow: "#FFE500",
+  cyan: "#00DEFF",
+  orange: "#FE5300",
+  green: "#00B58D",
 };
 
 export const lightColors = {
