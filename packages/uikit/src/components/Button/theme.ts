@@ -83,4 +83,8 @@ export const styleVariants = {
     color: "black",
     boxShadow: vars.shadows.button,
   },
+  [variants.CANCEL]: {
+    backgroundColor: "failure20",
+    color: "failure",
+  },
 };

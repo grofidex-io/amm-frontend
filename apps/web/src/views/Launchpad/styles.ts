@@ -1,3 +1,4 @@
+import { Box, Button } from "@pancakeswap/uikit"
 import styled from "styled-components"
 
 export const Layout = styled.div`
@@ -20,4 +21,16 @@ export const Layout = styled.div`
       margin: auto;
     }
   }
+`
+
+export const StyledNeubrutal = styled(Box)`
+  border-radius: ${({ theme }) => theme.radii.card};
+  box-shadow: ${({ theme }) => theme.shadows.card};
+  border: 2px solid ${({ theme }) => theme.colors.cardBorder};
+  background: ${({ theme }) => theme.colors.backgroundAlt};
+`
+
+export const StyledButton = styled(Button)`
+  height: 42px !important;
+  font-weight: 700 !important;
 `

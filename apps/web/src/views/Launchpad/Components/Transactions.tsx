@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, Box, Flex, ScanLink, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { Break, TableWrapper } from 'views/Info/components/InfoTables/shared'
+import { shortenAddress } from 'views/V3Info/utils'
 
 
 const Wrapper = styled.div`
@@ -17,12 +18,15 @@ const ResponsiveGrid = styled.div`
   display: grid;
   grid-gap: 1em;
   align-items: center;
-  grid-template-columns: 0.3fr repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   padding: 0 24px;
   > * {
     min-width: 140px;
     &:last-child {
       min-width: 180px;
+    }
+    &:first-child {
+      min-width: 200px;
     }
   }
 
@@ -39,6 +43,12 @@ const StyledScanLink = styled(ScanLink)`
     }
   }
 `
+const data = [
+  { hash: '0x759241dbe1d49dFda80b819eE86726Cd25EEd7dB', type: 'Commit', token: '50.000 U2U', time: 'May 02, 2024, 02:00:00 AM' },
+  { hash: '0x759241dbe1d49dFda80b819eE86726Cd25EEd7dB', type: 'Cancel', token: '20.000 U2U', time: 'May 02, 2024, 02:00:00 AM' },
+  { hash: '0x759241dbe1d49dFda80b819eE86726Cd25EEd7dB', type: 'Refund', token: '10.000 U2U', time: 'May 02, 2024, 02:00:00 AM' },
+  { hash: '0x759241dbe1d49dFda80b819eE86726Cd25EEd7dB', type: 'Claim', token: '200.000.000 TOKENX', time: 'May 02, 2024, 02:00:00 AM' },
+]
 
 export default function Transactions() {
   const { t } = useTranslation()
@@ -55,38 +65,33 @@ export default function Transactions() {
               <Text color="textSubtle" textAlign="center">
                 {t('Type')}
               </Text>
-              <Text color="textSubtle" textAlign="right">
+              <Text color="textSubtle" textAlign="center">
                 {t('Token')}
               </Text>
               <Text color="textSubtle" textAlign="center">
-                {t('Context')}
-              </Text>
-              <Text color="textSubtle" textAlign="right">
                 {t('Time')}
               </Text>
             </ResponsiveGrid>
             <AutoColumn gap="16px">
               <Break/>
-              <>
-                <ResponsiveGrid>
-                  <Flex>
-                    <StyledScanLink
-                      href='/'
-                    >
-                      <Text
-                        color='primary'
-                      >
-                        dasdsa
-                      </Text>
-                    </StyledScanLink>
-                  </Flex>
-                  <Text color="text" textAlign="center">Commit</Text>
-                  <Text color="text" textAlign="right">50.000 U2U</Text>
-                  <Text color="text" textAlign="center">Tier 1</Text>
-                  <Text color="text" textAlign="right">May 02, 2024, 02:00:00 AM</Text>
-                </ResponsiveGrid>
-                <Break />
-              </>
+              {data?.map(item => (
+                <>
+                  <ResponsiveGrid>
+                    <Flex>
+                      <StyledScanLink href='/'>
+                        <Text color='primary'>
+                          {shortenAddress(item.hash)}
+                        </Text>
+                      </StyledScanLink>
+                    </Flex>
+                    <Text color="text" textAlign="center">{item.type}</Text>
+                    <Text color="text" textAlign="center">{item.token}</Text>
+                    <Text color="text" textAlign="center">{item.time}</Text>
+                  </ResponsiveGrid>
+                  <Break />
+                </>
+              ))}
+
             </AutoColumn>
           </LayoutScroll>
         </TableWrapper>
