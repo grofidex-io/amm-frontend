@@ -124,8 +124,6 @@ const SORT_FIELD = {
 
 const DataRow = ({
   transaction,
-  type,
-  filterFn,
 }: {
   transaction: Transaction
   color?: string
@@ -177,12 +175,12 @@ const DataRow = ({
             fontWeight={400}
             color={
               transaction.type === TransactionType.MINT
-                ? '#00DEFF'
+                ? '#00B58D'
                 : transaction.type === TransactionType.SWAP
                 ? transaction.amountToken0 > 0
                   ? '#FE5300'
                   : '#00B58D'
-                : '#FFE500'
+                : '#FE5300'
             }
           >
             {transaction.type === TransactionType.MINT
@@ -240,14 +238,15 @@ export default function TransactionTable({
   const [page, setPage] = useState(1)
   const [maxPage, setMaxPage] = useState(1)
 
-  const [txFilter, setTxFilter] = useState<TransactionType | undefined>(undefined)
+  const [txFilter, setTxFilter] = useState<TransactionType | undefined>(TransactionType.SWAP)
   const getSortFieldClassName = useSortFieldClassName(sortField, sortDirection)
 
   useEffect(() => {
+    const _filter = txFilter === TransactionType.LIQUIDITY ? [TransactionType.MINT, TransactionType.BURN] : [TransactionType.SWAP]
     let extraPages = 1
     if (
       transactions.filter((x) => {
-        return txFilter === undefined || x.type === txFilter
+        return txFilter === undefined || _filter.indexOf(x.type) !== -1
       }).length %
         maxItems ===
       0
@@ -257,7 +256,7 @@ export default function TransactionTable({
     const maxPageResult =
       Math.floor(
         transactions.filter((x) => {
-          return txFilter === undefined || x.type === txFilter
+          return txFilter === undefined || _filter.indexOf(x.type) !== -1
         }).length / maxItems,
       ) + extraPages
     setMaxPage(maxPageResult)
@@ -266,6 +265,7 @@ export default function TransactionTable({
   }, [maxItems, transactions, txFilter])
 
   const sortedTransactions = useMemo(() => {
+    const _filter = txFilter === TransactionType.LIQUIDITY ? [TransactionType.MINT, TransactionType.BURN] : [TransactionType.SWAP]
     return transactions
       ? [...transactions]
           .sort((a, b) => {
@@ -277,7 +277,7 @@ export default function TransactionTable({
             return -1
           })
           .filter((x) => {
-            return txFilter === undefined || x.type === txFilter
+            return txFilter === undefined || _filter.indexOf(x.type) !== -1
           })
           .slice(maxItems * (page - 1), page * maxItems)
       : []
@@ -300,38 +300,38 @@ export default function TransactionTable({
       <Flex justifyContent={type === 'SWAP_TRANSACTION' ? 'flex-end' : 'space-between'} alignItems="center" my="16px">
         {type !== 'SWAP_TRANSACTION' && (
           <RowFixed>
-            <SortText
+            {/* <SortText
               onClick={() => {
                 setTxFilter(undefined)
               }}
               active={txFilter === undefined}
             >
               {t('All')}
-            </SortText>
+            </SortText> */}
             <SortText
               onClick={() => {
                 setTxFilter(TransactionType.SWAP)
               }}
               active={txFilter === TransactionType.SWAP}
             >
-              {t('Swaps')}
+              {t('Trades')}
             </SortText>
             <SortText
               onClick={() => {
-                setTxFilter(TransactionType.MINT)
+                setTxFilter(TransactionType.LIQUIDITY)
               }}
-              active={txFilter === TransactionType.MINT}
+              active={txFilter === TransactionType.LIQUIDITY}
             >
-              {t('Adds')}
+              {t('Liquidity')}
             </SortText>
-            <SortText
+            {/* <SortText
               onClick={() => {
                 setTxFilter(TransactionType.BURN)
               }}
               active={txFilter === TransactionType.BURN}
             >
               {t('Removes')}
-            </SortText>
+            </SortText> */}
           </RowFixed>
         )}
         {filterFn && account && (
