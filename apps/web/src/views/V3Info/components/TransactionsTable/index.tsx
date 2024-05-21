@@ -33,7 +33,7 @@ const ResponsiveGrid = styled.div<{ widthfirstcol?: number }>`
   grid-gap: 1em;
   align-items: center;
   grid-template-columns: ${({ widthfirstcol }) =>
-    widthfirstcol ? `${widthfirstcol}fr repeat(5, 1fr)` : '0.5fr repeat(5, 1fr)'};
+    widthfirstcol ? `${widthfirstcol}fr 0.5fr repeat(5, 1fr)` : '0.5fr 0.5fr repeat(5, 1fr)'};
   padding: 0 24px;
   > * {
     min-width: 140px;
@@ -142,16 +142,16 @@ const DataRow = ({
   const token0Symbol = transaction.token0Address?.toLowerCase()  === WNATIVE[ChainDefault].address.toLowerCase() ? NATIVE[ChainDefault].symbol : getTokenSymbolAlias(transaction.token0Address, chainId, transaction.token0Symbol)
   const token1Symbol = transaction.token1Address?.toLowerCase()  === WNATIVE[ChainDefault].address.toLowerCase() ? NATIVE[ChainDefault].symbol : getTokenSymbolAlias(transaction.token1Address, chainId, transaction.token1Symbol)
 
-  const outputTokenSymbol = transaction.amountToken0 < 0 ? token0Symbol : token1Symbol
-  const inputTokenSymbol = transaction.amountToken1 < 0 ? token0Symbol : token1Symbol
-  let typeSwap = `Swap ${inputTokenSymbol} for ${outputTokenSymbol}`
-  let typeMint = `Add ${token0Symbol} and ${token1Symbol}`
-  let typeRemove = `Remove ${token0Symbol} and ${token1Symbol}`
-  if (type === 'SWAP_TRANSACTION') {
-    typeSwap = transaction.amountToken0 > 0 ? 'Sell' : 'Buy'
-    typeMint = 'Add'
-    typeRemove = 'Remove'
-  }
+  // const outputTokenSymbol = transaction.amountToken0 < 0 ? token0Symbol : token1Symbol
+  // const inputTokenSymbol = transaction.amountToken1 < 0 ? token0Symbol : token1Symbol
+  // let typeSwap = `Swap ${inputTokenSymbol} for ${outputTokenSymbol}`
+  // let typeMint = `Add ${token0Symbol} and ${token1Symbol}`
+  // let typeRemove = `Remove ${token0Symbol} and ${token1Symbol}`
+  // if (type === 'SWAP_TRANSACTION') {
+    const typeSwap = transaction.amountToken0 > 0 ? 'Sell' : 'Buy'
+    const typeMint = 'Add'
+    const typeRemove = 'Remove'
+  // }
 
   const convertDate = (date: number) => {
     const now = new Date(date * 1000)
@@ -166,7 +166,7 @@ const DataRow = ({
   }
 
   return (
-    <ResponsiveGrid widthfirstcol={filterFn ? 0.5 : 1.5}>
+    <ResponsiveGrid widthfirstcol={0.5}>
       <Flex>
         <StyledScanLink
           useBscCoinFallback={ChainLinkSupportChains.includes(multiChainId[chainName])}
@@ -193,7 +193,7 @@ const DataRow = ({
           </Text>
         </StyledScanLink>
       </Flex>
-
+      <Text textAlign="right" fontWeight={200}>{`${token0Symbol}/${token1Symbol}`}</Text>
       <Text textAlign="right" fontWeight={400}>{formatDollarAmount(transaction.amountUSD)}</Text>
       <Text textAlign="right" fontWeight={400}>
         <HoverInlineText text={`${formatAmount(abs0)}  ${token0Symbol}`} maxCharacters={16} />
@@ -345,9 +345,12 @@ export default function TransactionTable({
       </Flex>
       <TableWrapper>
         <LayoutScroll>
-          <ResponsiveGrid widthfirstcol={filterFn ? 0.5 : 1.5}>
+          <ResponsiveGrid widthfirstcol={0.5}>
             <Text color="textSubtle">
               {t('Type')}
+            </Text>
+            <Text color="textSubtle" style={{ textAlign: 'right' }}>
+              {t('Pair')}
             </Text>
             <ClickableColumnHeader color="textSubtle" style={{ justifyContent: 'flex-end' }}>
               {t('Total Value')}
