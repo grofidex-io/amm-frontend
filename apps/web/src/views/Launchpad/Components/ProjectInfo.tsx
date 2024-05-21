@@ -313,6 +313,27 @@ export default function ProjectInfo() {
                 </StyledButton>
               </Flex>
               <Text color="textSubtle" fontSize="12px" fontStyle="italic" lineHeight="16px" mt="8px">{t('Maximum 50 U2U')}</Text>
+              <Flex alignItems="center">
+                <Image style={{ margin: 'unset', width: '24px', height: '24px' }} src="/images/launchpad/icon-card-failed.svg" />
+                <Box ml="16px">
+                  <Text color='failure' fontSize="16px" fontWeight="600" lineHeight="20px" textTransform="uppercase">{t('IDO Failed')}</Text>
+                  <StyledContent lineHeight="20px" mt="4px">{t('Unfortunately, the IDO project failed. The total raised value does not reach the softcap minimum.')}</StyledContent>
+                </Box>
+              </Flex>
+              <Flex alignItems="center">
+                <Image style={{ margin: 'unset', width: '24px', height: '24px' }} src="/images/launchpad/icon-card-success.svg" />
+                <Box ml="16px">
+                  <Text color='success' fontSize="16px" fontWeight="600" lineHeight="20px" textTransform="uppercase">{t('IDO Successfully')}</Text>
+                  <StyledContent lineHeight="20px" mt="4px">{t('The project has been IDO successfully, your committed U2U has been swapped to TOKENX. Claim to your wallet.')}</StyledContent>
+                </Box>
+              </Flex>
+              <StyledTextItalic mt="12px">
+                Please click the 
+                <Link fontSize="12px" fontStyle="italic" mx="4px" textTransform="uppercase" style={{ display: 'inline', fontWeight: '300', textDecoration: 'underline' }} external href="/">
+                  {t('Claim')}
+                </Link>
+                button above to get your TOKENX
+              </StyledTextItalic>
             </Box>
             <Box>
               <StyledContent>

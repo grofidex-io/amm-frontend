@@ -148,12 +148,50 @@ const StyledLink = styled(Link)`
     height: var(--size);
   }
 `
+const StyledBox = styled(Box)`
+  position: relative;
+  border-radius: ${({ theme }) => theme.radii.card};
+  pointer-events: none;
+  &:last-child {
+    svg {
+      display: none;
+    }
+  }
+  &:not(:first-child) {
+    > div {
+      padding-left: 58px;
+    }
+  }
+  &:not(:last-child) {
+    svg {
+      --size: 52px;
+      position: absolute;
+      left: 97%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: var(--size);
+      height: calc(var(--size) * 132 / 49);
+    }
+  }
+`
+const StyledContent = styled.div`
+  height: 100%;
+  position: relative;
+  border-radius: ${({ theme }) => theme.radii.card};
+  padding: 16px 10px;
+  z-index: 1;
+  img {
+    --size: 40px;
+    width: var(--size);
+    height: var(--size);
+  }
+`
 
 type LaunchpadProps ={
   type?: string
 }
 
-const listSocial = [
+const listSocials = [
   { link: '/', icon: 'facebook' },
   { link: '/', icon: 'x' },
   { link: '/', icon: 'youtube' },
@@ -161,6 +199,17 @@ const listSocial = [
   { link: '/', icon: 'linkedin' },
   { link: '/', icon: 'medium' },
   { link: '/', icon: 'discord' },
+]
+
+const listSteps = [
+  { z: 8, icon: 'icon-step-01.svg', title: 'Upcoming', time: 'May 05,2024, 02:00:00', status: 'completed' },
+  { z: 7, icon: 'icon-tier-starter.svg', title: 'IDO Start', time: 'May 05,2024, 02:00:00', status: 'inProgress' },
+  { z: 6, icon: 'icon-tier-1.svg', title: 'IDO Tier 1', time: 'May 05,2024, 02:00:00', status: 'inProgress' },
+  { z: 5, icon: 'icon-tier-2.svg', title: 'IDO Tier 2', time: 'May 05,2024, 02:00:00', status: '' },
+  { z: 4, icon: 'icon-tier-3.svg', title: 'IDO Tier 3', time: 'May 05,2024, 02:00:00', status: '' },
+  { z: 3, icon: 'icon-step-02.svg', title: 'IDO Whitelist', time: 'May 05,2024, 02:00:00', status: '' },
+  { z: 2, icon: 'icon-step-03.svg', title: 'IDO Community', time: 'May 05,2024, 02:00:00', status: '' },
+  { z: 1, icon: 'icon-step-04.svg', title: 'Finished', time: 'May 05,2024, 02:00:00', status: '' },
 ]
 
 const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
@@ -173,7 +222,7 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
     <>
       <StyledBanner style={{ backgroundImage: 'url(/images/project-background.png)' }}>
         <Flex justifyContent="flex-end" alignItems="flex-end" position="relative">
-          {listSocial.map(item => (
+          {listSocials.map(item => (
             <StyledLink external href={item.link}>
               <img src={`/images/launchpad/icon-${item.icon}.svg`} alt="" />
             </StyledLink>
@@ -361,6 +410,37 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
               </StyledNeubrutal>
             </Flex>
           </Box>
+        </Flex>
+        <Flex mb="24px" className="border-neubrutal" borderRadius={theme.radii.card} background={theme.colors.backgroundAlt}>
+          {listSteps.map(item => (
+            <StyledBox style={{ background: theme.colors.backgroundAlt, zIndex: item.z }}>
+              <StyledContent style={{ background: `${item.status === 'completed' ? theme.colors.backgroundItem : item.status === 'inProgress' ? theme.colors.primary : theme.colors.backgroundAlt}` }}>
+                <img style={{ filter: `${item.status === 'completed' && 'grayscale(1)'}` }} src={`/images/launchpad/${item.icon}`} alt="" />
+                <Text style={{ color: `${item.status === 'completed' ? theme.colors.hover : item.status === 'inProgress' ? theme.colors.black : theme.colors.primary}` }} fontSize="14px" fontWeight="600" lineHeight="17px" mt="8px">{item.title}</Text>
+                <Text style={{ color: `${item.status === 'completed' ? theme.colors.textSubtle : item.status === 'inProgress' ? theme.colors.black : theme.colors.hover}` }} fontSize="11px" fontWeight="400" lineHeight="13px" mt="4px">{item.time}</Text>
+              </StyledContent>
+              <svg style={{ color: `${item.status === 'completed' ? theme.colors.backgroundItem : item.status === 'inProgress' ? theme.colors.primary : theme.colors.backgroundAlt}` }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 132" fill="none">
+                <g mask="url(#mask0_3011_2807)">
+                <path d="M6.5 5L4.5 4.5L3.5 125L8 128.5L48 67L7.5 6L6.5 5Z" fill="black" stroke="black"/>
+                <g filter="url(#filter0_d_3011_2807)">
+                <path d="M44.2741 62.7092C44.7145 63.377 44.7145 64.2431 44.2741 64.911L3.66973 126.496C2.57759 128.152 -6.22358e-06 127.379 -6.13685e-06 125.395L-7.52944e-07 2.22534C-6.66216e-07 0.241251 2.57759 -0.532019 3.66974 1.12444L44.2741 62.7092Z" fill="currentColor"/>
+                <path d="M43.4393 64.3605L2.83486 125.945C2.28879 126.773 0.999994 126.387 0.999994 125.395L0.999999 2.22534C0.999999 1.23329 2.2888 0.846667 2.83487 1.67489L43.4393 63.2596C43.6595 63.5936 43.6595 64.0266 43.4393 64.3605Z" stroke="black" stroke-width="2"/>
+                </g>
+                </g>
+                <defs>
+                <filter id="filter0_d_3011_2807" x="0" y="0.22168" width="48.6045" height="131.177" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                <feOffset dx="4" dy="4"/>
+                <feComposite in2="hardAlpha" operator="out"/>
+                <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0"/>
+                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_3011_2807"/>
+                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_3011_2807" result="shape"/>
+                </filter>
+                </defs>
+              </svg>
+            </StyledBox>
+          ))}
         </Flex>
         <StyledBoxTab>
           <TabMenu activeIndex={tab} onItemClick={setTab} customWidth isShowBorderBottom={false}>
