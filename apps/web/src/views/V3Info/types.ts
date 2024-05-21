@@ -33,6 +33,7 @@ export enum TransactionType {
   SWAP,
   MINT,
   BURN,
+  LIQUIDITY
 }
 
 export type Transaction = {
