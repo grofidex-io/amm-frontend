@@ -252,5 +252,8 @@ export default {
   },
   vault: {
     [ChainId.U2U_NEBULAS]: '0x4012e1E304B3a125ABAa51D5B7191f1FD34C8bFC',
+  },
+  launchpad: {
+    [ChainId.U2U_NEBULAS]: '0x7C6a0DEEECBF5D3165Db2d9D70D9bE77B88F255f',
   }
 } as const satisfies Record<string, Record<number, `0x${string}`>>

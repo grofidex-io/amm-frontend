@@ -18,6 +18,7 @@ import {
   getFarmAuctionAddress,
   getFixedStakingAddress,
   getGaugesVotingAddress,
+  getLaunchpadAddress,
   getLotteryV2Address,
   getMasterChefV2Address,
   getMasterChefV3Address,
@@ -81,6 +82,7 @@ import { crossFarmingReceiverABI } from 'config/abi/crossFarmingReceiver'
 import { farmAuctionABI } from 'config/abi/farmAuction'
 import { fixedStakingABI } from 'config/abi/fixedStaking'
 import { groFiStakingManagerAbi } from 'config/abi/groFiStakingManagerAbi'
+import { launchpadABI } from 'config/abi/launchpad'
 import { lotteryV2ABI } from 'config/abi/lotteryV2'
 import { lpTokenABI } from 'config/abi/lpTokenAbi'
 import { masterChefV2ABI } from 'config/abi/masterchefV2'
@@ -554,6 +556,15 @@ export const getBorrowContract = (signer?: WalletClient, chainId?: number) => {
   return getContract({
     abi: treasuryBorrowABI,
     address: getBorrowAddress(chainId),
+    signer,
+    chainId,
+  })
+}
+
+export const getLaunchpadContract = (signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: launchpadABI,
+    address: getLaunchpadAddress(chainId),
     signer,
     chainId,
   })

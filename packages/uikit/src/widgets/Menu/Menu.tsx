@@ -72,21 +72,11 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
   linkComponent = "a",
   banner,
   rightSide,
-  isDark,
-  toggleTheme,
-  currentLang,
-  setLang,
-  cakePriceUsd,
   links,
   subLinks,
-  footerLinks,
   activeItem,
   activeSubItem,
-  langs,
-  buyCakeLabel,
-  buyCakeLink,
   children,
-  chainId,
 }) => {
   const { isMobile } = useMatchBreakpoints();
   const isMounted = useIsMounted();

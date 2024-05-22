@@ -28,6 +28,7 @@ import {
   getFixedStakingContract,
   getGaugesVotingContract,
   getIfoCreditAddressContract,
+  getLaunchpadContract,
   getLotteryV2Contract,
   getMasterChefContract,
   getMasterChefV3Contract,
@@ -552,4 +553,10 @@ export const useBorrowContract = () => {
   const { chainId } = useActiveChainId()
   const { data: signer } = useWalletClient()
   return useMemo(() => getBorrowContract(signer ?? undefined, chainId), [signer, chainId])
+}
+
+export const useLaunchpadContract = () => {
+  const { chainId } = useActiveChainId()
+  const { data: signer } = useWalletClient()
+  return useMemo(() => getLaunchpadContract(signer ?? undefined, chainId), [signer, chainId])
 }

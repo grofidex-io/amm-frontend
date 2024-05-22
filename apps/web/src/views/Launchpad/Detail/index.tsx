@@ -1,13 +1,18 @@
 import { useTranslation } from '@pancakeswap/localization';
 import { Box, Flex, Link, Progress, Tab, TabMenu, Text } from "@pancakeswap/uikit";
+import BigNumber from 'bignumber.js';
 import Container from 'components/Layout/Container';
-import { useState } from 'react';
+import useAccountActiveChain from 'hooks/useAccountActiveChain';
+import { useLaunchpadContract } from 'hooks/useContract';
+import { useCallback, useEffect, useState } from 'react';
 import styled, { useTheme } from "styled-components";
 import Swiper from 'swiper';
 import { SwiperSlide } from 'swiper/react';
 import ProjectInfo from '../Components/ProjectInfo';
 import Transactions from '../Components/Transactions';
+import { convertTierInfo } from '../helpers';
 import { StyledNeubrutal } from '../styles';
+import { ITierInfo } from '../types/LaunchpadType';
 
 const StyledBanner = styled(Box)`
   position: relative;
@@ -346,6 +351,37 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
   const { t } = useTranslation()
   const theme = useTheme()
   const [tab, setTab] = useState<number>(0)
+
+  const launchpadContract = useLaunchpadContract()
+  const { account } = useAccountActiveChain()
+  const [tierOfUser, setTierOfUser] = useState<number>(0)
+  const [tierInfo, setTierInfo] = useState<ITierInfo | null>(null)
+
+  const initFunction = useCallback(() => {
+    const getTierInfo = async (_tier: number) => {
+      const _tierInfo: any = await launchpadContract.read.tierInfo([_tier])
+      const _info: ITierInfo = convertTierInfo(_tierInfo.map((_item: any) => BigNumber(_item).toNumber()))
+      setTierInfo(_info)
+    }
+    const getUserTier = async () => {
+      const tier: any = await launchpadContract.read.getUserTier([account])
+      const _tier:number = BigNumber(tier).toNumber()
+      setTierOfUser(_tier)
+      getTierInfo(_tier)
+    }
+
+    if(launchpadContract.account) {
+      getUserTier()
+    }
+    return {
+      getUserTier
+    }
+
+  }, [launchpadContract, account])
+
+  useEffect(() => {
+    initFunction()
+  }, [initFunction])
 
   return (
     <>
