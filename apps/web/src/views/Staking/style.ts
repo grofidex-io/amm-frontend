@@ -49,33 +49,40 @@ export const StyledTextTitle = styled(Text)`
 `
 
 export const StakingH1 = styled(Heading)`
-  font-size: 28px;
-  font-weight: 900;
+  font-size: 24px;
+  font-weight: 700;
   line-height: calc(56 / 52);
   margin-bottom: 12px;
   ${({ theme }) => theme.mediaQueries.sm} {
-    font-size: 36px;
+    font-size: 32px;
+    font-weight: 900;
     margin-bottom: 16px;
   }
-  ${({ theme }) => theme.mediaQueries.md} {
-    font-size: 44px;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    font-size: 36px;
     margin-bottom: 20px;
   }
-  ${({ theme }) => theme.mediaQueries.lg} {
+  ${({ theme }) => theme.mediaQueries.xl} {
+    font-size: 44px;
+  }
+  ${({ theme }) => theme.mediaQueries.xxl} {
     font-size: 52px;
-    margin-bottom: 24px;
   }
 `
 export const StakingText = styled.p`
-  color: ${({ theme }) => theme.colors.text};
-  font-size: 16px;
+  color: ${({ theme }) => theme.colors.textSubtle};
+  font-size: 14px;
   font-weight: 500;
   line-height: calc(24 / 18);
-  margin-bottom: 0;
+  margin-bottom: 10px;
   ${({ theme }) => theme.mediaQueries.sm} {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
-    margin-bottom: 10px;
+    max-width: 600px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    font-size: 18px;
+    max-width: 100%;
   }
 `
 export const StyledIcon = styled.div`

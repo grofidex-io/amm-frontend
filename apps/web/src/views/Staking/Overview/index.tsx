@@ -1,28 +1,72 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, PageHeader, Text } from '@pancakeswap/uikit'
-import Page from 'components/Layout/Page'
+import { Box, Flex, Text } from '@pancakeswap/uikit'
+import Container from 'components/Layout/Container'
+import styled, { useTheme } from 'styled-components'
 import FormStaking from '../Components/FormStaking'
 import FormStakingBtn from '../Components/FormStakingBtn'
 import StakingList from '../Components/StakingList'
 import { BorderLayout, StakingH1, StakingText } from '../style'
 
+const StyledFlex = styled(Flex)`
+  align-items: center;
+  justify-content: space-between;
+  // flex-direction: column;
+  gap: 0;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    flex-direction: row;
+    gap: 50px;
+  }
+`
+const Image = styled.img`
+  --size: 100%;
+  height: calc(var(--size) * 300 / 502);
+  width: var(--size);
+  max-width: 300px;
+  margin-top: 30px;
+  display: none;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    --size: 342px;
+    max-width: 100%;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    --size: 422px;
+    min-width: var(--size);
+    margin-top: 12px;
+    display: block;
+  }
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    --size: 502px;
+  }
+`
+
 export const Overview: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
+  const theme = useTheme()
+
   return (
     <>
-      <PageHeader>
-        <Box style={{ flex: '1 1 100%', maxWidth: '678px' }}>
-          <StakingH1 as="h1" scale="xxl" color="secondary" mb="24px">
-            {t('Become a participant on our journey')}
-          </StakingH1>
-          <StakingText>
-            {t(
-              'Staking is simple and accessible process. You can contribute to the security and stability of the U2U Network while earning U2U Tokens as Reward.',
-            )}
-          </StakingText>
+      <Container>
+        <Box
+          className='border-neubrutal'
+          my="32px"
+          background={theme.colors.backgroundAlt}
+          borderRadius={theme.radii.card}
+          p={['20px', '20px', '20px 30px', '20px 30px', '0 40px']}
+        >
+          <StyledFlex>
+            <Box maxWidth={["100%", "100%", "100%", "100%", "620px"]}>
+              <StakingH1 as="h1" scale="xxl" color="text" mb="24px">
+                {t('Become a participant on our journey')}
+              </StakingH1>
+              <StakingText>
+                {t(
+                  'Staking is simple and accessible process. You can contribute to the security and stability of the U2U Network while earning U2U Tokens as Reward.',
+                )}
+              </StakingText>
+            </Box>
+            <Image src="/images/staking/staking-banner-image.png" alt="" />
+          </StyledFlex>
         </Box>
-      </PageHeader>
-      <Page>
         <Flex
           flexDirection={['column', 'column', 'column', 'column', 'row']}
           justifyContent="center"
@@ -55,7 +99,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
             </BorderLayout>
           </Flex>
         </Flex>
-      </Page>
+      </Container>
     </>
   )
 }

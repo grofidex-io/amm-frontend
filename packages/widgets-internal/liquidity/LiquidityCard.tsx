@@ -10,6 +10,7 @@ export const CardWrapper = styled(Card)`
   max-width: 480px;
   width: 100%;
   z-index: 1;
+  margin: auto;
 `;
 
 export const LiquidityCard = ({ children, ...props }: LiquidityCardProps) => (
