@@ -3,7 +3,9 @@ import { AutoColumn, Box, Button, Flex, Link, Text, TooltipText, useTooltip } fr
 import { useCallback, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { Break, TableWrapper } from 'views/Info/components/InfoTables/shared';
+import { useAccount } from 'wagmi';
 import { StyledButton, StyledNeubrutal } from '../styles';
+import { ITierInfo, IUserWhiteListInfo } from '../types/LaunchpadType';
 import ModalDetail from './ModalDetail';
 
 const StyledTitle = styled(Text)`
@@ -117,12 +119,13 @@ const data = [
   { round: 'Community', startTime: '12h', endTime: '12h', cancelTime: '12h', Claimable: '12h' },
 ]
 
-export default function ProjectInfo() {
+export default function ProjectInfo({ tierInfo, userWhiteListInfo }: { tierInfo?: ITierInfo, userWhiteListInfo?: IUserWhiteListInfo }) {
 
   const { t } = useTranslation()
   const theme = useTheme()
   const [isOpen, setOpen] = useState(false)
   const closeModal = useCallback(() => setOpen(false), [])
+  const { address: account } = useAccount()
   const tierTooltip = useTooltip(
     <>
       <Text fontFamily="'Metuo', sans-serif" fontSize="12px" lineHeight="18px" mb="4px">{t('The tier depends on the number of U2Us staked in the GrofiDex staking system.')}</Text>
@@ -241,10 +244,10 @@ export default function ProjectInfo() {
               </Flex>
               <Flex alignItems="flex-end" mb="12px">
                 <IconTier src="/images/launchpad/icon-tier-1.svg" />
-                <StyledText ml="12px" style={{ fontSize: '20px', lineHeight: '24px' }}>{t('Tier 1')}</StyledText>
+                <StyledText ml="12px" style={{ fontSize: '20px', lineHeight: '24px' }}>{`Tier ${tierInfo?.tier}`}</StyledText>
               </Flex>
               <Box>
-                <StyledTextItalic>{t('Estimate maximum 100 U2U to buy IDO in round buy IDO Tier 1.')}</StyledTextItalic>
+                <StyledTextItalic>{t(`Estimate maximum %maxBuyPerUser% U2U to buy IDO in round buy IDO Tier %tier%.`, { maxBuyPerUser: tierInfo?.maxBuyPerUser, tier: tierInfo?.tier })}</StyledTextItalic>
                 <StyledTextItalic>{t('The snapshot will be ended at ')} <span style={{ color: '#d6ddd0' }}>{t('2024/05/03 14:22:22 UTC.')}</span></StyledTextItalic>
                 <StyledTextItalic>
                   {t('Staking more to upgrade your tier. ')}
@@ -263,16 +266,15 @@ export default function ProjectInfo() {
                 </TooltipText>
                 {applyTooltip.tooltipVisible && applyTooltip.tooltip}
               </Flex>
-              <StyledButton
-                className="button-hover"
-              >
-                {t('Connect Wallet')}
-              </StyledButton>
-              <StyledButton
-                className="button-hover"
-              >
-                {t('Apply Now')}
-              </StyledButton>
+              {account ? !userWhiteListInfo?.isWhiteList && (
+                <StyledButton className="button-hover">
+                  {t('Apply Now')}
+                </StyledButton>
+              ) : (
+                <StyledButton className="button-hover">
+                  {t('Connect Wallet')}
+                </StyledButton>
+              )}
               <Flex alignItems="center">
                 <Image style={{ margin: 'unset', width: '24px', height: '24px' }} src="/images/launchpad/icon-error.svg" />
                 <Text color="failure" maxWidth="290px" fontSize="14px" fontWeight="600" lineHeight="20px" ml="12px">{t(`Apply whitelist has been expired. You don’t apply whitelist`)}</Text>
@@ -329,7 +331,7 @@ export default function ProjectInfo() {
                   {t('Commit U2U')}
                 </StyledButton>
               </Flex>
-              <Text color="textSubtle" fontSize="12px" fontStyle="italic" lineHeight="16px" mt="8px">{t('Maximum 50 U2U')}</Text>
+              <Text color="textSubtle" fontSize="12px" fontStyle="italic" lineHeight="16px" mt="8px">{t('Maximum %maxCommitAmount% U2U', { maxCommitAmount: tierInfo?.maxCommitAmount })}</Text>
               <Flex alignItems="center">
                 <Image style={{ margin: 'unset', width: '24px', height: '24px' }} src="/images/launchpad/icon-card-failed.svg" />
                 <Box ml="16px">

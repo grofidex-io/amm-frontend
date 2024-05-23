@@ -9,4 +9,10 @@ export interface ITierInfo {
   endCancel: number
   startCalculate: number
   endCalculate: number
+  tier?: number
+}
+
+export interface IUserWhiteListInfo {
+  isWhiteList: boolean,
+  u2uCommitted: number
 }

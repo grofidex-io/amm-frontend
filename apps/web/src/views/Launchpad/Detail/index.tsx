@@ -12,7 +12,7 @@ import ProjectInfo from '../Components/ProjectInfo';
 import Transactions from '../Components/Transactions';
 import { convertTierInfo } from '../helpers';
 import { StyledNeubrutal } from '../styles';
-import { ITierInfo } from '../types/LaunchpadType';
+import { ITierInfo, IUserWhiteListInfo } from '../types/LaunchpadType';
 
 const StyledBanner = styled(Box)`
   position: relative;
@@ -355,13 +355,21 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
   const launchpadContract = useLaunchpadContract()
   const { account } = useAccountActiveChain()
   const [tierOfUser, setTierOfUser] = useState<number>(0)
-  const [tierInfo, setTierInfo] = useState<ITierInfo | null>(null)
+  const [tierInfo, setTierInfo] = useState<ITierInfo>()
+  const [userWhiteListInfo, setUserWhiteListInfo] = useState<IUserWhiteListInfo>()
 
   const initFunction = useCallback(() => {
+    const checkIsWhiteList = async () => {
+      const _userWhiteList: any = await launchpadContract.read.userWhiteListCommit([account])
+      setUserWhiteListInfo({
+        isWhiteList: _userWhiteList[0],
+        u2uCommitted: BigNumber(_userWhiteList[1]).toNumber()
+      })
+    }
     const getTierInfo = async (_tier: number) => {
       const _tierInfo: any = await launchpadContract.read.tierInfo([_tier])
       const _info: ITierInfo = convertTierInfo(_tierInfo.map((_item: any) => BigNumber(_item).toNumber()))
-      setTierInfo(_info)
+      setTierInfo({..._info, tier: _tier})
     }
     const getUserTier = async () => {
       const tier: any = await launchpadContract.read.getUserTier([account])
@@ -371,6 +379,7 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
     }
 
     if(launchpadContract.account) {
+      checkIsWhiteList()
       getUserTier()
     }
     return {
@@ -637,7 +646,7 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
               {t('Transactions')}
             </StyledTab>
           </TabMenu>
-          {tab === 0 && <ProjectInfo/>}
+          {tab === 0 && <ProjectInfo tierInfo={tierInfo}/>}
           {tab === 1 && <Transactions/>}
         </StyledBoxTab>
       </Container>
