@@ -1,10 +1,11 @@
 import { useTranslation } from "@pancakeswap/localization"
-import { Box, Flex, Heading, PageHeader, Tab, TabMenu, Text } from "@pancakeswap/uikit"
+import { Box, Flex, Heading, Tab, TabMenu, Text } from "@pancakeswap/uikit"
 import { formatNumber } from "@pancakeswap/utils/formatBalance"
+import Container from "components/Layout/Container"
 import Page from 'components/Layout/Page'
 import dayjs from "dayjs"
 import { useContext, useEffect, useState } from 'react'
-import styled from "styled-components"
+import styled, { useTheme } from "styled-components"
 import { formatEther } from "viem"
 import { formatDate } from "views/CakeStaking/components/DataSet/format"
 import Available from "views/Loans/Components/Available"
@@ -14,36 +15,52 @@ import LoanContext from "../LoanContext"
 import { BorrowItem } from "../data/fetchListBorrowing"
 import { useListBorrowing } from "../hooks/useListBorrowing"
 
+const StyledFlex = styled(Flex)`
+  align-items: center;
+  justify-content: space-between;
+  // flex-direction: column;
+  gap: 0;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    flex-direction: row;
+    gap: 50px;
+  }
+`
 export const LoansH1 = styled(Heading)`
-  font-size: 26px;
-  font-weight: 900;
+  font-size: 24px;
+  font-weight: 700;
   line-height: calc(56 / 52);
   margin-bottom: 12px;
   ${({ theme }) => theme.mediaQueries.sm} {
-    font-size: 36px;
+    font-size: 32px;
+    font-weight: 900;
     margin-bottom: 16px;
   }
-  ${({ theme }) => theme.mediaQueries.md} {
-    font-size: 44px;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    font-size: 36px;
     margin-bottom: 20px;
   }
-  ${({ theme }) => theme.mediaQueries.lg} {
+  ${({ theme }) => theme.mediaQueries.xl} {
+    font-size: 44px;
+  }
+  ${({ theme }) => theme.mediaQueries.xxl} {
     font-size: 52px;
-    margin-bottom: 24px;
   }
 `
 export const LoansText = styled.p`
-  color: ${({ theme }) => theme.colors.text};
-  font-size: 16px;
+  color: ${({ theme }) => theme.colors.textSubtle};
+  font-size: 14px;
   font-weight: 500;
   line-height: calc(24 / 18);
+  margin-bottom: 10px;
   ${({ theme }) => theme.mediaQueries.sm} {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
+    max-width: 600px;
   }
-`
-const StyledBox = styled(Box)`
-  max-width: 680px;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    font-size: 18px;
+    max-width: 100%;
+  }
 `
 const StyledDate = styled.p`
   cursor: pointer;
@@ -58,9 +75,9 @@ const StyledDate = styled.p`
   }
 `
 const Image = styled.img`
-  --size: 431px;
+  --size: 384px;
   width: var(--size);
-  height: calc(var(--size) * 360 / 431);
+  height: calc(var(--size) * 320 / 384);
   @media screen and (max-width: 991px) {
     display: none;
   }
@@ -68,12 +85,9 @@ const Image = styled.img`
 const LoansInfo = styled.div`
   display: flex;
   gap: 100px;
-  margin-top: 50px;
+  margin-top: 40px;
+  margin-bottom: 10px;
   @media screen and (max-width: 991px) {
-    margin-top: 40px;
-    gap: 80px;
-  }
-  @media screen and (max-width: 767px) {
     margin-top: 30px;
     gap: 60px;
   }
@@ -144,6 +158,7 @@ const StyledTab = styled(Tab)`
 
 export const Overview: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
+  const theme = useTheme()
   const [tab, setTab] = useState<number>(0)
   const listBorrowing  = useListBorrowing()
   const { totalRepayable, totalRepayableU2U, totalInterestForBorrowingU2U, lastDueDate, totalCollateral, setTotalCollateral, setTotalRepayable } = useContext(LoanContext)
@@ -207,39 +222,45 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 
   return (
     <>
-      <PageHeader>
-        <Flex alignItems="center" justifyContent="space-between">
-          <StyledBox>
-            <LoansH1 as="h1" scale="xxl" color="secondary" mb="24px">
-              {t('GROFI DEX Loans')}
-            </LoansH1>
-            <LoansText>
-              {t(
-                'Grofidex Loans refer to the process of collateralizing stake shares to borrow U2U for use investment purposes to earn higher returns, or for withdrawal.',
-              )}
-            </LoansText>
-            <LoansInfo>
-              <Box>
-                <Text fontSize={["14px", "14px", "14px", "16px"]} color="textExtra">Total Repayable (U2U)</Text>
-                <Text fontSize={["20px", "24px", "24px", "28px", "32px"]} fontWeight="600" lineHeight="1" color="text" mt={["4px", "6px", "6px", "8px"]}>≈ {formatNumber(totalRepayable, 2, 6)}</Text>
-              </Box>
-              <Box>
-                <Text fontSize={["14px", "14px", "14px", "16px"]} color="textExtra">Total Collateral (U2U)</Text>
-                <Text fontSize={["20px", "24px", "24px", "28px", "32px"]} fontWeight="600" lineHeight="1" color="text" mt={["4px", "6px", "6px", "8px"]}>≈ {formatNumber(totalCollateral, 2, 6)}</Text>
-              </Box>
-            </LoansInfo>
-            {
-              Boolean(lastDueDate.current) && (
-                <StyledDate onClick={() => setTab(1)}>
-                  Latest due date<Text color="hover" fontSize="12px" lineHeight="14px" ml="4px">{formatDate(dayjs.unix(lastDueDate.current || (Date.now()/ 1000)).utc())}</Text>
-                </StyledDate>
-              )
-            }
-          </StyledBox>
-          <Image src="/images/loans-image.svg"/>
-        </Flex>
-      </PageHeader>
-      <StyledPage>
+      <Container>
+        <Box
+          className='border-neubrutal'
+          my="32px"
+          background={theme.colors.backgroundAlt}
+          borderRadius={theme.radii.card}
+          p={['20px', '20px', '20px 30px', '20px 30px', '20px 40px']}
+        >
+          <StyledFlex>
+            <Box maxWidth={["100%", "100%", "100%", "100%", "675px"]}>
+              <LoansH1 as="h1" scale="xxl" color="text" mb="24px">
+                {t('GROFI DEX Loans')}
+              </LoansH1>
+              <LoansText>
+                {t(
+                  'Grofidex Loans refer to the process of collateralizing stake shares to borrow U2U for use investment purposes to earn higher returns, or for withdrawal.',
+                )}
+              </LoansText>
+              <LoansInfo>
+                <Box>
+                  <Text fontSize={["14px", "14px", "14px", "16px"]} color="textExtra">Total Repayable (U2U)</Text>
+                  <Text fontSize={["20px", "24px", "24px", "28px", "32px"]} fontWeight="600" lineHeight="1" color="text" mt={["4px", "6px", "6px", "8px"]}>≈ {formatNumber(totalRepayable, 2, 6)}</Text>
+                </Box>
+                <Box>
+                  <Text fontSize={["14px", "14px", "14px", "16px"]} color="textExtra">Total Collateral (U2U)</Text>
+                  <Text fontSize={["20px", "24px", "24px", "28px", "32px"]} fontWeight="600" lineHeight="1" color="text" mt={["4px", "6px", "6px", "8px"]}>≈ {formatNumber(totalCollateral, 2, 6)}</Text>
+                </Box>
+              </LoansInfo>
+              {
+                Boolean(lastDueDate.current) && (
+                  <StyledDate onClick={() => setTab(1)}>
+                    Latest due date<Text color="hover" fontSize="12px" lineHeight="14px" ml="4px">{formatDate(dayjs.unix(lastDueDate.current || (Date.now()/ 1000)).utc())}</Text>
+                  </StyledDate>
+                )
+              }
+            </Box>
+            <Image src="/images/loans-image.svg" alt="" />
+          </StyledFlex>
+        </Box>
         <StyledBoxTab>
           <TabMenu activeIndex={tab} onItemClick={setTab} customWidth isShowBorderBottom={false}>
             <StyledTab>
@@ -273,7 +294,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
           {t('Transactions')}
         </Heading>
         <LoansHistory/>
-      </StyledPage>
+      </Container>
     </>
   )
 }

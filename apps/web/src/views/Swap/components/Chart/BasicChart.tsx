@@ -24,7 +24,7 @@ const StyledBox = styled(Box)`
     --space: 110px;
   }
   @media screen and (max-width: 575px) {
-    --space: 65px;
+    height: 215px;
     padding: 5px 0;
   }
 `
