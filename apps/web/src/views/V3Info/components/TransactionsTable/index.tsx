@@ -40,7 +40,7 @@ const ResponsiveGrid = styled.div<{ widthfirstcol?: number }>`
     &:nth-child(2) {
       min-width: 120px;
     }
-    &:nth-child(6) {
+    &:nth-child(7) {
       min-width: 160px;
     }
     ${({ widthfirstcol }) =>

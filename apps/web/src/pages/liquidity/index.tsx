@@ -2,24 +2,24 @@ import { PositionDetails } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import {
   AddIcon,
+  Box,
   Button,
   CardBody,
   CardFooter,
   Checkbox,
   Dots,
   Flex,
-  Heading,
   HistoryIcon,
   IconButton,
   Link,
   Tag,
   Text,
-  useModal,
+  useModal
 } from '@pancakeswap/uikit'
 import { Liquidity } from '@pancakeswap/widgets-internal'
 import { AppBody, AppHeader } from 'components/App'
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
-import Page from 'components/Layout/Page'
+import Container from 'components/Layout/Container'
 import { RangeTag } from 'components/RangeTag'
 import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import { V3_MIGRATION_SUPPORTED_CHAINS } from 'config/constants/supportChains'
@@ -283,122 +283,119 @@ export default function PoolListPage({ isPair }: { isPair?: boolean }) {
   }
 
   return (
-    <Page>
-      {isPair && (
-        <Heading scale="lg" mb="16px" id="pair-liquidity-title">
-          {t('Your Liquidity')}
-        </Heading>
-      )}
-      <AppBody
-        style={{
-          maxWidth: '100%',
-        }}
-      >
-        <AppHeader
-          title={
-            !isPair ? (
-              t('Your Liquidity')
-            ) : (
-              <>
-                <Flex as="label" htmlFor="hide-close-positions" alignItems="center">
-                  <Checkbox
-                    id="hide-close-positions"
-                    scale="sm"
-                    name="confirmed"
-                    type="checkbox"
-                    checked={hideClosedPositions}
-                    onChange={() => setHideClosedPositions((prev) => !prev)}
-                  />
-                  <Text ml="8px" color="textSubtle" fontSize="14px">
-                    {t('Hide closed positions')}
-                  </Text>
-                </Flex>
-              </>
-            )
-          }
-          subtitle={!isPair ? t('List of your liquidity positions') : ''}
-          IconSlot={
-            <IconButton onClick={onPresentTransactionsModal} variant="text" scale="sm">
-              <HistoryIcon color="textSubtle" width="24px" />
-            </IconButton>
-          }
-          filter={
-            !isPair && (
-              <>
-                <Flex as="label" htmlFor="hide-close-positions" alignItems="center">
-                  <Checkbox
-                    id="hide-close-positions"
-                    scale="sm"
-                    name="confirmed"
-                    type="checkbox"
-                    checked={hideClosedPositions}
-                    onChange={() => setHideClosedPositions((prev) => !prev)}
-                  />
-                  <Text ml="8px" color="textSubtle" fontSize="14px">
-                    {t('Hide closed positions')}
-                  </Text>
-                </Flex>
+    <Box mt="24px">
+      <Container>
+        <AppBody
+          style={{
+            maxWidth: '100%',
+          }}
+        >
+          <AppHeader
+            title={
+              !isPair ? (
+                t('Your Liquidity')
+              ) : (
+                <>
+                  <Flex as="label" htmlFor="hide-close-positions" alignItems="center">
+                    <Checkbox
+                      id="hide-close-positions"
+                      scale="sm"
+                      name="confirmed"
+                      type="checkbox"
+                      checked={hideClosedPositions}
+                      onChange={() => setHideClosedPositions((prev) => !prev)}
+                    />
+                    <Text ml="8px" color="textSubtle" fontSize="14px">
+                      {t('Hide closed positions')}
+                    </Text>
+                  </Flex>
+                </>
+              )
+            }
+            subtitle={!isPair ? t('List of your liquidity positions') : ''}
+            IconSlot={
+              <IconButton onClick={onPresentTransactionsModal} variant="text" scale="sm">
+                <HistoryIcon color="textSubtle" width="24px" />
+              </IconButton>
+            }
+            filter={
+              !isPair && (
+                <>
+                  <Flex as="label" htmlFor="hide-close-positions" alignItems="center">
+                    <Checkbox
+                      id="hide-close-positions"
+                      scale="sm"
+                      name="confirmed"
+                      type="checkbox"
+                      checked={hideClosedPositions}
+                      onChange={() => setHideClosedPositions((prev) => !prev)}
+                    />
+                    <Text ml="8px" color="textSubtle" fontSize="14px">
+                      {t('Hide closed positions')}
+                    </Text>
+                  </Flex>
 
-                {/* <ButtonMenu
-                scale="sm"
-                activeIndex={selectedTypeIndex}
-                onItemClick={(index) => setSelectedTypeIndex(index)}
-                variant="subtle"
-              >
-                <ButtonMenuItem>{t('All')}</ButtonMenuItem>
-                <ButtonMenuItem>V3</ButtonMenuItem>
-                <ButtonMenuItem display={isStableSwapSupported(chainId) ? 'inline-flex' : 'none'}>
-                  {t('StableSwap')}
-                </ButtonMenuItem>
-                <ButtonMenuItem>V2</ButtonMenuItem>
-              </ButtonMenu> */}
+                  {/* <ButtonMenu
+                  scale="sm"
+                  activeIndex={selectedTypeIndex}
+                  onItemClick={(index) => setSelectedTypeIndex(index)}
+                  variant="subtle"
+                >
+                  <ButtonMenuItem>{t('All')}</ButtonMenuItem>
+                  <ButtonMenuItem>V3</ButtonMenuItem>
+                  <ButtonMenuItem display={isStableSwapSupported(chainId) ? 'inline-flex' : 'none'}>
+                    {t('StableSwap')}
+                  </ButtonMenuItem>
+                  <ButtonMenuItem>V2</ButtonMenuItem>
+                </ButtonMenu> */}
+                </>
+              )
+            }
+          />
+          <Body>
+            {mainSection}
+            {selectedTypeIndex === FILTER.V2 ? (
+              <>
+                <Liquidity.FindOtherLP>
+                  {chainId && V3_MIGRATION_SUPPORTED_CHAINS.includes(chainId) && (
+                    <Link style={{ marginTop: '8px' }} href="/migration">
+                      <Button id="migration-link" variant="secondary" scale="sm">
+                        {t('Migrate to V3')}
+                      </Button>
+                    </Link>
+                  )}
+                </Liquidity.FindOtherLP>
               </>
-            )
-          }
-        />
-        <Body>
-          {mainSection}
-          {selectedTypeIndex === FILTER.V2 ? (
-            <>
-              <Liquidity.FindOtherLP>
-                {chainId && V3_MIGRATION_SUPPORTED_CHAINS.includes(chainId) && (
-                  <Link style={{ marginTop: '8px' }} href="/migration">
-                    <Button id="migration-link" variant="secondary" scale="sm">
-                      {t('Migrate to V3')}
-                    </Button>
-                  </Link>
-                )}
-              </Liquidity.FindOtherLP>
-            </>
-          ) : null}
-          {showAllPositionButton && (
-            <Flex alignItems="center" flexDirection="column">
-              <Text color="textSubtle" mb="10px">
-                {t("Don't see a pair you joined?")}
-              </Text>
-              <Button scale="sm" width="fit-content" variant="secondary" onClick={handleClickShowAllPositions}>
-                {t('Show all positions')}
-              </Button>
-            </Flex>
+            ) : null}
+            {showAllPositionButton && (
+              <Flex alignItems="center" flexDirection="column">
+                <Text color="textSubtle" mb="10px">
+                  {t("Don't see a pair you joined?")}
+                </Text>
+                <Button scale="sm" width="fit-content" variant="secondary" onClick={handleClickShowAllPositions}>
+                  {t('Show all positions')}
+                </Button>
+              </Flex>
+            )}
+          </Body>
+          {!isPair && (
+            <CardFooter style={{ textAlign: 'center' }}>
+              <NextLink href="/add" passHref>
+                <Button
+                  id="join-pool-button"
+                  className="button-hover"
+                  width="100%"
+                  startIcon={<AddIcon color="invertedContrast" />}
+                >
+                  {t('Add Liquidity')}
+                </Button>
+              </NextLink>
+            </CardFooter>
           )}
-        </Body>
-        {!isPair && (
-          <CardFooter style={{ textAlign: 'center' }}>
-            <NextLink href="/add" passHref>
-              <Button
-                id="join-pool-button"
-                className="button-hover"
-                width="100%"
-                startIcon={<AddIcon color="invertedContrast" />}
-              >
-                {t('Add Liquidity')}
-              </Button>
-            </NextLink>
-          </CardFooter>
-        )}
-        <V3SubgraphHealthIndicator />
-      </AppBody>
-    </Page>
+          <V3SubgraphHealthIndicator />
+        </AppBody>
+      </Container>
+    </Box>
   )
 }
 

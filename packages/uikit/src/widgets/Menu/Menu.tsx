@@ -196,7 +196,7 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
           ) : (
             <div />
           )}
-          <BodyWrapper mt={!subLinks ? `${totalTopMenuHeight + 1}px` : "0"} mb={[ '55px', '55px', '55px', '55px', '0' ]}>
+          <BodyWrapper mt={!subLinks ? `${totalTopMenuHeight + 1}px` : "0"} mb={[ '90px', '90px', '85px', '85px', '40px' ]}>
             <Inner>{children}</Inner>
           </BodyWrapper>
         </Wrapper>

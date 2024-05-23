@@ -1,6 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Heading } from '@pancakeswap/uikit'
-import Page from 'components/Layout/Page'
+import Container from 'components/Layout/Container'
 import { useMemo } from 'react'
 import PoolTable from '../components/PoolTable'
 
@@ -21,7 +20,7 @@ const PoolsOverview: React.FC<React.PropsWithChildren> = () => {
   // const watchlistPools = usePoolDatasSWR(savedPools)
 
   return (
-    <Page>
+    <Container>
       {/* <Heading scale="lg" mb="16px">
         {t('Your Watchlist')}
       </Heading>
@@ -34,11 +33,8 @@ const PoolsOverview: React.FC<React.PropsWithChildren> = () => {
           </Text>
         )}
       </Card> */}
-      <Heading scale="lg" mb="16px" id="info-pools-title">
-        {t('All Pairs')}
-      </Heading>
       <PoolTable poolDatas={poolsData} />
-    </Page>
+    </Container>
   )
 }
 

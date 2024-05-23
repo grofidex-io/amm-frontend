@@ -17,17 +17,16 @@ import {
   Link,
   Loading,
   OptionProps,
-  PageHeader,
   SearchInput,
   Select,
   Text,
-  ToggleView,
+  ToggleView
 } from '@pancakeswap/uikit'
 
 import { BIG_ONE, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import BigNumber from 'bignumber.js'
-import Page from 'components/Layout/Page'
+import Container from 'components/Layout/Container'
 import { V3SubgraphHealthIndicator } from 'components/SubgraphHealthIndicator'
 import { V3_MIGRATION_SUPPORTED_CHAINS } from 'config/constants/supportChains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -39,13 +38,12 @@ import { useFarmsV3WithPositionsAndBooster } from 'state/farmsV3/hooks'
 import { useCakeVaultUserData } from 'state/pools/hooks'
 import { ViewMode } from 'state/user/actions'
 import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import { getFarmApr } from 'utils/apr'
 import { getStakedFarms } from 'views/Farms/utils/getStakedFarms'
 import { useETHPriceData } from 'views/V3Info/hooks'
 import { useAccount } from 'wagmi'
 import Table from './components/FarmTable/FarmTable'
-import { BCakeBoosterCard } from './components/YieldBooster/components/bCakeV3/BCakeBoosterCard'
 import { FarmsV3Context } from './context'
 
 const ControlContainer = styled.div`
@@ -65,7 +63,37 @@ const ControlContainer = styled.div`
     margin-bottom: 0;
   }
 `
-
+const StyledFlex = styled(Flex)`
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 0;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    flex-direction: row;
+    gap: 50px;
+  }
+`
+const ImageBanner = styled.img`
+  --size: 100%;
+  height: calc(var(--size) * 300 / 423);
+  width: var(--size);
+  max-width: 300px;
+  margin-top: 30px;
+  display: none;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    --size: 353px;
+    max-width: 100%;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    --size: 403px;
+    min-width: var(--size);
+    margin: 5px 0;
+    display: block;
+  }
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    --size: 423px;
+  }
+`
 const FarmFlexWrapper = styled(Flex)`
   flex-wrap: wrap;
   ${({ theme }) => theme.mediaQueries.md} {
@@ -73,11 +101,24 @@ const FarmFlexWrapper = styled(Flex)`
   }
 `
 const FarmH1 = styled(Heading)`
-  font-size: 32px;
-  margin-bottom: 8px;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: calc(56 / 52);
+  margin-bottom: 12px;
   ${({ theme }) => theme.mediaQueries.sm} {
-    font-size: 64px;
-    margin-bottom: 24px;
+    font-size: 32px;
+    font-weight: 900;
+    margin-bottom: 16px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    font-size: 36px;
+    margin-bottom: 20px;
+  }
+  ${({ theme }) => theme.mediaQueries.xl} {
+    font-size: 44px;
+  }
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    font-size: 52px;
   }
 `
 const FarmH2 = styled(Heading)`
@@ -157,18 +198,17 @@ const FinishedTextLink = styled(Link)`
   text-decoration: underline;
 `
 const FarmText = styled.p`
-  color: ${({ theme }) => theme.colors.text};
-  font-size: 16px;
+  color: ${({ theme }) => theme.colors.textSubtle};
+  font-size: 14px;
   font-weight: 500;
-  line-height: calc(28 / 20);
-  margin-bottom: 8px;
+  line-height: calc(24 / 18);
+  margin-bottom: 10px;
   ${({ theme }) => theme.mediaQueries.sm} {
-    font-size: 20px;
-    margin-bottom: 18px;
+    font-size: 16px;
     font-weight: 600;
   }
   ${({ theme }) => theme.mediaQueries.lg} {
-    font-size: 24px;
+    font-size: 18px;
   }
 `
 
@@ -198,6 +238,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { pathname, query: urlQuery } = useRouter()
   const mockApr = Boolean(urlQuery.mockApr)
   const { t } = useTranslation()
+  const theme = useTheme()
   const { chainId } = useActiveChainId()
   const { data: farmsV2, userDataLoaded: v2UserDataLoaded, poolLength: v2PoolLength, regularCakePerBlock } = useFarms()
   const {
@@ -433,11 +474,18 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   return (
     <FarmsV3Context.Provider value={providerValue}>
-      <PageHeader>
-        <Flex flexDirection="column">
-          <FarmFlexWrapper justifyContent="space-between">
-            <Box style={{ flex: '1 1 100%' }}>
-              <FarmH1 as="h1" scale="xxl" color="secondary" mb="24px">
+      <Container>
+        <Box
+          className='border-neubrutal'
+          mt="32px"
+          mb="24px"
+          background={theme.colors.backgroundAlt}
+          borderRadius={theme.radii.card}
+          p={['20px', '20px', '20px 30px', '20px 30px', '0 40px']}
+        >
+          <StyledFlex>
+            <Box width="100%">
+              <FarmH1 as="h1" scale="xxl" color="text">
                 {t('Farms')}
               </FarmH1>
               <FarmText>{t('Stake LP tokens to earn.')}</FarmText>
@@ -450,16 +498,9 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                 </Button>
               </NextLinkFromReactRouter> */}
             </Box>
-
-            {(chainId === ChainId.BSC || chainId === ChainId.BSC_TESTNET) && (
-              <Box>
-                <BCakeBoosterCard />
-              </Box>
-            )}
-          </FarmFlexWrapper>
-        </Flex>
-      </PageHeader>
-      <Page>
+            <ImageBanner src="/images/farms/farms-banner-image.png" alt="" />
+          </StyledFlex>
+        </Box>
         <ControlContainer>
           <ViewControls>
             <Flex mt="20px">
@@ -581,7 +622,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         {chosenFarms.length > 0 && <div ref={observerRef} />}
         {/* <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} /> */}
         <V3SubgraphHealthIndicator />
-      </Page>
+      </Container>
     </FarmsV3Context.Provider>
   )
 }

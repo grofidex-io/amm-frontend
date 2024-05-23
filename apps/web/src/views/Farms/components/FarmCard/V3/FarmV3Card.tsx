@@ -29,7 +29,10 @@ const StyledCard = styled(Card)`
   margin: 0 0 24px 0;
   ${({ theme }) => theme.mediaQueries.sm} {
     max-width: 350px;
-    margin: 0 12px 46px;
+    margin: 0 12px 32px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin: 0 12px 40px;
   }
 `
 
