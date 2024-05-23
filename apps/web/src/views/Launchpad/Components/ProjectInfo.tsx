@@ -12,6 +12,9 @@ const StyledTitle = styled(Text)`
   font-weight: 900;
   line-height: calc(24/20);
   color: ${({ theme }) => theme.colors.text};
+  @media screen and (max-width: 575px) {
+    font-size: 18px;
+  }
 `
 const StyledContent = styled(Text)`
   font-size: 14px;
@@ -56,6 +59,12 @@ const ResponsiveGrid = styled.div`
   padding: 0 24px;
   > * {
     min-width: 100px;
+    @media screen and (max-width: 1199px) and (min-width: 992px) {
+      min-width: 80px;
+    }
+  }
+  @media screen and (max-width: 1199px) and (min-width: 992px) {
+    padding: 0 16px;
   }
 `
 const IconTier = styled.img`
@@ -122,8 +131,7 @@ export default function ProjectInfo() {
       <StyledContentDot fontSize="12px" lineHeight="20px">{t('Level 3: Minimum U2U stake amount is 1000 U2U')}</StyledContentDot>
       <StyledContentDot fontSize="12px" lineHeight="20px">{t('Starter: No stake or U2U stake amount less than 1000 U2U')}</StyledContentDot>
     </>, {
-      placement: 'right',
-      trigger: 'hover'
+      placement: 'right'
     }
   )
   const applyTooltip = useTooltip(
@@ -131,53 +139,55 @@ export default function ProjectInfo() {
       <Text fontFamily="'Metuo', sans-serif" fontSize="12px" lineHeight="18px" mb="4px">{t('Why need apply Whitelist?')}</Text>
       <StyledContent fontSize="12px" lineHeight="16px">{t('There are projects that require you to apply to the whitelist to ensure that you are serious about the project, you will be guaranteed priority when purchasing compared to those who do not apply to the whitelist.')}</StyledContent>
     </>, {
-      placement: 'right',
-      trigger: 'hover'
+      placement: 'right'
     }
   )
 
   return (
     <>
-      <Flex mt="30px">
-        <StyledNeubrutal p="32px 24px" style={{ flex: '2' }}>
-          <Box px="20px" mb="32px">
-            <StyledTitle mb="16px">{t('About XToken Project')}</StyledTitle>
+      <Flex
+        mt="30px"
+        flexDirection={["column-reverse", "column-reverse", "column-reverse", "column-reverse", "row"]}
+      >
+        <StyledNeubrutal p={["24px 16px", "24px 16px", "28px 20px", "28px 20px", "32px 24px"]} height="100%" style={{ flex: '2' }}>
+          <Box px={["0", "0", "12px", "12px", "16px", "16px", "20px"]} mb={["20px", "20px", "26px", "26px", "32px"]}>
+            <StyledTitle mb={["12px", "12px", "16px"]}>{t('About XToken Project')}</StyledTitle>
             <StyledContent>{t('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin porta odio sapien, id efficitur est faucibus a. Donec porttitor sem eget egestas mollis. Ut velit arcu, luctus eu varius non, mollis sed erat. ....')}</StyledContent>
           </Box>
-          <Box px="20px" mb="32px">
-            <StyledTitle mb="16px">{t('Roadmap')}</StyledTitle>
-            <Box ml="30px">
+          <Box px={["0", "0", "12px", "12px", "16px", "16px", "20px"]} mb={["20px", "20px", "26px", "26px", "32px"]}>
+            <StyledTitle mb={["12px", "12px", "16px"]}>{t('Roadmap')}</StyledTitle>
+            <Box ml={["18px", "18px", "24px", "24px", "30px"]}>
               <StyledText>{t('2024 Q1')}</StyledText>
               <StyledContent>{t('Aenean eget vehicula neque. In hendrerit, arcu vitae porttitor aliquam, lorem mauris laoreet ipsum')}</StyledContent>
             </Box>
-            <Box ml="30px" mt="12px">
+            <Box ml={["18px", "18px", "24px", "24px", "30px"]} mt="12px">
               <StyledText>{t('2024 Q1')}</StyledText>
               <StyledContent>{t('Aenean eget vehicula neque. In hendrerit, arcu vitae porttitor aliquam, lorem mauris laoreet ipsum')}</StyledContent>
             </Box>
           </Box>
-          <Box px="20px" mb="32px">
-            <StyledTitle mb="32px">{t('TokenX’s Tokenomics')}</StyledTitle>
-            <Flex>
+          <Box px={["0", "0", "12px", "12px", "16px", "16px", "20px"]} mb={["20px", "20px", "26px", "26px", "32px"]}>
+            <StyledTitle mb={["24px", "24px", "28px", "28px", "32px"]}>{t('TokenX’s Tokenomics')}</StyledTitle>
+            <Flex flexDirection={["column", "column", "row"]}>
               <Box style={{ flex: '1', textAlign: 'center' }}>
                 <Image src="/images/project-chart.png"/>
-                <Text color="textSubtle" fontSize="16px" fontWeight="600" textAlign="center" mt="18px" mx="auto" maxWidth="186px">{t('Max Supply & Distribution 1.000.000')}</Text>
+                <Text color="textSubtle" fontSize="16px" fontWeight="600" textAlign="center" mt={["10px", "10px", "14px", "14px", "18px"]} mx="auto" maxWidth="186px">{t('Max Supply & Distribution 1.000.000')}</Text>
               </Box>
-              <Box style={{ flex: '1' }}>
-                <Box mb="24px">
-                  <StyledText mb="12px">{t('Max Supply of 1 Billion token')}</StyledText>
+              <Box style={{ flex: '1' }} mt={["16px", "16px", "0"]}>
+                <Box mb={["16px", "16px", "20px", "20px", "24px"]}>
+                  <StyledText mb={["8px", "8px", "10px", "10px", "12px"]}>{t('Max Supply of 1 Billion token')}</StyledText>
                   <StyledContentDot lineHeight="17px">{t('95% of total supply sent to Liquidity')}</StyledContentDot>
-                  <StyledContentDot mt="8px" lineHeight="17px">{t('5% of total supply sent to dev wallet')}</StyledContentDot>
+                  <StyledContentDot mt={["4px", "4px", "6px", "6px", "8px"]} lineHeight="17px">{t('5% of total supply sent to dev wallet')}</StyledContentDot>
                 </Box>
                 <Box>
-                  <StyledText mb="12px">{t('10% of Tax in each transaction')}</StyledText>
+                  <StyledText mb={["8px", "8px", "10px", "10px", "12px"]}>{t('10% of Tax in each transaction')}</StyledText>
                   <StyledContentDot lineHeight="17px">{t('5% of which is burned, forever, decreasing circulating supply')}</StyledContentDot>
-                  <StyledContentDot mt="8px" lineHeight="17px">{t('5% of remaining is sent to Marketing wallet, for Massive Marketing campaigns')}</StyledContentDot>
+                  <StyledContentDot mt={["4px", "4px", "6px", "6px", "8px"]} lineHeight="17px">{t('5% of remaining is sent to Marketing wallet, for Massive Marketing campaigns')}</StyledContentDot>
                 </Box>
               </Box>
             </Flex>
           </Box>
-          <Box px="20px">
-            <StyledTitle mb="24px">{t('Schedule Time IDO')}</StyledTitle>
+          <Box px={["0", "0", "12px", "12px", "16px", "16px", "20px"]}>
+            <StyledTitle mb={["20px", "20px", "24px"]}>{t('Schedule Time IDO')}</StyledTitle>
           </Box>
           <Wrapper>
             <TableWrapper>
@@ -218,10 +228,10 @@ export default function ProjectInfo() {
             </TableWrapper>
           </Wrapper>
         </StyledNeubrutal>
-        <StyledNeubrutal style={{ flex: '1' }} height="100%" ml="16px">
-          <Box p="24px 20px">
-            <StyledTitle mb="32px">{t('Buy IDO TokenX')}</StyledTitle>
-            <Box mb="24px">
+        <StyledNeubrutal style={{ flex: '1' }} height="100%" mx="auto" width="100%" minWidth={["100%", "100%", "360px"]} maxWidth="460px" ml={["auto", "auto", "auto", "auto", "16px"]} mb={["16px", "16px", "16px", "16px", "0"]}>
+          <Box p={["20px 16px", "20px 16px", "24px 20px"]}>
+            <StyledTitle mb={["20px", "20px", "26px", "26px", "32px"]}>{t('Buy IDO TokenX')}</StyledTitle>
+            <Box mb={["20px", "20px", "24px"]}>
               <Flex mb="12px">
                 <Text color="textSubtle" fontSize="16px" fontWeight="600" mr="10px">{t('Your Tier')}</Text>
                 <TooltipText ref={tierTooltip.targetRef} decorationColor="secondary">
@@ -245,7 +255,7 @@ export default function ProjectInfo() {
                 <StyledTextItalic>{t('Maximum 100 U2U to buy IDO in round buy IDO Tier 1. The snapshot process has ended at 2024/05/03 14:22:22 UTC.')}</StyledTextItalic>
               </Box>
             </Box>
-            <Box mb="24px">
+            <Box mb={["20px", "20px", "24px"]}>
               <Flex mb="12px">
                 <Text color="textSubtle" fontSize="16px" fontWeight="600" mr="10px">{t('Apply Whitlelist')}</Text>
                 <TooltipText ref={applyTooltip.targetRef} decorationColor="secondary">
@@ -280,7 +290,7 @@ export default function ProjectInfo() {
             <Text textAlign="center" color="primary" fontSize="24px" fontWeight="600" lineHeight="30px">{t('00d : 18h : 35m : 11s')}</Text>
           </Box>
           <Break/>
-          <Box p="24px 20px">
+          <Box p={["20px 16px", "20px 16px", "24px 20px"]}>
             <Box>
               <Flex alignItems="center">
                 <Text color="textSubtle" fontSize="16px" fontWeight="600" mr="8px">{t('Your committed')}</Text>
@@ -299,7 +309,7 @@ export default function ProjectInfo() {
                 </Link>
               </StyledTextItalic>
             </Box>
-            <Box my="24px">
+            <Box my={["20px", "20px", "24px"]}>
               <Text color="textSubtle" fontSize="16px" fontWeight="600" mb="8px">{t('U2U Commit')}</Text>
               <Flex alignItems="center">
                 <StyledInput

@@ -7,7 +7,10 @@ import { StyledButton } from "../styles";
 
 
 const StyledModal = styled(Modal)`
-  width: 770px;
+  width: 760px;
+  @media screen and (max-width: 767px) {
+    width: 100%;
+  }
 `
 const Wrapper = styled.div`
   width: 100%;

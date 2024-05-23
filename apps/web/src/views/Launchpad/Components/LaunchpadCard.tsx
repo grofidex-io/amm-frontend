@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, Flex, Progress, Text } from '@pancakeswap/uikit'
+import { Box, Button, Flex, OpenNewIcon, Progress, Text } from '@pancakeswap/uikit'
 import NextLink from 'next/link'
 import styled, { useTheme } from 'styled-components'
 
@@ -54,21 +54,71 @@ const Image = styled.img`
   height: var(--size);
   object-fit: cover;
 `
+const StyledLogo = styled(Box)`
+  --size: 72px;
+  min-width: var(--size);
+  height: var(--size);
+  border-radius: ${({ theme }) => theme.radii.card};
+  box-shadow: ${({ theme }) => theme.shadows.card};
+  border: 2px solid ${({ theme }) => theme.colors.cardBorder};
+  overflow: hidden;
+  @media screen and (max-width: 1439px) {
+    --size: 66px;
+  }
+  @media screen and (max-width: 1199px) {
+    --size: 60px;
+  }
+  @media screen and (max-width: 991px) {
+    --size: 54px;
+  }
+  @media screen and (max-width: 424px) {
+    --size: 50px;
+  }
+`
 const StyledButton = styled(Button)`
   --size: 72px;
+  min-width: calc(var(--size) + 8px);
   width: calc(var(--size) + 8px);
   height: var(--size);
   white-space: wrap;
   font-weight: 700;
   line-height: calc(19/16);
+  @media screen and (max-width: 1439px) {
+    --size: 66px;
+  }
+  @media screen and (max-width: 1199px) {
+    --size: 32px;
+    min-width: var(--size);
+    width: var(--size);
+    padding: 0;
+    border-radius: 6px;
+  }
+  @media screen and (max-width: 424px) {
+    --size: 30px;
+  }
+  span {
+    @media screen and (max-width: 1199px) {
+      display: none;
+    }
+  }
+  svg {
+    fill: ${({ theme }) => theme.colors.black};
+    @media screen and (min-width: 1200px) {
+      display: none
+    }
+  }
 `
 const StyledText = styled(Text)`
   font-family: 'Metuo', sans-serif;
   font-size: 20px;
   font-weight: 900;
+  line-height: calc(24/20);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  @media screen and (max-width: 1439px) {
+    font-size: 18px;
+  }
 `
 const StyledDot = styled(Box)`
   --size: 12px;
@@ -106,13 +156,20 @@ const LaunchpadCard = ({ type }: LaunchpadProps) => {
         <ImageHeader src='/images/project-background.png' alt='' />
       </CardHeader>
       <CardBody>
-        <Flex alignItems="center" justifyContent="space-between" className='border-neubrutal' borderRadius="8px" p="14px" background={theme.colors.backgroundPage}>
-          <Box className='border-neubrutal' borderRadius="8px" overflow="hidden" width="72px" height="72px" style={{ minWidth: '72px' }}>
+        <Flex
+          alignItems="center"
+          justifyContent="space-between"
+          className='border-neubrutal'
+          borderRadius="8px"
+          p={["10px", "10px", "12px", "12px", "12px", "12px", "14px"]}
+          background={theme.colors.backgroundPage}
+        >
+          <StyledLogo>
             <Image src='/images/project-image.png' alt=''/>
-          </Box>
-          <Box style={{ flex: 1 }} overflow="hidden" mx="24px">
-            <StyledText >XToken Project</StyledText>
-            <Flex alignItems="center" mt="12px">
+          </StyledLogo>
+          <Box style={{ flex: 1 }} overflow="hidden" mx={["12px", "16px", "16px", "16px", "16px", "20px", "24px"]}>
+            <StyledText title="XToken Project">XToken Project</StyledText>
+            <Flex alignItems="center" mt={["4px", "6px", "6px", "8px", "8px", "10px", "12px"]}>
               <StyledDot
                 background={
                   type === 'upcoming' ? theme.colors.yellow
@@ -123,8 +180,8 @@ const LaunchpadCard = ({ type }: LaunchpadProps) => {
                 }
               />
               <Text
-                ml="8px"
-                fontSize="16px"
+                ml={["6px", "6px", "6px", "6px", "6px", "8px"]}
+                fontSize={["14px", "14px", "14px", "15px", "15px", "16px"]}
                 fontWeight="700"
                 lineHeight="20px"
                 color={
@@ -149,31 +206,40 @@ const LaunchpadCard = ({ type }: LaunchpadProps) => {
             <StyledButton
               className="button-hover"
             >
-              {t('View Detail')}
+              <span>{t('View Detail')}</span>
+              <OpenNewIcon/>
             </StyledButton>
           </NextLink>
         </Flex>
-        <Box p="16px">
+        <Box px={["0", "0", "16px", "16px", "0", "0", "16px"]} py="16px">
           <Text fontSize="14px" fontWeight="400" mb="16px" color='textSubtle'>{t('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin porta odio sapien, id efficitur est faucibus a. Donec porttitor sem eget egestas mollis. Ut velit arcu, luctus eu varius non, mollis sed erat. ....')}</Text>
           <Flex justifyContent="space-between" alignItems="center" mb="12px">
             <Text fontSize="14px" fontWeight="600" lineHeight="20px" color='textSubtle'>{t('Sale price')}</Text>
-            <Text fontSize="16px" fontWeight="700" lineHeight="20px" color='text'>1 U2U = 100 Xtoken</Text>
+            <Text fontSize={["15px", "15px", "16px", "16px", "15px", "16px"]} fontWeight="700" lineHeight="20px" color='text'>1 U2U = 100 Xtoken</Text>
           </Flex>
           <Flex justifyContent="space-between" alignItems="center">
             <Text fontSize="14px" fontWeight="600" lineHeight="20px" color='textSubtle'>{t('Total Raise')}</Text>
-            <Text fontSize="16px" fontWeight="700" lineHeight="20px" color='text'>200.000 U2U</Text>
+            <Text fontSize={["15px", "15px", "16px", "16px", "15px", "16px"]} fontWeight="700" lineHeight="20px" color='text'>200.000 U2U</Text>
           </Flex>
         </Box>
         {type === 'upcoming' ? (
-          <Flex borderRadius="8px" flexDirection="column" alignItems="center" justifyContent="center" className='border-neubrutal' p="30px" style={{ background: '#445434' }}>
+          <Flex
+            borderRadius="8px"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            className='border-neubrutal'
+            p={["27px 12px", "27px 16px", "27px 16px", "27px 16px", "27px 16px", "27px 16px", "30px 16px"]}
+            style={{ background: '#445434' }}
+          >
             <Text style={{ color: theme.colors.hover }} fontSize="16px" fontWeight="600" lineHeight="20px" mb="8px">{t('Sale start in')}</Text>
-            <Text color='secondary' fontSize="28px" fontWeight="600" lineHeight="34px">{t('To be announced')}</Text>
+            <Text color='secondary' fontSize={["24px", "24px", "24px", "25px", "24px", "24px", "28px"]} fontWeight="600" style={{ lineHeight: 'calc(34/28)' }}>{t('To be announced')}</Text>
           </Flex>
         ) : (
-          <Box className='border-neubrutal' borderRadius="8px" p="20px 16px">
-            <Flex alignItems="center" justifyContent="space-between" mb="20px">
-              <Text fontFamily="'Metuo', sans-serif" fontSize="18px" fontWeight="900" lineHeight="1">{t('Progress')}</Text>
-              <Text fontSize="16px" lineHeight="20px">00d : 18h : 35m : 11s</Text>
+          <Box className='border-neubrutal' borderRadius="8px" p={["16px 12px", "16px 12px", "16px 12px", "16px 12px", "16px 12px", "16px 12px","20px 16px"]}>
+            <Flex alignItems="flex-end" justifyContent="space-between" mb="20px">
+              <Text fontFamily="'Metuo', sans-serif" fontSize={["16px", "18px", "18px", "18px", "18px", "16px", "18px"]} fontWeight="900" lineHeight="1">{t('Progress')}</Text>
+              <Text fontSize={["14px", "16px", "16px", "16px", "16px", "14px", "16px"]} lineHeight="1">00d : 18h : 35m : 11s</Text>
             </Flex>
             <Flex alignItems="center" justifyContent="space-between" mb="10px">
               <Flex>

@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization';
 import { Box, Flex, Link, Progress, Tab, TabMenu, Text } from "@pancakeswap/uikit";
-import Page from 'components/Layout/Page';
+import Container from 'components/Layout/Container';
 import { useState } from 'react';
 import styled, { useTheme } from "styled-components";
 import ProjectInfo from '../Components/ProjectInfo';
@@ -37,11 +37,31 @@ const StyledBanner = styled(Box)`
       padding: 0 24px;
     }
   }
+  @media screen and (max-width: 991px) {
+    height: 220px;
+    padding: 25px 0;
+  }
+  @media screen and (max-width: 991px) {
+    height: 200px;
+    padding: 20px 0;
+  }
 `
-const StyledPage = styled(Page)`
-  max-width: 1448px;
-  @media screen and (max-width: 1559px) {
-    max-width: 1248px;
+const StyledLogo = styled(Box)`
+  --size: 120px;
+  min-width: var(--size);
+  height: var(--size);
+  border-radius: ${({ theme }) => theme.radii.card};
+  border: 2px solid ${({ theme }) => theme.colors.cardBorder};
+  box-shadow: ${({ theme }) => theme.shadows.card};
+  overflow: hidden;
+  @media screen and (max-width: 1439px) {
+    --size: 100px;
+  }
+  @media screen and (max-width: 991px) {
+    --size: 80px;
+  }
+  @media screen and (max-width: 575px) {
+    --size: 60px;
   }
 `
 const Image = styled.img`
@@ -58,6 +78,22 @@ const StyledText = styled(Text)`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-bottom: 24px;
+  @media screen and (max-width: 1439px) {
+    font-size: 32px;
+    margin-bottom: 20px;
+  }
+  @media screen and (max-width: 1199px) {
+    margin-bottom: 16px;
+  }
+  @media screen and (max-width: 991px) {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+  @media screen and (max-width: 575px) {
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
 `
 const StyledDot = styled(Box)`
   --size: 12px;
@@ -86,6 +122,13 @@ const StyledTitle = styled(Text)`
   line-height: calc(24/20);
   color: ${({ theme }) => theme.colors.text};
   margin-bottom: 24px;
+  @media screen and (max-width: 991px) {
+    margin-bottom: 20px;
+  }
+  @media screen and (max-width: 575px) {
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
 `
 const IconImg = styled.img`
   height: 16px;
@@ -141,11 +184,21 @@ const StyledLink = styled(Link)`
   }
   &:hover {
     opacity: 1;
+    img {
+      transform: scale(1.1);
+    }
   }
   img {
     --size: 32px;
     width: var(--size);
     height: var(--size);
+    transition: all 0.3s ease-out;
+    @media screen and (max-width: 991px) {
+      --size: 28px;
+    }
+    @media screen and (max-width: 575px) {
+      --size: 24px;
+    }
   }
 `
 const StyledBox = styled(Box)`
@@ -184,6 +237,57 @@ const StyledContent = styled.div`
     --size: 40px;
     width: var(--size);
     height: var(--size);
+  }
+`
+const StyledSwiper = styled(Swiper)`
+
+`
+const StyledSwiperSlide = styled(SwiperSlide)`
+  width: auto;
+  &:first-child {
+    > div {
+      > div {
+        padding-left: 30px;
+      }
+    }
+  }
+  &:last-child {
+    > div {
+      > div {
+        padding-right: 30px;
+      }
+    }
+    svg {
+      display: none;
+    }
+  }
+`
+const StyledListTitle = styled(Text)`
+  color: ${({ theme }) => theme.colors.textSubtle};
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  flex: 1;
+`
+const StyledListText = styled(Text)`
+  color: ${({ theme }) => theme.colors.text};
+  text-align: right;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 20px;
+  margin-left: 12px;
+  @media screen and (max-width: 1439px) {
+    font-size: 15px;
+    margin-left: 8px;
+  }
+  @media screen and (max-width: 991px) {
+    margin-left: 10px;
+  }
+  @media screen and (max-width: 575px) {
+    margin-left: 8px;
+  }
+  @media screen and (max-width: 424px) {
+    font-size: 14px;
   }
 `
 
@@ -229,146 +333,143 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
           ))}
         </Flex>
       </StyledBanner>
-      <StyledPage>
-        <Flex mb="16px">
-          <Flex
-            alignItems="center"
-            flex={1}
-          >
-            <Box className='border-neubrutal' borderRadius="8px" overflow="hidden" width="120px" height="120px" style={{ minWidth: '120px' }}>
+      <Container>
+        <Flex my="16px" flexDirection={["column", "column", "row"]}>
+          <Flex alignItems="center" flex={1}>
+            <StyledLogo>
               <Image src='/images/project-image.png' alt=''/>
-            </Box>
-            <Box overflow="hidden" ml="24px">
-            <StyledText >XToken Project</StyledText>
-            <Flex alignItems="center" mt="24px">
-              <StyledDot
-                background={
-                  type === 'upcoming' ? theme.colors.yellow
-                  : type === 'cancelled' ? theme.colors.orange
-                  : type === 'claimable' ? theme.colors.cyan
-                  : type === 'ended' ? theme.colors.textSubtle
-                  : theme.colors.primary
-                }
-              />
-              <Text
-                ml="8px"
-                fontSize="16px"
-                fontWeight="700"
-                lineHeight="20px"
-                color={
-                  type === 'upcoming' ? theme.colors.yellow
+            </StyledLogo>
+            <Box overflow="hidden" ml={["16px", "16px", "20px", "20px", "24px"]}>
+              <StyledText >XToken Project</StyledText>
+              <Flex alignItems="center">
+                <StyledDot
+                  background={
+                    type === 'upcoming' ? theme.colors.yellow
                     : type === 'cancelled' ? theme.colors.orange
                     : type === 'claimable' ? theme.colors.cyan
                     : type === 'ended' ? theme.colors.textSubtle
                     : theme.colors.primary
-                }
-              >
-                {
-                  type === 'upcoming' ? t('Upcoming')
-                    : type === 'cancelled' ? t('Cancelled')
-                    : type === 'claimable' ? t('Claimable')
-                    : type === 'ended' ? t('Ended')
-                    : t('On Going')
-                }
-              </Text>
-            </Flex>
-          </Box>
+                  }
+                />
+                <Text
+                  ml="8px"
+                  fontSize={["14px", "14px", "16px"]}
+                  fontWeight="700"
+                  lineHeight="20px"
+                  color={
+                    type === 'upcoming' ? theme.colors.yellow
+                      : type === 'cancelled' ? theme.colors.orange
+                      : type === 'claimable' ? theme.colors.cyan
+                      : type === 'ended' ? theme.colors.textSubtle
+                      : theme.colors.primary
+                  }
+                >
+                  {
+                    type === 'upcoming' ? t('Upcoming')
+                      : type === 'cancelled' ? t('Cancelled')
+                      : type === 'claimable' ? t('Claimable')
+                      : type === 'ended' ? t('Ended')
+                      : t('On Going')
+                  }
+                </Text>
+              </Flex>
+            </Box>
           </Flex>
           <Flex
             flex={2}
             ml="16px"
-            alignItems="center"
+            alignItems={["flex-end", "flex-end", "flex-end", "flex-end", "center"]}
             justifyContent="center"
             flexDirection="column"
           >
-            <Text color="primary" textAlign="center" fontSize="14px" fontWeight="600" mb="12px">{t('Sale end in')}</Text>
+            <Text color="textSubtle" textAlign="center" fontSize="14px" fontWeight="600" lineHeight="17px" mb={["6px", "6px", "8px", "8px", "10px", "10px", "12px"]}>{t('Sale end in')}</Text>
             <Flex justifyContent="center">
-              <Box style={{ width: '40px', textAlign: 'center' }} mr="24px">
-                <Text fontSize="32px" fontWeight="600" lineHeight="1" color='hover'>00</Text>
+              <Box style={{ textAlign: 'center' }} mr={["12px", "12px", "16px", "16px", "20px", "20px", "24px"]}>
+                <Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>00</Text>
                 <Text fontSize="11px" fontWeight="400" color='hover'>{t('Days')}</Text>
               </Box>
-              <Box style={{ width: '40px', textAlign: 'center' }} mr="24px">
-                <Text fontSize="32px" fontWeight="600" lineHeight="1" color='hover'>18</Text>
+              <Box style={{ textAlign: 'center' }} mr={["12px", "12px", "16px", "16px", "20px", "20px", "24px"]}>
+                <Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>18</Text>
                 <Text fontSize="11px" fontWeight="400" color='hover'>{t('Hours')}</Text>
               </Box>
-              <Box style={{ width: '40px', textAlign: 'center' }} mr="24px">
-                <Text fontSize="32px" fontWeight="600" lineHeight="1" color='hover'>59</Text>
+              <Box style={{ textAlign: 'center' }} mr={["12px", "12px", "16px", "16px", "20px", "20px", "24px"]}>
+                <Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>59</Text>
                 <Text fontSize="11px" fontWeight="400" color='hover'>{t('Minutes')}</Text>
               </Box>
-              <Box style={{ width: '40px', textAlign: 'center' }}>
-                <Text fontSize="32px" fontWeight="600" lineHeight="1" color='hover'>59</Text>
+              <Box style={{ textAlign: 'center' }}>
+                <Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>59</Text>
                 <Text fontSize="11px" fontWeight="400" color='hover'>{t('Seconds')}</Text>
               </Box>
             </Flex>
           </Flex>
         </Flex>
-        <Flex mb="32px">
-          <StyledNeubrutal  p="24px" width="100%" style={{ flex: "1" }}>
+        <Flex flexDirection={["column", "column", "column", "column", "row"]} mb="32px">
+          <StyledNeubrutal  p={["16px", "16px", "20px", "20px", "24px"]} mx="auto" width="100%" minWidth={["100%", "100%", "360px"]} maxWidth="460px" style={{ flex: "1" }}>
             <StyledTitle>{t('Sale Info')}</StyledTitle>
-            <Flex mb="20px" alignItems="center" justifyContent="space-between">
-              <Text color='textSubtle' fontSize="14px" fontWeight="600">{t('Sale price')}</Text>
+            <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
+              <StyledListTitle>{t('Sale price')}</StyledListTitle>
               <Flex alignItems="center">
                 <IconImg src='/images/u2u.svg' />
-                <Text color='text' fontSize="16px" fontWeight="700" lineHeight="20px" ml="12px">0.01 U2U</Text>
+                <StyledListText>0.01 U2U</StyledListText>
               </Flex>
             </Flex>
-            <Flex mb="20px" alignItems="center" justifyContent="space-between">
-              <Text color='textSubtle' fontSize="14px" fontWeight="600">{t('Total Raise')}</Text>
+            <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
+              <StyledListTitle>{t('Total Raise')}</StyledListTitle>
               <Flex alignItems="center">
                 <IconImg src='/images/u2u.svg' />
-                <Text color='text' fontSize="16px" fontWeight="700" lineHeight="20px" ml="12px">20.000 U2U</Text>
+                <StyledListText>20.000 U2U</StyledListText>
               </Flex>
             </Flex>
-            <Flex mb="20px" alignItems="center" justifyContent="space-between">
-              <Text color='textSubtle' fontSize="14px" fontWeight="600">{t('Total for Sale')}</Text>
+            <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
+              <StyledListTitle>{t('Total for Sale')}</StyledListTitle>
               <Flex alignItems="center">
                 <IconImg src='/images/xtoken.svg' />
-                <Text color='text' fontSize="16px" fontWeight="700" lineHeight="20px" ml="12px">20.000.000 XTOKEN</Text>
+                <StyledListText>20.000.000 XTOKEN</StyledListText>
               </Flex>
             </Flex>
-            <Flex mb="20px" alignItems="center" justifyContent="space-between">
-              <Text color='textSubtle' fontSize="14px" fontWeight="600">{t('Sale Type')}</Text>
-              <Text color='primary' fontSize="16px" fontWeight="700" lineHeight="20px" ml="12px">Puplic</Text>
+            <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
+              <StyledListTitle>{t('Sale Type')}</StyledListTitle>
+              <StyledListText style={{ color: theme.colors.primary }}>Puplic</StyledListText>
             </Flex>
-            <Flex mb="20px" alignItems="center" justifyContent="space-between">
-              <Text color='textSubtle' fontSize="14px" fontWeight="600">{t('Network')}</Text>
+            <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
+              <StyledListTitle>{t('Network')}</StyledListTitle>
               <Flex alignItems="center">
                 <IconImg src='/images/u2u.svg' />
-                <Text color='text' fontSize="16px" fontWeight="700" lineHeight="20px" ml="12px">U2U Chain</Text>
+                <StyledListText>U2U Chain</StyledListText>
               </Flex>
             </Flex>
-            <Flex mb="20px" alignItems="center" justifyContent="space-between">
-              <Text color='textSubtle' fontSize="14px" fontWeight="600">{t('Softcap')}</Text>
+            <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
+              <StyledListTitle>{t('Softcap')}</StyledListTitle>
               <Flex alignItems="center">
                 <IconImg src='/images/u2u.svg' />
-                <Text color='text' fontSize="16px" fontWeight="700" lineHeight="20px" ml="12px">100.000 U2U</Text>
+                <StyledListText>100.000 U2U</StyledListText>
               </Flex>
             </Flex>
-            <Flex mb="20px" alignItems="center" justifyContent="space-between">
-              <Text color='textSubtle' fontSize="14px" fontWeight="600">{t('Snapshot time')}</Text>
-              <Text color='text' fontSize="16px" fontWeight="700" lineHeight="20px" ml="12px">May 02, 2024, 02:00:00 AM</Text>
+            <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
+              <StyledListTitle>{t('Snapshot time')}</StyledListTitle>
+              <StyledListText>May 02, 2024, 02:00:00 AM</StyledListText>
             </Flex>
-            <Flex mb="20px" alignItems="center" justifyContent="space-between">
-              <Text color='textSubtle' fontSize="14px" fontWeight="600">{t('Start Apply Whitelist')}</Text>
-              <Text color='text' fontSize="16px" fontWeight="700" lineHeight="20px" ml="12px">May 02, 2024, 02:00:00 AM</Text>
+            <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
+              <StyledListTitle>{t('Start Apply Whitelist')}</StyledListTitle>
+              <StyledListText>May 02, 2024, 02:00:00 AM</StyledListText>
             </Flex>
-            <Flex mb="20px" alignItems="center" justifyContent="space-between">
-              <Text color='textSubtle' fontSize="14px" fontWeight="600">{t('End Apply Whitelist')}</Text>
-              <Text color='text' fontSize="16px" fontWeight="700" lineHeight="20px" ml="12px">May 02, 2024, 02:00:00 AM</Text>
+            <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
+              <StyledListTitle>{t('End Apply Whitelist')}</StyledListTitle>
+              <StyledListText>May 02, 2024, 02:00:00 AM</StyledListText>
             </Flex>
-            <Flex mb="20px" alignItems="center" justifyContent="space-between">
-              <Text color='textSubtle' fontSize="14px" fontWeight="600">{t('Sale Start')}</Text>
-              <Text color='text' fontSize="16px" fontWeight="700" lineHeight="20px" ml="12px">May 02, 2024, 02:00:00 AM</Text>
+            <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
+              <StyledListTitle>{t('Sale Start')}</StyledListTitle>
+              <StyledListText>May 02, 2024, 02:00:00 AM</StyledListText>
             </Flex>
-            <Flex alignItems="center" justifyContent="space-between">
-              <Text color='textSubtle' fontSize="14px" fontWeight="600">{t('Sale End')}</Text>
-              <Text color='text' fontSize="16px" fontWeight="700" lineHeight="20px" ml="12px">May 02, 2024, 02:00:00 AM</Text>
+            <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
+              <StyledListTitle>{t('Sale End')}</StyledListTitle>
+              <StyledListText>May 02, 2024, 02:00:00 AM</StyledListText>
             </Flex>
           </StyledNeubrutal>
-          <Box style={{ flex: "2" }} ml="16px">
-            <StyledNeubrutal  p="24px">
+          <Box style={{ flex: "2" }} ml={["0", "0", "0", "0", "16px"]} mt={["16px", "16px", "16px", "16px", "0"]}>
+            <StyledNeubrutal  p={["16px", "16px", "20px", "20px", "24px"]}>
               <StyledTitle>{t('Progress')}</StyledTitle>
-              <Flex justifyContent="space-between" alignItems="center" mb="12px">
+              <Flex justifyContent="space-between" alignItems="center" mb={["8px", "8px", "10px", "10px", "12px"]}>
                 <Flex>
                   <Text fontSize="14px" fontWeight="700" lineHeight="24px">40.000</Text>
                   <Text color='textSubtle' fontSize="10px" lineHeight="24px" ml="6px">U2U Raised</Text>
@@ -381,8 +482,8 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
                 <Text color='textSubtle' fontSize="14px" fontWeight="600" ml="8px">{t('Total Raise')}</Text>
               </Flex>
             </StyledNeubrutal>
-            <Flex mt="16px" width="100%">
-              <StyledNeubrutal  p="16px" style={{ flex: '1', minHeight: '140px' }}>
+            <Flex mt="16px" width="100%" flexDirection={["column", "column", "row"]}>
+              <StyledNeubrutal  p="16px" minHeight={["120px", "120px", "140px"]} style={{ flex: '1' }}>
                 <Flex alignItems="center">
                   <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none">
                     <path d="M7.47753 13.8008C7.47756 13.8665 7.46466 13.9315 7.43954 13.9922C7.41443 14.0529 7.3776 14.108 7.33116 14.1544C7.28473 14.2009 7.22959 14.2377 7.16891 14.2628C7.10823 14.2879 7.0432 14.3008 6.97753 14.3008H4.61584L4.81347 14.4985C4.86066 14.5448 4.89822 14.5999 4.92397 14.6608C4.94972 14.7216 4.96315 14.787 4.96348 14.8531C4.96382 14.9192 4.95105 14.9847 4.92591 15.0458C4.90078 15.1069 4.86378 15.1624 4.81706 15.2091C4.77033 15.2559 4.71481 15.2929 4.65369 15.318C4.59258 15.3431 4.52709 15.3559 4.46101 15.3556C4.39493 15.3552 4.32958 15.3418 4.26872 15.316C4.20787 15.2903 4.15272 15.2527 4.10647 15.2055L3.05565 14.1543C3.00921 14.1079 2.97238 14.0528 2.94725 13.9921C2.92211 13.9315 2.90918 13.8665 2.90918 13.8008C2.90918 13.7351 2.92211 13.6701 2.94725 13.6095C2.97238 13.5488 3.00921 13.4937 3.05565 13.4473L4.10644 12.3965C4.15269 12.3493 4.20784 12.3117 4.26869 12.286C4.32955 12.2602 4.3949 12.2468 4.46098 12.2465C4.52706 12.2461 4.59255 12.2589 4.65366 12.284C4.71478 12.3092 4.7703 12.3462 4.81703 12.3929C4.86375 12.4396 4.90075 12.4951 4.92588 12.5563C4.95102 12.6174 4.96379 12.6829 4.96345 12.7489C4.96312 12.815 4.94969 12.8804 4.92394 12.9412C4.89819 13.0021 4.86063 13.0572 4.81344 13.1035L4.61617 13.3008H6.97753C7.0432 13.3007 7.10824 13.3136 7.16892 13.3387C7.2296 13.3639 7.28474 13.4007 7.33118 13.4471C7.37761 13.4936 7.41444 13.5487 7.43955 13.6094C7.46467 13.6701 7.47757 13.7351 7.47753 13.8008ZM16.2275 5.44092H5.58788C5.19019 5.44135 4.80891 5.59953 4.5277 5.88074C4.24649 6.16195 4.08831 6.54323 4.08788 6.94092V10.75C4.08788 10.8826 4.14056 11.0098 4.23432 11.1036C4.32809 11.1973 4.45527 11.25 4.58788 11.25C4.72049 11.25 4.84766 11.1973 4.94143 11.1036C5.0352 11.0098 5.08788 10.8826 5.08788 10.75V6.94092C5.08805 6.80836 5.14078 6.68129 5.23451 6.58755C5.32825 6.49382 5.45532 6.44109 5.58788 6.44092H16.2275C16.3601 6.44109 16.4872 6.49382 16.5809 6.58755C16.6746 6.68129 16.7274 6.80836 16.7275 6.94092V12.8008C16.7274 12.9333 16.6746 13.0604 16.5809 13.1542C16.4872 13.2479 16.3601 13.3006 16.2275 13.3008H8.97753C8.84492 13.3008 8.71774 13.3535 8.62397 13.4472C8.53021 13.541 8.47753 13.6682 8.47753 13.8008C8.47753 13.9334 8.53021 14.0606 8.62397 14.1543C8.71774 14.2481 8.84492 14.3008 8.97753 14.3008H16.2275C16.6252 14.3004 17.0065 14.1422 17.2877 13.861C17.5689 13.5798 17.7271 13.1985 17.7275 12.8008V6.94092C17.7271 6.54323 17.5689 6.16195 17.2877 5.88074C17.0065 5.59953 16.6252 5.44135 16.2275 5.44092ZM8.60453 9.8711C8.60453 9.41547 8.73964 8.97007 8.99277 8.59123C9.24591 8.21238 9.6057 7.91711 10.0266 7.74275C10.4476 7.56839 10.9108 7.52276 11.3577 7.61165C11.8045 7.70054 12.215 7.91995 12.5372 8.24213C12.8594 8.56431 13.0788 8.97479 13.1677 9.42167C13.2566 9.86854 13.211 10.3317 13.0366 10.7527C12.8622 11.1736 12.567 11.5334 12.1881 11.7866C11.8093 12.0397 11.3639 12.1748 10.9082 12.1748C10.2974 12.1742 9.71181 11.9313 9.27991 11.4994C8.848 11.0675 8.60513 10.4819 8.60453 9.8711ZM9.60453 9.8711C9.60453 10.129 9.68099 10.381 9.82425 10.5954C9.9675 10.8098 10.1711 10.9769 10.4093 11.0756C10.6476 11.1742 10.9097 11.2001 11.1626 11.1498C11.4155 11.0994 11.6478 10.9753 11.8301 10.7929C12.0124 10.6106 12.1366 10.3783 12.1869 10.1254C12.2372 9.87251 12.2114 9.61038 12.1127 9.37216C12.014 9.13393 11.8469 8.93033 11.6325 8.78708C11.4181 8.64383 11.166 8.56738 10.9082 8.56739C10.5626 8.56782 10.2312 8.70531 9.9868 8.94971C9.7424 9.19411 9.60496 9.52547 9.60453 9.8711ZM7.2061 9.3711H6.74413C6.61152 9.3711 6.48434 9.42378 6.39057 9.51754C6.29681 9.61131 6.24413 9.73849 6.24413 9.8711C6.24413 10.0037 6.29681 10.1309 6.39057 10.2247C6.48434 10.3184 6.61152 10.3711 6.74413 10.3711H7.20605C7.33866 10.3711 7.46583 10.3184 7.5596 10.2247C7.65337 10.1309 7.70605 10.0037 7.70605 9.8711C7.70605 9.73849 7.65337 9.61131 7.5596 9.51754C7.46583 9.42378 7.33871 9.3711 7.2061 9.3711ZM15.0713 10.3711C15.2039 10.3711 15.3311 10.3184 15.4249 10.2247C15.5186 10.1309 15.5713 10.0037 15.5713 9.8711C15.5713 9.73849 15.5186 9.61131 15.4249 9.51754C15.3311 9.42378 15.2039 9.3711 15.0713 9.3711H14.6103C14.4777 9.3711 14.3506 9.42378 14.2568 9.51754C14.163 9.61131 14.1103 9.73849 14.1103 9.8711C14.1103 10.0037 14.163 10.1309 14.2568 10.2247C14.3506 10.3184 14.4777 10.3711 14.6103 10.3711H15.0713Z" fill="#FE5300"/>
@@ -391,7 +492,7 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
                 </Flex>
                 <Text color="textSubtle" fontSize="12px" fontWeight="600" mt="8px" maxWidth="260px">{t('You can cancel your IDO Token purchase if you change your mind after U2U commits to the system.')}</Text>
               </StyledNeubrutal>
-              <StyledNeubrutal  p="16px" ml="16px" style={{ flex: '1', minHeight: '140px' }}>
+              <StyledNeubrutal  p="16px" minHeight={["120px", "120px", "140px"]} ml={["0", "0", "16px"]} mt={["16px", "16px", "0"]} style={{ flex: '1' }}>
                 <Flex alignItems="center">
                   <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
                     <g clip-path="url(#clip0_1413_11372)">
@@ -471,7 +572,7 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
           {tab === 0 && <ProjectInfo/>}
           {tab === 1 && <Transactions/>}
         </StyledBoxTab>
-      </StyledPage>
+      </Container>
     </>
   )
 }
