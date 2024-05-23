@@ -182,112 +182,114 @@ export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDat
   }
 
   return (
-    <TableWrapper>
-      {sortedPools.length > 0 ? (
-        <>
-          <LayoutScroll>
-            <ResponsiveGrid>
-              <Text color="textSubtle">{t('NO.')}</Text>
-              <ClickableColumnHeader color="textSubtle">
-                {t('Pair')}
-                <SortButton
-                  scale="sm"
-                  variant="subtle"
-                  onClick={() => handleSort(SORT_FIELD.feeTier)}
-                  className={getSortFieldClassName(SORT_FIELD.feeTier)}
-                >
-                  <SortArrowIcon />
-                </SortButton>
-              </ClickableColumnHeader>
-              <ClickableColumnHeader color="textSubtle" style={{ justifyContent: 'flex-end' }}>
-                {t('TVL')}
-                <SortButton
-                  scale="sm"
-                  variant="subtle"
-                  onClick={() => handleSort(SORT_FIELD.tvlUSD)}
-                  className={getSortFieldClassName(SORT_FIELD.tvlUSD)}
-                >
-                  <SortArrowIcon />
-                </SortButton>
-              </ClickableColumnHeader>
-              <ClickableColumnHeader color="textSubtle" style={{ justifyContent: 'flex-end' }}>
-                {t('Volume 24H')}
-                <SortButton
-                  scale="sm"
-                  variant="subtle"
-                  onClick={() => handleSort(SORT_FIELD.volumeUSD)}
-                  className={getSortFieldClassName(SORT_FIELD.volumeUSD)}
-                >
-                  <SortArrowIcon />
-                </SortButton>
-              </ClickableColumnHeader>
-              <ClickableColumnHeader color="textSubtle" style={{ justifyContent: 'flex-end' }}>
-                {t('Volume 7D')}
-                <SortButton
-                  scale="sm"
-                  variant="subtle"
-                  onClick={() => handleSort(SORT_FIELD.volumeUSDWeek)}
-                  className={getSortFieldClassName(SORT_FIELD.volumeUSDWeek)}
-                >
-                  <SortArrowIcon />
-                </SortButton>
-              </ClickableColumnHeader>
-            </ResponsiveGrid>
-            <AutoColumn gap="16px">
-              <Break />
-              {sortedPools.map((poolData, i) => {
-                if (poolData) {
-                  return (
-                    <React.Fragment key={`${poolData?.address}_Row`}>
-                      <DataRow index={(page - 1) * MAX_ITEMS + i} poolData={poolData} chainPath={chainPath} />
-                      <Break />
-                    </React.Fragment>
-                  )
-                }
-                return null
-              })}
-            </AutoColumn>
+    <Box mt="24px">
+      <TableWrapper>
+        {sortedPools.length > 0 ? (
+          <>
+            <LayoutScroll>
+              <ResponsiveGrid>
+                <Text color="textSubtle">{t('NO.')}</Text>
+                <ClickableColumnHeader color="textSubtle">
+                  {t('Pair')}
+                  <SortButton
+                    scale="sm"
+                    variant="subtle"
+                    onClick={() => handleSort(SORT_FIELD.feeTier)}
+                    className={getSortFieldClassName(SORT_FIELD.feeTier)}
+                  >
+                    <SortArrowIcon />
+                  </SortButton>
+                </ClickableColumnHeader>
+                <ClickableColumnHeader color="textSubtle" style={{ justifyContent: 'flex-end' }}>
+                  {t('TVL')}
+                  <SortButton
+                    scale="sm"
+                    variant="subtle"
+                    onClick={() => handleSort(SORT_FIELD.tvlUSD)}
+                    className={getSortFieldClassName(SORT_FIELD.tvlUSD)}
+                  >
+                    <SortArrowIcon />
+                  </SortButton>
+                </ClickableColumnHeader>
+                <ClickableColumnHeader color="textSubtle" style={{ justifyContent: 'flex-end' }}>
+                  {t('Volume 24H')}
+                  <SortButton
+                    scale="sm"
+                    variant="subtle"
+                    onClick={() => handleSort(SORT_FIELD.volumeUSD)}
+                    className={getSortFieldClassName(SORT_FIELD.volumeUSD)}
+                  >
+                    <SortArrowIcon />
+                  </SortButton>
+                </ClickableColumnHeader>
+                <ClickableColumnHeader color="textSubtle" style={{ justifyContent: 'flex-end' }}>
+                  {t('Volume 7D')}
+                  <SortButton
+                    scale="sm"
+                    variant="subtle"
+                    onClick={() => handleSort(SORT_FIELD.volumeUSDWeek)}
+                    className={getSortFieldClassName(SORT_FIELD.volumeUSDWeek)}
+                  >
+                    <SortArrowIcon />
+                  </SortButton>
+                </ClickableColumnHeader>
+              </ResponsiveGrid>
+              <AutoColumn gap="16px">
+                <Break />
+                {sortedPools.map((poolData, i) => {
+                  if (poolData) {
+                    return (
+                      <React.Fragment key={`${poolData?.address}_Row`}>
+                        <DataRow index={(page - 1) * MAX_ITEMS + i} poolData={poolData} chainPath={chainPath} />
+                        <Break />
+                      </React.Fragment>
+                    )
+                  }
+                  return null
+                })}
+              </AutoColumn>
 
-          </LayoutScroll>
-          <PageButtons>
-            <Box
-              onClick={() => {
-                setPage(page === 1 ? page : page - 1)
-              }}
-            >
-              <Arrow>
-                <ArrowBackIcon color={page === 1 ? 'textDisabled' : 'primary'} />
-              </Arrow>
-            </Box>
-            <Text>{`Page ${page} of ${maxPage}`}</Text>
-            <Box
-              onClick={() => {
-                setPage(page === maxPage ? page : page + 1)
-              }}
-            >
-              <Arrow>
-                <ArrowForwardIcon color={page === maxPage ? 'textDisabled' : 'primary'} />
-              </Arrow>
-            </Box>
-          </PageButtons>
-        </>
+            </LayoutScroll>
+            <PageButtons>
+              <Box
+                onClick={() => {
+                  setPage(page === 1 ? page : page - 1)
+                }}
+              >
+                <Arrow>
+                  <ArrowBackIcon color={page === 1 ? 'textDisabled' : 'primary'} />
+                </Arrow>
+              </Box>
+              <Text>{`Page ${page} of ${maxPage}`}</Text>
+              <Box
+                onClick={() => {
+                  setPage(page === maxPage ? page : page + 1)
+                }}
+              >
+                <Arrow>
+                  <ArrowForwardIcon color={page === maxPage ? 'textDisabled' : 'primary'} />
+                </Arrow>
+              </Box>
+            </PageButtons>
+          </>
 
-      ) : (
-        <StyledLoadingRows>
-          <div />
-          <div />
-          <div />
-          <div />
-          <div />
-          <div />
-          <div />
-          <div />
-          <div />
-          <div />
-          <div />
-          <div />
-        </StyledLoadingRows>
-      )}
-    </TableWrapper>
+        ) : (
+          <StyledLoadingRows>
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+            <div />
+          </StyledLoadingRows>
+        )}
+      </TableWrapper>
+    </Box>
   )
 }
