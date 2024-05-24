@@ -1,6 +1,5 @@
 import { useTranslation } from "@pancakeswap/localization"
-import { Box, Flex, Heading, PageHeader, Tab, TabMenu } from "@pancakeswap/uikit"
-import Page from 'components/Layout/Page'
+import { Box, Flex, Heading, PageHeader, SearchInput, Select, Tab, TabMenu } from "@pancakeswap/uikit"
 import React, { useState } from 'react'
 import styled from "styled-components"
 import AllProjects from "../Components/AllProjects"
@@ -50,12 +49,56 @@ const StyledPage = styled(Page)`
   padding-top: 64px;
 `
 const StyledBoxTab = styled(Box)`
+  position: relative;
   > div {
     > div {
       @media screen and (max-width: 479px) {
         display: block;
       }
     }
+  }
+`
+const StyledFilter = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 5px 0;
+  > div {
+    @media screen and (max-width: 479px) {
+      width: 100%;
+    }
+  }
+  input {
+    width: 480px;
+    margin-right: 16px;
+    @media screen and (max-width: 1199px) {
+      width: 305px;
+    }
+    @media screen and (max-width: 991px) {
+      width: 480px;
+    }
+    @media screen and (max-width: 767px) {
+      width: 360px;
+    }
+    @media screen and (max-width: 575px) {
+      width: 260px;
+    }
+    @media screen and (max-width: 479px) {
+      width: 100%;
+      margin-right: 0;
+      margin-bottom: 10px;
+    }
+  }
+  @media screen and (max-width: 991px) {
+    position: relative;
+    padding: 0;
+    margin-bottom: 20px;
+  }
+  @media screen and (max-width: 479px) {
+    flex-direction: column;
   }
 `
 const StyledTab = styled(Tab)`
@@ -112,6 +155,37 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
       </PageHeader>
       <StyledPage>
         <StyledBoxTab>
+          <StyledFilter>
+            <SearchInput placeholder="Search Type symbol, the project name to find your launchpad" />
+            <Select
+              options={[
+                {
+                  label: t('All status'),
+                  value: 'all',
+                },
+                {
+                  label: t('Upcoming'),
+                  value: 'upcoming',
+                },
+                {
+                  label: t('On Going'),
+                  value: 'onGoing',
+                },
+                {
+                  label: t('Cancelled'),
+                  value: 'cancelled',
+                },
+                {
+                  label: t('Ended'),
+                  value: 'ended',
+                },
+                {
+                  label: t('Claimable'),
+                  value: 'claimable',
+                },
+              ]}
+            />
+          </StyledFilter>
           <TabMenu activeIndex={tab} onItemClick={setTab} customWidth isShowBorderBottom={false}>
             <StyledTab>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" fill="none">

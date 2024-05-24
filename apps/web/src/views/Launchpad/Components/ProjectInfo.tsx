@@ -125,10 +125,10 @@ export default function ProjectInfo() {
   const closeModal = useCallback(() => setOpen(false), [])
   const tierTooltip = useTooltip(
     <>
-      <Text fontFamily="'Metuo', sans-serif" fontSize="12px" lineHeight="18px" mb="4px">{t('The level depends on the number of U2Us staked in the GrofiDex staking system.')}</Text>
-      <StyledContentDot fontSize="12px" lineHeight="20px">{t('Level 1: Minimum U2U stake amount is 5000 U2U')}</StyledContentDot>
-      <StyledContentDot fontSize="12px" lineHeight="20px">{t('Level 2: Minimum U2U stake amount is 2000 U2U')}</StyledContentDot>
-      <StyledContentDot fontSize="12px" lineHeight="20px">{t('Level 3: Minimum U2U stake amount is 1000 U2U')}</StyledContentDot>
+      <Text fontFamily="'Metuo', sans-serif" fontSize="12px" lineHeight="18px" mb="4px">{t('The tier depends on the number of U2Us staked in the GrofiDex staking system.')}</Text>
+      <StyledContentDot fontSize="12px" lineHeight="20px">{t('Tier 1: Minimum U2U stake amount is 5000 U2U')}</StyledContentDot>
+      <StyledContentDot fontSize="12px" lineHeight="20px">{t('Tier 2: Minimum U2U stake amount is 2000 U2U')}</StyledContentDot>
+      <StyledContentDot fontSize="12px" lineHeight="20px">{t('Tier 3: Minimum U2U stake amount is 1000 U2U')}</StyledContentDot>
       <StyledContentDot fontSize="12px" lineHeight="20px">{t('Starter: No stake or U2U stake amount less than 1000 U2U')}</StyledContentDot>
     </>, {
       placement: 'right'
@@ -286,8 +286,14 @@ export default function ProjectInfo() {
                 <Text fontSize="12px" lineHeight="20px" style={{ color: '#d6ddd0' }}>{t('2024/05/03 14h:00m:00s - 2024/05/05 14h:00m:00s')}</Text>
               </Box>
             </Box>
-            <Text textAlign="center" color="hover" fontSize="14px" fontWeight="600">{t('Sale token for Tier 1 start in')}</Text>
-            <Text textAlign="center" color="primary" fontSize="24px" fontWeight="600" lineHeight="30px">{t('00d : 18h : 35m : 11s')}</Text>
+            <Box style={{ textAlign: 'center' }}>
+              <Text color="hover" fontSize="14px" fontWeight="600">{t('Sale token for Tier 1 start in')}</Text>
+              <Text color="primary" fontSize="24px" fontWeight="600" lineHeight="30px">{t('00d : 18h : 35m : 11s')}</Text>
+              <StyledContent maxWidth="340px" m="auto" mt={["12px", "12px", "16px", "16px", "20px", "20px", "24px"]}>
+                <span style={{ color: theme.colors.hover }}>FCFS: </span>
+                First come first serve. Whitelist pool is available 200 U2U ~ 200,000 TOKENX.
+              </StyledContent>
+            </Box>
           </Box>
           <Break/>
           <Box p={["20px 16px", "20px 16px", "24px 20px"]}>
@@ -302,6 +308,7 @@ export default function ProjectInfo() {
                 <Text color="text" fontSize="24px" fontWeight="700" lineHeight="32px">0.0000 U2U</Text>
                 <StyledButton className="button-hover">{t('Claim')}</StyledButton>
               </Flex>
+              <StyledTextItalic textAlign="right" mt="8px">Estimate 1.2345 U2U, 18,000.000 TOKENX</StyledTextItalic>
               <StyledTextItalic mt="12px">
                 Note: You can cancel your request buy in 2 hours from 2024/05/03 14h:00m:00s - to 2024/05/05 14h:00m:00s UTC. <span style={{ color: theme.colors.hover }}>5% fee</span> when canceling IDO orders.&nbsp;
                 <Link fontSize="12px" fontStyle="italic" style={{ display: 'inline', fontWeight: '300', textDecoration: 'underline' }} external href="/">
