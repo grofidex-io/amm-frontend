@@ -5,7 +5,7 @@ import styled, { useTheme } from 'styled-components';
 import { Break, TableWrapper } from 'views/Info/components/InfoTables/shared';
 import { useAccount } from 'wagmi';
 import { StyledButton, StyledNeubrutal } from '../styles';
-import { ITierInfo, IUserWhiteListInfo } from '../types/LaunchpadType';
+import { ILaunchpadDetail, ITierInfo, IUserWhiteListInfo } from '../types/LaunchpadType';
 import ModalDetail from './ModalDetail';
 
 const StyledTitle = styled(Text)`
@@ -119,7 +119,7 @@ const data = [
   { round: 'Community', startTime: '12h', endTime: '12h', cancelTime: '12h', Claimable: '12h' },
 ]
 
-export default function ProjectInfo({ tierInfo, userWhiteListInfo }: { tierInfo?: ITierInfo, userWhiteListInfo?: IUserWhiteListInfo }) {
+export default function ProjectInfo({ tierInfo, userWhiteListInfo, info }: { tierInfo?: ITierInfo, userWhiteListInfo?: IUserWhiteListInfo, info: ILaunchpadDetail }) {
 
   const { t } = useTranslation()
   const theme = useTheme()
@@ -154,8 +154,8 @@ export default function ProjectInfo({ tierInfo, userWhiteListInfo }: { tierInfo?
       >
         <StyledNeubrutal p={["24px 16px", "24px 16px", "28px 20px", "28px 20px", "32px 24px"]} height="100%" style={{ flex: '2' }}>
           <Box px={["0", "0", "12px", "12px", "16px", "16px", "20px"]} mb={["20px", "20px", "26px", "26px", "32px"]}>
-            <StyledTitle mb={["12px", "12px", "16px"]}>{t('About XToken Project')}</StyledTitle>
-            <StyledContent>{t('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin porta odio sapien, id efficitur est faucibus a. Donec porttitor sem eget egestas mollis. Ut velit arcu, luctus eu varius non, mollis sed erat. ....')}</StyledContent>
+            <StyledTitle mb={["12px", "12px", "16px"]}>{t('About %token% Project', {token: info?.tokenName})}</StyledTitle>
+            <StyledContent>{info.description}</StyledContent>
           </Box>
           <Box px={["0", "0", "12px", "12px", "16px", "16px", "20px"]} mb={["20px", "20px", "26px", "26px", "32px"]}>
             <StyledTitle mb={["12px", "12px", "16px"]}>{t('Roadmap')}</StyledTitle>

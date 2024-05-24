@@ -1,7 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, Flex, OpenNewIcon, Progress, Text } from '@pancakeswap/uikit'
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import NextLink from 'next/link'
+import { useEffect, useRef, useState } from 'react'
 import styled, { useTheme } from 'styled-components'
+import { LAUNCHPAD_STATUS, countdownDate, getColorLaunchpadByStatus, getStatusNameLaunchpad } from '../helpers'
+import { ILaunchpadItem } from '../types/LaunchpadType'
 
 
 const CardLayout = styled(Box)`
@@ -143,17 +147,51 @@ const StyledDot = styled(Box)`
 `
 
 type LaunchpadProps ={
-  type?: string
+  type?: string,
+	item: ILaunchpadItem
 }
 
-const LaunchpadCard = ({ type }: LaunchpadProps) => {
+
+
+const LaunchpadCard = ({ type, item }: LaunchpadProps) => {
   const { t } = useTranslation()
   const theme = useTheme();
+	const refIntervalStart = useRef<any>()
+	const refIntervalEnd = useRef<any>()
+	const [startTimeCountdown, setStartTimeCountdown] = useState<string>('')
+	const [endTimeCountdown, setEndTimeCountdown] = useState<string>('')
+
+
+	const countdownSaleStart = () => {
+		if(item.saleStart && item.status === LAUNCHPAD_STATUS.UPCOMING) {
+			refIntervalStart.current = countdownDate(item.saleStart, setStartTimeCountdown)
+		}
+	}
+
+	const countdownSaleEnd = () => {
+		if(item.saleEnd && item.status === LAUNCHPAD_STATUS.ON_GOING) {
+			refIntervalEnd.current = countdownDate(item.saleEnd, setEndTimeCountdown)
+		}
+	}
+
+	useEffect(() => {
+		return () => {
+			clearInterval(refIntervalStart.current)
+			clearInterval(refIntervalEnd.current)
+		}
+	}, [])
+
+
+	useEffect(() => {
+		countdownSaleStart()
+		countdownSaleEnd()
+	}, [])
+
 
   return (
     <CardLayout>
       <CardHeader>
-        <ImageHeader src='/images/project-background.png' alt='' />
+        <ImageHeader src={item.projectImageThumbnail} alt='' />
       </CardHeader>
       <CardBody>
         <Flex
@@ -165,44 +203,28 @@ const LaunchpadCard = ({ type }: LaunchpadProps) => {
           background={theme.colors.backgroundPage}
         >
           <StyledLogo>
-            <Image src='/images/project-image.png' alt=''/>
+						<Image src={item.projectImageThumbnail} alt=''/>
           </StyledLogo>
           <Box style={{ flex: 1 }} overflow="hidden" mx={["12px", "16px", "16px", "16px", "16px", "20px", "24px"]}>
-            <StyledText title="XToken Project">XToken Project</StyledText>
+            <StyledText title={item.projectName}>{item.projectName}</StyledText>
             <Flex alignItems="center" mt={["4px", "6px", "6px", "8px", "8px", "10px", "12px"]}>
               <StyledDot
-                background={
-                  type === 'upcoming' ? theme.colors.yellow
-                  : type === 'cancelled' ? theme.colors.orange
-                  : type === 'claimable' ? theme.colors.cyan
-                  : type === 'ended' ? theme.colors.textSubtle
-                  : theme.colors.primary
-                }
+                background={getColorLaunchpadByStatus(item.status, theme)}
               />
               <Text
                 ml={["6px", "6px", "6px", "6px", "6px", "8px"]}
                 fontSize={["14px", "14px", "14px", "15px", "15px", "16px"]}
                 fontWeight="700"
                 lineHeight="20px"
-                color={
-                  type === 'upcoming' ? theme.colors.yellow
-                    : type === 'cancelled' ? theme.colors.orange
-                    : type === 'claimable' ? theme.colors.cyan
-                    : type === 'ended' ? theme.colors.textSubtle
-                    : theme.colors.primary
-                }
+                color={getColorLaunchpadByStatus(item.status, theme)}
               >
                 {
-                  type === 'upcoming' ? t('Upcoming')
-                    : type === 'cancelled' ? t('Cancelled')
-                    : type === 'claimable' ? t('Claimable')
-                    : type === 'ended' ? t('Ended')
-                    : t('On Going')
+                  getStatusNameLaunchpad(item.status)
                 }
               </Text>
             </Flex>
           </Box>
-          <NextLink href="/launchpad/1" passHref>
+          <NextLink href={`/launchpad/${item.contractAddress}`} passHref>
             <StyledButton
               className="button-hover"
             >
@@ -211,35 +233,35 @@ const LaunchpadCard = ({ type }: LaunchpadProps) => {
             </StyledButton>
           </NextLink>
         </Flex>
-        <Box px={["0", "0", "16px", "16px", "0", "0", "16px"]} py="16px">
-          <Text fontSize="14px" fontWeight="400" mb="16px" color='textSubtle'>{t('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin porta odio sapien, id efficitur est faucibus a. Donec porttitor sem eget egestas mollis. Ut velit arcu, luctus eu varius non, mollis sed erat. ....')}</Text>
+        <Box px={["0", "0", "16px", "16px", "0", "0", "16px"]} p="16px">
+          <Text minHeight={50} fontSize="14px" fontWeight="400" mb="16px" color='textSubtle'>{item.shortDescription}</Text>
           <Flex justifyContent="space-between" alignItems="center" mb="12px">
             <Text fontSize="14px" fontWeight="600" lineHeight="20px" color='textSubtle'>{t('Sale price')}</Text>
-            <Text fontSize={["15px", "15px", "16px", "16px", "15px", "16px"]} fontWeight="700" lineHeight="20px" color='text'>1 U2U = 100 Xtoken</Text>
+            <Text fontSize={["15px", "15px", "16px", "16px", "15px", "16px"]} fontWeight="700" lineHeight="20px" color='text'>1 U2U = {item.priceToken} {item.tokenName}</Text>
           </Flex>
           <Flex justifyContent="space-between" alignItems="center">
             <Text fontSize="14px" fontWeight="600" lineHeight="20px" color='textSubtle'>{t('Total Raise')}</Text>
-            <Text fontSize={["15px", "15px", "16px", "16px", "15px", "16px"]} fontWeight="700" lineHeight="20px" color='text'>200.000 U2U</Text>
+            <Text fontSize={["15px", "15px", "16px", "16px", "15px", "16px"]} fontWeight="700" lineHeight="20px" color='text'>{formatNumber(item.totalRaise)} U2U</Text>
           </Flex>
         </Box>
-        {type === 'upcoming' ? (
-          <Flex
-            borderRadius="8px"
-            flexDirection="column"
-            alignItems="center"
-            justifyContent="center"
-            className='border-neubrutal'
-            p={["27px 12px", "27px 16px", "27px 16px", "27px 16px", "27px 16px", "27px 16px", "30px 16px"]}
-            style={{ background: '#445434' }}
-          >
+        {item.status === "UPCOMING" ? (
+          <Flex 
+					borderRadius="8px"
+					flexDirection="column"
+					alignItems="center"
+					justifyContent="center"
+					className='border-neubrutal'
+					p={["27px 12px", "27px 16px", "27px 16px", "27px 16px", "27px 16px", "27px 16px", "30px 16px"]}
+					style={{ background: '#445434' }}
+					>
             <Text style={{ color: theme.colors.hover }} fontSize="16px" fontWeight="600" lineHeight="20px" mb="8px">{t('Sale start in')}</Text>
-            <Text color='secondary' fontSize={["24px", "24px", "24px", "25px", "24px", "24px", "28px"]} fontWeight="600" style={{ lineHeight: 'calc(34/28)' }}>{t('To be announced')}</Text>
+            <Text minWidth={250} color='secondary' fontSize={["24px", "24px", "24px", "25px", "24px", "24px", "28px"]} fontWeight="600" style={{ lineHeight: 'calc(34/28)' }}>{ item.saleStart ? <> { startTimeCountdown } </> : t('To be announced')}</Text>
           </Flex>
         ) : (
           <Box className='border-neubrutal' borderRadius="8px" p={["16px 12px", "16px 12px", "16px 12px", "16px 12px", "16px 12px", "16px 12px","20px 16px"]}>
-            <Flex alignItems="flex-end" justifyContent="space-between" mb="20px">
-              <Text fontFamily="'Metuo', sans-serif" fontSize={["16px", "18px", "18px", "18px", "18px", "16px", "18px"]} fontWeight="900" lineHeight="1">{t('Progress')}</Text>
-              <Text fontSize={["14px", "16px", "16px", "16px", "16px", "14px", "16px"]} lineHeight="1">00d : 18h : 35m : 11s</Text>
+            <Flex alignItems="center" justifyContent="space-between" mb="20px">
+              <Text fontFamily="'Metuo', sans-serif" fontSize="18px" fontWeight="900" lineHeight="1">{t('Progress')}</Text>
+              <Text minWidth={145} fontSize={["14px", "16px", "16px", "16px", "16px", "14px", "16px"]} lineHeight="1">{endTimeCountdown}</Text>
             </Flex>
             <Flex alignItems="center" justifyContent="space-between" mb="10px">
               <Flex>

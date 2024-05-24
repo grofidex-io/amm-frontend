@@ -1,16 +1,21 @@
 import { useTranslation } from '@pancakeswap/localization';
 import { Box, Flex, Link, Progress, Tab, TabMenu, Text } from "@pancakeswap/uikit";
+import { formatNumber } from '@pancakeswap/utils/formatBalance';
 import BigNumber from 'bignumber.js';
 import Container from 'components/Layout/Container';
+import dayjs from 'dayjs';
 import useAccountActiveChain from 'hooks/useAccountActiveChain';
 import { useLaunchpadContract } from 'hooks/useContract';
-import { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { useTheme } from "styled-components";
-import Swiper from 'swiper';
-import { SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { formatDate } from 'views/CakeStaking/components/DataSet/format';
 import ProjectInfo from '../Components/ProjectInfo';
 import Transactions from '../Components/Transactions';
-import { convertTierInfo } from '../helpers';
+import { LAUNCHPAD_STATUS, convertTierInfo, countdownDate } from '../helpers';
+import { useFetchLaunchpadDetail } from '../hooks/useFetchLaunchpadDetail';
 import { StyledNeubrutal } from '../styles';
 import { ITierInfo, IUserWhiteListInfo } from '../types/LaunchpadType';
 
@@ -325,15 +330,16 @@ type LaunchpadProps ={
   type?: string
 }
 
-const listSocials = [
-  { link: '/', icon: 'facebook' },
-  { link: '/', icon: 'x' },
-  { link: '/', icon: 'youtube' },
-  { link: '/', icon: 'telegram' },
-  { link: '/', icon: 'linkedin' },
-  { link: '/', icon: 'medium' },
-  { link: '/', icon: 'discord' },
-]
+
+const SOCIAL_ICON = {
+	TWITTER: 'x',
+	FACEBOOK: 'facebook',
+	YOUTUBE: 'youtube',
+	TELEGRAM: 'telegram',
+	LINKEDIN: 'linkedin',
+	MEDIUM: 'medium',
+	DISCORD: 'discord'
+}
 
 const listSteps = [
   { z: 8, icon: 'icon-step-01.svg', title: 'Upcoming', time: 'May 05,2024, 02:00:00', status: 'completed' },
@@ -350,13 +356,18 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
 
   const { t } = useTranslation()
   const theme = useTheme()
+	const refInterval = useRef<any>()
   const [tab, setTab] = useState<number>(0)
-
   const launchpadContract = useLaunchpadContract()
   const { account } = useAccountActiveChain()
   const [tierOfUser, setTierOfUser] = useState<number>(0)
   const [tierInfo, setTierInfo] = useState<ITierInfo>()
   const [userWhiteListInfo, setUserWhiteListInfo] = useState<IUserWhiteListInfo>()
+	const [saleEndCountdownArray, setSaleEndCountdownArray] = useState<string[]>([])
+	const router = useRouter()
+  const { launchpadId } = router.query
+	const { data: detail } = useFetchLaunchpadDetail(launchpadId as string)
+
 
   const initFunction = useCallback(() => {
     const checkIsWhiteList = async () => {
@@ -392,15 +403,32 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
     initFunction()
   }, [initFunction])
 
+	useEffect(() => {
+		if(detail?.saleEnd && detail.status === LAUNCHPAD_STATUS.ON_GOING) {
+			refInterval.current = countdownDate(detail.saleEnd, setSaleEndCountdownArray, 1)
+		}
+	}, [detail])
+
+	useEffect(() => {
+		return () => {
+			clearInterval(refInterval.current)
+		}
+	}, [])
+
+
+
   return (
     <>
-      <StyledBanner style={{ backgroundImage: 'url(/images/project-background.png)' }}>
+      <StyledBanner style={{ backgroundImage: `url(${detail?.projectImageThumbnail})` }}>
         <Flex justifyContent="flex-end" alignItems="flex-end" position="relative">
-          {listSocials.map(item => (
-            <StyledLink external href={item.link}>
-              <img src={`/images/launchpad/icon-${item.icon}.svg`} alt="" />
-            </StyledLink>
-          ))}
+          {detail?.socials.map(item => {
+						return SOCIAL_ICON[item.type] && (
+							<StyledLink external href={item.link}>
+							<img src={`/images/launchpad/icon-${SOCIAL_ICON[item.type]}.svg`} alt="" />
+						</StyledLink>
+						)
+						}
+          )}
         </Flex>
       </StyledBanner>
       <Container>
@@ -455,19 +483,19 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
             <Text color="textSubtle" textAlign="center" fontSize="14px" fontWeight="600" lineHeight="17px" mb={["6px", "6px", "8px", "8px", "10px", "10px", "12px"]}>{t('Sale end in')}</Text>
             <Flex justifyContent="center">
               <Box style={{ textAlign: 'center' }} mr={["12px", "12px", "16px", "16px", "20px", "20px", "24px"]}>
-                <Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>00</Text>
+                <Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>{saleEndCountdownArray[0]}</Text>
                 <Text fontSize="11px" fontWeight="400" color='hover'>{t('Days')}</Text>
               </Box>
               <Box style={{ textAlign: 'center' }} mr={["12px", "12px", "16px", "16px", "20px", "20px", "24px"]}>
-                <Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>18</Text>
+                <Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>{saleEndCountdownArray[1]}</Text>
                 <Text fontSize="11px" fontWeight="400" color='hover'>{t('Hours')}</Text>
               </Box>
               <Box style={{ textAlign: 'center' }} mr={["12px", "12px", "16px", "16px", "20px", "20px", "24px"]}>
-                <Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>59</Text>
+                <Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>{saleEndCountdownArray[2]}</Text>
                 <Text fontSize="11px" fontWeight="400" color='hover'>{t('Minutes')}</Text>
               </Box>
               <Box style={{ textAlign: 'center' }}>
-                <Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>59</Text>
+                <Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>{saleEndCountdownArray[3]}</Text>
                 <Text fontSize="11px" fontWeight="400" color='hover'>{t('Seconds')}</Text>
               </Box>
             </Flex>
@@ -480,21 +508,21 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
               <StyledListTitle>{t('Sale price')}</StyledListTitle>
               <Flex alignItems="center">
                 <IconImg src='/images/u2u.svg' />
-                <StyledListText>0.01 U2U</StyledListText>
+                <StyledListText>{detail?.priceToken && formatNumber(detail?.priceToken)} U2U</StyledListText>
               </Flex>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Total Raise')}</StyledListTitle>
               <Flex alignItems="center">
                 <IconImg src='/images/u2u.svg' />
-                <StyledListText>20.000 U2U</StyledListText>
+                <StyledListText>{detail?.totalRaise && formatNumber(detail.totalRaise)} U2U</StyledListText>
               </Flex>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Total for Sale')}</StyledListTitle>
               <Flex alignItems="center">
-                <IconImg src='/images/xtoken.svg' />
-                <StyledListText>20.000.000 XTOKEN</StyledListText>
+                <IconImg src={detail?.tokenLogo}/>
+                <StyledListText>{detail?.totalSale && formatNumber(detail.totalSale)} {detail?.tokenSymbol}</StyledListText>
               </Flex>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
@@ -512,28 +540,28 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
               <StyledListTitle>{t('Softcap')}</StyledListTitle>
               <Flex alignItems="center">
                 <IconImg src='/images/u2u.svg' />
-                <StyledListText>100.000 U2U</StyledListText>
+                <StyledListText>{detail?.softCap && formatNumber(detail.softCap)} U2U</StyledListText>
               </Flex>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Snapshot time')}</StyledListTitle>
-              <StyledListText>May 02, 2024, 02:00:00 AM</StyledListText>
+              <StyledListText>{detail?.snapshotTime && formatDate(dayjs.unix(Math.floor(detail.snapshotTime/ 1000)).utc())}</StyledListText>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Start Apply Whitelist')}</StyledListTitle>
-              <StyledListText>May 02, 2024, 02:00:00 AM</StyledListText>
+              <StyledListText>{detail?.snapshotTime && formatDate(dayjs.unix(Math.floor(detail.snapshotTime/ 1000)).utc())}</StyledListText>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('End Apply Whitelist')}</StyledListTitle>
-              <StyledListText>May 02, 2024, 02:00:00 AM</StyledListText>
+              <StyledListText>{detail?.snapshotTime && formatDate(dayjs.unix(Math.floor(detail.snapshotTime/ 1000)).utc())}</StyledListText>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Sale Start')}</StyledListTitle>
-              <StyledListText>May 02, 2024, 02:00:00 AM</StyledListText>
+              <StyledListText>{detail?.saleStart && formatDate(dayjs.unix(Math.floor(detail.saleStart/ 1000)).utc())}</StyledListText>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Sale End')}</StyledListTitle>
-              <StyledListText>May 02, 2024, 02:00:00 AM</StyledListText>
+              <StyledListText>{detail?.saleEnd && formatDate(dayjs.unix(Math.floor(detail.saleEnd/ 1000)).utc())}</StyledListText>
             </Flex>
           </StyledNeubrutal>
           <Box style={{ flex: "2" }} ml={["0", "0", "0", "0", "16px"]} mt={["16px", "16px", "16px", "16px", "0"]}>
@@ -548,7 +576,7 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
               </Flex>
               <StyledProgress primaryStep={20} scale="sm" />
               <Flex alignItems="center" justifyContent="center" mt="12px">
-                <Text color='text' fontSize="16px" fontWeight="700">200.000 U2U</Text>
+                <Text color='text' fontSize="16px" fontWeight="700">{detail?.totalRaise ? formatNumber(detail.totalRaise) : '_'} U2U</Text>
                 <Text color='textSubtle' fontSize="14px" fontWeight="600" ml="8px">{t('Total Raise')}</Text>
               </Flex>
             </StyledNeubrutal>
@@ -646,7 +674,7 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
               {t('Transactions')}
             </StyledTab>
           </TabMenu>
-          {tab === 0 && <ProjectInfo tierInfo={tierInfo}/>}
+          {tab === 0 && <ProjectInfo tierInfo={tierInfo} info={detail}/>}
           {tab === 1 && <Transactions/>}
         </StyledBoxTab>
       </Container>
