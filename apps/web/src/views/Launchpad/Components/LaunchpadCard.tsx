@@ -153,7 +153,7 @@ type LaunchpadProps ={
 
 
 
-const LaunchpadCard = ({ type, item }: LaunchpadProps) => {
+const LaunchpadCard = ({ item }: LaunchpadProps) => {
   const { t } = useTranslation()
   const theme = useTheme();
 	const refIntervalStart = useRef<any>()
@@ -244,7 +244,7 @@ const LaunchpadCard = ({ type, item }: LaunchpadProps) => {
             <Text fontSize={["15px", "15px", "16px", "16px", "15px", "16px"]} fontWeight="700" lineHeight="20px" color='text'>{formatNumber(item.totalRaise)} U2U</Text>
           </Flex>
         </Box>
-        {item.status === "UPCOMING" ? (
+        {item.status === LAUNCHPAD_STATUS.UPCOMING ? (
           <Flex 
 					borderRadius="8px"
 					flexDirection="column"

@@ -155,7 +155,7 @@ export default function ProjectInfo({ tierInfo, userWhiteListInfo, info }: { tie
         <StyledNeubrutal p={["24px 16px", "24px 16px", "28px 20px", "28px 20px", "32px 24px"]} height="100%" style={{ flex: '2' }}>
           <Box px={["0", "0", "12px", "12px", "16px", "16px", "20px"]} mb={["20px", "20px", "26px", "26px", "32px"]}>
             <StyledTitle mb={["12px", "12px", "16px"]}>{t('About %token% Project', {token: info?.tokenName})}</StyledTitle>
-            <StyledContent>{info.description}</StyledContent>
+            <StyledContent>{info?.description}</StyledContent>
           </Box>
           <Box px={["0", "0", "12px", "12px", "16px", "16px", "20px"]} mb={["20px", "20px", "26px", "26px", "32px"]}>
             <StyledTitle mb={["12px", "12px", "16px"]}>{t('Roadmap')}</StyledTitle>

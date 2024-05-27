@@ -14,7 +14,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { formatDate } from 'views/CakeStaking/components/DataSet/format';
 import ProjectInfo from '../Components/ProjectInfo';
 import Transactions from '../Components/Transactions';
-import { LAUNCHPAD_STATUS, convertTierInfo, countdownDate } from '../helpers';
+import { LAUNCHPAD_STATUS, convertTierInfo, countdownDate, getColorLaunchpadByStatus, getStatusNameLaunchpad } from '../helpers';
 import { useFetchLaunchpadDetail } from '../hooks/useFetchLaunchpadDetail';
 import { StyledNeubrutal } from '../styles';
 import { ITierInfo, IUserWhiteListInfo } from '../types/LaunchpadType';
@@ -435,39 +435,23 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
         <Flex my="16px" flexDirection={["column", "column", "row"]}>
           <Flex alignItems="center" flex={1}>
             <StyledLogo>
-              <Image src='/images/project-image.png' alt=''/>
+              <Image src={detail?.projectImageThumbnail} alt=''/>
             </StyledLogo>
             <Box overflow="hidden" ml={["16px", "16px", "20px", "20px", "24px"]}>
-              <StyledText >XToken Project</StyledText>
+              <StyledText >{detail?.projectName}</StyledText>
               <Flex alignItems="center">
                 <StyledDot
-                  background={
-                    type === 'upcoming' ? theme.colors.yellow
-                    : type === 'cancelled' ? theme.colors.orange
-                    : type === 'claimable' ? theme.colors.cyan
-                    : type === 'ended' ? theme.colors.textSubtle
-                    : theme.colors.primary
-                  }
+                  background={detail?.status && getColorLaunchpadByStatus(detail?.status, theme)}
                 />
                 <Text
                   ml="8px"
                   fontSize={["14px", "14px", "16px"]}
                   fontWeight="700"
                   lineHeight="20px"
-                  color={
-                    type === 'upcoming' ? theme.colors.yellow
-                      : type === 'cancelled' ? theme.colors.orange
-                      : type === 'claimable' ? theme.colors.cyan
-                      : type === 'ended' ? theme.colors.textSubtle
-                      : theme.colors.primary
-                  }
+                  color={detail?.status && getColorLaunchpadByStatus(detail?.status, theme)}
                 >
                   {
-                    type === 'upcoming' ? t('Upcoming')
-                      : type === 'cancelled' ? t('Cancelled')
-                      : type === 'claimable' ? t('Claimable')
-                      : type === 'ended' ? t('Ended')
-                      : t('On Going')
+                    getStatusNameLaunchpad(detail?.status)
                   }
                 </Text>
               </Flex>
