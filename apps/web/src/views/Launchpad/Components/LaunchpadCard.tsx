@@ -256,7 +256,7 @@ const LaunchpadCard = ({ item }: LaunchpadProps) => {
 					style={{ background: '#445434' }}
 					>
             <Text style={{ color: theme.colors.hover }} fontSize="16px" fontWeight="600" lineHeight="20px" mb="8px">{t('Sale start in')}</Text>
-            <Text minWidth={250} color='secondary' fontSize={["24px", "24px", "24px", "25px", "24px", "24px", "28px"]} fontWeight="600" style={{ lineHeight: 'calc(34/28)' }}>{ item.saleStart ? <> { startTimeCountdown } </> : t('To be announced')}</Text>
+            <Text minWidth={250} textAlign="center" color='secondary' fontSize={["24px", "24px", "24px", "25px", "24px", "24px", "28px"]} fontWeight="600" style={{ lineHeight: 'calc(34/28)' }}>{ item.saleStart ? <> { startTimeCountdown } </> : t('To be announced')}</Text>
           </Flex>
         ) : (
           <Box className='border-neubrutal' borderRadius="8px" p={["16px 12px", "16px 12px", "16px 12px", "16px 12px", "16px 12px", "16px 12px","20px 16px"]}>

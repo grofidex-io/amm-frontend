@@ -280,8 +280,10 @@ const StyledContent = styled.div`
   }
 `
 const StyledSwiper = styled(Swiper)`
-	.swiper-wrapper {
-		justify-content: center;
+	@media screen and (min-width: 1200px) {
+		.swiper-wrapper {
+			justify-content: center;
+		}
 	}
 `
 const StyledSwiperSlide = styled(SwiperSlide)`
@@ -352,7 +354,6 @@ const SOCIAL_ICON = {
 }
 
 const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
-
   const { t } = useTranslation()
   const theme = useTheme()
 	const refInterval = useRef<any>()
