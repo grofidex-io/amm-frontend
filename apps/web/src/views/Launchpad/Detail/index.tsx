@@ -49,7 +49,7 @@ const StyledBanner = styled(Box)`
       padding: 0 24px;
     }
   }
-  @media screen and (max-width: 991px) {
+  @media screen and (max-width: 1439px) {
     height: 220px;
     padding: 25px 0;
   }
@@ -57,10 +57,14 @@ const StyledBanner = styled(Box)`
     height: 200px;
     padding: 20px 0;
   }
+  @media screen and (max-width: 575px) {
+    height: 180px;
+  }
 `
 const StyledLogo = styled(Box)`
   --size: 120px;
   min-width: var(--size);
+  width: var(--size);
   height: var(--size);
   border-radius: ${({ theme }) => theme.radii.card};
   border: 2px solid ${({ theme }) => theme.colors.cardBorder};
@@ -173,6 +177,9 @@ const StyledTab = styled(Tab)`
     font-size: 16px;
     padding: 8px 12px;
   }
+  &.none {
+    display: none;
+  }
   svg {
     --size: 24px;
     width: var(--size);
@@ -252,7 +259,7 @@ const StyledBox = styled(Box)`
   svg {
     --size: 52px;
     position: absolute;
-    left: 97%;
+    left: calc(100% - 5px);
     top: 50%;
     transform: translateY(-50%);
     width: var(--size);
@@ -332,6 +339,7 @@ type LaunchpadProps ={
 
 
 const SOCIAL_ICON = {
+	GLOBAL: 'global',
 	TWITTER: 'x',
 	FACEBOOK: 'facebook',
 	YOUTUBE: 'youtube',
@@ -433,7 +441,7 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
       </StyledBanner>
       <Container>
         <Flex my="16px" flexDirection={["column", "column", "row"]}>
-          <Flex alignItems="center" flex={1}>
+          <Flex alignItems="center" flex={1.5}>
             <StyledLogo>
               <Image src={detail?.projectImageThumbnail} alt=''/>
             </StyledLogo>
@@ -466,22 +474,28 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
           >
             <Text color="textSubtle" textAlign="center" fontSize="14px" fontWeight="600" lineHeight="17px" mb={["6px", "6px", "8px", "8px", "10px", "10px", "12px"]}>{t('Sale end in')}</Text>
             <Flex justifyContent="center">
-              <Box style={{ textAlign: 'center' }} mr={["12px", "12px", "16px", "16px", "20px", "20px", "24px"]}>
-                <Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>{saleEndCountdownArray[0]}</Text>
-                <Text fontSize="11px" fontWeight="400" color='hover'>{t('Days')}</Text>
-              </Box>
-              <Box style={{ textAlign: 'center' }} mr={["12px", "12px", "16px", "16px", "20px", "20px", "24px"]}>
-                <Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>{saleEndCountdownArray[1]}</Text>
-                <Text fontSize="11px" fontWeight="400" color='hover'>{t('Hours')}</Text>
-              </Box>
-              <Box style={{ textAlign: 'center' }} mr={["12px", "12px", "16px", "16px", "20px", "20px", "24px"]}>
-                <Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>{saleEndCountdownArray[2]}</Text>
-                <Text fontSize="11px" fontWeight="400" color='hover'>{t('Minutes')}</Text>
-              </Box>
-              <Box style={{ textAlign: 'center' }}>
-                <Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>{saleEndCountdownArray[3]}</Text>
-                <Text fontSize="11px" fontWeight="400" color='hover'>{t('Seconds')}</Text>
-              </Box>
+              {saleEndCountdownArray.length > 0 ? (
+                <>
+                  <Box style={{ textAlign: 'center' }} mr={["12px", "12px", "16px", "16px", "20px", "20px", "24px"]}>
+                    <Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>{saleEndCountdownArray[0]}</Text>
+                    <Text fontSize="11px" fontWeight="400" color='hover'>{t('Days')}</Text>
+                  </Box>
+                  <Box style={{ textAlign: 'center' }} mr={["12px", "12px", "16px", "16px", "20px", "20px", "24px"]}>
+                    <Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>{saleEndCountdownArray[1]}</Text>
+                    <Text fontSize="11px" fontWeight="400" color='hover'>{t('Hours')}</Text>
+                  </Box>
+                  <Box style={{ textAlign: 'center' }} mr={["12px", "12px", "16px", "16px", "20px", "20px", "24px"]}>
+                    <Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>{saleEndCountdownArray[2]}</Text>
+                    <Text fontSize="11px" fontWeight="400" color='hover'>{t('Minutes')}</Text>
+                  </Box>
+                  <Box style={{ textAlign: 'center' }}>
+                    <Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>{saleEndCountdownArray[3]}</Text>
+                    <Text fontSize="11px" fontWeight="400" color='hover'>{t('Seconds')}</Text>
+                  </Box>
+                </>
+              ) : (
+                <Text m="auto" textAlign="right" fontSize={["20px", "20px", "20px", "24px", "28px", "28px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>{t('To be announcement')}</Text>
+              )}
             </Flex>
           </Flex>
         </Flex>
@@ -640,7 +654,7 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
               </svg>
               {t('Project Info')}
             </StyledTab>
-            <StyledTab>
+            <StyledTab className={detail?.status === LAUNCHPAD_STATUS.UPCOMING && 'none'}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 24" fill="none">
                 <g clip-path="url(#clip0_1413_11482)">
                 <path d="M19.8359 22.0007H5.83594C4.51034 21.9991 3.2395 21.4719 2.30216 20.5345C1.36482 19.5972 0.837525 18.3263 0.835938 17.0007L0.835938 7.00073C0.837525 5.67514 1.36482 4.40429 2.30216 3.46695C3.2395 2.52961 4.51034 2.00232 5.83594 2.00073H19.8359C21.1615 2.00232 22.4324 2.52961 23.3697 3.46695C24.3071 4.40429 24.8344 5.67514 24.8359 7.00073V17.0007C24.8344 18.3263 24.3071 19.5972 23.3697 20.5345C22.4324 21.4719 21.1615 21.9991 19.8359 22.0007ZM5.83594 4.00073C5.04029 4.00073 4.27723 4.3168 3.71462 4.87941C3.15201 5.44202 2.83594 6.20508 2.83594 7.00073V17.0007C2.83594 17.7964 3.15201 18.5594 3.71462 19.1221C4.27723 19.6847 5.04029 20.0007 5.83594 20.0007H19.8359C20.6316 20.0007 21.3946 19.6847 21.9573 19.1221C22.5199 18.5594 22.8359 17.7964 22.8359 17.0007V7.00073C22.8359 6.20508 22.5199 5.44202 21.9573 4.87941C21.3946 4.3168 20.6316 4.00073 19.8359 4.00073H5.83594Z" fill="currentColor"/>

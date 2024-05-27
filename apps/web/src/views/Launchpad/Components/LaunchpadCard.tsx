@@ -61,6 +61,7 @@ const Image = styled.img`
 const StyledLogo = styled(Box)`
   --size: 72px;
   min-width: var(--size);
+  width: var(--size);
   height: var(--size);
   border-radius: ${({ theme }) => theme.radii.card};
   box-shadow: ${({ theme }) => theme.shadows.card};
