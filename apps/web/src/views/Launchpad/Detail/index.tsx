@@ -17,7 +17,7 @@ import Transactions from '../Components/Transactions';
 import { LAUNCHPAD_STATUS, convertTierInfo, countdownDate, getColorLaunchpadByStatus, getStatusNameLaunchpad } from '../helpers';
 import { useFetchLaunchpadDetail } from '../hooks/useFetchLaunchpadDetail';
 import { StyledNeubrutal } from '../styles';
-import { ITierInfo, IUserWhiteListInfo } from '../types/LaunchpadType';
+import { IPhare, ITierInfo, IUserWhiteListInfo } from '../types/LaunchpadType';
 
 const StyledBanner = styled(Box)`
   position: relative;
@@ -280,7 +280,9 @@ const StyledContent = styled.div`
   }
 `
 const StyledSwiper = styled(Swiper)`
-
+	.swiper-wrapper {
+		justify-content: center;
+	}
 `
 const StyledSwiperSlide = styled(SwiperSlide)`
   position: relative;
@@ -349,17 +351,6 @@ const SOCIAL_ICON = {
 	DISCORD: 'discord'
 }
 
-const listSteps = [
-  { z: 8, icon: 'icon-step-01.svg', title: 'Upcoming', time: 'May 05,2024, 02:00:00', status: 'completed' },
-  { z: 7, icon: 'icon-tier-starter.svg', title: 'IDO Start', time: 'May 05,2024, 02:00:00', status: 'inProgress' },
-  { z: 6, icon: 'icon-tier-1.svg', title: 'IDO Tier 1', time: 'May 05,2024, 02:00:00', status: 'inProgress' },
-  { z: 5, icon: 'icon-tier-2.svg', title: 'IDO Tier 2', time: 'May 05,2024, 02:00:00', status: '' },
-  { z: 4, icon: 'icon-tier-3.svg', title: 'IDO Tier 3', time: 'May 05,2024, 02:00:00', status: '' },
-  { z: 3, icon: 'icon-step-02.svg', title: 'IDO Whitelist', time: 'May 05,2024, 02:00:00', status: '' },
-  { z: 2, icon: 'icon-step-03.svg', title: 'IDO Community', time: 'May 05,2024, 02:00:00', status: '' },
-  { z: 1, icon: 'icon-step-04.svg', title: 'Finished', time: 'May 05,2024, 02:00:00', status: '' },
-]
-
 const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
 
   const { t } = useTranslation()
@@ -423,6 +414,22 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
 		}
 	}, [])
 
+	const isComplete = (_time: number) => {
+		const _now = Date.now()
+		if(_now > _time) {
+			return true
+		}
+		return false
+	}
+
+	const isInProgress = (_item: IPhare) => {
+		const _now = Date.now()
+		if(_now > _item.startTime && _now < _item.endTime) {
+			return true
+		}
+		return false
+	}
+
 
 
   return (
@@ -459,7 +466,7 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
                   color={detail?.status && getColorLaunchpadByStatus(detail?.status, theme)}
                 >
                   {
-                    getStatusNameLaunchpad(detail?.status)
+                   detail?.status && getStatusNameLaunchpad(detail.status)
                   }
                 </Text>
               </Flex>
@@ -525,7 +532,7 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Sale Type')}</StyledListTitle>
-              <StyledListText style={{ color: theme.colors.primary }}>Puplic</StyledListText>
+              <StyledListText style={{ color: theme.colors.primary }}>Public</StyledListText>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Network')}</StyledListTitle>
@@ -612,15 +619,15 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
           <StyledSwiper
             slidesPerView='auto'
           >
-            {listSteps.map(item => (
-              <StyledSwiperSlide style={{ zIndex: item.z }}>
-                <StyledBox >
-                  <StyledContent style={{ background: `${item.status === 'completed' ? theme.colors.backgroundItem : item.status === 'inProgress' ? theme.colors.primary : theme.colors.backgroundAlt}` }}>
-                    <img style={{ filter: `${item.status === 'completed' && 'grayscale(1)'}` }} src={`/images/launchpad/${item.icon}`} alt="" />
-                    <Text style={{ color: `${item.status === 'completed' ? theme.colors.hover : item.status === 'inProgress' ? theme.colors.black : theme.colors.primary}` }} fontSize="14px" fontWeight="600" lineHeight="17px" mt="8px">{item.title}</Text>
-                    <Text style={{ color: `${item.status === 'completed' ? theme.colors.textSubtle : item.status === 'inProgress' ? theme.colors.black : theme.colors.hover}` }} fontSize="11px" fontWeight="400" lineHeight="13px" mt="4px">{item.time}</Text>
+            {detail?.phases?.length > 0 && detail?.phases.map((item, index) => (
+              <StyledSwiperSlide style={{ zIndex: detail?.phases.length - index }}>
+                <StyledBox>
+                  <StyledContent style={{ background: `${isComplete(item.endTime) ? theme.colors.backgroundItem : isInProgress(item) ? theme.colors.primary : theme.colors.backgroundAlt}` }}>
+                    <img style={{ filter: `${isComplete(item.endTime) && 'grayscale(1)'}` }} src={item.imageUrl || `/images/launchpad/icon-step-01.svg`} alt="" />
+                    <Text style={{ color: `${isComplete(item.endTime) ? theme.colors.hover : isInProgress(item) ? theme.colors.black : theme.colors.primary}` }} fontSize="14px" fontWeight="600" lineHeight="17px" mt="8px">{item.name}</Text>
+                    <Text style={{ color: `${isComplete(item.endTime) ? theme.colors.textSubtle : isInProgress(item) ? theme.colors.black : theme.colors.hover}` }} fontSize="11px" fontWeight="400" lineHeight="13px" mt="4px">{formatDate(dayjs.unix(Math.floor(item.startTime/ 1000)).utc())}</Text>
                   </StyledContent>
-                  <svg style={{ color: `${item.status === 'completed' ? theme.colors.backgroundItem : item.status === 'inProgress' ? theme.colors.primary : theme.colors.backgroundAlt}` }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 132" fill="none">
+                  <svg style={{ color: `${isComplete(item.endTime) ? theme.colors.backgroundItem : isInProgress(item) ? theme.colors.primary : theme.colors.backgroundAlt}` }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 132" fill="none">
                     <g mask="url(#mask0_3011_2807)">
                     <path d="M6.5 5L4.5 4.5L3.5 125L8 128.5L48 67L7.5 6L6.5 5Z" fill="black" stroke="black"/>
                     <g filter="url(#filter0_d_3011_2807)">

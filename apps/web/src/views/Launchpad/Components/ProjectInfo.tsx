@@ -121,6 +121,7 @@ const data = [
 ]
 
 export default function ProjectInfo({ tierInfo, userWhiteListInfo, info }: { tierInfo?: ITierInfo, userWhiteListInfo?: IUserWhiteListInfo, info: ILaunchpadDetail }) {
+console.log("🚀 ~ ProjectInfo ~ info:", info)
 
   const { t } = useTranslation()
   const theme = useTheme()
