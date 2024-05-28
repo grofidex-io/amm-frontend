@@ -1,5 +1,5 @@
 import { useTranslation } from "@pancakeswap/localization"
-import { Box, Flex, Heading, PageHeader, SearchInput, Select, Tab, TabMenu } from "@pancakeswap/uikit"
+import { Box, Heading, SearchInput, Select, Tab, TabMenu } from "@pancakeswap/uikit"
 import React, { useState } from 'react'
 import styled from "styled-components"
 import AllProjects from "../Components/AllProjects"
@@ -29,7 +29,7 @@ export const LoansText = styled.p`
   line-height: calc(24 / 18);
   ${({ theme }) => theme.mediaQueries.sm} {
     font-size: 18px;
-    font-weight: 600;
+    max-width: 440px;
   }
 `
 const StyledBox = styled(Box)`
@@ -138,22 +138,29 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 
   return (
     <>
-      <PageHeader>
-        <Flex alignItems="center" justifyContent="space-between">
-          <StyledBox>
-            <LoansH1 as="h1" scale="xxl" color="secondary" mb="24px">
-              {t('GROFI DEX Launchpad')}
-            </LoansH1>
-            <LoansText>
-              {t(
-                'Grofidex Loans refer to the process of collateralizing stake shares to borrow U2U for use investment purposes to earn higher returns, or for withdrawal.',
-              )}
-            </LoansText>
-          </StyledBox>
-          <Image src="/images/launchpad-image.svg"/>
-        </Flex>
-      </PageHeader>
-      <StyledPage>
+      <Container>
+        <Box
+          className='border-neubrutal'
+          mt="32px"
+          mb={["32px", "32px", "32px", "32px", "50px", "60px"]}
+          background={theme.colors.backgroundAlt}
+          borderRadius={theme.radii.card}
+          p={['20px', '20px', '20px 30px', '20px 30px', '0 30px', '0 40px']}
+        >
+          <StyledFlex>
+            <Box>
+              <LoansH1 as="h1" scale="xxl" color="text" mb="24px">
+                {t('GROFI DEX Launchpad')}
+              </LoansH1>
+              <LoansText>
+                {t(
+                  `Leading launchpad platform U2U Chain Network. Projects are carefully researched, evaluated and tested by GrofiDex's project team.`
+                )}
+              </LoansText>
+            </Box>
+            <Image src="/images/launchpad-image.svg"/>
+          </StyledFlex>
+        </Box>
         <StyledBoxTab>
           <StyledFilter>
             <SearchInput placeholder="Search Type symbol, the project name to find your launchpad" />
