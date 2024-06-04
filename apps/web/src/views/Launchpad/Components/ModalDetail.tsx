@@ -66,7 +66,8 @@ export default function ModalDetail({
 	listPhase,
 	onDismiss,
 	getTotalUserCommitted,
-	rate
+	rate,
+	isSortCap
 }) {
 	const { data: signer } = useWalletClient()
 	const { chainId } = useActiveChainId()
@@ -112,7 +113,7 @@ export default function ModalDetail({
 	const handleClaim = async () => {
 		const _contract = getLaunchpadManagerContract(launchpad, signer ?? undefined, chainId)
 		try {
-			const res = await fetchWithCatchTxError(() => _contract.write.claimToken())
+			const res = await fetchWithCatchTxError(() => isSortCap ? _contract.write.claimToken() : _contract.write.withdrawSoftCap())
 			if(res?.status) {
 				refetch()
 				getGiveBack()

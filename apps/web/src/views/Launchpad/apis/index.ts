@@ -27,7 +27,7 @@ export const fetchListLaunchpad = async (page: number) : Promise<{data: ILaunchp
 				"projectName": "LION Presale",
 				"shortDescription": "Secure royal shares, witness $LION's birth, and join the legend!",
 				"projectImageThumbnail": "https://pbs.twimg.com/profile_banners/1785390990116749313/1714951618/1500x500",
-				"contractAddress": "0x3b3686dc902f25287bf513c7cccb5c4bb38fd573",
+				"contractAddress": "0x794236E6594ff178bC921E0E77c40fa1aA36F0Bc",
 				"priceToken": 5,
 				"totalRaise": 50000,
 				"saleStart": 1717212268213,
@@ -54,13 +54,13 @@ export const fetchLaunchpadDetail = async (_contract: string) : Promise<{data: I
     "tokenSymbol": "LION",
     "tokenDecimals": 18,
     "totalSupply": 50000000,
-    "tokenAddress": "0x0f308999c96cabdbd4755a183ba2bf1d21f0c25b",
+    "tokenAddress": "0x8d41937345Fd19075e6625d6872D9a29B8331AAd",
     "tokenLogo": "https://liontoken.io/wp-content/uploads/2024/05/photo_2024-05-02_13-19-55-1.jpg",
     "projectName": "LION Presale",
     "description": "Secure royal shares, witness $LION's birth, and join the legend!\nExperience the majestic journey of the lion, where courage reigns.\n\n1st phase of presale starts, followed by 2nd phase.\nWe perform a manual listing at UniSwap.\n\n🦁$LION releases between June 18-20 on UniSwap.\n\n🦁Total supply: 50,000,000\n🦁TAX: 0%\n🦁Not mineable\n🦁LP will be burned\n🦁DEX: UniSwap\n\nStep into this captivating tale and secure your chance! ❤️\nLet the lion within you awaken!\nLET HIM ROAR!",
     "shortDescription": "Secure royal shares, witness $LION's birth, and join the legend!",
     "projectImageThumbnail": "https://pbs.twimg.com/profile_banners/1785390990116749313/1714951618/1500x500",
-    "contractAddress": "0x3b3686dc902f25287bf513c7cccb5c4bb38fd573",
+    "contractAddress": "0x3B3686DC902F25287Bf513C7cCCb5C4Bb38fD573",
     "priceToken": 5,
     "totalRaise": 50000,
     "totalSale": 5000000,
@@ -90,7 +90,7 @@ export const fetchLaunchpadDetail = async (_contract: string) : Promise<{data: I
         "endTime": 1717212268213,
         "isActive": false,
         "imageUrl": null,
-        "contractAddress": "",
+        "contractAddress": "0x5EDEcE1Fc3A26A803B8573025fb54A711440D1fb",
         "type": "NONE"
       },
       {
@@ -99,7 +99,7 @@ export const fetchLaunchpadDetail = async (_contract: string) : Promise<{data: I
         "endTime": 1717215868213,
         "isActive": false,
         "imageUrl": null,
-        "contractAddress": "",
+        "contractAddress": "0x5EDEcE1Fc3A26A803B8573025fb54A711440D1fb",
         "type": "NONE"
       },
       {
@@ -108,7 +108,7 @@ export const fetchLaunchpadDetail = async (_contract: string) : Promise<{data: I
         "endTime": 1717226668213,
         "isActive": false,
         "imageUrl": null,
-        "contractAddress": "0x5edece1fc3a26a803b8573025fb54a711440d1fb",
+        "contractAddress": "0x5EDEcE1Fc3A26A803B8573025fb54A711440D1fb",
         "type": "TIER"
       },
       {
@@ -117,7 +117,7 @@ export const fetchLaunchpadDetail = async (_contract: string) : Promise<{data: I
         "endTime": 1717237468213,
         "isActive": false,
         "imageUrl": null,
-        "contractAddress": "0x566c65b2cda5cf9cd9dd56b28b48d9cf8582a4e8",
+        "contractAddress": "0x566c65B2cdA5cF9CD9dD56B28b48D9CF8582A4E8",
         "type": "TIER"
       },
       {
@@ -126,7 +126,7 @@ export const fetchLaunchpadDetail = async (_contract: string) : Promise<{data: I
         "endTime": 1717248268213,
         "isActive": false,
         "imageUrl": null,
-        "contractAddress": "0x822891074af82defcb6c9f6949707059b17d70c0",
+        "contractAddress": "0x822891074Af82dEFcB6c9f6949707059b17d70C0",
         "type": "TIER"
       },
       {
@@ -135,7 +135,7 @@ export const fetchLaunchpadDetail = async (_contract: string) : Promise<{data: I
         "endTime": 1717259068213,
         "isActive": false,
         "imageUrl": null,
-        "contractAddress": "0x6efc2f8a725a6eaa2ce7a16bdbb6c8db9579b05b",
+        "contractAddress": "0x6Efc2F8a725A6EAA2ce7a16bDbb6c8db9579b05B",
         "type": "WHITELIST"
       },
       {
@@ -144,7 +144,7 @@ export const fetchLaunchpadDetail = async (_contract: string) : Promise<{data: I
         "endTime": 1717269868213,
         "isActive": false,
         "imageUrl": null,
-        "contractAddress": "0x7a5da6f87dbd6f46bc59046fa9b2e10e5590326e",
+        "contractAddress": "0x7A5Da6f87dBd6f46bC59046fa9B2e10E5590326e",
         "type": "COMMUNITY"
       },
       {
@@ -153,7 +153,7 @@ export const fetchLaunchpadDetail = async (_contract: string) : Promise<{data: I
         "endTime": 1717280668213,
         "isActive": false,
         "imageUrl": null,
-        "contractAddress": "",
+        "contractAddress": "0x5EDEcE1Fc3A26A803B8573025fb54A711440D1fb",
         "type": "NONE"
       }
     ]

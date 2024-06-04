@@ -469,6 +469,7 @@ const LaunchpadDetailPage = () => {
 		return false
 	}
 
+	const isCountdownEnd = detail?.saleEnd > Date.now()
 
 
   return (
@@ -518,8 +519,8 @@ const LaunchpadDetailPage = () => {
             justifyContent="center"
             flexDirection="column"
           >
-            <Text color="textSubtle" textAlign="center" fontSize="14px" fontWeight="600" lineHeight="17px" mb={["6px", "6px", "8px", "8px", "10px", "10px", "12px"]}>{t('Sale end in')}</Text>
-						{showCountdown && <CountdownTime type={COUNTDOWN_TYPE.ARRAY} time={detail?.saleEnd}/>}
+            <Text color="textSubtle" textAlign="center" fontSize="14px" fontWeight="600" lineHeight="17px" mb={["6px", "6px", "8px", "8px", "10px", "10px", "12px"]}>{isCountdownEnd ? t('Sale end in') : t('Sale start in')}</Text>
+						{showCountdown && <CountdownTime type={COUNTDOWN_TYPE.ARRAY} time={isCountdownEnd ? detail?.saleEnd : detail?.saleStart}/>}
    
           </Flex>
         </Flex>
