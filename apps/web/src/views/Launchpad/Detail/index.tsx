@@ -633,44 +633,47 @@ const LaunchpadDetailPage = () => {
             </Flex>
           </Box>
         </Flex>
-        <StyledSlide>
-          <StyledSwiper
-            slidesPerView='auto'
-          >
-            {detail?.phases && detail?.phases.map((item, index) => (
-              <StyledSwiperSlide style={{ zIndex: detail?.phases.length - index }} key={`${item.startTime + index}`}>
-                <StyledBox>
-                  <StyledContent style={{ background: `${isComplete(item.endTime) ? theme.colors.backgroundItem : isInProgress(item) ? theme.colors.primary : theme.colors.backgroundAlt}` }}>
-                    <img style={{ filter: `${isComplete(item.endTime) && 'grayscale(1)'}` }} src={item.imageUrl || `/images/launchpad/icon-step-01.svg`} alt="" />
-                    <Text style={{ color: `${isComplete(item.endTime) ? theme.colors.hover : isInProgress(item) ? theme.colors.black : theme.colors.primary}` }} fontSize="14px" fontWeight="600" lineHeight="17px" mt="8px">{item.name}</Text>
-                    <Text style={{ color: `${isComplete(item.endTime) ? theme.colors.textSubtle : isInProgress(item) ? theme.colors.black : theme.colors.hover}` }} fontSize="11px" fontWeight="400" lineHeight="13px" mt="4px">{formatDate(dayjs.unix(Math.floor(item.startTime/ 1000)).utc())}</Text>
-                  </StyledContent>
-                  <svg style={{ color: `${isComplete(item.endTime) ? theme.colors.backgroundItem : isInProgress(item) ? theme.colors.primary : theme.colors.backgroundAlt}` }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 132" fill="none">
-                    <g mask="url(#mask0_3011_2807)">
-                    <path d="M6.5 5L4.5 4.5L3.5 125L8 128.5L48 67L7.5 6L6.5 5Z" fill="black" stroke="black"/>
-                    <g filter="url(#filter0_d_3011_2807)">
-                    <path d="M44.2741 62.7092C44.7145 63.377 44.7145 64.2431 44.2741 64.911L3.66973 126.496C2.57759 128.152 -6.22358e-06 127.379 -6.13685e-06 125.395L-7.52944e-07 2.22534C-6.66216e-07 0.241251 2.57759 -0.532019 3.66974 1.12444L44.2741 62.7092Z" fill="currentColor"/>
-                    <path d="M43.4393 64.3605L2.83486 125.945C2.28879 126.773 0.999994 126.387 0.999994 125.395L0.999999 2.22534C0.999999 1.23329 2.2888 0.846667 2.83487 1.67489L43.4393 63.2596C43.6595 63.5936 43.6595 64.0266 43.4393 64.3605Z" stroke="black" stroke-width="2"/>
-                    </g>
-                    </g>
-                    <defs>
-                    <filter id="filter0_d_3011_2807" x="0" y="0.22168" width="48.6045" height="131.177" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-                    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-                    <feOffset dx="4" dy="4"/>
-                    <feComposite in2="hardAlpha" operator="out"/>
-                    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0"/>
-                    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_3011_2807"/>
-                    <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_3011_2807" result="shape"/>
-                    </filter>
-                    </defs>
-                  </svg>
-                </StyledBox>
-              </StyledSwiperSlide>
-            ))}
-          </StyledSwiper>
+				{detail?.phases && detail?.phases.length > 0 && (
+				<StyledSlide>
+					<StyledSwiper
+						slidesPerView='auto'
+					>
+						{detail?.phases.map((item, index) => (
+							<StyledSwiperSlide style={{ zIndex: detail?.phases.length - index }} key={`${item.startTime + index}`}>
+								<StyledBox>
+									<StyledContent style={{ background: `${isComplete(item.endTime) ? theme.colors.backgroundItem : isInProgress(item) ? theme.colors.primary : theme.colors.backgroundAlt}` }}>
+										<img style={{ filter: `${isComplete(item.endTime) && 'grayscale(1)'}` }} src={item.imageUrl || `/images/launchpad/icon-step-01.svg`} alt="" />
+										<Text style={{ color: `${isComplete(item.endTime) ? theme.colors.hover : isInProgress(item) ? theme.colors.black : theme.colors.primary}` }} fontSize="14px" fontWeight="600" lineHeight="17px" mt="8px">{item.name}</Text>
+										<Text style={{ color: `${isComplete(item.endTime) ? theme.colors.textSubtle : isInProgress(item) ? theme.colors.black : theme.colors.hover}` }} fontSize="11px" fontWeight="400" lineHeight="13px" mt="4px">{formatDate(dayjs.unix(Math.floor(item.startTime/ 1000)).utc())}</Text>
+									</StyledContent>
+									<svg style={{ color: `${isComplete(item.endTime) ? theme.colors.backgroundItem : isInProgress(item) ? theme.colors.primary : theme.colors.backgroundAlt}` }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 132" fill="none">
+										<g mask="url(#mask0_3011_2807)">
+										<path d="M6.5 5L4.5 4.5L3.5 125L8 128.5L48 67L7.5 6L6.5 5Z" fill="black" stroke="black"/>
+										<g filter="url(#filter0_d_3011_2807)">
+										<path d="M44.2741 62.7092C44.7145 63.377 44.7145 64.2431 44.2741 64.911L3.66973 126.496C2.57759 128.152 -6.22358e-06 127.379 -6.13685e-06 125.395L-7.52944e-07 2.22534C-6.66216e-07 0.241251 2.57759 -0.532019 3.66974 1.12444L44.2741 62.7092Z" fill="currentColor"/>
+										<path d="M43.4393 64.3605L2.83486 125.945C2.28879 126.773 0.999994 126.387 0.999994 125.395L0.999999 2.22534C0.999999 1.23329 2.2888 0.846667 2.83487 1.67489L43.4393 63.2596C43.6595 63.5936 43.6595 64.0266 43.4393 64.3605Z" stroke="black" stroke-width="2"/>
+										</g>
+										</g>
+										<defs>
+										<filter id="filter0_d_3011_2807" x="0" y="0.22168" width="48.6045" height="131.177" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+										<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+										<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+										<feOffset dx="4" dy="4"/>
+										<feComposite in2="hardAlpha" operator="out"/>
+										<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0"/>
+										<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_3011_2807"/>
+										<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_3011_2807" result="shape"/>
+										</filter>
+										</defs>
+									</svg>
+								</StyledBox>
+							</StyledSwiperSlide>
+						))}
+					</StyledSwiper>
 
-        </StyledSlide>
+				</StyledSlide>
+				)}
+  
         <StyledBoxTab>
           <TabMenu activeIndex={tab} onItemClick={setTab} customWidth isShowBorderBottom={false}>
             <StyledTab>
