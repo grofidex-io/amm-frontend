@@ -114,7 +114,7 @@ const LoansInfo = styled.div`
   }
 `
 const StyledPage = styled(Page)`
-  max-width: 1408px;
+  max-width: 1488px;
 `
 const StyledBoxTab = styled(Box)`
   > div {

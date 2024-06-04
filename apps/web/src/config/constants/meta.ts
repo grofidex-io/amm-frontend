@@ -58,6 +58,7 @@ const getPathList = (t: ContextApi['t']): PathList => {
       '/pair': { title: t('Pair') },
       '/staking': { title: t('Staking') },
       '/loans': { title: t('Loans') },
+      '/launchpad': { title: t('Launchpad') },
     },
     defaultTitleSuffix: t('GroFi DEX'),
   }

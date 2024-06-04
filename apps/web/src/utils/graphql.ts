@@ -1,13 +1,13 @@
 import { ChainDefault, ChainId, STABLESWAP_SUBGRAPHS } from '@pancakeswap/chains'
 import {
-  AMM_LOAN_CLIENT,
-  AMM_STAKING_CLIENT,
-  APR_SUBGRAPH,
-  BIT_QUERY,
-  INFO_CLIENT,
-  INFO_CLIENT_ETH,
-  V3_BSC_INFO_CLIENT,
-  V3_SUBGRAPH_URLS,
+	AMM_CLIENT,
+	AMM_STAKING_CLIENT,
+	APR_SUBGRAPH,
+	BIT_QUERY,
+	INFO_CLIENT,
+	INFO_CLIENT_ETH,
+	V3_BSC_INFO_CLIENT,
+	V3_SUBGRAPH_URLS
 } from 'config/constants/endpoints'
 import { GraphQLClient } from 'graphql-request'
 import { INFO_CLIENT_WITH_CHAIN } from '../config/constants/endpoints'
@@ -56,7 +56,8 @@ export const v3Clients = {
 
 export const v3InfoClients = { ...v3Clients, [ChainId.BSC]: new GraphQLClient(V3_BSC_INFO_CLIENT) }
 export const ammStakingClients = new GraphQLClient(AMM_STAKING_CLIENT)
-export const loansClients = new GraphQLClient(AMM_LOAN_CLIENT)
+export const loansClients = new GraphQLClient(`${AMM_CLIENT}/loans`)
+export const launchpadClients = new GraphQLClient(`${AMM_CLIENT}/launchpad`)
 export const aprSubgraphClients = new GraphQLClient(APR_SUBGRAPH)
 
 export const infoClientETH = new GraphQLClient(INFO_CLIENT_ETH)

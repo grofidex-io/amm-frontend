@@ -24,7 +24,6 @@ import currencyId from 'utils/currencyId'
 import { AppHeader } from 'components/App'
 import { atom, useAtom } from 'jotai'
 import { styled } from 'styled-components'
-import Page from 'views/Page'
 
 import { usePreviousValue } from '@pancakeswap/hooks'
 import { useCurrency } from 'hooks/Tokens'
@@ -32,6 +31,7 @@ import AddLiquidity from 'views/AddLiquidity'
 import AddStableLiquidity from 'views/AddLiquidity/AddStableLiquidity'
 import useStableConfig, { StableConfigContext } from 'views/Swap/hooks/useStableConfig'
 
+import Container from 'components/Layout/Container'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import noop from 'lodash/noop'
 import { resetMintState } from 'state/mint/actions'
@@ -54,6 +54,7 @@ export const BodyWrapper = styled(Card)`
   max-width: 858px;
   width: 100%;
   z-index: 1;
+  margin: 32px auto 0;
 `
 
 /* two-column layout where DepositAmount is moved at the very end on mobile. */
@@ -417,7 +418,7 @@ export function AddLiquidityV3Layout({
   }, [lpTokens, baseCurrency, quoteCurrency, currencyIdA, currencyIdB, preferredSelectType, router])
 
   return (
-    <Page>
+    <Container>
       <BodyWrapper>
         <AppHeader
           title={title}
@@ -442,6 +443,6 @@ export function AddLiquidityV3Layout({
         />
         {children}
       </BodyWrapper>
-    </Page>
+    </Container>
   )
 }

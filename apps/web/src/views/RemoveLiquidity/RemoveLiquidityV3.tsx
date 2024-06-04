@@ -41,7 +41,6 @@ import { useCallback, useMemo, useState } from 'react'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { styled } from 'styled-components'
 import { hexToBigInt } from 'viem'
-import Page from 'views/Page'
 import { useSendTransaction, useWalletClient } from 'wagmi'
 
 import Divider from 'components/Divider'
@@ -51,6 +50,7 @@ import { basisPointsToPercent } from 'utils/exchange'
 import { formatRawAmount } from 'utils/formatCurrencyAmount'
 import { getViemClients } from 'utils/viem'
 
+import Container from 'components/Layout/Container'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { isUserRejected } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
@@ -378,7 +378,7 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
   )
 
   return (
-    <Page>
+    <Container>
       <AppBody>
         <AppHeader
           backTo={`/liquidity/${tokenId}`}
@@ -565,6 +565,6 @@ function Remove({ tokenId }: { tokenId?: bigint }) {
           </Button>
         </CardBody>
       </AppBody>
-    </Page>
+    </Container>
   )
 }

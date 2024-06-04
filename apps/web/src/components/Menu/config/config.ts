@@ -252,6 +252,13 @@ const config: (
       isExpanse: true
     },
     {
+      label: 'Launchpad',
+      href: '/launchpad',
+      icon: CurrencyIcon,
+      hideSubNav: true,
+      isExpanse: true
+    },
+    {
       label: 'Faucet',
       href: 'https://faucet.uniultra.xyz/',
       icon: VoteIcon,

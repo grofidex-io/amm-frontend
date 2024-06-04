@@ -7,11 +7,11 @@ import { useRouter } from 'next/router'
 import { useStableSwapPairs } from 'state/swap/useStableSwapPairs'
 import { styled } from 'styled-components'
 import { CHAIN_IDS } from 'utils/wagmi'
-import Page from 'views/Page'
 
 import { useTranslation } from '@pancakeswap/localization'
 import { CurrencyAmount } from '@pancakeswap/sdk'
 import { LightGreyCard } from 'components/Card'
+import Container from 'components/Layout/Container'
 import { CurrencyLogo } from 'components/Logo'
 import { usePoolTokenPercentage, useTotalUSDValue } from 'components/PositionCard'
 import { useInfoStableSwapContract } from 'hooks/useContract'
@@ -28,6 +28,7 @@ export const BodyWrapper = styled(Card)`
   max-width: 858px;
   width: 100%;
   z-index: 1;
+  margin: 32px auto 0;
 `
 
 export default function StablePoolPage() {
@@ -104,7 +105,7 @@ export default function StablePoolPage() {
   const currencyIdB = currencyId(selectedLp.token1)
 
   return (
-    <Page>
+    <Container>
       <BodyWrapper>
         <AppHeader
           title={`${stableLp?.token0?.symbol}-${stableLp?.token1?.symbol} LP`}
@@ -225,7 +226,7 @@ export default function StablePoolPage() {
           </Text>
         </CardBody>
       </BodyWrapper>
-    </Page>
+    </Container>
   )
 }
 
