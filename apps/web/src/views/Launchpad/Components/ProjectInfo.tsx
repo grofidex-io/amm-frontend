@@ -16,10 +16,10 @@ import styled, { useTheme } from 'styled-components';
 import { getLaunchpadContract, getLaunchpadManagerContract } from 'utils/contractHelpers';
 import { formatDate } from 'views/CakeStaking/components/DataSet/format';
 import { Break, TableWrapper } from 'views/Info/components/InfoTables/shared';
-import { useWalletClient } from 'wagmi';
+import { Address, useWalletClient } from 'wagmi';
 import { COUNTDOWN_TYPE, LAUNCHPAD_STATUS, PHASES_TYPE } from '../helpers';
 import { StyledButton, StyledNeubrutal } from '../styles';
-import { IPhase, ITierInfo, IUserWhiteListInfo } from '../types/LaunchpadType';
+import { ILaunchpadDetail, IPhase, ITierInfo, ITimeOfPhase, IUserWhiteListInfo } from '../types/LaunchpadType';
 import CountdownTime from './CountdownTime';
 import ModalDetail from './ModalDetail';
 
@@ -134,7 +134,7 @@ const data = [
   { round: 'Community', startTime: '12h', endTime: '12h', cancelTime: '12h', Claimable: '12h' },
 ]
 
-export default function ProjectInfo({ info, timeWhiteList, account, currentTier, totalCommit }: { info: ILaunchpadDetail, timeWhiteList: ITimeOfPhase, account: string, currentTier: string | Address, totalCommit: number }) {
+export default function ProjectInfo({ info, timeWhiteList, account, currentTier, totalCommit }: { info: ILaunchpadDetail, timeWhiteList: ITimeOfPhase, account: string, currentTier: Address, totalCommit: number }) {
   const { t } = useTranslation()
   const theme = useTheme()
 	const _refIntervalCheckPhase = useRef<any>()
@@ -695,7 +695,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 								{!account && (
 									<StyledContent>
 										{t(`You need connect wallet to see your schedule time. `)}
-										<ConnectWalletButton as="span"> <Text fontSize="14px" style={{ textDecoration: "underline", color: theme.colors.primary, cursor: "pointer"}}>			{t('Connect now')}</Text> </ConnectWalletButton>
+										<ConnectWalletButton as="a"> <Text fontSize="14px" style={{ textDecoration: "underline", color: theme.colors.primary, cursor: "pointer"}}>			{t('Connect now')}</Text> </ConnectWalletButton>
 									</StyledContent>
 								)}
              

@@ -104,9 +104,9 @@ export interface ICommittedItem {
 
 export interface IHistoryTransaction {
 	hash: string
-	u2uAmount: string
+	u2uAmount: any
 	roundType: string
 	processTime: number
 	transactionType: string
-	tokenAmount: string
+	tokenAmount: any
 }

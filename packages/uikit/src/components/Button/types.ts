@@ -43,4 +43,4 @@ export interface BaseButtonProps extends LayoutProps, SpaceProps, BorderRadiusPr
   };
 }
 
-export type ButtonProps<P extends ElementType = "button"> = PolymorphicComponentProps<P, BaseButtonProps>;
+export type ButtonProps<P extends ElementType = "button" | "a"> = PolymorphicComponentProps<P, BaseButtonProps>;

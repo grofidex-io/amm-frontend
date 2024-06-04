@@ -15,7 +15,7 @@ import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { getLaunchpadManagerContract } from 'utils/contractHelpers';
 import { formatDate } from 'views/CakeStaking/components/DataSet/format';
-import { useWalletClient } from 'wagmi';
+import { Address, useWalletClient } from 'wagmi';
 import CountdownTime from '../Components/CountdownTime';
 import ProjectInfo from '../Components/ProjectInfo';
 import Transactions from '../Components/Transactions';
@@ -363,7 +363,7 @@ const LaunchpadDetailPage = () => {
   const { account } = useAccountActiveChain()
 	const [timeWhiteList, setTimeWhiteList] = useState<ITimeOfPhase>()
 	const [showCountdown, setShowCountdown] = useState<boolean>(false)
-	const [currentTier, setCurrentTier] = useState<string>()
+	const [currentTier, setCurrentTier] = useState<Address>()
 	const [totalCommit, setTotalCommit] = useState<number>(0)
 	const router = useRouter()
   const { launchpadId } = router.query
