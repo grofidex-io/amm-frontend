@@ -191,6 +191,7 @@ ConnectedWithBanner.args = {
 };
 
 export const NotConnected: React.FC<React.PropsWithChildren> = () => {
+
   return (
     <BrowserRouter>
       <Menu

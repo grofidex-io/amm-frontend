@@ -39,10 +39,10 @@ const StyledProgress = styled.div<StyledProgressProps>`
   background-color: ${({ theme, $useDark }) => ($useDark ? theme.colors.backgroundItem : lightColors.backgroundItem)};
   box-shadow: ${({ theme }) => theme.shadows.input};
   overflow: hidden;
+  // border: 1px solid ${({ theme }) => theme.colors.cardBorder};
 
   ${Bar} {
-    border-top-left-radius: ${({ variant }) => (variant === variants.FLAT ? "0" : "32px")};
-    border-bottom-left-radius: ${({ variant }) => (variant === variants.FLAT ? "0" : "32px")};
+    border-radius: ${({ variant }) => (variant === variants.FLAT ? "0" : "32px")};
   }
 
   ${StyledSystemVariant({

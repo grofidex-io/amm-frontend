@@ -72,21 +72,11 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
   linkComponent = "a",
   banner,
   rightSide,
-  isDark,
-  toggleTheme,
-  currentLang,
-  setLang,
-  cakePriceUsd,
   links,
   subLinks,
-  footerLinks,
   activeItem,
   activeSubItem,
-  langs,
-  buyCakeLabel,
-  buyCakeLink,
   children,
-  chainId,
 }) => {
   const { isMobile } = useMatchBreakpoints();
   const isMounted = useIsMounted();
@@ -150,10 +140,10 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
             <StyledNav>
               <Flex>
                 <Logo href={homeLink?.href ?? "/"} />
-                <AtomBox display={{ xs: "none", xl: "block" }}>
+                <AtomBox display={{ xs: "none", xxl: "block" }}>
                   <MenuItems items={links} activeItem={activeItem} activeSubItem={activeSubItem} headerMenu ml={["16px", "20px", "20px", "20px", "20px","20px", "24px"]} />
                 </AtomBox>
-                <AtomBox display={{ xs: "none", lg: "flex", xl: "none" }} style={{ alignItems: 'center' }}>
+                <AtomBox display={{ xs: "none", lg: "flex", xxl: "none" }} style={{ alignItems: 'center' }}>
                   <MenuItems items={linkMenu} activeItem={activeItem} activeSubItem={activeSubItem} headerMenu ml={["16px", "20px", "20px", "20px", "20px","20px", "24px"]} />
                   <MenuDropdown items={linkExpanse} activeItem={activeItem} activeSubItem={activeSubItem}/>
                 </AtomBox>

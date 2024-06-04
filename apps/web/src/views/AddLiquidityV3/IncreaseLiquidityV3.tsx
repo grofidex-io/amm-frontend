@@ -22,7 +22,6 @@ import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContr
 import { useRouter } from 'next/router'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { calculateGasMargin } from 'utils'
-import Page from 'views/Page'
 import { useSendTransaction } from 'wagmi'
 
 import { BodyWrapper } from 'components/App/AppBody'
@@ -35,6 +34,7 @@ import { isUserRejected } from 'utils/sentry'
 import { getViemClients } from 'utils/viem'
 import { hexToBigInt } from 'viem'
 
+import Container from 'components/Layout/Container'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { V3SubmitButton } from './components/V3SubmitButton'
 import LockedDeposit from './formViews/V3FormView/components/LockedDeposit'
@@ -364,7 +364,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
   )
 
   return (
-    <Page>
+    <Container>
       <BodyWrapper>
         <AppHeader
           backTo={`/liquidity/${tokenId}`}
@@ -434,6 +434,6 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
           </AutoColumn>
         </CardBody>
       </BodyWrapper>
-    </Page>
+    </Container>
   )
 }
