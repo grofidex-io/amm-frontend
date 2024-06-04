@@ -309,6 +309,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 			getTotalUserCommitted={getTotalUserCommitted}
 			listPhase={keyBy(info?.phases, 'contractAddress')}
 			rate={rate}
+			isSortCap={BigNumber(totalCommit).gt(info.softCap) }
 		/>
 	)
 	
