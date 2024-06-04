@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization';
-import { AutoColumn, Box, Button, Flex, Link, Text, TooltipText, useModal, useToast, useTooltip } from '@pancakeswap/uikit';
+import { AutoColumn, Box, Button, Dots, Flex, Link, Text, TooltipText, useModal, useToast, useTooltip } from '@pancakeswap/uikit';
 import { formatNumber } from '@pancakeswap/utils/formatBalance';
 import { NumericalInput } from '@pancakeswap/widgets-internal';
 import BigNumber from 'bignumber.js';
@@ -158,6 +158,8 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	const [userCommitInfo, setUserCommitInfo] = useState<IUserWhiteListInfo>()
 	const [totalCommitByUser, setTotalCommitByUser] = useState<number>(0)
 	const [currentCommit, setCurrentCommit] = useState<number>(0)
+	const [isCommitting, setIsCommitting] = useState<boolean>(false)
+
   const { fetchWithCatchTxError } = useCatchTxError()
 	const { toastSuccess, toastError } = useToast()
 	const { chainId } = useActiveChainId()
@@ -223,7 +225,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	const getUserConfig = async () => {
 		const _contract = getLaunchpadContract(currentTier, signer ?? undefined, chainId)
 		const _configInfo: any = await _contract.read.getConfigInfo()
-		const _phaseByContract = keyBy(info?.phases, 'contractAddress')
+		const _phaseByContract = keyBy(info?.phases, (o) => o.contractAddress.toLowerCase() )
 		setUserConfigInfo({..._configInfo, maxCommitAmount: BigNumber(formatEther(_configInfo.maxCommitAmount)).toNumber(), maxBuyPerUser: formatEther(_configInfo.maxBuyPerUser), name: _phaseByContract[currentTier.toLowerCase()]?.name})
 	}
 
@@ -307,7 +309,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 			account={account}
 			launchpad={info?.contractAddress}
 			getTotalUserCommitted={getTotalUserCommitted}
-			listPhase={keyBy(info?.phases, 'contractAddress')}
+			listPhase={keyBy(info?.phases, (o) => o.contractAddress.toLowerCase())}
 			rate={rate}
 			isSortCap={BigNumber(totalCommit).gt(info?.softCap) }
 		/>
@@ -414,7 +416,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	const handleCommitU2U = async () => {
 		if(!disableCommitU2U && BigNumber(amountCommit).gt(0) && configInfo?.maxCommitAmount && BigNumber(configInfo?.maxCommitAmount).gt(BigNumber(amountCommit))) {
 			try {
-
+				setIsCommitting(true)
 				const res = await fetchWithCatchTxError(() => _launchpadContract.current.write.commit({value: parseEther(amountCommit)}))
 				if(res?.status) {
 					getTotalUserCommitted()
@@ -425,18 +427,21 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 							Commit successfully
 						</ToastDescriptionWithTx>,
 					)
+					setIsCommitting(false)
 				}
 			}catch(error: any) {
+				setIsCommitting(false)
 				const errorDescription = `${error.message} - ${error.data?.message}`
 				toastError(t('Failed'), errorDescription)
 			}
+			setIsCommitting(false)
 		}
 	}
 	
 
 	let disableCommitU2U = false
 	if(configInfo?.typeRound === PHASES_TYPE.TIER) {
-		if(currentPhase?.contractAddress !== currentTier?.toLowerCase() || amountCommit?.length === 0 || BigNumber(amountCommit).lte(0) || BigNumber(amountCommit).gt(configInfo.maxCommitAmount)) {
+		if(currentPhase?.contractAddress.toLowerCase() !== currentTier?.toLowerCase() || amountCommit?.length === 0 || BigNumber(amountCommit).lte(0) || BigNumber(amountCommit).gt(configInfo.maxCommitAmount)) {
 			disableCommitU2U = true
 		}
 	}
@@ -651,10 +656,13 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
                   <StyledButton
                     className="button-hover"
                     px="16px"
-										disabled={disableCommitU2U}
+										disabled={disableCommitU2U || isCommitting}
 										onClick={handleCommitU2U}
                   >
-                    {t('Commit U2U')}
+									{isCommitting ?
+										<Dots>Commit U2U</Dots> : 
+											'Commit U2U'
+									}
                   </StyledButton>
                 </Flex>
 								{configInfo?.maxCommitAmount && (
