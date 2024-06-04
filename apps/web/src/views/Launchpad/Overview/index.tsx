@@ -1,52 +1,75 @@
 import { useTranslation } from "@pancakeswap/localization"
-import { Box, Heading, SearchInput, Select, Tab, TabMenu } from "@pancakeswap/uikit"
+import { Box, Flex, Heading, SearchInput, Select, Tab, TabMenu } from "@pancakeswap/uikit"
+import Container from "components/Layout/Container"
 import React, { useState } from 'react'
-import styled from "styled-components"
+import styled, { useTheme } from "styled-components"
 import AllProjects from "../Components/AllProjects"
 
+const StyledFlex = styled(Flex)`
+  align-items: center;
+  justify-content: space-between;
+  // flex-direction: column;
+  gap: 0;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    flex-direction: row;
+    gap: 30px;
+  }
+  ${({ theme }) => theme.mediaQueries.xl} {
+    gap: 50px;
+  }
+`
 export const LoansH1 = styled(Heading)`
-  font-size: 26px;
-  font-weight: 900;
+  font-size: 24px;
+  font-weight: 700;
   line-height: calc(56 / 52);
   margin-bottom: 12px;
   ${({ theme }) => theme.mediaQueries.sm} {
-    font-size: 36px;
+    font-size: 32px;
+    font-weight: 900;
     margin-bottom: 16px;
   }
-  ${({ theme }) => theme.mediaQueries.md} {
-    font-size: 44px;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    font-size: 38px;
     margin-bottom: 20px;
   }
-  ${({ theme }) => theme.mediaQueries.lg} {
+  ${({ theme }) => theme.mediaQueries.xl} {
+    font-size: 44px;
+  }
+  ${({ theme }) => theme.mediaQueries.xxl} {
     font-size: 52px;
-    margin-bottom: 24px;
   }
 `
 export const LoansText = styled.p`
-  color: ${({ theme }) => theme.colors.text};
-  font-size: 16px;
+  color: ${({ theme }) => theme.colors.textSubtle};
+  font-size: 14px;
   font-weight: 500;
   line-height: calc(24 / 18);
+  margin-bottom: 10px;
   ${({ theme }) => theme.mediaQueries.sm} {
+    font-size: 16px;
+    font-weight: 600;
+    max-width: 600px;
+  }
+  ${({ theme }) => theme.mediaQueries.lg} {
     font-size: 18px;
     max-width: 440px;
   }
 `
-const StyledBox = styled(Box)`
-  max-width: 680px;
-`
 const Image = styled.img`
-  --size: 528px;
+  --size: 100%;
   width: var(--size);
-  height: calc(var(--size) * 439 / 528);
-  margin-bottom: -85px;
-  @media screen and (max-width: 991px) {
-    display: none;
+  height: calc(var(--size) * 410 / 493);
+  margin-bottom: -40px;
+  margin-top: 10px;
+  display: none;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    --size: 403px;
+    display: block;
   }
-`
-const StyledPage = styled(Page)`
-  max-width: 1488px;
-  padding-top: 64px;
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    --size: 493px;
+    margin-bottom: -50px;
+  }
 `
 const StyledBoxTab = styled(Box)`
   position: relative;
@@ -134,6 +157,7 @@ const StyledTab = styled(Tab)`
 
 export const Overview: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
+  const theme = useTheme()
   const [tab, setTab] = useState<number>(0)
 
   return (
@@ -231,7 +255,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
           </TabMenu>
           {tab === 0 && <AllProjects/>}
         </StyledBoxTab>
-      </StyledPage>
+      </Container>
     </>
   )
 }
