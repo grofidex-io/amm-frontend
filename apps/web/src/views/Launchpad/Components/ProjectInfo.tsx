@@ -197,6 +197,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 
 	const isWhitelistTime = () => {
 		const _now = Date.now()
+
 		if(timeWhiteList?.startTime > _now && _now < timeWhiteList?.endTime) {
 			return true
 		}
