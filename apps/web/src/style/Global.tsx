@@ -73,6 +73,28 @@ const GlobalStyle = createGlobalStyle`
       box-shadow: ${({ theme }) => theme.shadows.button};
     }
   }
+	.swiper-launchpad {
+	position: relative;
+  width: auto;
+  &:first-child {
+    > div {
+      > div {
+        padding-left: 30px;
+      }
+    }
+  }
+  &:last-child {
+    > div {
+      margin-right: 4px;
+      > div {
+        padding-right: 30px;
+      }
+    }
+    svg {
+      display: none;
+    }
+  }
+	}
 `
 
 export default GlobalStyle

@@ -285,6 +285,7 @@ const StyledContent = styled.div`
   }
 `
 const StyledSwiper = styled(Swiper)`
+	position: relative;
 	@media screen and (min-width: 1200px) {
 		.swiper-wrapper {
 			justify-content: center;
@@ -292,26 +293,7 @@ const StyledSwiper = styled(Swiper)`
 	}
 `
 const StyledSwiperSlide = styled(SwiperSlide)`
-  position: relative;
-  width: auto;
-  &:first-child {
-    > div {
-      > div {
-        padding-left: 30px;
-      }
-    }
-  }
-  &:last-child {
-    > div {
-      margin-right: 4px;
-      > div {
-        padding-right: 30px;
-      }
-    }
-    svg {
-      display: none;
-    }
-  }
+  
 `
 const StyledListTitle = styled(Text)`
   color: ${({ theme }) => theme.colors.textSubtle};
@@ -636,10 +618,10 @@ const LaunchpadDetailPage = () => {
 				{detail?.phases && detail?.phases.length > 0 && (
 				<StyledSlide>
 					<StyledSwiper
-						slidesPerView='auto'
+						slidesPerView="auto"
 					>
 						{detail?.phases.map((item, index) => (
-							<StyledSwiperSlide style={{ zIndex: detail?.phases.length - index }} key={item.name}>
+							<SwiperSlide className="swiper-launchpad" style={{ zIndex: detail?.phases.length - index }} key={item.name}>
 								<StyledBox>
 									<StyledContent style={{ background: `${isComplete(item.endTime) ? theme.colors.backgroundItem : isInProgress(item) ? theme.colors.primary : theme.colors.backgroundAlt}` }}>
 										<img style={{ filter: `${isComplete(item.endTime) && 'grayscale(1)'}` }} src={item.imageUrl || `/images/launchpad/icon-step-01.svg`} alt="" />
@@ -667,7 +649,7 @@ const LaunchpadDetailPage = () => {
 										</defs>
 									</svg>
 								</StyledBox>
-							</StyledSwiperSlide>
+							</SwiperSlide>
 						))}
 					</StyledSwiper>
 
