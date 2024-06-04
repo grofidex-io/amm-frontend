@@ -639,7 +639,7 @@ const LaunchpadDetailPage = () => {
 						slidesPerView='auto'
 					>
 						{detail?.phases.map((item, index) => (
-							<StyledSwiperSlide style={{ zIndex: detail?.phases.length - index }} key={`${item.startTime + index}`}>
+							<StyledSwiperSlide style={{ zIndex: detail?.phases.length - index }} key={item.name}>
 								<StyledBox>
 									<StyledContent style={{ background: `${isComplete(item.endTime) ? theme.colors.backgroundItem : isInProgress(item) ? theme.colors.primary : theme.colors.backgroundAlt}` }}>
 										<img style={{ filter: `${isComplete(item.endTime) && 'grayscale(1)'}` }} src={item.imageUrl || `/images/launchpad/icon-step-01.svg`} alt="" />
