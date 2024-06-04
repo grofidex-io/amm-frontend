@@ -60,14 +60,14 @@ export const fetchLaunchpadDetail = async (_contract: string) : Promise<{data: I
     "description": "Secure royal shares, witness $LION's birth, and join the legend!\nExperience the majestic journey of the lion, where courage reigns.\n\n1st phase of presale starts, followed by 2nd phase.\nWe perform a manual listing at UniSwap.\n\n🦁$LION releases between June 18-20 on UniSwap.\n\n🦁Total supply: 50,000,000\n🦁TAX: 0%\n🦁Not mineable\n🦁LP will be burned\n🦁DEX: UniSwap\n\nStep into this captivating tale and secure your chance! ❤️\nLet the lion within you awaken!\nLET HIM ROAR!",
     "shortDescription": "Secure royal shares, witness $LION's birth, and join the legend!",
     "projectImageThumbnail": "https://pbs.twimg.com/profile_banners/1785390990116749313/1714951618/1500x500",
-    "contractAddress": "0x3B3686DC902F25287Bf513C7cCCb5C4Bb38fD573",
+    "contractAddress": "0x794236E6594ff178bC921E0E77c40fa1aA36F0Bc",
     "priceToken": 5,
     "totalRaise": 50000,
     "totalSale": 5000000,
     "softCap": 60000,
     "snapshotTime": 1716579183000,
-    "saleStart": 1717212268213,
-    "saleEnd": 1717860268213,
+    "saleStart": 1717488000000,
+    "saleEnd": 1717560000000,
     "status": "ON_GOING",
     "socials": [
       {
@@ -85,76 +85,40 @@ export const fetchLaunchpadDetail = async (_contract: string) : Promise<{data: I
     ],
     "phases": [
       {
-        "name": "Upcoming",
-        "startTime": 1717212268213,
-        "endTime": 1717212268213,
-        "isActive": false,
-        "imageUrl": null,
-        "contractAddress": "0x5EDEcE1Fc3A26A803B8573025fb54A711440D1fb",
-        "type": "NONE"
-      },
-      {
-        "name": "IDO Start",
-        "startTime": 1717212268213,
-        "endTime": 1717215868213,
-        "isActive": false,
-        "imageUrl": null,
-        "contractAddress": "0x5EDEcE1Fc3A26A803B8573025fb54A711440D1fb",
-        "type": "NONE"
-      },
-      {
         "name": "IDO Tier 1",
-        "startTime": 1717215868213,
-        "endTime": 1717226668213,
+        "startTime": 1717488000000,
+        "endTime": 1717490400000,
         "isActive": false,
         "imageUrl": null,
-        "contractAddress": "0x5EDEcE1Fc3A26A803B8573025fb54A711440D1fb",
-        "type": "TIER"
+        "contractAddress": "0x6377747d02749436b3174B154B8D2846EBAB0254",
+        "type": "NONE"
       },
       {
         "name": "IDO Tier 2",
-        "startTime": 1717226668213,
-        "endTime": 1717237468213,
+        "startTime": 1717491600000,
+        "endTime": 1717494000000,
         "isActive": false,
         "imageUrl": null,
-        "contractAddress": "0x566c65B2cdA5cF9CD9dD56B28b48D9CF8582A4E8",
-        "type": "TIER"
-      },
-      {
-        "name": "IDO Tier 3",
-        "startTime": 1717237468213,
-        "endTime": 1717248268213,
-        "isActive": false,
-        "imageUrl": null,
-        "contractAddress": "0x822891074Af82dEFcB6c9f6949707059b17d70C0",
-        "type": "TIER"
+        "contractAddress": "0x8Fb02b997B8f51fa197Db6058D98F792797e4EeC",
+        "type": "NONE"
       },
       {
         "name": "IDO Whitelist",
-        "startTime": 1717248268213,
-        "endTime": 1717259068213,
+        "startTime": 1717495200000,
+        "endTime": 1717497600000,
         "isActive": false,
         "imageUrl": null,
-        "contractAddress": "0x6Efc2F8a725A6EAA2ce7a16bDbb6c8db9579b05B",
+        "contractAddress": "0x016E24788aBF93877D40b22eF56681df02F27F34",
         "type": "WHITELIST"
       },
       {
         "name": "IDO Community",
-        "startTime": 1717259068213,
-        "endTime": 1717269868213,
+        "startTime": 1717556400000,
+        "endTime": 1717558800000,
         "isActive": false,
         "imageUrl": null,
-        "contractAddress": "0x7A5Da6f87dBd6f46bC59046fa9B2e10E5590326e",
-        "type": "COMMUNITY"
-      },
-      {
-        "name": "Finished",
-        "startTime": 1717269868213,
-        "endTime": 1717280668213,
-        "isActive": false,
-        "imageUrl": null,
-        "contractAddress": "0x5EDEcE1Fc3A26A803B8573025fb54A711440D1fb",
-        "type": "NONE"
+        "contractAddress": "0x56e7165d8D9597b13F7586E5Ff6DbD06ee4e33c2",
+				"type": "COMMUNITY"
       }
     ]
   },

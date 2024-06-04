@@ -292,9 +292,7 @@ const StyledSwiper = styled(Swiper)`
 		}
 	}
 `
-const StyledSwiperSlide = styled(SwiperSlide)`
-  
-`
+
 const StyledListTitle = styled(Text)`
   color: ${({ theme }) => theme.colors.textSubtle};
   font-size: 14px;
