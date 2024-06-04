@@ -254,6 +254,9 @@ export default {
     [ChainId.U2U_NEBULAS]: '0x4012e1E304B3a125ABAa51D5B7191f1FD34C8bFC',
   },
   launchpad: {
-    [ChainId.U2U_NEBULAS]: '0x7C6a0DEEECBF5D3165Db2d9D70D9bE77B88F255f',
+    [ChainId.U2U_NEBULAS]: '0x5877b565e0A2ad7DC82Ed7ab9D2D1Cd7d3d7e189',
+  },
+	launchpadManager: {
+    [ChainId.U2U_NEBULAS]: "0x3B3686DC902F25287Bf513C7cCCb5C4Bb38fD573",
   }
 } as const satisfies Record<string, Record<number, `0x${string}`>>

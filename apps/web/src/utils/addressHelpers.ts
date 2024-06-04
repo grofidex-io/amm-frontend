@@ -202,3 +202,7 @@ export const getVaultLoansAddress = (chainId?: number) => {
 export const getLaunchpadAddress = (chainId?: number) => {
   return getAddressFromMap(addresses.launchpad, chainId)
 }
+
+export const getLaunchpadManagerAddress = (chainId?: number) => {
+  return getAddressFromMap(addresses.launchpadManager, chainId)
+}

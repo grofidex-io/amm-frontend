@@ -22,6 +22,7 @@ export const INFO_CLIENT = 'https://proxy-worker-api.pancakeswap.com/bsc-exchang
 export const V3_BSC_INFO_CLIENT = `https://subgraph-amm-testnet.grofidex.io/subgraphs/name/amm/grofidex-v1`
 export const AMM_STAKING_CLIENT = `https://subgraph-amm-testnet.grofidex.io/subgraphs/name/amm/staking-v2`
 export const AMM_LOAN_CLIENT = `https://subgraph-amm-testnet.grofidex.io/subgraphs/name/amm/loans`
+export const AMM_CLIENT = `https://subgraph-amm-testnet.grofidex.io/subgraphs/name/amm`
 export const APR_SUBGRAPH = `https://testnet-staking-graphql.uniultra.xyz/graphql`
 
 export const INFO_CLIENT_ETH = 'https://api.thegraph.com/subgraphs/name/pancakeswap/exhange-eth'

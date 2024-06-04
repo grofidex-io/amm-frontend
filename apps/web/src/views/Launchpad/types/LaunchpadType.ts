@@ -1,24 +1,29 @@
+import { Address } from "viem"
+
 export interface ITierInfo {
   minStake: number
-  maxBuyPerUser: number
-  start: number
+	maxStake: number
+  maxBuyPerUser: number | string
+  start: number 
   end: number
-  maxCommitAmount: number
-  currentCommit: number
+	startAddWhiteList: number
+	endAddWhiteList: number
+  maxCommitAmount: number | string
   startCancel: number
   endCancel: number
-  startCalculate: number
-  endCalculate: number
-  tier?: number
+  typeRound: string,
+	name?: string
+
 }
 
 export interface IUserWhiteListInfo {
   isWhiteList: boolean,
+	giveBackAmount: number,
   u2uCommitted: number
 }
 
 export interface ILaunchpadItem {
-	contractAddress: string,
+	contractAddress: Address,
 	priceToken: number,
 	projectImageThumbnail: string,
 	projectName: string,
@@ -43,13 +48,14 @@ export interface ISocial {
 	link: string
 }
 
-export interface IPhare {
+export interface IPhase {
 	name: string,
 	startTime: number,
 	endTime: number,
 	isActive: boolean,
 	imageUrl: string | null,
-	contractAddress: string
+	contractAddress: Address,
+	type: string
 }
 
 export interface ILaunchpadDetail {
@@ -63,7 +69,7 @@ export interface ILaunchpadDetail {
 	description: string,
 	shortDescription: string,
 	projectImageThumbnail: string,
-	contractAddress: string,
+	contractAddress: Address,
 	priceToken: number,
 	totalRaise: number,
 	totalSale: number,
@@ -73,5 +79,34 @@ export interface ILaunchpadDetail {
 	saleEnd: number,
 	status: string,
 	socials: ISocial[],
-	phases: IPhare[]
+	phases: IPhase[]
+}
+
+export interface IUserCommit {
+	u2uCommitted: number,
+	giveBackAmount: number,
+	isWhiteList: boolean
+}
+
+export interface ITimeOfPhase {
+	startTime: number
+	endTime: number
+}
+
+export interface ICommittedItem {
+	id: string
+	u2uAmount: string
+	roundType: string
+	roundAddress: Address
+	startCancel: number
+	endCancel: number
+}
+
+export interface IHistoryTransaction {
+	hash: string
+	u2uAmount: string
+	roundType: string
+	processTime: number
+	transactionType: string
+	tokenAmount: string
 }

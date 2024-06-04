@@ -1,19 +1,28 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { AutoColumn, Box, Button, Modal, ModalV2, Text } from "@pancakeswap/uikit";
+import { AutoColumn, Box, Button, Modal, Text, useToast } from "@pancakeswap/uikit";
+import { formatNumber } from "@pancakeswap/utils/formatBalance";
+import BigNumber from "bignumber.js";
+import { ToastDescriptionWithTx } from "components/Toast";
+import { formatEther } from "ethers/lib/utils";
+import { useActiveChainId } from "hooks/useActiveChainId";
+import useCatchTxError from "hooks/useCatchTxError";
+import forEach from "lodash/forEach";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { getLaunchpadContract, getLaunchpadManagerContract } from "utils/contractHelpers";
 import { Break, TableWrapper } from 'views/Info/components/InfoTables/shared';
+import { useWalletClient } from "wagmi";
+import { PHASES_TYPE } from "../helpers";
+import { useFetchListCommit } from "../hooks/useFetchListCommit";
 import { StyledButton } from "../styles";
 
 
 
 const StyledModal = styled(Modal)`
-  width: 760px;
+  width: 800px;
   @media screen and (max-width: 767px) {
     width: 100%;
   }
-`
-const Wrapper = styled.div`
-  width: 100%;
 `
 const LayoutScroll = styled(Box)`
   display: flex;
@@ -47,54 +56,133 @@ const StyledButtonCancel = styled(Button)`
   font-weight: 500;
 `
 
-const data = [
-  { round: 'Tier 1', committed: '30.0000 U2U', giveBack: '12.0000 U2U', tokenx: '1,800.0000 TOKENX' },
-  { round: 'Apply Whitelist', committed: '10.0000 U2U', giveBack: '10.0000 U2U', tokenx: 'Calculating' },
-  { round: 'Community', committed: '0.0000 U2U', giveBack: 'Calculating', tokenx: 'Calculating' },
-]
+
 
 export default function ModalDetail({
-  isOpen,
-  onDismiss,
-  closeOnOverlayClick
+	tokenName,
+	saleEnd,
+	account,
+	launchpad,
+	listPhase,
+	onDismiss,
+	getTotalUserCommitted,
+	rate
 }) {
-
+	const { data: signer } = useWalletClient()
+	const { chainId } = useActiveChainId()
+  const { fetchWithCatchTxError } = useCatchTxError()
+	const { toastSuccess, toastError } = useToast()
   const { t } = useTranslation();
+	const { data : list, refetch } = useFetchListCommit(account, launchpad)
+	const [giveBackAmount, setGiveBackAmount] = useState<number | string>(0)
+	const launchpadContract = useRef<any>()
+
+	const getGiveBack = async () => {
+		try {
+			if(launchpadContract.current.account) { 
+				const res = await launchpadContract.current.read.getGiveBack([account])
+				setGiveBackAmount(formatEther(res))
+			}
+		}catch{
+			//
+		}
+	}
+
+
+
+
+	const handleCancel = async (item) => {
+		const _contract = getLaunchpadContract(item.roundAddress, signer ?? undefined, chainId)
+		try {
+			const res = await fetchWithCatchTxError(() => _contract.write.cancelCommit())
+			if(res?.status) {
+				toastSuccess(
+					t('Success!'),
+					<ToastDescriptionWithTx txHash={res.transactionHash}>
+						Cancel successfully
+					</ToastDescriptionWithTx>,
+				)
+			}
+		} catch(error: any) {
+			const errorDescription = `${error.message} - ${error.data?.message}`
+			toastError(t('Failed'), errorDescription)
+		}
+	}
+
+	const handleClaim = async () => {
+		const _contract = getLaunchpadManagerContract(launchpad, signer ?? undefined, chainId)
+		try {
+			const res = await fetchWithCatchTxError(() => _contract.write.claimToken())
+			if(res?.status) {
+				refetch()
+				getGiveBack()
+				getTotalUserCommitted()
+				toastSuccess(
+					t('Success!'),
+					<ToastDescriptionWithTx txHash={res.transactionHash}>
+						Claim Token successfully
+					</ToastDescriptionWithTx>,
+				)
+			}
+		} catch(error: any) {
+			const errorDescription = `${error.message} - ${error.data?.message}`
+			toastError(t('Failed'), errorDescription)
+		}
+	}
+
+
+	useEffect(() => {
+		if(list && list?.length > 0 && signer) {
+			forEach(list, (item) => {
+				if(item.roundType === PHASES_TYPE.TIER) {
+					launchpadContract.current = getLaunchpadContract(item.roundAddress, signer, chainId)
+				}
+			})
+			if(launchpadContract.current.account) {
+				getGiveBack()
+			}
+		}
+	}, [list, signer])
+
+
+	const endTime = saleEnd < Date.now()
+
+	const enableClaim = BigNumber(giveBackAmount).gt(0) || endTime
 
   return (
-    <ModalV2 onDismiss={onDismiss} isOpen={isOpen} closeOnOverlayClick={closeOnOverlayClick}>
-      <StyledModal title={t('Your Committed Detail')}>
-        <Wrapper>
+      <StyledModal title={t('Your Committed Detail')} onDismiss={onDismiss}  >
           <TableWrapper>
             <LayoutScroll>
               <ResponsiveGrid>
                 <Text color="textSubtle" textAlign="center">
-                  {t('Hash')}
+                  {t('ROUND')}
                 </Text>
                 <Text color="textSubtle" textAlign="center">
-                  {t('Type')}
+                  {t('U2U COMMITTED')}
+                </Text>
+								<Text color="textSubtle" textAlign="center">
+                  {t('U2U GIVE BACK')}
                 </Text>
                 <Text color="textSubtle" textAlign="center">
-                  {t('Token')}
+                  {t('TOKEN')}
                 </Text>
                 <Text color="textSubtle" textAlign="center">
-                  {t('Time')}
-                </Text>
-                <Text color="textSubtle" textAlign="center">
-                  {t('Action')}
+                  {t('ACTION')}
                 </Text>
               </ResponsiveGrid>
               <AutoColumn gap="16px">
                 <Break/>
-                {data?.map(item => (
+                {list?.map(item => (
                   <>
-                    <ResponsiveGrid>
-                      <StyledText>{item.round}</StyledText>
-                      <StyledText>{item.committed}</StyledText>
-                      <StyledText>{item.giveBack}</StyledText>
-                      <StyledText>{item.tokenx}</StyledText>
+                    <ResponsiveGrid key={item.id}>
+                      <StyledText>{listPhase[item.roundAddress.toLowerCase()]?.name}</StyledText>
+                      <StyledText>{formatNumber(BigNumber(formatEther(item.u2uAmount)).toNumber(), 0, 6)} U2U</StyledText>
+                      <StyledText>{item.roundType === PHASES_TYPE.TIER && formatNumber(Number(giveBackAmount), 0, 6)}</StyledText>
+											<StyledText>{ endTime ? `${formatNumber(BigNumber(formatEther(item.u2uAmount)).toNumber() * rate, 0, 6)} ${tokenName}`: null } </StyledText>
                       <Box style={{ textAlign: 'center' }}>
-                        <StyledButtonCancel variant="cancel">{t('Cancel')}</StyledButtonCancel>
+												{(item.startCancel * 1000) < Date.now() && (item.endCancel * 1000) > Date.now() && (
+                        	<StyledButtonCancel variant="cancel" onClick={() => handleCancel(item)}>{t('Cancel')}</StyledButtonCancel>
+												)}
                       </Box>
                     </ResponsiveGrid>
                     <Break />
@@ -103,11 +191,9 @@ export default function ModalDetail({
               </AutoColumn>
             </LayoutScroll>
           </TableWrapper>
-        </Wrapper>
         <Box mt="16px" style={{ textAlign: 'center' }}>
-          <StyledButton className="button-hover" width="200px">{t('Claim Now')}</StyledButton>
+          <StyledButton disabled={!enableClaim} className="button-hover" width="200px" onClick={handleClaim}>{t('Claim Now')}</StyledButton>
         </Box>
       </StyledModal>
-    </ModalV2>
   )
 }

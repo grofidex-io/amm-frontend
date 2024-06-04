@@ -1,11 +1,17 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, Flex, OpenNewIcon, Progress, Text } from '@pancakeswap/uikit'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
+import BigNumber from 'bignumber.js'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import NextLink from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import styled, { useTheme } from 'styled-components'
-import { LAUNCHPAD_STATUS, countdownDate, getColorLaunchpadByStatus, getStatusNameLaunchpad } from '../helpers'
+import { getLaunchpadManagerContract } from 'utils/contractHelpers'
+import { formatEther } from 'viem'
+import { useWalletClient } from 'wagmi'
+import { COUNTDOWN_TYPE, LAUNCHPAD_STATUS, getColorLaunchpadByStatus, getStatusNameLaunchpad } from '../helpers'
 import { ILaunchpadItem } from '../types/LaunchpadType'
+import CountdownTime from './CountdownTime'
 
 
 const CardLayout = styled(Box)`
@@ -157,35 +163,43 @@ type LaunchpadProps ={
 const LaunchpadCard = ({ item }: LaunchpadProps) => {
   const { t } = useTranslation()
   const theme = useTheme();
-	const refIntervalStart = useRef<any>()
-	const refIntervalEnd = useRef<any>()
-	const [startTimeCountdown, setStartTimeCountdown] = useState<string>('')
-	const [endTimeCountdown, setEndTimeCountdown] = useState<string>('')
+	const launchpadManagerContract = useRef<any>()
+	const [timeCountdown, setTimeCountdown] = useState<number>(0)
+	const [totalCommit, setTotalCommit] = useState<number>(0)
+	const { chainId } = useActiveChainId()
+	const { data: signer } = useWalletClient()
 
+	const getTotalCommit = async () => {
+		try {
+			const _totalCommit: any = await launchpadManagerContract.current.read.totalCommit()
+			const _total = BigNumber(formatEther(_totalCommit)).toNumber()
+			setTotalCommit(_total)
+		}catch(ex) {
+			console.error(ex)
+		}
+	}
 
-	const countdownSaleStart = () => {
+	const checkTimeCountdown = () => {
 		if(item.saleStart && item.status === LAUNCHPAD_STATUS.UPCOMING) {
-			refIntervalStart.current = countdownDate(item.saleStart, setStartTimeCountdown)
+			setTimeCountdown(item.saleStart)
 		}
-	}
-
-	const countdownSaleEnd = () => {
 		if(item.saleEnd && item.status === LAUNCHPAD_STATUS.ON_GOING) {
-			refIntervalEnd.current = countdownDate(item.saleEnd, setEndTimeCountdown)
+			setTimeCountdown(item.saleEnd)
 		}
 	}
 
+
+
 	useEffect(() => {
-		return () => {
-			clearInterval(refIntervalStart.current)
-			clearInterval(refIntervalEnd.current)
+		if(item.contractAddress && item.contractAddress?.length > 0 && item.status === LAUNCHPAD_STATUS.ON_GOING) {
+			launchpadManagerContract.current = getLaunchpadManagerContract(item.contractAddress, signer ?? undefined, chainId)
+			getTotalCommit()
 		}
-	}, [])
+	}, [item])
 
 
 	useEffect(() => {
-		countdownSaleStart()
-		countdownSaleEnd()
+		checkTimeCountdown()
 	}, [])
 
 
@@ -256,22 +270,24 @@ const LaunchpadCard = ({ item }: LaunchpadProps) => {
 					style={{ background: '#445434' }}
 					>
             <Text style={{ color: theme.colors.hover }} fontSize="16px" fontWeight="600" lineHeight="20px" mb="8px">{t('Sale start in')}</Text>
-            <Text minWidth={250} textAlign="center" color='secondary' fontSize={["24px", "24px", "24px", "25px", "24px", "24px", "28px"]} fontWeight="600" style={{ lineHeight: 'calc(34/28)' }}>{ item.saleStart ? <> { startTimeCountdown } </> : t('To be announced')}</Text>
+            <Text minWidth={250} textAlign="center" color='secondary' fontSize={["24px", "24px", "24px", "25px", "24px", "24px", "28px"]} fontWeight="600" style={{ lineHeight: 'calc(34/28)' }}>{ item.saleStart ? <CountdownTime type={COUNTDOWN_TYPE.STRING} time={timeCountdown}/> : t('To be announced')}</Text>
           </Flex>
         ) : (
           <Box className='border-neubrutal' borderRadius="8px" p={["16px 12px", "16px 12px", "16px 12px", "16px 12px", "16px 12px", "16px 12px","20px 16px"]}>
             <Flex alignItems="center" justifyContent="space-between" mb="20px">
               <Text fontFamily="'Metuo', sans-serif" fontSize="18px" fontWeight="900" lineHeight="1">{t('Progress')}</Text>
-              <Text minWidth={145} fontSize={["14px", "16px", "16px", "16px", "16px", "14px", "16px"]} lineHeight="1">{endTimeCountdown}</Text>
+              <Text minWidth={145} fontSize={["14px", "16px", "16px", "16px", "16px", "14px", "16px"]} lineHeight="1">
+								<CountdownTime type={COUNTDOWN_TYPE.STRING} time={timeCountdown}/>
+							</Text>
             </Flex>
             <Flex alignItems="center" justifyContent="space-between" mb="10px">
               <Flex>
-                <Text fontSize="14px" fontWeight="700" lineHeight="24px">40.000</Text>
+                <Text fontSize="14px" fontWeight="700" lineHeight="24px">{formatNumber(item.totalRaise)}</Text>
                 <Text color='textSubtle' fontSize="10px" lineHeight="24px" ml="6px">U2U Raised</Text>
               </Flex>
-              <Text color='textSubtle' fontSize="14px" fontWeight="600">20%</Text>
+              <Text color='textSubtle' fontSize="14px" fontWeight="600">{formatNumber(item?.totalRaise ? (totalCommit / item?.totalRaise) * 100 : 0, 0, 2) }%</Text>
             </Flex>
-            <Progress primaryStep={20} scale="sm" />
+            <Progress primaryStep={item?.totalRaise ? (totalCommit / item?.totalRaise) * 100 : 0 } scale="sm" />
           </Box>
         )}
       </CardBody>

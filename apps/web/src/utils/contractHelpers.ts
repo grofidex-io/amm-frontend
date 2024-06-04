@@ -2,50 +2,49 @@ import { CAKE } from '@pancakeswap/tokens'
 
 // Addresses
 import {
-  getAffiliateProgramAddress,
-  getAnniversaryAchievementAddress,
-  getBCakeFarmBoosterAddress,
-  getBCakeFarmBoosterProxyFactoryAddress,
-  getBCakeFarmBoosterV3Address,
-  getBCakeFarmBoosterVeCakeAddress,
-  getBorrowAddress,
-  getBunnyFactoryAddress,
-  getCakeFlexibleSideVaultAddress,
-  getCakeVaultAddress,
-  getCalcGaugesVotingAddress,
-  getCrossFarmingReceiverAddress,
-  getCrossFarmingSenderAddress,
-  getFarmAuctionAddress,
-  getFixedStakingAddress,
-  getGaugesVotingAddress,
-  getLaunchpadAddress,
-  getLotteryV2Address,
-  getMasterChefV2Address,
-  getMasterChefV3Address,
-  getNftMarketAddress,
-  getNftSaleAddress,
-  getNonBscVaultAddress,
-  getPancakeProfileAddress,
-  getPancakeSquadAddress,
-  getPointCenterIfoAddress,
-  getPotteryDrawAddress,
-  getPredictionsV1Address,
-  getRevenueSharingCakePoolAddress,
-  getRevenueSharingPoolAddress,
-  getRevenueSharingPoolGatewayAddress,
-  getRevenueSharingVeCakeAddress,
-  getStableSwapNativeHelperAddress,
-  getStakingAddress,
-  getTradingCompetitionAddressEaster,
-  getTradingCompetitionAddressFanToken,
-  getTradingCompetitionAddressMoD,
-  getTradingCompetitionAddressMobox,
-  getTradingRewardAddress,
-  getTradingRewardTopTradesAddress,
-  getV3AirdropAddress,
-  getV3MigratorAddress,
-  getVCakeAddress,
-  getVeCakeAddress
+	getAffiliateProgramAddress,
+	getAnniversaryAchievementAddress,
+	getBCakeFarmBoosterAddress,
+	getBCakeFarmBoosterProxyFactoryAddress,
+	getBCakeFarmBoosterV3Address,
+	getBCakeFarmBoosterVeCakeAddress,
+	getBorrowAddress,
+	getBunnyFactoryAddress,
+	getCakeFlexibleSideVaultAddress,
+	getCakeVaultAddress,
+	getCalcGaugesVotingAddress,
+	getCrossFarmingReceiverAddress,
+	getCrossFarmingSenderAddress,
+	getFarmAuctionAddress,
+	getFixedStakingAddress,
+	getGaugesVotingAddress,
+	getLotteryV2Address,
+	getMasterChefV2Address,
+	getMasterChefV3Address,
+	getNftMarketAddress,
+	getNftSaleAddress,
+	getNonBscVaultAddress,
+	getPancakeProfileAddress,
+	getPancakeSquadAddress,
+	getPointCenterIfoAddress,
+	getPotteryDrawAddress,
+	getPredictionsV1Address,
+	getRevenueSharingCakePoolAddress,
+	getRevenueSharingPoolAddress,
+	getRevenueSharingPoolGatewayAddress,
+	getRevenueSharingVeCakeAddress,
+	getStableSwapNativeHelperAddress,
+	getStakingAddress,
+	getTradingCompetitionAddressEaster,
+	getTradingCompetitionAddressFanToken,
+	getTradingCompetitionAddressMoD,
+	getTradingCompetitionAddressMobox,
+	getTradingRewardAddress,
+	getTradingRewardTopTradesAddress,
+	getV3AirdropAddress,
+	getV3MigratorAddress,
+	getVCakeAddress,
+	getVeCakeAddress
 } from 'utils/addressHelpers'
 
 // ABI
@@ -64,9 +63,9 @@ import { calcGaugesVotingABI, gaugesVotingABI } from '@pancakeswap/gauges'
 import { getIfoCreditAddressContract as getIfoCreditAddressContract_ } from '@pancakeswap/ifos'
 import { cakeFlexibleSideVaultV2ABI, cakeVaultV2ABI } from '@pancakeswap/pools'
 import {
-  positionManagerAdapterABI,
-  positionManagerVeBCakeWrapperABI,
-  positionManagerWrapperABI,
+	positionManagerAdapterABI,
+	positionManagerVeBCakeWrapperABI,
+	positionManagerWrapperABI,
 } from '@pancakeswap/position-managers'
 import { masterChefV3ABI } from '@pancakeswap/v3-sdk'
 import { sidABI } from 'config/abi/SID'
@@ -83,6 +82,7 @@ import { farmAuctionABI } from 'config/abi/farmAuction'
 import { fixedStakingABI } from 'config/abi/fixedStaking'
 import { groFiStakingManagerAbi } from 'config/abi/groFiStakingManagerAbi'
 import { launchpadABI } from 'config/abi/launchpad'
+import { launchpadMangerABI } from 'config/abi/launchpadManager'
 import { lotteryV2ABI } from 'config/abi/lotteryV2'
 import { lpTokenABI } from 'config/abi/lpTokenAbi'
 import { masterChefV2ABI } from 'config/abi/masterchefV2'
@@ -561,10 +561,19 @@ export const getBorrowContract = (signer?: WalletClient, chainId?: number) => {
   })
 }
 
-export const getLaunchpadContract = (signer?: WalletClient, chainId?: number) => {
+export const getLaunchpadContract = ( address: Address, signer?: WalletClient, chainId?: number) => {
   return getContract({
     abi: launchpadABI,
-    address: getLaunchpadAddress(chainId),
+    address,
+    signer,
+    chainId,
+  })
+}
+
+export const getLaunchpadManagerContract = (address: Address, signer?: WalletClient, chainId?: number) => {
+  return getContract({
+    abi: launchpadMangerABI,
+    address,
     signer,
     chainId,
   })

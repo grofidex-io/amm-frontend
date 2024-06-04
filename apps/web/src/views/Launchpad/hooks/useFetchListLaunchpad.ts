@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query"
 import { fetchListLaunchpad } from "../apis"
 
-export const useFetchListLaunchpad = () => {
+export const useFetchListLaunchpad = (page: number) => {
 	return useQuery({
-    queryKey: ['fetchListLaunchpad'],
+    queryKey: ['fetchListLaunchpad', page],
 		queryFn: () => {
-			return fetchListLaunchpad()
+			return fetchListLaunchpad(page)
 		},
 		retry: 3,
 		retryDelay: 3000,

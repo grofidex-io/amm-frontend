@@ -7,18 +7,25 @@ export const LAUNCHPAD_STATUS = {
 	ENDED: 'ENDED',
 	ON_GOING: 'ON_GOING'
 }
+
+export const COUNTDOWN_TYPE = {
+	ARRAY: 1,
+	STRING: 2
+}
+
 export const convertTierInfo = (args) => {
   return {
-    minStake: args[0],
-    maxBuyPerUser: args[1],
-    start: args[2],
-    end: args[3],
+    end: args[0],
+    endAddWhiteList: args[1],
+    endCancel: args[2],
+    maxBuyPerUser: args[3],
     maxCommitAmount: args[4],
-    currentCommit: args[5],
-    startCancel: args[6],
-    endCancel: args[7],
-    startCalculate: args[8],
-    endCalculate: args[9]
+    maxStake: args[5],
+    minStake: args[6],
+    start: args[7],
+    startAddWhiteList: args[8],
+    startCancel: args[9],
+		typeRound: args[9]
   }
 }
 
@@ -37,7 +44,6 @@ export const countdownDate = (countDownDate: number, cb: (_time: any ) => void, 
 	const x = setInterval(() => {
 		// Get today's date and time
 		const now = new Date().getTime();
-	
 		// Find the distance between now and the count down date
 		const distance = countDownDate - now;
 	
@@ -56,7 +62,7 @@ export const countdownDate = (countDownDate: number, cb: (_time: any ) => void, 
 		// If the count down is finished, write some text
 		if (distance < 0) {
 			clearInterval(x);
-			cb(type ? ['00d', '00h', '00m', '00s'] : 'To be announced' );
+			cb(type ? ['00', '00', '00', '00'] : 0 );
 		}
 
 	}, 1000);
@@ -79,3 +85,10 @@ export const getColorLaunchpadByStatus = (_status: string, theme: DefaultTheme) 
 	: theme.colors.primary
 }
 
+
+export const PHASES_TYPE = {
+	COMMUNITY: "COMMUNITY",
+	WHITELIST: "WHITELIST",
+	NONE: "NONE",
+	TIER: "TIER"
+}

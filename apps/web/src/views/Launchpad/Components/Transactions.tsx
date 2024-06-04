@@ -1,8 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoColumn, Box, Flex, ScanLink, Text } from '@pancakeswap/uikit'
+import { ArrowBackIcon, ArrowForwardIcon, AutoColumn, Box, Flex, ScanLink, Text } from '@pancakeswap/uikit'
+import truncateHash from '@pancakeswap/utils/truncateHash'
+import dayjs from 'dayjs'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Break, TableWrapper } from 'views/Info/components/InfoTables/shared'
-import { shortenAddress } from 'views/V3Info/utils'
+import { formatEther } from 'viem'
+import { formatDate } from 'views/CakeStaking/components/DataSet/format'
+import { Arrow, Break, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
+import { useFetchTransactionHistory } from '../hooks/useFetchTransactionHistory'
 
 
 const Wrapper = styled.div`
@@ -43,16 +48,11 @@ const StyledScanLink = styled(ScanLink)`
     }
   }
 `
-const data = [
-  { hash: '0x759241dbe1d49dFda80b819eE86726Cd25EEd7dB', type: 'Commit', token: '50.000 U2U', time: 'May 02, 2024, 02:00:00 AM' },
-  { hash: '0x759241dbe1d49dFda80b819eE86726Cd25EEd7dB', type: 'Cancel', token: '20.000 U2U', time: 'May 02, 2024, 02:00:00 AM' },
-  { hash: '0x759241dbe1d49dFda80b819eE86726Cd25EEd7dB', type: 'Refund', token: '10.000 U2U', time: 'May 02, 2024, 02:00:00 AM' },
-  { hash: '0x759241dbe1d49dFda80b819eE86726Cd25EEd7dB', type: 'Claim', token: '200.000.000 TOKENX', time: 'May 02, 2024, 02:00:00 AM' },
-]
-
-export default function Transactions() {
+export default function Transactions({info, account}) {
   const { t } = useTranslation()
-
+  const [page, setPage] = useState(1)
+	const {data} = useFetchTransactionHistory(account, info?.contractAddress, page)
+  const disableNext = data ? data?.length === 0 || data?.length < 10 : false
   return (
     <Box mt="30px">
       <Wrapper>
@@ -60,40 +60,59 @@ export default function Transactions() {
           <LayoutScroll>
             <ResponsiveGrid>
               <Text color="textSubtle">
-                {t('Hash')}
+                {t('HASH')}
               </Text>
               <Text color="textSubtle" textAlign="center">
-                {t('Type')}
+                {t('TYPE')}
               </Text>
               <Text color="textSubtle" textAlign="center">
-                {t('Token')}
+                {t('TOKEN')}
               </Text>
-              <Text color="textSubtle" textAlign="center">
-                {t('Time')}
+              <Text color="textSubtle" textAlign="right">
+                {t('TIME')}
               </Text>
             </ResponsiveGrid>
             <AutoColumn gap="16px">
               <Break/>
               {data?.map(item => (
-                <>
-                  <ResponsiveGrid>
+								<React.Fragment key={item.hash}>
+                  <ResponsiveGrid >
                     <Flex>
                       <StyledScanLink href='/'>
                         <Text color='primary'>
-                          {shortenAddress(item.hash)}
+                          {item.hash && truncateHash(item.hash, 20, 8)}
                         </Text>
                       </StyledScanLink>
                     </Flex>
-                    <Text color="text" textAlign="center">{item.type}</Text>
-                    <Text color="text" textAlign="center">{item.token}</Text>
-                    <Text color="text" textAlign="center">{item.time}</Text>
+                    <Text color="text" textAlign="center">{item.transactionType}</Text>
+                    <Text color="text" textAlign="center">{item.transactionType === 'CLAIM' ? `${formatEther(item.tokenAmount)} ${info?.tokenName}` : `${formatEther(item.u2uAmount)} U2U` }</Text>
+                    <Text color="text" textAlign="right">{formatDate(dayjs.unix(Math.floor(item.processTime)).utc())}</Text>
                   </ResponsiveGrid>
-                  <Break />
-                </>
+        				<Break/>
+								</React.Fragment>
               ))}
-
             </AutoColumn>
           </LayoutScroll>
+					<PageButtons>
+					<Arrow
+						onClick={() => {
+							setPage(page === 1 ? page : page - 1)
+						}}
+					>
+						<ArrowBackIcon color={page === 1 ? 'textDisabled' : 'primary'} />
+					</Arrow>
+
+					<Text>Page {page}</Text>
+					<Arrow
+						onClick={() => {
+							if(!disableNext) {
+								setPage(data?.length === 0 ? page : page + 1)
+							}
+						}}
+					>
+						<ArrowForwardIcon color={disableNext ? 'textDisabled' : 'primary'} />
+					</Arrow>
+				</PageButtons>
         </TableWrapper>
       </Wrapper>
     </Box>

@@ -4,20 +4,25 @@ import { formatNumber } from '@pancakeswap/utils/formatBalance';
 import BigNumber from 'bignumber.js';
 import Container from 'components/Layout/Container';
 import dayjs from 'dayjs';
+import { formatEther } from 'ethers/lib/utils';
 import useAccountActiveChain from 'hooks/useAccountActiveChain';
-import { useLaunchpadContract } from 'hooks/useContract';
+import { useActiveChainId } from 'hooks/useActiveChainId';
+import forEach from 'lodash/forEach';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styled, { useTheme } from "styled-components";
 import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { getLaunchpadManagerContract } from 'utils/contractHelpers';
 import { formatDate } from 'views/CakeStaking/components/DataSet/format';
+import { useWalletClient } from 'wagmi';
+import CountdownTime from '../Components/CountdownTime';
 import ProjectInfo from '../Components/ProjectInfo';
 import Transactions from '../Components/Transactions';
-import { LAUNCHPAD_STATUS, convertTierInfo, countdownDate, getColorLaunchpadByStatus, getStatusNameLaunchpad } from '../helpers';
+import { COUNTDOWN_TYPE, LAUNCHPAD_STATUS, PHASES_TYPE, getColorLaunchpadByStatus, getStatusNameLaunchpad } from '../helpers';
 import { useFetchLaunchpadDetail } from '../hooks/useFetchLaunchpadDetail';
 import { StyledNeubrutal } from '../styles';
-import { IPhare, ITierInfo, IUserWhiteListInfo } from '../types/LaunchpadType';
+import { IPhase, ITimeOfPhase } from '../types/LaunchpadType';
 
 const StyledBanner = styled(Box)`
   position: relative;
@@ -337,13 +342,9 @@ const StyledListText = styled(Text)`
   }
 `
 
-type LaunchpadProps ={
-  type?: string
-}
-
 
 const SOCIAL_ICON = {
-	GLOBAL: 'global',
+	WEBSITE: 'global',
 	TWITTER: 'x',
 	FACEBOOK: 'facebook',
 	YOUTUBE: 'youtube',
@@ -353,65 +354,102 @@ const SOCIAL_ICON = {
 	DISCORD: 'discord'
 }
 
-const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
+const LaunchpadDetailPage = () => {
   const { t } = useTranslation()
   const theme = useTheme()
-	const refInterval = useRef<any>()
+	const refIntervalFetchTotalCommitted = useRef<any>()
+	const launchpadManagerContract = useRef<any>()
   const [tab, setTab] = useState<number>(0)
-  const launchpadContract = useLaunchpadContract()
   const { account } = useAccountActiveChain()
-  const [tierOfUser, setTierOfUser] = useState<number>(0)
-  const [tierInfo, setTierInfo] = useState<ITierInfo>()
-  const [userWhiteListInfo, setUserWhiteListInfo] = useState<IUserWhiteListInfo>()
-	const [saleEndCountdownArray, setSaleEndCountdownArray] = useState<string[]>([])
+	const [timeWhiteList, setTimeWhiteList] = useState<ITimeOfPhase>()
+	const [showCountdown, setShowCountdown] = useState<boolean>(false)
+	const [currentTier, setCurrentTier] = useState<string>()
+	const [totalCommit, setTotalCommit] = useState<number>(0)
 	const router = useRouter()
   const { launchpadId } = router.query
 	const { data: detail } = useFetchLaunchpadDetail(launchpadId as string)
+	const { chainId } = useActiveChainId()
+	const { data: signer } = useWalletClient()
+	const getTotalCommit = async () => {
+		const _totalCommit: any = await launchpadManagerContract.current.read.totalCommit()
+		const _total = BigNumber(formatEther(_totalCommit)).toNumber()
+		setTotalCommit(_total)
+	}
+
+
+	const getTimeWhiteList = () => {
+		let _startTime = 0
+		let _endTime = 0
+		forEach(detail?.phases, (item: IPhase) => {
+			if(item.type === PHASES_TYPE.WHITELIST) {
+				if(_startTime === 0) {
+					_startTime = item.startTime
+				}
+				if(_endTime === 0) {
+					_endTime = item.endTime
+				}
+				if(item.startTime < _startTime) {
+					_startTime = item.startTime
+				}
+				if(item.endTime > _endTime) {
+					_endTime = item.endTime
+				}
+			}
+			setTimeWhiteList({
+				startTime: _startTime,
+				endTime: _endTime
+			})
+		})
+	}
 
 
   const initFunction = useCallback(() => {
-    const checkIsWhiteList = async () => {
-      const _userWhiteList: any = await launchpadContract.read.userWhiteListCommit([account])
-      setUserWhiteListInfo({
-        isWhiteList: _userWhiteList[0],
-        u2uCommitted: BigNumber(_userWhiteList[1]).toNumber()
-      })
-    }
-    const getTierInfo = async (_tier: number) => {
-      const _tierInfo: any = await launchpadContract.read.tierInfo([_tier])
-      const _info: ITierInfo = convertTierInfo(_tierInfo.map((_item: any) => BigNumber(_item).toNumber()))
-      setTierInfo({..._info, tier: _tier})
-    }
+
     const getUserTier = async () => {
-      const tier: any = await launchpadContract.read.getUserTier([account])
-      const _tier:number = BigNumber(tier).toNumber()
-      setTierOfUser(_tier)
-      getTierInfo(_tier)
+			try {
+				const _address: any = await launchpadManagerContract.current.read.viewTierPharse([account])
+				if(_address !== '0x0000000000000000000000000000000000000000') {
+					setCurrentTier(_address)
+				}
+			}catch(ex){
+				console.error(ex)
+			}
     }
 
-    if(launchpadContract.account) {
-      checkIsWhiteList()
+    if( launchpadManagerContract.current?.account) {
       getUserTier()
     }
     return {
       getUserTier
     }
 
-  }, [launchpadContract, account])
+  }, [launchpadManagerContract, account])
 
-  useEffect(() => {
-    initFunction()
-  }, [initFunction])
 
 	useEffect(() => {
 		if(detail?.saleEnd && detail.status === LAUNCHPAD_STATUS.ON_GOING) {
-			refInterval.current = countdownDate(detail.saleEnd, setSaleEndCountdownArray, 1)
+			setShowCountdown(true)
 		}
-	}, [detail])
+		if(detail?.contractAddress) {
+			launchpadManagerContract.current = getLaunchpadManagerContract(detail.contractAddress, signer ?? undefined, chainId)
+			getTotalCommit()
+			refIntervalFetchTotalCommitted.current = setInterval(() => {
+				getTotalCommit()
+			}, 600000)
+			initFunction()
+		}
+		getTimeWhiteList()
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [detail, signer])
+
+
+
 
 	useEffect(() => {
 		return () => {
-			clearInterval(refInterval.current)
+			// clearInterval(refInterval.current)
+			setShowCountdown(false)
+			clearInterval(refIntervalFetchTotalCommitted.current)
 		}
 	}, [])
 
@@ -423,7 +461,7 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
 		return false
 	}
 
-	const isInProgress = (_item: IPhare) => {
+	const isInProgress = (_item: IPhase) => {
 		const _now = Date.now()
 		if(_now > _item.startTime && _now < _item.endTime) {
 			return true
@@ -440,8 +478,8 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
           {detail?.socials.map(item => {
 						return SOCIAL_ICON[item.type] && (
 							<StyledLink external href={item.link}>
-							<img src={`/images/launchpad/icon-${SOCIAL_ICON[item.type]}.svg`} alt="" />
-						</StyledLink>
+								<img src={`/images/launchpad/icon-${SOCIAL_ICON[item.type]}.svg`} alt="" />
+							</StyledLink>
 						)
 						}
           )}
@@ -481,30 +519,8 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
             flexDirection="column"
           >
             <Text color="textSubtle" textAlign="center" fontSize="14px" fontWeight="600" lineHeight="17px" mb={["6px", "6px", "8px", "8px", "10px", "10px", "12px"]}>{t('Sale end in')}</Text>
-            <Flex justifyContent="center">
-              {saleEndCountdownArray.length > 0 ? (
-                <>
-                  <Box style={{ textAlign: 'center' }} mr={["12px", "12px", "16px", "16px", "20px", "20px", "24px"]}>
-                    <Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>{saleEndCountdownArray[0]}</Text>
-                    <Text fontSize="11px" fontWeight="400" color='hover'>{t('Days')}</Text>
-                  </Box>
-                  <Box style={{ textAlign: 'center' }} mr={["12px", "12px", "16px", "16px", "20px", "20px", "24px"]}>
-                    <Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>{saleEndCountdownArray[1]}</Text>
-                    <Text fontSize="11px" fontWeight="400" color='hover'>{t('Hours')}</Text>
-                  </Box>
-                  <Box style={{ textAlign: 'center' }} mr={["12px", "12px", "16px", "16px", "20px", "20px", "24px"]}>
-                    <Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>{saleEndCountdownArray[2]}</Text>
-                    <Text fontSize="11px" fontWeight="400" color='hover'>{t('Minutes')}</Text>
-                  </Box>
-                  <Box style={{ textAlign: 'center' }}>
-                    <Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>{saleEndCountdownArray[3]}</Text>
-                    <Text fontSize="11px" fontWeight="400" color='hover'>{t('Seconds')}</Text>
-                  </Box>
-                </>
-              ) : (
-                <Text m="auto" textAlign="right" fontSize={["20px", "20px", "20px", "24px", "28px", "28px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>{t('To be announcement')}</Text>
-              )}
-            </Flex>
+						{showCountdown && <CountdownTime type={COUNTDOWN_TYPE.ARRAY} time={detail?.saleEnd}/>}
+   
           </Flex>
         </Flex>
         <Flex flexDirection={["column", "column", "column", "column", "row"]} mb="32px">
@@ -555,11 +571,11 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Start Apply Whitelist')}</StyledListTitle>
-              <StyledListText>{detail?.snapshotTime && formatDate(dayjs.unix(Math.floor(detail.snapshotTime/ 1000)).utc())}</StyledListText>
+              <StyledListText>{timeWhiteList?.startTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.startTime/ 1000)).utc())}</StyledListText>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('End Apply Whitelist')}</StyledListTitle>
-              <StyledListText>{detail?.snapshotTime && formatDate(dayjs.unix(Math.floor(detail.snapshotTime/ 1000)).utc())}</StyledListText>
+              <StyledListText>{timeWhiteList?.endTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.endTime/ 1000)).utc())}</StyledListText>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Sale Start')}</StyledListTitle>
@@ -575,12 +591,12 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
               <StyledTitle>{t('Progress')}</StyledTitle>
               <Flex justifyContent="space-between" alignItems="center" mb={["8px", "8px", "10px", "10px", "12px"]}>
                 <Flex>
-                  <Text fontSize="14px" fontWeight="700" lineHeight="24px">40.000</Text>
+                  <Text fontSize="14px" fontWeight="700" lineHeight="24px">{formatNumber(totalCommit, 0, 6)}</Text>
                   <Text color='textSubtle' fontSize="10px" lineHeight="24px" ml="6px">U2U Raised</Text>
                 </Flex>
-                <Text color='textSubtle' fontSize="14px" fontWeight="600">20%</Text>
+                <Text color='textSubtle' fontSize="14px" fontWeight="600">{formatNumber(detail?.totalRaise ? (totalCommit / detail?.totalRaise) * 100 : 0, 0, 2) }%</Text>
               </Flex>
-              <StyledProgress primaryStep={20} scale="sm" />
+              <StyledProgress primaryStep={detail?.totalRaise ? (totalCommit / detail?.totalRaise) * 100 : 0 } scale="sm" />
               <Flex alignItems="center" justifyContent="center" mt="12px">
                 <Text color='text' fontSize="16px" fontWeight="700">{detail?.totalRaise ? formatNumber(detail.totalRaise) : '_'} U2U</Text>
                 <Text color='textSubtle' fontSize="14px" fontWeight="600" ml="8px">{t('Total Raise')}</Text>
@@ -620,8 +636,8 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
           <StyledSwiper
             slidesPerView='auto'
           >
-            {detail?.phases?.length > 0 && detail?.phases.map((item, index) => (
-              <StyledSwiperSlide style={{ zIndex: detail?.phases.length - index }}>
+            {detail?.phases && detail?.phases.map((item, index) => (
+              <StyledSwiperSlide style={{ zIndex: detail?.phases.length - index }} key={`${item.startTime + index}`}>
                 <StyledBox>
                   <StyledContent style={{ background: `${isComplete(item.endTime) ? theme.colors.backgroundItem : isInProgress(item) ? theme.colors.primary : theme.colors.backgroundAlt}` }}>
                     <img style={{ filter: `${isComplete(item.endTime) && 'grayscale(1)'}` }} src={item.imageUrl || `/images/launchpad/icon-step-01.svg`} alt="" />
@@ -662,7 +678,7 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
               </svg>
               {t('Project Info')}
             </StyledTab>
-            <StyledTab className={detail?.status === LAUNCHPAD_STATUS.UPCOMING && 'none'}>
+            <StyledTab className={detail?.status === LAUNCHPAD_STATUS.UPCOMING ? 'none' : ''}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 24" fill="none">
                 <g clip-path="url(#clip0_1413_11482)">
                 <path d="M19.8359 22.0007H5.83594C4.51034 21.9991 3.2395 21.4719 2.30216 20.5345C1.36482 19.5972 0.837525 18.3263 0.835938 17.0007L0.835938 7.00073C0.837525 5.67514 1.36482 4.40429 2.30216 3.46695C3.2395 2.52961 4.51034 2.00232 5.83594 2.00073H19.8359C21.1615 2.00232 22.4324 2.52961 23.3697 3.46695C24.3071 4.40429 24.8344 5.67514 24.8359 7.00073V17.0007C24.8344 18.3263 24.3071 19.5972 23.3697 20.5345C22.4324 21.4719 21.1615 21.9991 19.8359 22.0007ZM5.83594 4.00073C5.04029 4.00073 4.27723 4.3168 3.71462 4.87941C3.15201 5.44202 2.83594 6.20508 2.83594 7.00073V17.0007C2.83594 17.7964 3.15201 18.5594 3.71462 19.1221C4.27723 19.6847 5.04029 20.0007 5.83594 20.0007H19.8359C20.6316 20.0007 21.3946 19.6847 21.9573 19.1221C22.5199 18.5594 22.8359 17.7964 22.8359 17.0007V7.00073C22.8359 6.20508 22.5199 5.44202 21.9573 4.87941C21.3946 4.3168 20.6316 4.00073 19.8359 4.00073H5.83594Z" fill="currentColor"/>
@@ -680,8 +696,8 @@ const LaunchpadDetailPage = ({ type }: LaunchpadProps) => {
               {t('Transactions')}
             </StyledTab>
           </TabMenu>
-          {tab === 0 && <ProjectInfo tierInfo={tierInfo} info={detail}/>}
-          {tab === 1 && <Transactions/>}
+          {tab === 0 && <ProjectInfo info={detail} timeWhiteList={timeWhiteList} currentTier={currentTier} account={account} totalCommit={totalCommit}/>}
+          {tab === 1 && <Transactions info={detail} account={account}/>}
         </StyledBoxTab>
       </Container>
     </>
