@@ -1,5 +1,5 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { AutoColumn, Box, Button, Modal, Text, useToast } from "@pancakeswap/uikit";
+import { AutoColumn, Box, Button, Flex, Modal, Text, useToast } from "@pancakeswap/uikit";
 import { formatNumber } from "@pancakeswap/utils/formatBalance";
 import BigNumber from "bignumber.js";
 import { ToastDescriptionWithTx } from "components/Toast";
@@ -74,7 +74,8 @@ export default function ModalDetail({
   const { fetchWithCatchTxError } = useCatchTxError()
 	const { toastSuccess, toastError } = useToast()
   const { t } = useTranslation();
-	const { data : list, refetch } = useFetchListCommit(account, launchpad)
+	const { data, refetch } = useFetchListCommit(account, launchpad)
+	const list = data || []
 	const [giveBackAmount, setGiveBackAmount] = useState<number | string>(0)
 	const launchpadContract = useRef<any>()
 
@@ -189,6 +190,12 @@ export default function ModalDetail({
                     <Break />
                   </>
                 ))}
+								{list?.length === 0 && (
+									<Flex my="16px" flexDirection="column" alignItems="center" justifyContent="center">
+										<img src='/images/no-data.svg' alt="" />
+										<Text color='textSubtle'>{t('No Data')}</Text>
+									</Flex>
+								)}
               </AutoColumn>
             </LayoutScroll>
           </TableWrapper>
