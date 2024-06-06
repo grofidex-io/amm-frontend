@@ -167,24 +167,30 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	const refSchedule = useRef<IPhase[]>([])
 
 	const getTotalUserCommitted = async () => {
-		const _totalCommitted: any = await launchpadManagerContract.current.read.totalCommitByUser([account])
-		if(_totalCommitted) {
-			setTotalCommitByUser(BigNumber(formatEther(_totalCommitted)).toNumber())
+		try {
+			if(account && launchpadManagerContract.current.account) {
+				const _totalCommitted: any = await launchpadManagerContract.current.read.totalCommitByUser([account])
+				if(_totalCommitted) {
+					setTotalCommitByUser(BigNumber(formatEther(_totalCommitted)).toNumber())
+				}
+			}
+		}catch(ex) {
+			//
 		}
 	}
 
 
-  // const tierTooltip = useTooltip(
-  //   <>
-  //     <Text fontFamily="'Metuo', sans-serif" fontSize="12px" lineHeight="18px" mb="4px">{t('The tier depends on the number of U2Us staked in the GrofiDex staking system.')}</Text>
-  //     <StyledContentDot fontSize="12px" lineHeight="20px">{t('Tier 1: Minimum U2U stake amount is 5000 U2U')}</StyledContentDot>
-  //     <StyledContentDot fontSize="12px" lineHeight="20px">{t('Tier 2: Minimum U2U stake amount is 2000 U2U')}</StyledContentDot>
-  //     <StyledContentDot fontSize="12px" lineHeight="20px">{t('Tier 3: Minimum U2U stake amount is 1000 U2U')}</StyledContentDot>
-  //     <StyledContentDot fontSize="12px" lineHeight="20px">{t('Starter: No stake or U2U stake amount less than 1000 U2U')}</StyledContentDot>
-  //   </>, {
-  //     placement: 'right'
-  //   }
-  // )
+  const tierTooltip = useTooltip(
+    <>
+      <Text fontFamily="'Metuo', sans-serif" fontSize="12px" lineHeight="18px" mb="4px">{t('The tier depends on the number of U2Us staked in the GrofiDex staking system.')}</Text>
+      <StyledContentDot fontSize="12px" lineHeight="20px">{t('Tier 1: Minimum U2U stake amount is 5000 U2U')}</StyledContentDot>
+      <StyledContentDot fontSize="12px" lineHeight="20px">{t('Tier 2: Minimum U2U stake amount is 2000 U2U')}</StyledContentDot>
+      <StyledContentDot fontSize="12px" lineHeight="20px">{t('Tier 3: Minimum U2U stake amount is 1000 U2U')}</StyledContentDot>
+      <StyledContentDot fontSize="12px" lineHeight="20px">{t('Starter: No stake or U2U stake amount less than 1000 U2U')}</StyledContentDot>
+    </>, {
+      placement: 'right'
+    }
+  )
 
   const applyTooltip = useTooltip(
     <>
@@ -219,8 +225,12 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	}
 
 	const getTokenRate = async () => {
-		const _rate: any = await launchpadManagerContract.current.read.tokenRate()
-		setRate(BigNumber(formatEther(_rate)).toNumber())
+		try {
+			const _rate: any = await launchpadManagerContract.current.read.tokenRate()
+			setRate(BigNumber(formatEther(_rate)).toNumber())
+		}catch(ex){
+			console.error(ex)
+		}
 	}
 
 	const getUserConfig = async () => {
@@ -251,11 +261,15 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	}
 
 	const initContractWhitelist = async () => {
-		if(currentPhaseWhitelist?.contractAddress && signer) {
-			_launchpadContractWhitelist.current =  getLaunchpadContract(currentPhaseWhitelist.contractAddress, signer ?? undefined, chainId)
-			const _configInfo: ITierInfo = await _launchpadContractWhitelist.current.read.getConfigInfo()
-			setConfigWhitelistInfo(_configInfo)
-			getUserCommitted(_launchpadContractWhitelist.current)
+		try {
+			if(currentPhaseWhitelist?.contractAddress && signer) {
+				_launchpadContractWhitelist.current =  getLaunchpadContract(currentPhaseWhitelist.contractAddress, signer ?? undefined, chainId)
+				const _configInfo: ITierInfo = await _launchpadContractWhitelist.current.read.getConfigInfo()
+				setConfigWhitelistInfo(_configInfo)
+				getUserCommitted(_launchpadContractWhitelist.current)
+			}
+		}catch(ex){
+			//
 		}
 	}
 
@@ -403,7 +417,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		if(info?.phases.length > 0 && account) {
 			checkSchedule()
 		}
-		if(info?.contractAddress) {
+		if(info?.contractAddress?.length > 0) {
 			launchpadManagerContract.current = getLaunchpadManagerContract(info.contractAddress, signer ?? undefined, chainId )
 			if(launchpadManagerContract.current.account) {
 				getTotalUserCommitted()
@@ -547,10 +561,10 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 								<Box mb={["20px", "20px", "24px"]}>
 									<Flex mb="12px">
 										<Text color="textSubtle" fontSize="16px" fontWeight="600" mr="10px">{t('Your Tier')}</Text>
-										{/* <TooltipText ref={tierTooltip.targetRef} decorationColor="secondary">
+										<TooltipText ref={tierTooltip.targetRef} decorationColor="secondary">
 											<Image style={{ margin: 'unset', width: '12px', height: '12px' }} src="/images/launchpad/icon-exclamation.svg" />
-										</TooltipText> */}
-										{/* {tierTooltip.tooltipVisible && tierTooltip.tooltip} */}
+										</TooltipText>
+										{tierTooltip.tooltipVisible && tierTooltip.tooltip}
 									</Flex>
 									<Flex alignItems="flex-end" mb="12px">
 										<IconTier src="/images/launchpad/icon-tier-1.svg" />
@@ -586,7 +600,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 								) : (
 									<ConnectWalletButton/>
 								)}
-								{userCommitInfo?.isWhiteList && (
+								{userCommitInfo?.isWhiteList && account && (
 									<Flex alignItems="center">
 										<Image style={{ margin: 'unset', width: '24px', height: '24px' }} src="/images/launchpad/icon-success.svg" />
 										<Text color="success" maxWidth="290px" fontSize="14px" fontWeight="600" lineHeight="20px" ml="12px">{t(`Congratulation! You have applied whitelist.`)}</Text>
@@ -644,63 +658,66 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 									</StyledTextItalic>
 								)}
               </Box>
-              <Box my={["20px", "20px", "24px"]}>
-                <Text color="textSubtle" fontSize="16px" fontWeight="600" mb="8px">{t('U2U Commit')}</Text>
-                <Flex alignItems="center">
-                  <StyledInput
-										value={isFocusInput ? amountCommit : amountCommit && formatNumber(Number(amountCommit), 0, 6)}
-										onFocus={() => {setIsFocusInput(true)}}
-										onBlur={() => {setIsFocusInput(false)}}
-										onUserInput={handleInputAmount}
-                    placeholder="Enter amount U2U commit"
-                  />
-                  <StyledButton
-                    className="button-hover"
-                    px="16px"
-										disabled={disableCommitU2U || isCommitting}
-										onClick={handleCommitU2U}
-                  >
-									{isCommitting ?
-										<Dots>Commit U2U</Dots> : 
-											'Commit U2U'
-									}
-                  </StyledButton>
-                </Flex>
-								{configInfo?.maxCommitAmount && (
-                	<Text color="textSubtle" fontSize="12px" fontStyle="italic" lineHeight="16px" mt="8px">{t('Maximum %maxCommitAmount% U2U', { maxCommitAmount: configInfo?.maxCommitAmount })}</Text>
-								)}
-								{Date.now() > info?.saleEnd && (
-									<>
-									{
-										BigNumber(totalCommit).gt(info.softCap) ? (
-											<Flex alignItems="center">
-												<Image style={{ margin: 'unset', width: '24px', height: '24px' }} src="/images/launchpad/icon-card-success.svg" />
-												<Box ml="16px">
-													<Text color='success' fontSize="16px" fontWeight="600" lineHeight="20px" textTransform="uppercase">{t('IDO Successfully')}</Text>
-													<StyledContent lineHeight="20px" mt="4px">{t('The project has been IDO successfully, your committed U2U has been swapped to TOKENX. Claim to your wallet.')}</StyledContent>
-												</Box>
-											</Flex>
-										) : (
-											<Flex alignItems="center">
-												<Image style={{ margin: 'unset', width: '24px', height: '24px' }} src="/images/launchpad/icon-card-failed.svg" />
-												<Box ml="16px">
-													<Text color='failure' fontSize="16px" fontWeight="600" lineHeight="20px" textTransform="uppercase">{t('IDO Failed')}</Text>
-													<StyledContent lineHeight="20px" mt="4px">{t('Unfortunately, the IDO project failed. The total raised value does not reach the softcap minimum.')}</StyledContent>
-												</Box>
-											</Flex>
-										)
-									}
-									</>
-								)} 
-          
-                <StyledTextItalic mt="12px">
-                  Please click the 
-                  <Text fontSize="12px" fontStyle="italic" mx="4px" textTransform="uppercase" style={{ display: 'inline', color: theme.colors.primary, fontWeight: '300'}}>
-                    {t('Claim')}
-                  </Text>
-                  button above to get your {info?.tokenName}
-                </StyledTextItalic>
-              </Box>
+							{Date.now() < info?.saleEnd  && (
+								<Box my={["20px", "20px", "24px"]}>
+									<Text color="textSubtle" fontSize="16px" fontWeight="600" mb="8px">{t('U2U Commit')}</Text>
+									<Flex alignItems="center">
+										<StyledInput
+											value={isFocusInput ? amountCommit : amountCommit && formatNumber(Number(amountCommit), 0, 6)}
+											onFocus={() => {setIsFocusInput(true)}}
+											onBlur={() => {setIsFocusInput(false)}}
+											onUserInput={handleInputAmount}
+											placeholder="Enter amount U2U commit"
+										/>
+										<StyledButton
+											className="button-hover"
+											px="16px"
+											disabled={disableCommitU2U || isCommitting}
+											onClick={handleCommitU2U}
+										>
+										{isCommitting ?
+											<Dots>Commit U2U</Dots> : 
+												'Commit U2U'
+										}
+										</StyledButton>
+									</Flex>
+									{configInfo?.maxCommitAmount && (
+										<Text color="textSubtle" fontSize="12px" fontStyle="italic" lineHeight="16px" mt="8px">{t('Maximum %maxCommitAmount% U2U', { maxCommitAmount: configInfo?.maxCommitAmount })}</Text>
+									)}
+									{Date.now() > info?.saleEnd && (
+										<>
+										{
+											BigNumber(totalCommit).gt(info.softCap) ? (
+												<Flex alignItems="center">
+													<Image style={{ margin: 'unset', width: '24px', height: '24px' }} src="/images/launchpad/icon-card-success.svg" />
+													<Box ml="16px">
+														<Text color='success' fontSize="16px" fontWeight="600" lineHeight="20px" textTransform="uppercase">{t('IDO Successfully')}</Text>
+														<StyledContent lineHeight="20px" mt="4px">{t('The project has been IDO successfully, your committed U2U has been swapped to TOKENX. Claim to your wallet.')}</StyledContent>
+													</Box>
+												</Flex>
+											) : (
+												<Flex alignItems="center">
+													<Image style={{ margin: 'unset', width: '24px', height: '24px' }} src="/images/launchpad/icon-card-failed.svg" />
+													<Box ml="16px">
+														<Text color='failure' fontSize="16px" fontWeight="600" lineHeight="20px" textTransform="uppercase">{t('IDO Failed')}</Text>
+														<StyledContent lineHeight="20px" mt="4px">{t('Unfortunately, the IDO project failed. The total raised value does not reach the softcap minimum.')}</StyledContent>
+													</Box>
+												</Flex>
+											)
+										}
+										</>
+									)} 
+						
+									<StyledTextItalic mt="12px">
+										Please click the 
+										<Text onClick={openCommittedModal} fontSize="12px" fontStyle="italic" mx="4px" textTransform="uppercase" style={{ display: 'inline', color: theme.colors.primary, fontWeight: '300', cursor: 'pointer'}}>
+											{t('Claim')}
+										</Text>
+										button above to get your {info?.tokenName}
+									</StyledTextItalic>
+								</Box>
+							)}
+         
               <Box>
 								{!account && (
 									<StyledContent>

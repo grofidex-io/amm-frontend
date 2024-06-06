@@ -7,7 +7,7 @@ export const useFetchTransactionHistory = (_user: Address, _launchpadManager: Ad
     queryKey: ['fetchTransactionHistory', _user, _launchpadManager, page],
 		queryFn: async () => {
 			const res = await fetchListHistory(_user, _launchpadManager, page)
-			return res.data
+			return res.data || []
 		},
 		enabled: Boolean(_user) && Boolean(_launchpadManager),
 		retry: 3,

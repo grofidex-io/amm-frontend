@@ -351,9 +351,15 @@ const LaunchpadDetailPage = () => {
 	const { chainId } = useActiveChainId()
 	const { data: signer } = useWalletClient()
 	const getTotalCommit = async () => {
-		const _totalCommit: any = await launchpadManagerContract.current.read.totalCommit()
-		const _total = BigNumber(formatEther(_totalCommit)).toNumber()
-		setTotalCommit(_total)
+		try {
+			if(launchpadManagerContract.current?.account) {
+				const _totalCommit: any = await launchpadManagerContract.current.read.totalCommit()
+				const _total = BigNumber(formatEther(_totalCommit)).toNumber()
+				setTotalCommit(_total)
+			}
+		}catch(ex) {
+			console.error(ex)
+		}
 	}
 
 
@@ -449,7 +455,7 @@ const LaunchpadDetailPage = () => {
 		return false
 	}
 
-	const isCountdownEnd = detail?.saleEnd > Date.now()
+	const isCountdownEnd = detail?.saleEnd && detail?.saleEnd > Date.now()
 
 
   return (
@@ -500,7 +506,7 @@ const LaunchpadDetailPage = () => {
             flexDirection="column"
           >
             <Text color="textSubtle" textAlign="center" fontSize="14px" fontWeight="600" lineHeight="17px" mb={["6px", "6px", "8px", "8px", "10px", "10px", "12px"]}>{isCountdownEnd ? t('Sale end in') : t('Sale start in')}</Text>
-						{showCountdown && <CountdownTime type={COUNTDOWN_TYPE.ARRAY} time={isCountdownEnd ? detail?.saleEnd : detail?.saleStart}/>}
+						{showCountdown ? <CountdownTime type={COUNTDOWN_TYPE.ARRAY} time={isCountdownEnd ? detail?.saleEnd : detail?.saleStart}/> : 	<Text color="primary" fontSize="24px" fontWeight="600" lineHeight="30px">To be announcement</Text>}
    
           </Flex>
         </Flex>
@@ -548,23 +554,23 @@ const LaunchpadDetailPage = () => {
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Snapshot time')}</StyledListTitle>
-              <StyledListText>{detail?.snapshotTime && formatDate(dayjs.unix(Math.floor(detail.snapshotTime/ 1000)).utc())}</StyledListText>
+              <StyledListText>{detail?.snapshotTime && formatDate(dayjs.unix(Math.floor(detail.snapshotTime/ 1000)).utc())} UTC</StyledListText>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Start Apply Whitelist')}</StyledListTitle>
-              <StyledListText>{timeWhiteList?.startTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.startTime/ 1000)).utc())}</StyledListText>
+              <StyledListText>{timeWhiteList?.startTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.startTime/ 1000)).utc())} UTC</StyledListText>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('End Apply Whitelist')}</StyledListTitle>
-              <StyledListText>{timeWhiteList?.endTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.endTime/ 1000)).utc())}</StyledListText>
+              <StyledListText>{timeWhiteList?.endTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.endTime/ 1000)).utc())} UTC</StyledListText>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Sale Start')}</StyledListTitle>
-              <StyledListText>{detail?.saleStart && formatDate(dayjs.unix(Math.floor(detail.saleStart/ 1000)).utc())}</StyledListText>
+              <StyledListText>{detail?.saleStart && formatDate(dayjs.unix(Math.floor(detail.saleStart/ 1000)).utc())} UTC</StyledListText>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Sale End')}</StyledListTitle>
-              <StyledListText>{detail?.saleEnd && formatDate(dayjs.unix(Math.floor(detail.saleEnd/ 1000)).utc())}</StyledListText>
+              <StyledListText>{detail?.saleEnd && formatDate(dayjs.unix(Math.floor(detail.saleEnd/ 1000)).utc())} UTC</StyledListText>
             </Flex>
           </StyledNeubrutal>
           <Box style={{ flex: "2" }} ml={["0", "0", "0", "0", "16px"]} mt={["16px", "16px", "16px", "16px", "0"]}>

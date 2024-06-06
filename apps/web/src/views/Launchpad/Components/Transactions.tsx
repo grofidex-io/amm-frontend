@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ArrowBackIcon, ArrowForwardIcon, AutoColumn, Box, Flex, ScanLink, Text } from '@pancakeswap/uikit'
+import { ArrowBackIcon, ArrowForwardIcon, AutoColumn, Box, Flex, ScanLink, Skeleton, Text } from '@pancakeswap/uikit'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import dayjs from 'dayjs'
 import React, { useState } from 'react'
@@ -48,11 +48,37 @@ const StyledScanLink = styled(ScanLink)`
     }
   }
 `
+const TableLoader: React.FC<React.PropsWithChildren> = () => {
+  const loadingRow = (
+    <ResponsiveGrid>
+      <Skeleton />
+      <Skeleton />
+      <Skeleton />
+      <Skeleton />
+    </ResponsiveGrid>
+  )
+	return (
+    <>
+      {loadingRow}
+      {loadingRow}
+      {loadingRow}
+      {loadingRow}
+      {loadingRow}
+      {loadingRow}
+      {loadingRow}
+      {loadingRow}
+      {loadingRow}
+      {loadingRow}
+    </>
+  )
+}
+
 export default function Transactions({info, account}) {
   const { t } = useTranslation()
   const [page, setPage] = useState(1)
-	const {data} = useFetchTransactionHistory(account, info?.contractAddress, page)
-  const disableNext = data ? data?.length === 0 || data?.length < 10 : false
+	const {data, isLoading} = useFetchTransactionHistory(account, info?.contractAddress, page)
+	const listData = data || []
+  const disableNext = listData ? listData?.length === 0 || listData?.length < 10 : false
   return (
     <Box mt="30px">
       <Wrapper>
@@ -74,23 +100,31 @@ export default function Transactions({info, account}) {
             </ResponsiveGrid>
             <AutoColumn gap="16px">
               <Break/>
-              {data?.map(item => (
-								<React.Fragment key={item.hash}>
-                  <ResponsiveGrid >
-                    <Flex>
-                      <StyledScanLink href='/'>
-                        <Text color='primary'>
-                          {item.hash && truncateHash(item.hash, 20, 8)}
-                        </Text>
-                      </StyledScanLink>
-                    </Flex>
-                    <Text color="text" textAlign="center">{item.transactionType}</Text>
-                    <Text color="text" textAlign="center">{item.transactionType === 'CLAIM' ? `${formatEther(item.tokenAmount)} ${info?.tokenName}` : `${formatEther(item.u2uAmount)} U2U` }</Text>
-                    <Text color="text" textAlign="right">{formatDate(dayjs.unix(Math.floor(item.processTime)).utc())}</Text>
-                  </ResponsiveGrid>
-        				<Break/>
-								</React.Fragment>
-              ))}
+							{isLoading ? <TableLoader/> : <>
+								{listData?.map(item => (
+									<React.Fragment key={item.hash}>
+										<ResponsiveGrid >
+											<Flex>
+												<StyledScanLink href='/'>
+													<Text color='primary'>
+														{item.hash && truncateHash(item.hash, 20, 8)}
+													</Text>
+												</StyledScanLink>
+											</Flex>
+											<Text color="text" textAlign="center">{item.transactionType}</Text>
+											<Text color="text" textAlign="center">{item.transactionType === 'CLAIM' ? `${formatEther(item.tokenAmount)} ${info?.tokenName}` : `${formatEther(item.u2uAmount)} U2U` }</Text>
+											<Text color="text" textAlign="right">{formatDate(dayjs.unix(Math.floor(item.processTime)).utc())}</Text>
+										</ResponsiveGrid>
+									<Break/>
+									</React.Fragment>
+								))}
+							{listData?.length === 0 && (
+								<Flex my="16px" flexDirection="column" alignItems="center" justifyContent="center">
+									<img src='/images/no-data.svg' alt='' />
+									<Text color='textSubtle'>{t('No Transaction')}</Text>
+								</Flex>
+							)}
+							</>}
             </AutoColumn>
           </LayoutScroll>
 					<PageButtons>
@@ -106,7 +140,7 @@ export default function Transactions({info, account}) {
 					<Arrow
 						onClick={() => {
 							if(!disableNext) {
-								setPage(data?.length === 0 ? page : page + 1)
+								setPage(listData?.length === 0 ? page : page + 1)
 							}
 						}}
 					>
