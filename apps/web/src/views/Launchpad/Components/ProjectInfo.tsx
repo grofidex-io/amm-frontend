@@ -180,13 +180,17 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	}
 
 
-  const tierTooltip = useTooltip(
+  const tierTooltip =useTooltip(
     <>
       <Text fontFamily="'Metuo', sans-serif" fontSize="12px" lineHeight="18px" mb="4px">{t('The tier depends on the number of U2Us staked in the GrofiDex staking system.')}</Text>
-      <StyledContentDot fontSize="12px" lineHeight="20px">{t('Tier 1: Minimum U2U stake amount is 5000 U2U')}</StyledContentDot>
-      <StyledContentDot fontSize="12px" lineHeight="20px">{t('Tier 2: Minimum U2U stake amount is 2000 U2U')}</StyledContentDot>
-      <StyledContentDot fontSize="12px" lineHeight="20px">{t('Tier 3: Minimum U2U stake amount is 1000 U2U')}</StyledContentDot>
-      <StyledContentDot fontSize="12px" lineHeight="20px">{t('Starter: No stake or U2U stake amount less than 1000 U2U')}</StyledContentDot>
+			{info?.phases.map((item: IPhase) => {
+				if(item.type === PHASES_TYPE.TIER) {
+					return (
+						<StyledContentDot fontSize="12px" lineHeight="20px">{`${item.name}: Minimum U2U stake amount is ${item.minStake || '--'} U2U`}</StyledContentDot>
+					)
+				}
+			})}
+      {/* <StyledContentDot fontSize="12px" lineHeight="20px">{t('Starter: No stake or U2U stake amount less than 1000 U2U')}</StyledContentDot>  */}
     </>, {
       placement: 'right'
     }
@@ -203,8 +207,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 
 	const isWhitelistTime = () => {
 		const _now = Date.now()
-
-		if(timeWhiteList?.startTime > _now && _now < timeWhiteList?.endTime) {
+		if(timeWhiteList?.startTime < _now && _now < timeWhiteList?.endTime) {
 			return true
 		}
 		return false
@@ -280,12 +283,16 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		}
 	}
 
-	const checkTier = async (_contract: any, phases: IPhase) => {
-		const status = await _contract.read.checkTier([account])
-		if(status) {
-			refSchedule.current.push(phases)
-		}
-	}
+	// const checkTier = async (_contract: any, phases: IPhase) => {
+	// 	try {
+	// 		const status = await _contract.read.checkTier()
+	// 		if(status) {
+	// 			refSchedule.current.push(phases)
+	// 		}
+	// 	}catch(ex) {
+	// 		//
+	// 	}
+	// }
 
 	const checkWhiteList = async (_contract: any, phases: IPhase) => {
 		const _userWhiteList: any = await _contract.read.userCommit([account])
@@ -300,13 +307,13 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		const _now = Date.now()
 		forEach(info.phases, (item: IPhase) => {
 			const _contract = getLaunchpadContract(item.contractAddress, signer ?? undefined, chainId)
-			if(item.type === PHASES_TYPE.TIER && item.contractAddress === currentTier && item.startTime > _now) {
-				checkTier(_contract, item)
+			if(item.type === PHASES_TYPE.TIER && item.contractAddress.toLowerCase() === currentTier?.toLowerCase() && item.startTime > _now) {
+				_schedule.push(item)
 			}
 			if(item.type === PHASES_TYPE.WHITELIST && item.startTime > _now) {
 				checkWhiteList(_contract, item)
 			}
-			if(item.type !== PHASES_TYPE.TIER && item.type !== PHASES_TYPE.WHITELIST && item.startTime > _now) {
+			if(item.type === PHASES_TYPE.COMMUNITY) {
 				_schedule.push(item)
 			}
 		})
@@ -370,17 +377,19 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 			let _nextPhase: any = null
 			let _currentPhase: any = null
 			forEach(info.phases, (item: IPhase) => {
-				if(item?.type === PHASES_TYPE.WHITELIST) {
-					setCurrentPhaseWhitelist(item)
+				if(item.type !== PHASES_TYPE.NONE) {
+					if(item?.type === PHASES_TYPE.WHITELIST) {
+						setCurrentPhaseWhitelist(item)
 
-				}
-				if(item.startTime <= _now && _now <= item.endTime) {
-					_currentPhase = item
-					setCurrentPhase(item)
-					setCurrentPhaseOrNext(item)
-				}
-				if(!_nextPhase && _now < item.startTime) {
-					_nextPhase = item
+					}
+					if(item.startTime <= _now && _now <= item.endTime) {
+						_currentPhase = item
+						setCurrentPhase(item)
+						setCurrentPhaseOrNext(item)
+					}
+					if(!_nextPhase && _now < item.startTime) {
+						_nextPhase = item
+					}
 				}
 			})
 
@@ -414,7 +423,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 
 
 	useEffect(() => {
-		if(info?.phases.length > 0 && account) {
+		if(info?.phases.length > 0 && account && currentTier) {
 			checkSchedule()
 		}
 		if(info?.contractAddress?.length > 0) {
@@ -426,7 +435,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		}
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [info, signer, account])
+	}, [info, signer, account, currentTier])
 
 	const handleCommitU2U = async () => {
 		if(!disableCommitU2U && BigNumber(amountCommit).gt(0) && configInfo?.maxCommitAmount && BigNumber(configInfo?.maxCommitAmount).gt(BigNumber(amountCommit))) {
@@ -557,7 +566,6 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
           <StyledNeubrutal style={{ flex: '1' }} height="100%" mx="auto" width="100%" minWidth={["100%", "100%", "360px"]} maxWidth="460px" ml={["auto", "auto", "auto", "auto", "16px"]} mb={["16px", "16px", "16px", "16px", "0"]}>
             <Box p={["20px 16px", "20px 16px", "24px 20px"]}>
               <StyledTitle mb={["20px", "20px", "26px", "26px", "32px"]}>{t('Buy IDO %name%', { name: info?.tokenName })}</StyledTitle>
-              { userConfigInfo && (
 								<Box mb={["20px", "20px", "24px"]}>
 									<Flex mb="12px">
 										<Text color="textSubtle" fontSize="16px" fontWeight="600" mr="10px">{t('Your Tier')}</Text>
@@ -567,22 +575,21 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 										{tierTooltip.tooltipVisible && tierTooltip.tooltip}
 									</Flex>
 									<Flex alignItems="flex-end" mb="12px">
-										<IconTier src="/images/launchpad/icon-tier-1.svg" />
-										<StyledText ml="12px" style={{ fontSize: '20px', lineHeight: '24px' }}>{userConfigInfo?.name}</StyledText>
+										<IconTier src={account ? '/images/launchpad/icon-tier-1.svg' : '/images/launchpad/icon-tier-starter.svg'} />
+										<StyledText ml="12px" style={{ fontSize: '20px', lineHeight: '24px' }}>{userConfigInfo?.name || 'Starter'}</StyledText>
 									</Flex>
 									<Box>
-										<StyledTextItalic>{t(`Estimate maximum %maxBuyPerUser% U2U to buy IDO in round buy %tier%.`, { maxBuyPerUser: userConfigInfo?.maxBuyPerUser, tier: userConfigInfo?.name })}</StyledTextItalic>
-										<StyledTextItalic>{t('The snapshot will be ended at ')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc())}</span></StyledTextItalic>
+										{userConfigInfo &&<StyledTextItalic>{t(`Estimate maximum %maxBuyPerUser% U2U to buy IDO in round buy %tier%.`, { maxBuyPerUser: userConfigInfo?.maxBuyPerUser, tier: userConfigInfo?.name })}</StyledTextItalic>}
+										<StyledTextItalic>{t('The snapshot will be ended at ')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>
 										<StyledTextItalic>
 											{t('Staking more to upgrade your tier. ')}
 											<Link fontSize="12px" fontStyle="italic" style={{ display: 'inline', fontWeight: '300', textDecoration: 'underline' }} href="/staking">
 												{t('Staking Now')}
 											</Link>
 										</StyledTextItalic>
-										<StyledTextItalic>{t('Maximum %maxBuyPerUser% U2U to buy IDO in round buy %tier%. The snapshot process has ended at 2024/05/03 14:22:22 UTC.', {maxBuyPerUser: userConfigInfo?.maxBuyPerUser, tier: userConfigInfo?.name })}</StyledTextItalic>
+										{/* {userConfigInfo && <StyledTextItalic>{t('Maximum %maxBuyPerUser% U2U to buy IDO in round buy %tier%. The snapshot process has ended at 2024/05/03 14:22:22 UTC.', {maxBuyPerUser: userConfigInfo?.maxBuyPerUser, tier: userConfigInfo?.name })}</StyledTextItalic>} */}
 									</Box>
 								</Box>
-							)} 
              <Box mb={["20px", "20px", "24px"]}>
 							{isWhitelistTime() ? (
 								<>
@@ -593,7 +600,8 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 									</TooltipText>
 									{applyTooltip.tooltipVisible && applyTooltip.tooltip}
 								</Flex>
-								{account ? !userCommitInfo?.isWhiteList && configWhitelistInfo && configWhitelistInfo?.endAddWhiteList > Date.now()  && (
+								{/* && configWhitelistInfo && configWhitelistInfo?.endAddWhiteList > Date.now() */}
+								{account ? !userCommitInfo?.isWhiteList && (
 									<StyledButton className="button-hover" onClick={handleWhitelist}>
 										{t('Apply Now')}
 									</StyledButton>
@@ -669,17 +677,20 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 											onUserInput={handleInputAmount}
 											placeholder="Enter amount U2U commit"
 										/>
-										<StyledButton
-											className="button-hover"
-											px="16px"
-											disabled={disableCommitU2U || isCommitting}
-											onClick={handleCommitU2U}
-										>
-										{isCommitting ?
-											<Dots>Commit U2U</Dots> : 
-												'Commit U2U'
-										}
-										</StyledButton>
+										{!account ? <ConnectWalletButton/> : 				
+											<StyledButton
+												className="button-hover"
+												px="16px"
+												disabled={disableCommitU2U || isCommitting}
+												onClick={handleCommitU2U}
+											>
+											{isCommitting ?
+												<Dots>Commit U2U</Dots> : 
+													'Commit U2U'
+											}
+											</StyledButton>
+										} 
+						
 									</Flex>
 									{configInfo?.maxCommitAmount && (
 										<Text color="textSubtle" fontSize="12px" fontStyle="italic" lineHeight="16px" mt="8px">{t('Maximum %maxCommitAmount% U2U', { maxCommitAmount: configInfo?.maxCommitAmount })}</Text>
