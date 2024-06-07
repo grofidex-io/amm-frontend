@@ -54,6 +54,9 @@ export const LoansText = styled.p`
     font-size: 18px;
     max-width: 440px;
   }
+  ${({ theme }) => theme.mediaQueries.xxxl} {
+    font-size: 20px;
+  }
 `
 const Image = styled.img`
   --size: 100%;
@@ -69,6 +72,11 @@ const Image = styled.img`
   ${({ theme }) => theme.mediaQueries.xxl} {
     --size: 493px;
     margin-bottom: -50px;
+    margin-right: 30px;
+
+  }
+  ${({ theme }) => theme.mediaQueries.xxxl} {
+    margin-right: 50px;
   }
 `
 const StyledBoxTab = styled(Box)`

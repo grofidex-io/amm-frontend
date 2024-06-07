@@ -50,6 +50,22 @@ const StyledScanLink = styled(ScanLink)`
     }
   }
 `
+const StyledTitle = styled(Text)`
+  font-size: 13px;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.textSubtle};
+  text-transform: uppercase;
+  @media screen and (max-width: 1559px) {
+    font-size: 12px;
+  }
+`
+const StyledText = styled(Text)`
+  font-size: 15px;
+  font-weight: 500;
+  @media screen and (max-width: 1559px) {
+    font-size: 14px;
+  }
+`
 const TableLoader: React.FC<React.PropsWithChildren> = () => {
   const loadingRow = (
     <ResponsiveGrid>
@@ -88,18 +104,18 @@ export default function Transactions({info, account}) {
         <TableWrapper>
           <LayoutScroll>
             <ResponsiveGrid>
-              <Text color="textSubtle">
+              <StyledTitle color="textSubtle">
                 {t('HASH')}
-              </Text>
-              <Text color="textSubtle" textAlign="center">
+              </StyledTitle>
+              <StyledTitle color="textSubtle" textAlign="center">
                 {t('TYPE')}
-              </Text>
-              <Text color="textSubtle" textAlign="center">
+              </StyledTitle>
+              <StyledTitle color="textSubtle" textAlign="center">
                 {t('TOKEN')}
-              </Text>
-              <Text color="textSubtle" textAlign="right">
+              </StyledTitle>
+              <StyledTitle color="textSubtle" textAlign="right">
                 {t('TIME')}
-              </Text>
+              </StyledTitle>
             </ResponsiveGrid>
             <AutoColumn gap="16px">
               <Break/>
@@ -109,14 +125,14 @@ export default function Transactions({info, account}) {
 										<ResponsiveGrid >
 											<Flex>
 												<StyledScanLink href={getBlockExploreLink(item.hash, 'transaction', chainId)}>
-													<Text color='primary'>
+													<StyledText color='primary'>
 														{item.hash && truncateHash(item.hash, 20, 8)}
-													</Text>
+													</StyledText>
 												</StyledScanLink>
 											</Flex>
-											<Text color="text" textAlign="center">{item.transactionType}</Text>
-											<Text color="text" textAlign="center">{item.transactionType === 'CLAIM' ? `${formatEther(item.tokenAmount)} ${info?.tokenName}` : `${formatEther(item.u2uAmount)} U2U` }</Text>
-											<Text color="text" textAlign="right">{formatDate(dayjs.unix(Math.floor(item.processTime)).utc())}</Text>
+											<StyledText color="text" textAlign="center">{item.transactionType}</StyledText>
+											<StyledText color="text" textAlign="center">{item.transactionType === 'CLAIM' ? `${formatEther(item.tokenAmount)} ${info?.tokenName}` : `${formatEther(item.u2uAmount)} U2U` }</StyledText>
+											<StyledText color="text" textAlign="right">{formatDate(dayjs.unix(Math.floor(item.processTime)).utc())}</StyledText>
 										</ResponsiveGrid>
 									<Break/>
 									</React.Fragment>
@@ -124,7 +140,7 @@ export default function Transactions({info, account}) {
 							{listData?.length === 0 && (
 								<Flex my="16px" flexDirection="column" alignItems="center" justifyContent="center">
 									<img src='/images/no-data.svg' alt='' />
-									<Text color='textSubtle'>{t('No Transaction')}</Text>
+									<StyledText color='textSubtle' mt="12px">{t('No Transaction')}</StyledText>
 								</Flex>
 							)}
 							</>}
@@ -139,7 +155,7 @@ export default function Transactions({info, account}) {
 						<ArrowBackIcon color={page === 1 ? 'textDisabled' : 'primary'} />
 					</Arrow>
 
-					<Text>Page {page}</Text>
+					<StyledText>Page {page}</StyledText>
 					<Arrow
 						onClick={() => {
 							if(!disableNext) {

@@ -210,6 +210,9 @@ const FarmText = styled.p`
   ${({ theme }) => theme.mediaQueries.lg} {
     font-size: 18px;
   }
+  ${({ theme }) => theme.mediaQueries.xxxl} {
+    font-size: 20px;
+  }
 `
 
 const NUMBER_OF_FARMS_VISIBLE = 12

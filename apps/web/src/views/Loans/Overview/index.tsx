@@ -61,6 +61,9 @@ export const LoansText = styled.p`
     font-size: 18px;
     max-width: 100%;
   }
+  ${({ theme }) => theme.mediaQueries.xxxl} {
+    font-size: 20px;
+  }
 `
 const StyledDate = styled.p`
   cursor: pointer;
@@ -78,6 +81,12 @@ const Image = styled.img`
   --size: 384px;
   width: var(--size);
   height: calc(var(--size) * 320 / 384);
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    margin-right: 40px;
+  }
+  ${({ theme }) => theme.mediaQueries.xxxl} {
+    margin-right: 60px;
+  }
   @media screen and (max-width: 991px) {
     display: none;
   }

@@ -39,9 +39,10 @@ const responsiveProperties = defineProperties({
     lg: { "@media": `(min-width: ${breakpoints.lg}px)` },
     xl: { "@media": `(min-width: ${breakpoints.xl}px)` },
     xxl: { "@media": `(min-width: ${breakpoints.xxl}px)` },
+    xxxl: { "@media": `(min-width: ${breakpoints.xxxl}px)` },
   },
   defaultCondition: "xs",
-  responsiveArray: ["xs", "sm", "md", "lg", "xl", "xxl"],
+  responsiveArray: ["xs", "sm", "md", "lg", "xl", "xxl", "xxxl"],
   properties: {
     display: ["block", "flex", "grid", "inline", "inline-flex", "inline-block", "none"],
     flexDirection: ["column", "row", "column-reverse"],
