@@ -224,7 +224,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 
 	const getConfig = async () => {
 		const _configInfo: ITierInfo = await _launchpadContract.current.read.getConfigInfo()
-		setConfigInfo({..._configInfo, maxCommitAmount: BigNumber(formatEther(_configInfo.maxCommitAmount)).toNumber(), maxBuyPerUser: formatEther(_configInfo.maxBuyPerUser), startCancel: BigNumber(_configInfo.startCancel).toNumber(), endCancel: BigNumber(_configInfo.endCancel).toNumber()})
+		setConfigInfo({..._configInfo, maxCommitAmount: BigNumber(formatEther(_configInfo.maxCommitAmount)).toNumber(), maxBuyPerUser: formatEther(_configInfo.maxBuyPerUser), startCancel: BigNumber(_configInfo.startCancel).toNumber() * 1000, endCancel: BigNumber(_configInfo.endCancel).toNumber() * 1000})
 	}
 
 	const getTokenRate = async () => {
@@ -240,7 +240,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		const _contract = getLaunchpadContract(currentTier, signer ?? undefined, chainId)
 		const _configInfo: any = await _contract.read.getConfigInfo()
 		const _phaseByContract = keyBy(info?.phases, (o) => o.contractAddress.toLowerCase() )
-		setUserConfigInfo({..._configInfo, maxCommitAmount: BigNumber(formatEther(_configInfo.maxCommitAmount)).toNumber(), maxBuyPerUser: formatEther(_configInfo.maxBuyPerUser), name: _phaseByContract[currentTier.toLowerCase()]?.name})
+		setUserConfigInfo({..._configInfo, maxCommitAmount: BigNumber(formatEther(_configInfo.maxCommitAmount)).toNumber(), maxBuyPerUser: formatEther(_configInfo.maxBuyPerUser), name: _phaseByContract[currentTier.toLowerCase()]?.name, start: BigNumber(_configInfo.start).toNumber() * 1000, end: BigNumber(_configInfo.start).toNumber() * 1000})
 	}
 
 	const getUserCommitted = async (_contract?: any) => {
@@ -333,7 +333,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 			getTotalUserCommitted={getTotalUserCommitted}
 			listPhase={keyBy(info?.phases, (o) => o.contractAddress.toLowerCase())}
 			rate={rate}
-			isSortCap={BigNumber(totalCommit).gt(info?.softCap) }
+			isSortCap={BigNumber(totalCommit).lt(info?.softCap) && Date.now() > info.saleEnd  }
 		/>
 	)
 	
@@ -377,7 +377,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 			let _nextPhase: any = null
 			let _currentPhase: any = null
 			forEach(info.phases, (item: IPhase) => {
-				if(item.type !== PHASES_TYPE.NONE) {
+				if(item.type !== PHASES_TYPE.NONE && item.type !== PHASES_TYPE.APPLY_WHITELIST) {
 					if(item?.type === PHASES_TYPE.WHITELIST) {
 						setCurrentPhaseWhitelist(item)
 
@@ -462,20 +462,32 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		}
 	}
 	
-
 	let disableCommitU2U = false
+	const maxCommitAmountByTier = userConfigInfo && userCommitInfo && BigNumber(userConfigInfo.maxBuyPerUser).minus(BigNumber(userCommitInfo?.u2uCommitted)) || 0
 	if(configInfo?.typeRound === PHASES_TYPE.TIER) {
-		if(currentPhase?.contractAddress.toLowerCase() !== currentTier?.toLowerCase() || amountCommit?.length === 0 || BigNumber(amountCommit).lte(0) || BigNumber(amountCommit).gt(configInfo.maxCommitAmount)) {
+		if(currentPhase?.contractAddress.toLowerCase() !== currentTier?.toLowerCase() || amountCommit?.length === 0 || BigNumber(amountCommit).lte(0) || userConfigInfo && BigNumber(amountCommit).gt(maxCommitAmountByTier) || !(userConfigInfo && (userConfigInfo.start < Date.now() && userConfigInfo.end > Date.now())) ) {
 			disableCommitU2U = true
 		}
 	}
 
-	if(!configInfo?.start || (configInfo?.typeRound === PHASES_TYPE.WHITELIST && !userCommitInfo?.isWhiteList)) {
+	if(!userConfigInfo?.start || (userConfigInfo?.typeRound === PHASES_TYPE.WHITELIST && !userCommitInfo?.isWhiteList)) {
 		disableCommitU2U = true
 	}
 
+	
+
 	const scheduleOrder = refSchedule.current.sort((a: IPhase, b: IPhase) => (a.startTime - b.startTime) )
 
+	const diffCancelTime = () => {
+		if(configInfo) {
+			const diffTime = dayjs(configInfo?.endCancel).diff(dayjs(configInfo?.startCancel), 'hour')
+			if(diffTime < 0) {
+				return `in ${dayjs(configInfo?.endCancel).diff(dayjs(configInfo?.startCancel), 'second')} seconds`
+			}
+			return `in ${diffTime} hours`
+		}
+		return ''
+	}
 
   return (
     <>
@@ -659,7 +671,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
                 {/* <StyledTextItalic textAlign="right" mt="8px">Estimate 1.2345 U2U, 18,000.000 {info?.tokenName}</StyledTextItalic> */}
                 {configInfo?.startCancel && (
 									<StyledTextItalic mt="12px">
-										Note: You can cancel your request buy in 2 hours from {configInfo?.startCancel ? formatDate(dayjs.unix(configInfo.startCancel).utc()) : '--'} - {configInfo.endCancel ? formatDate(dayjs.unix(configInfo.endCancel).utc()) : '--'} UTC. <span style={{ color: theme.colors.hover }}>5% fee</span> when canceling IDO orders.&nbsp;
+										Note: You can cancel your request buy {diffCancelTime()} from {configInfo?.startCancel ? formatDate(dayjs.unix(configInfo.startCancel).utc()) : '--'} - {configInfo.endCancel ? formatDate(dayjs.unix(configInfo.endCancel).utc()) : '--'} UTC. <span style={{ color: theme.colors.hover }}>5% fee</span> when canceling IDO orders.&nbsp;
 										<StyledButtonText variant="text" onClick={openCommittedModal}  >
 											{t('Cancel buy IDO')}
 										</StyledButtonText>
@@ -692,8 +704,8 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 										} 
 						
 									</Flex>
-									{configInfo?.maxCommitAmount && (
-										<Text color="textSubtle" fontSize="12px" fontStyle="italic" lineHeight="16px" mt="8px">{t('Maximum %maxCommitAmount% U2U', { maxCommitAmount: configInfo?.maxCommitAmount })}</Text>
+									{userConfigInfo?.maxBuyPerUser && (
+										<Text color="textSubtle" fontSize="12px" fontStyle="italic" lineHeight="16px" mt="8px">{t('Maximum %maxCommitAmount% U2U', { maxCommitAmount: maxCommitAmountByTier.toString() })}</Text>
 									)}
 									{Date.now() > info?.saleEnd && (
 										<>

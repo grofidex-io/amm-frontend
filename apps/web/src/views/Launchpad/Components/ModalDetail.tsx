@@ -114,7 +114,9 @@ export default function ModalDetail({
 	const handleClaim = async () => {
 		const _contract = getLaunchpadManagerContract(launchpad, signer ?? undefined, chainId)
 		try {
-			const res = await fetchWithCatchTxError(() => isSortCap ? _contract.write.claimToken() : _contract.write.withdrawSoftCap())
+			console.log("🚀 ~ handleClaim ~ isSortCap:", isSortCap)
+
+			const res = await fetchWithCatchTxError(() => isSortCap ? _contract.write.withdrawSoftCap() : _contract.write.claimToken())
 			if(res?.status) {
 				refetch()
 				getGiveBack()
