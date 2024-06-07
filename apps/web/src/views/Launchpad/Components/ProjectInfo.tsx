@@ -189,6 +189,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 						<StyledContentDot fontSize="12px" lineHeight="20px">{`${item.name}: Minimum U2U stake amount is ${item.minStake || '--'} U2U`}</StyledContentDot>
 					)
 				}
+				return <></>
 			})}
       {/* <StyledContentDot fontSize="12px" lineHeight="20px">{t('Starter: No stake or U2U stake amount less than 1000 U2U')}</StyledContentDot>  */}
     </>, {
