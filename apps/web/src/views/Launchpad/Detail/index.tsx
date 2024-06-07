@@ -346,6 +346,7 @@ const LaunchpadDetailPage = () => {
   const theme = useTheme()
 	const refIntervalFetchTotalCommitted = useRef<any>()
 	const launchpadManagerContract = useRef<any>()
+	const currentPhase = useRef<string>()
   const [tab, setTab] = useState<number>(0)
   const { account } = useAccountActiveChain()
 	const [timeWhiteList, setTimeWhiteList] = useState<ITimeOfPhase>()
@@ -373,7 +374,11 @@ const LaunchpadDetailPage = () => {
 	const getTimeWhiteList = () => {
 		let _startTime = 0
 		let _endTime = 0
+		const _now = Date.now()
 		forEach(detail?.phases, (item: IPhase) => {
+			if(item.startTime < _now &&  _now < item.endTime && item.contractAddress.length > 0) {
+				currentPhase.current = item.contractAddress
+			}
 			if(item.type === PHASES_TYPE.APPLY_WHITELIST) {
 				if(_startTime === 0) {
 					_startTime = item.startTime
@@ -446,17 +451,16 @@ const LaunchpadDetailPage = () => {
 		}
 	}, [])
 
-	const isComplete = (_time: number) => {
+	const isComplete = (_item: IPhase) => {
 		const _now = Date.now()
-		if(_now > _time) {
+		if(_now > _item.startTime && _item.contractAddress !== currentPhase.current) {
 			return true
 		}
 		return false
 	}
-
 	const isInProgress = (_item: IPhase) => {
 		const _now = Date.now()
-		if(_now > _item.startTime && _now < _item.endTime) {
+		if(_now > _item.startTime && _now < _item.endTime && currentPhase.current === _item.contractAddress) {
 			return true
 		}
 		return false
@@ -464,6 +468,11 @@ const LaunchpadDetailPage = () => {
 
 	const isCountdownEnd = detail?.saleEnd && detail?.saleEnd > Date.now()
 
+	// useEffect(() => {
+	// 	if(detail?.phases) {
+	// 		forEach()
+	// 	}
+	// }, [detail])
 
   return (
     <>
@@ -633,12 +642,12 @@ const LaunchpadDetailPage = () => {
 						{detail?.phases.map((item, index) => (
 							<SwiperSlide className="swiper-launchpad" style={{ zIndex: detail?.phases.length - index }} key={item.name}>
 								<StyledBox>
-									<StyledContent style={{ background: `${isComplete(item.endTime) ? theme.colors.backgroundItem : isInProgress(item) ? theme.colors.primary : theme.colors.backgroundAlt}` }}>
-										<img style={{ filter: `${isComplete(item.endTime) && 'grayscale(1)'}` }} src={item.imageUrl || `/images/launchpad/icon-step-01.svg`} alt="" />
-										<Text style={{ color: `${isComplete(item.endTime) ? theme.colors.hover : isInProgress(item) ? theme.colors.black : theme.colors.primary}` }} fontSize="14px" fontWeight="600" lineHeight="17px" mt="8px">{item.name}</Text>
-										<Text style={{ color: `${isComplete(item.endTime) ? theme.colors.textSubtle : isInProgress(item) ? theme.colors.black : theme.colors.hover}` }} fontSize="11px" fontWeight="400" lineHeight="13px" mt="4px" minHeight={13}>{item.startTime ? formatDate(dayjs.unix(Math.floor(item.startTime/ 1000)).utc(), 'MMM D YYYY HH:mm:ss') : ''}</Text>
+									<StyledContent style={{ background: `${isComplete(item) ? theme.colors.backgroundItem : isInProgress(item) ? theme.colors.primary : theme.colors.backgroundAlt}` }}>
+										<img style={{ filter: `${isComplete(item) && 'grayscale(1)'}` }} src={item.imageUrl || `/images/launchpad/icon-step-01.svg`} alt="" />
+										<Text style={{ color: `${isComplete(item) ? theme.colors.hover : isInProgress(item) ? theme.colors.black : theme.colors.primary}` }} fontSize="14px" fontWeight="600" lineHeight="17px" mt="8px">{item.name}</Text>
+										<Text style={{ color: `${isComplete(item) ? theme.colors.textSubtle : isInProgress(item) ? theme.colors.black : theme.colors.hover}` }} fontSize="11px" fontWeight="400" lineHeight="13px" mt="4px" minHeight={13}>{item.startTime ? formatDate(dayjs.unix(Math.floor(item.startTime/ 1000)).utc(), 'MMM D YYYY HH:mm:ss') : ''}</Text>
 									</StyledContent>
-									<svg style={{ color: `${isComplete(item.endTime) ? theme.colors.backgroundItem : isInProgress(item) ? theme.colors.primary : theme.colors.backgroundAlt}` }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 132" fill="none">
+									<svg style={{ color: `${isComplete(item) ? theme.colors.backgroundItem : isInProgress(item) ? theme.colors.primary : theme.colors.backgroundAlt}` }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 132" fill="none">
 										<g mask="url(#mask0_3011_2807)">
 										<path d="M6.5 5L4.5 4.5L3.5 125L8 128.5L48 67L7.5 6L6.5 5Z" fill="black" stroke="black"/>
 										<g filter="url(#filter0_d_3011_2807)">
