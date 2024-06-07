@@ -146,7 +146,7 @@ query listCommitted($user: String!, $launchpad: String!)  {
 const HISTORY_TRANSACTION = `
 query listTransaction($user: String!, $launchpad: String!, $skip: Int)  {
 	transactionHistories(
-		where: {user: $user, launchpadAddress: $launchpad}, skip: $skip , first: 10
+		where: {user: $user, launchpadAddress: $launchpad}, skip: $skip , first: 10, orderBy: processTime, orderDirection: desc
 	) {
     processTime
 		hash

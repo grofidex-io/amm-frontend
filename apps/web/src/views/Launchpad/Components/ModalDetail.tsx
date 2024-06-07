@@ -90,14 +90,14 @@ export default function ModalDetail({
 		}
 	}
 
-
-
-
 	const handleCancel = async (item) => {
 		const _contract = getLaunchpadContract(item.roundAddress, signer ?? undefined, chainId)
 		try {
 			const res = await fetchWithCatchTxError(() => _contract.write.cancelCommit())
 			if(res?.status) {
+				refetch()
+				getGiveBack()
+				getTotalUserCommitted()
 				toastSuccess(
 					t('Success!'),
 					<ToastDescriptionWithTx txHash={res.transactionHash}>
@@ -114,8 +114,6 @@ export default function ModalDetail({
 	const handleClaim = async () => {
 		const _contract = getLaunchpadManagerContract(launchpad, signer ?? undefined, chainId)
 		try {
-			console.log("🚀 ~ handleClaim ~ isSortCap:", isSortCap)
-
 			const res = await fetchWithCatchTxError(() => isSortCap ? _contract.write.withdrawSoftCap() : _contract.write.claimToken())
 			if(res?.status) {
 				refetch()
@@ -134,7 +132,6 @@ export default function ModalDetail({
 		}
 	}
 
-
 	useEffect(() => {
 		if(list && list?.length > 0 && signer) {
 			forEach(list, (item) => {
@@ -147,7 +144,6 @@ export default function ModalDetail({
 			}
 		}
 	}, [list, signer])
-
 
 	const endTime = saleEnd < Date.now()
 
@@ -168,7 +164,7 @@ export default function ModalDetail({
                   {t('U2U GIVE BACK')}
                 </Text>
                 <Text color="textSubtle" textAlign="center">
-                  {t('TOKEN')}
+                  {t('%tokenName% TOKEN', { tokenName })}
                 </Text>
                 <Text color="textSubtle" textAlign="center">
                   {t('ACTION')}
@@ -178,17 +174,19 @@ export default function ModalDetail({
                 <Break/>
                 {list?.map(item => (
                   <>
-                    <ResponsiveGrid key={item.id}>
-                      <StyledText>{listPhase[item.roundAddress.toLowerCase()]?.name}</StyledText>
-                      <StyledText>{formatNumber(BigNumber(formatEther(item.u2uAmount)).toNumber(), 0, 6)} U2U</StyledText>
-                      <StyledText>{item.roundType === PHASES_TYPE.TIER && formatNumber(Number(giveBackAmount), 0, 6)}</StyledText>
+										{BigNumber(item.u2uAmount).gt(0) && (
+											<ResponsiveGrid key={item.id}>
+											<StyledText>{listPhase[item.roundAddress.toLowerCase()]?.name}</StyledText>
+											<StyledText>{formatNumber(BigNumber(formatEther(item.u2uAmount)).toNumber(), 0, 6)} U2U</StyledText>
+											<StyledText>{item.roundType === PHASES_TYPE.TIER && formatNumber(Number(giveBackAmount), 0, 6)}</StyledText>
 											<StyledText>{ endTime ? `${formatNumber(BigNumber(formatEther(item.u2uAmount)).toNumber() * rate, 0, 6)} ${tokenName}`: null } </StyledText>
-                      <Box style={{ textAlign: 'center' }}>
+											<Box style={{ textAlign: 'center' }}>
 												{(item.startCancel * 1000) < Date.now() && (item.endCancel * 1000) > Date.now() && (
-                        	<StyledButtonCancel variant="cancel" onClick={() => handleCancel(item)}>{t('Cancel')}</StyledButtonCancel>
+													<StyledButtonCancel variant="cancel" onClick={() => handleCancel(item)}>{t('Cancel')}</StyledButtonCancel>
 												)}
-                      </Box>
-                    </ResponsiveGrid>
+											</Box>
+										</ResponsiveGrid>
+										)}
                     <Break />
                   </>
                 ))}
