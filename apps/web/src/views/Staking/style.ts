@@ -84,6 +84,9 @@ export const StakingText = styled.p`
     font-size: 18px;
     max-width: 100%;
   }
+  ${({ theme }) => theme.mediaQueries.xxxl} {
+    font-size: 20px;
+  }
 `
 export const StyledIcon = styled.div`
   --size: 36px;

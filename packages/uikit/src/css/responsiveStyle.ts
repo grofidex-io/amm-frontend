@@ -16,6 +16,7 @@ const mediaQuery = {
   lg: makeMediaQuery("lg"),
   xl: makeMediaQuery("xl"),
   xxl: makeMediaQuery("xxl"),
+  xxxl: makeMediaQuery("xxxl"),
 };
 
 type ResponsiveStyle = {
@@ -25,13 +26,14 @@ type ResponsiveStyle = {
   lg?: CSSProps;
   xl?: CSSProps;
   xxl?: CSSProps;
+  xxxl?: CSSProps;
 };
 
-export const responsiveStyle = ({ xs, sm, md, lg, xl, xxl }: ResponsiveStyle): StyleRule => {
+export const responsiveStyle = ({ xs, sm, md, lg, xl, xxl, xxxl }: ResponsiveStyle): StyleRule => {
   const { "@media": _, ...xsStyle } = (xs ?? {}) as any;
   return {
     ...xsStyle,
-    ...(sm || md || lg || xl
+    ...(sm || md || lg || xl || xxl
       ? {
           "@media": {
             ...mediaQuery.sm(sm ?? {}),
@@ -39,6 +41,7 @@ export const responsiveStyle = ({ xs, sm, md, lg, xl, xxl }: ResponsiveStyle): S
             ...mediaQuery.lg(lg ?? {}),
             ...mediaQuery.xl(xl ?? {}),
             ...mediaQuery.xxl(xxl ?? {}),
+            ...mediaQuery.xxl(xxxl ?? {}),
           },
         }
       : {}),
