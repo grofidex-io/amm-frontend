@@ -25,21 +25,26 @@ import ModalDetail from './ModalDetail';
 
 const StyledTitle = styled(Text)`
   font-family: 'Metuo', sans-serif;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 900;
   line-height: calc(24/20);
   color: ${({ theme }) => theme.colors.text};
+  @media screen and (max-width: 1559px) {
+    font-size: 20px;
+  }
   @media screen and (max-width: 575px) {
     font-size: 18px;
   }
 `
 const StyledContent = styled(Text)`
-  font-size: 14px;
+	font-size: 15px;
   color: ${({ theme }) => theme.colors.textSubtle};
+	@media screen and (max-width: 1559px) {
+		font-size: 14px;
+	}
 `
 const StyledContentDot = styled(Text)`
   position: relative;
-  font-size: 14px;
   color: ${({ theme }) => theme.colors.textSubtle};
   padding-left: 20px;
   &::before {
@@ -52,12 +57,23 @@ const StyledContentDot = styled(Text)`
 `
 const StyledText = styled(Text)`
   color: #d6ddd0;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
   line-height: 20px;
+	@media screen and (max-width: 1559px) {
+		font-size: 16px;
+	}
 `
 const Image = styled.img`
   margin: auto;
+`
+const ImageInfo = styled.img`
+  --size: 13px;
+	width: var(--size);
+	height: var(--size);
+	@media screen and (max-width: 1559px) {
+		--size: 12px;
+	}
 `
 const Wrapper = styled.div`
   width: 100%;
@@ -89,9 +105,12 @@ const IconTier = styled.img`
 `
 const StyledTextItalic = styled(Text)`
   color: ${({ theme }) => theme.colors.textSubtle};
-  font-size: 12px;
+  font-size: 13px;
   font-style: italic;
   line-height: 16px;
+	@media screen and (max-width: 1559px) {
+		font-size: 12px;
+	}
 `
 const StyledInput = styled(NumericalInput)`
   background-color: rgba(191, 252, 251, 0.2);
@@ -114,7 +133,7 @@ const StyledInput = styled(NumericalInput)`
   }
 `
 const StyledButtonText = styled(Button)`
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 300;
   font-style: italic;
   padding: 0;
@@ -124,6 +143,9 @@ const StyledButtonText = styled(Button)`
   &:hover {
     color: ${({ theme }) => theme.colors.hover};
   }
+	@media screen and (max-width: 1559px) {
+		font-size: 12px;
+	}
 `
 
 const data = [
@@ -183,16 +205,16 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 
   const tierTooltip =useTooltip(
     <>
-      <Text fontFamily="'Metuo', sans-serif" fontSize="12px" lineHeight="18px" mb="4px">{t('The tier depends on the number of U2Us staked in the GrofiDex staking system.')}</Text>
+      <Text fontFamily="'Metuo', sans-serif" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="18px" mb="4px">{t('The tier depends on the number of U2Us staked in the GrofiDex staking system.')}</Text>
 			{info?.phases.map((item: IPhase) => {
 				if(item.type === PHASES_TYPE.TIER) {
 					return (
-						<StyledContentDot fontSize="12px" lineHeight="20px">{`${item.name}: Minimum U2U stake amount is ${item.minStake || '--'} U2U`}</StyledContentDot>
+						<StyledContentDot fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px">{`${item.name}: Minimum U2U stake amount is ${item.minStake || '--'} U2U`}</StyledContentDot>
 					)
 				}
 				return <></>
 			})}
-      {/* <StyledContentDot fontSize="12px" lineHeight="20px">{t('Starter: No stake or U2U stake amount less than 1000 U2U')}</StyledContentDot>  */}
+      {/* <StyledContentDot fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px">{t('Starter: No stake or U2U stake amount less than 1000 U2U')}</StyledContentDot>  */}
     </>, {
       placement: 'right'
     }
@@ -200,8 +222,8 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 
   const applyTooltip = useTooltip(
     <>
-      <Text fontFamily="'Metuo', sans-serif" fontSize="12px" lineHeight="18px" mb="4px">{t('Why need apply Whitelist?')}</Text>
-      <StyledContent fontSize="12px" lineHeight="16px">{t('There are projects that require you to apply to the whitelist to ensure that you are serious about the project, you will be guaranteed priority when purchasing compared to those who do not apply to the whitelist.')}</StyledContent>
+      <Text fontFamily="'Metuo', sans-serif" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="18px" mb="4px">{t('Why need apply Whitelist?')}</Text>
+      <Text color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="16px">{t('There are projects that require you to apply to the whitelist to ensure that you are serious about the project, you will be guaranteed priority when purchasing compared to those who do not apply to the whitelist.')}</Text>
     </>, {
       placement: 'right'
     }
@@ -528,7 +550,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
             <Flex flexDirection={["column", "column", "row"]}>
               <Box style={{ flex: '1', textAlign: 'center' }}>
                 <Image src="/images/project-chart.png"/>
-                <Text color="textSubtle" fontSize="16px" fontWeight="600" textAlign="center" mt={["10px", "10px", "14px", "14px", "18px"]} mx="auto" maxWidth="186px">{t('Max Supply & Distribution 1.000.000')}</Text>
+                <Text color="textSubtle" fontSize={["16px", "16px", "16px", "16px", "16px", "16px", "16px", "17px"]} fontWeight="600" textAlign="center" mt={["10px", "10px", "14px", "14px", "18px"]} mx="auto" maxWidth="200px">{t('Max Supply & Distribution 1.000.000')}</Text>
               </Box>
               <Box style={{ flex: '1' }} mt={["16px", "16px", "0"]}>
                 <Box mb={["16px", "16px", "20px", "20px", "24px"]}>
@@ -587,14 +609,14 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
           </Wrapper>
         </StyledNeubrutal>
         {info?.status !== LAUNCHPAD_STATUS.UPCOMING && (
-          <StyledNeubrutal style={{ flex: '1' }} height="100%" mx="auto" width="100%" minWidth={["100%", "100%", "360px"]} maxWidth="460px" ml={["auto", "auto", "auto", "auto", "16px"]} mb={["16px", "16px", "16px", "16px", "0"]}>
+          <StyledNeubrutal style={{ flex: '1' }} height="100%" mx="auto" width="100%" minWidth={["100%", "100%", "360px"]} maxWidth={["460px", "460px", "460px", "460px", "460px", "460px", "460px", "500px"]} ml={["auto", "auto", "auto", "auto", "16px"]} mb={["16px", "16px", "16px", "16px", "0"]}>
             <Box p={["20px 16px", "20px 16px", "24px 20px"]}>
               <StyledTitle mb={["20px", "20px", "26px", "26px", "32px"]}>{t('Buy IDO %name%', { name: info?.tokenName })}</StyledTitle>
 								<Box mb={["20px", "20px", "24px"]}>
 									<Flex mb="12px">
-										<Text color="textSubtle" fontSize="16px" fontWeight="600" mr="10px">{t('Your Tier')}</Text>
+										<Text color="textSubtle" fontSize={["16px", "16px", "16px", "16px", "16px", "16px", "16px", "17px"]} fontWeight="600" mr="10px">{t('Your Tier')}</Text>
 										<TooltipText ref={tierTooltip.targetRef} decorationColor="secondary">
-											<Image style={{ margin: 'unset', width: '12px', height: '12px' }} src="/images/launchpad/icon-exclamation.svg" />
+											<ImageInfo src="/images/launchpad/icon-exclamation.svg" />
 										</TooltipText>
 										{tierTooltip.tooltipVisible && tierTooltip.tooltip}
 									</Flex>
@@ -609,7 +631,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 												<StyledTextItalic>{t('The snapshot will be ended at ')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>
 												<StyledTextItalic>
 													{t('Staking more to upgrade your tier. ')}
-													<Link fontSize="12px" fontStyle="italic" style={{ display: 'inline', fontWeight: '300', textDecoration: 'underline' }} href="/staking">
+													<Link fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" style={{ display: 'inline', fontWeight: '300', textDecoration: 'underline' }} href="/staking">
 														{t('Staking Now')}
 													</Link>
 												</StyledTextItalic>
@@ -622,9 +644,9 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 							{isWhitelistTime() ? (
 								<>
 								<Flex mb="12px">
-									<Text color="textSubtle" fontSize="16px" fontWeight="600" mr="10px">{t('Apply Whitlelist')}</Text>
+									<Text color="textSubtle" fontSize={["16px", "16px", "16px", "16px", "16px", "16px", "16px", "17px"]} fontWeight="600" mr="10px">{t('Apply Whitlelist')}</Text>
 									<TooltipText ref={applyTooltip.targetRef} decorationColor="secondary">
-										<Image style={{ margin: 'unset', width: '12px', height: '12px' }} src="/images/launchpad/icon-exclamation.svg" />
+										<ImageInfo src="/images/launchpad/icon-exclamation.svg" />
 									</TooltipText>
 									{applyTooltip.tooltipVisible && applyTooltip.tooltip}
 								</Flex>
@@ -643,24 +665,24 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 								{userCommitInfo?.isWhiteList && account && (
 									<Flex alignItems="center">
 										<Image style={{ margin: 'unset', width: '24px', height: '24px' }} src="/images/launchpad/icon-success.svg" />
-										<Text color="success" maxWidth="290px" fontSize="14px" fontWeight="600" lineHeight="20px" ml="12px">{t(`Congratulation! You have applied whitelist.`)}</Text>
+										<Text color="success" maxWidth="290px" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="20px" ml="12px">{t(`Congratulation! You have applied whitelist.`)}</Text>
 									</Flex>
 								)}
 								<Box mt="12px">
-									<Text color="textSubtle" fontSize="12px" lineHeight="20px">{t('Time during (UTC):')}</Text>
-									<Text fontSize="12px" lineHeight="20px" style={{ color: '#d6ddd0' }}>{`${timeWhiteList?.startTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.startTime/ 1000)).utc())} - ${timeWhiteList?.endTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.endTime/ 1000)).utc())}`}</Text>
+									<Text color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px">{t('Time during (UTC):')}</Text>
+									<Text fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px" style={{ color: '#d6ddd0' }}>{`${timeWhiteList?.startTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.startTime/ 1000)).utc())} - ${timeWhiteList?.endTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.endTime/ 1000)).utc())}`}</Text>
 								</Box>
 							</>
 							): (
 								<Flex alignItems="center">
 									<Image style={{ margin: 'unset', width: '24px', height: '24px' }} src="/images/launchpad/icon-error.svg" />
-									<Text color="failure" maxWidth="290px" fontSize="14px" fontWeight="600" lineHeight="20px" ml="12px">{t(`Apply whitelist has been expired. You don’t apply whitelist`)}</Text>
+									<Text color="failure" maxWidth="290px" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="20px" ml="12px">{t(`Apply whitelist has been expired. You don’t apply whitelist`)}</Text>
 								</Flex>
 							)}
 					 		</Box>
 							{currentPhaseOrNext && (
 								<Box style={{ textAlign: 'center' }}>
-									<Text color="hover" fontSize="14px" fontWeight="600">{`Sale token for ${currentPhaseOrNext?.name} ${typeCountdown === 0 ? 'start in' : 'end in'}`}</Text>
+									<Text color="hover" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600">{`Sale token for ${currentPhaseOrNext?.name} ${typeCountdown === 0 ? 'start in' : 'end in'}`}</Text>
 									<Text color="primary" fontSize="24px" fontWeight="600" lineHeight="30px">
 										<CountdownTime type={COUNTDOWN_TYPE.STRING} time={timeCountdown} cb={recheckPhase}/>
 									</Text>
@@ -679,7 +701,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
             <Box p={["20px 16px", "20px 16px", "24px 20px"]}>
               <Box>
                 <Flex alignItems="center">
-                  <Text color="textSubtle" fontSize="16px" fontWeight="600" mr="8px">{t('Your committed')}</Text>
+                  <Text color="textSubtle" fontSize={["16px", "16px", "16px", "16px", "16px", "16px", "16px", "17px"]} fontWeight="600" mr="8px">{t('Your committed')}</Text>
                   <StyledButtonText variant="text" onClick={openCommittedModal}>
                     {t('Show detail')}
                   </StyledButtonText>
@@ -700,7 +722,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
               </Box>
 							{Date.now() < info?.saleEnd  && (
 								<Box my={["20px", "20px", "24px"]}>
-									<Text color="textSubtle" fontSize="16px" fontWeight="600" mb="8px">{t('U2U Commit')}</Text>
+									<Text color="textSubtle" fontSize={["16px", "16px", "16px", "16px", "16px", "16px", "16px", "17px"]} fontWeight="600" mb="8px">{t('U2U Commit')}</Text>
 									<Flex alignItems="center">
 										<StyledInput
 											value={isFocusInput ? amountCommit : amountCommit && formatNumber(Number(amountCommit), 0, 6)}
@@ -726,7 +748,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 						
 									</Flex>
 									{maxCommitAmountByTier && BigNumber(maxCommitAmountByTier).lt(0) && (
-										<Text color="textSubtle" fontSize="12px" fontStyle="italic" lineHeight="16px" mt="8px">{t('Maximum %maxCommitAmount% U2U', { maxCommitAmount: isShowMaximum ? maxCommitAmountByTier.toString() : '0' })}</Text>
+										<Text color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" lineHeight="16px" mt="8px">{t('Maximum %maxCommitAmount% U2U', { maxCommitAmount: isShowMaximum ? maxCommitAmountByTier.toString() : '0' })}</Text>
 									)}
 									{Date.now() > info?.saleEnd && (
 										<>
@@ -735,7 +757,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 												<Flex alignItems="center">
 													<Image style={{ margin: 'unset', width: '24px', height: '24px' }} src="/images/launchpad/icon-card-success.svg" />
 													<Box ml="16px">
-														<Text color='success' fontSize="16px" fontWeight="600" lineHeight="20px" textTransform="uppercase">{t('IDO Successfully')}</Text>
+														<Text color='success' fontSize={["16px", "16px", "16px", "16px", "16px", "16px", "16px", "17px"]} fontWeight="600" lineHeight="20px" textTransform="uppercase">{t('IDO Successfully')}</Text>
 														<StyledContent lineHeight="20px" mt="4px">{t('The project has been IDO successfully, your committed U2U has been swapped to TOKENX. Claim to your wallet.')}</StyledContent>
 													</Box>
 												</Flex>
@@ -743,7 +765,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 												<Flex alignItems="center">
 													<Image style={{ margin: 'unset', width: '24px', height: '24px' }} src="/images/launchpad/icon-card-failed.svg" />
 													<Box ml="16px">
-														<Text color='failure' fontSize="16px" fontWeight="600" lineHeight="20px" textTransform="uppercase">{t('IDO Failed')}</Text>
+														<Text color='failure' fontSize={["16px", "16px", "16px", "16px", "16px", "16px", "16px", "17px"]} fontWeight="600" lineHeight="20px" textTransform="uppercase">{t('IDO Failed')}</Text>
 														<StyledContent lineHeight="20px" mt="4px">{t('Unfortunately, the IDO project failed. The total raised value does not reach the softcap minimum.')}</StyledContent>
 													</Box>
 												</Flex>
@@ -754,7 +776,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 									{BigNumber(totalCommit).gt(BigNumber(info.softCap)) && (
 										<StyledTextItalic mt="12px">
 											Please click the 
-											<Text onClick={openCommittedModal} fontSize="12px" fontStyle="italic" mx="4px" textTransform="uppercase" style={{ display: 'inline', color: theme.colors.primary, fontWeight: '300', cursor: 'pointer'}}>
+											<Text onClick={openCommittedModal} fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" mx="4px" textTransform="uppercase" style={{ display: 'inline', color: theme.colors.primary, fontWeight: '300', cursor: 'pointer'}}>
 												{t('Claim')}
 											</Text>
 											button above to get your {info?.tokenName}
@@ -768,11 +790,11 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 								{!account && (
 									<StyledContent>
 										{t(`You need connect wallet to see your schedule time. `)}
-										<ConnectWalletButton as="a"> <Text fontSize="14px" style={{ textDecoration: "underline", color: theme.colors.primary, cursor: "pointer"}}>			{t('Connect now')}</Text> </ConnectWalletButton>
+										<ConnectWalletButton as="a"> <Text fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} style={{ textDecoration: "underline", color: theme.colors.primary, cursor: "pointer"}}>			{t('Connect now')}</Text> </ConnectWalletButton>
 									</StyledContent>
 								)}
              
-                {scheduleOrder?.length > 0 && (<StyledContent>{t(`Schedule time for you (UTC), don't miss it:`)}</StyledContent>)}
+                {scheduleOrder?.length > 0 && (<StyledContent mb="3px">{t(`Schedule time for you (UTC), don't miss it:`)}</StyledContent>)}
 								{scheduleOrder?.map((item: IPhase) => (
 									<StyledContentDot lineHeight="17px" mb="4px">
 										{item.name}

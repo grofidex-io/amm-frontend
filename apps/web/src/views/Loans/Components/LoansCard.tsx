@@ -48,13 +48,16 @@ const StyledButton = styled(Button)`
 `
 const StyledText = styled(Text)`
   line-height: 18px;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 400;
   &:nth-child(1) {
     min-width: 130px;
   }
   &:nth-child(2) {
     text-align: right;
+  }
+  @media screen and (max-width: 1559px) {
+    font-size: 14px;
   }
 `
 
@@ -334,7 +337,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, nativeBalance, refreshListLoans
             <Span>U2U</Span>
           </Text>
           {type && (
-            <Text color='#c4c4c4' fontSize="10px" fontStyle="italic">{`Maximum borrow: ${formatNumber(Number(formatEther(borrowing?.stakeAmount)) * (Number(borrowing?.loanPackage.maxBorrowRatio) / 100), 2, 6)} U2U (LTV ${borrowing?.loanPackage.maxBorrowRatio}%)`}</Text>
+            <Text color='#c4c4c4' fontSize={["10px", "10px", "10px", "10px", "10px", "10px", "10px", "12px"]} fontStyle="italic">{`Maximum borrow: ${formatNumber(Number(formatEther(borrowing?.stakeAmount)) * (Number(borrowing?.loanPackage.maxBorrowRatio) / 100), 2, 6)} U2U (LTV ${borrowing?.loanPackage.maxBorrowRatio}%)`}</Text>
           )}
         </Flex>
       </CardHeader>
@@ -347,12 +350,11 @@ const LoansCard = ({ type, stakeInfo, borrowing, nativeBalance, refreshListLoans
                 options={listPeriod}
                 onOptionChange={handleChangePeriod}
               />
-              <Text fontSize="12px" fontStyle="italic" lineHeight="14px" color='textExtra' mt="12px">{t(`Maximum borrow: ${formatNumber(maxBorrowU2U, 2,6)} U2U (LTV ${period?.maxBorrowRatio || '_'}%)`)}</Text>
+              <Text fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" lineHeight="14px" color='textExtra' mt="12px">{t(`Maximum borrow: ${formatNumber(maxBorrowU2U, 2,6)} U2U (LTV ${period?.maxBorrowRatio || '_'}%)`)}</Text>
             </Box>
             <div style={{'position': 'relative'}}>
             <FlexInput>
               <StyledText color='textSubtle'>{t('Borrow amount') } (<MaxButton onClick={onMax}>Max</MaxButton>)</StyledText>
-
               <StyledInput     
                 value={isFocusInput ? borrowValue :  formatNumber(Number(borrowValue), 2, 6)}
                 placeholder="0"
@@ -374,7 +376,7 @@ const LoansCard = ({ type, stakeInfo, borrowing, nativeBalance, refreshListLoans
                 onValueChanged={handleChangePercent}
                 mb="16px"
               />
-              <Text fontSize="14px" fontWeight="500" fontStyle="italic" color='text' mt="10px">LTV {formatNumber(percentForSlider, 2, 2) || '_'}%</Text>
+              <Text fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="500" fontStyle="italic" color='text' mt="10px">LTV {formatNumber(percentForSlider, 2, 2) || '_'}%</Text>
             </Flex>
             <Flex justifyContent="space-between" alignItems="center" mb="12px">
               <StyledText color='textSubtle'>{t('Annual Interest Rate')}</StyledText>

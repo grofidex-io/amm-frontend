@@ -46,7 +46,7 @@ const CardHeader = styled(Box)`
 const CardBody = styled.div`
   padding: 16px;
 `
-const ImageHeader = styled.img`
+const Image = styled.img`
   position: absolute;
   top: 0;
   left: 0;
@@ -58,14 +58,9 @@ const ImageHeader = styled.img`
   max-height: 100%;
   object-fit: cover;
 `
-const Image = styled.img`
-  --size: 100%;
-  width: var(--size);
-  height: var(--size);
-  object-fit: cover;
-`
 const StyledLogo = styled(Box)`
   --size: 72px;
+  position: relative;
   min-width: var(--size);
   width: var(--size);
   height: var(--size);
@@ -206,7 +201,7 @@ const LaunchpadCard = ({ item }: LaunchpadProps) => {
   return (
     <CardLayout>
       <CardHeader>
-        <ImageHeader src={item.projectImageThumbnail} alt='' />
+        <Image src={item.projectImageThumbnail} alt='' />
       </CardHeader>
       <CardBody>
         <Flex
@@ -249,14 +244,14 @@ const LaunchpadCard = ({ item }: LaunchpadProps) => {
           </NextLink>
         </Flex>
         <Box px={["0", "0", "16px", "16px", "0", "0", "16px"]} p="16px">
-          <Text minHeight={50} fontSize="14px" fontWeight="400" mb="16px" color='textSubtle'>{item.shortDescription}</Text>
+          <Text minHeight={50} fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="400" mb="16px" color='textSubtle'>{item.shortDescription}</Text>
           <Flex justifyContent="space-between" alignItems="center" mb="12px">
-            <Text fontSize="14px" fontWeight="600" lineHeight="20px" color='textSubtle'>{t('Sale price')}</Text>
-            <Text fontSize={["15px", "15px", "16px", "16px", "15px", "16px"]} fontWeight="700" lineHeight="20px" color='text'>1 U2U = {item.priceToken} {item.tokenName}</Text>
+            <Text fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="20px" color='textSubtle'>{t('Sale price')}</Text>
+            <Text fontSize={["15px", "15px", "16px", "16px", "15px", "16px", "17px"]} fontWeight="700" lineHeight="20px" color='text'>1 U2U = {item.priceToken} {item.tokenName}</Text>
           </Flex>
           <Flex justifyContent="space-between" alignItems="center">
-            <Text fontSize="14px" fontWeight="600" lineHeight="20px" color='textSubtle'>{t('Total Raise')}</Text>
-            <Text fontSize={["15px", "15px", "16px", "16px", "15px", "16px"]} fontWeight="700" lineHeight="20px" color='text'>{formatNumber(item.totalRaise)} U2U</Text>
+            <Text fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="20px" color='textSubtle'>{t('Total Raise')}</Text>
+            <Text fontSize={["15px", "15px", "16px", "16px", "15px", "16px", "17px"]} fontWeight="700" lineHeight="20px" color='text'>{formatNumber(item.totalRaise)} U2U</Text>
           </Flex>
         </Box>
         {item.status === LAUNCHPAD_STATUS.UPCOMING ? (
@@ -276,16 +271,16 @@ const LaunchpadCard = ({ item }: LaunchpadProps) => {
           <Box className='border-neubrutal' borderRadius="8px" p={["16px 12px", "16px 12px", "16px 12px", "16px 12px", "16px 12px", "16px 12px","20px 16px"]}>
             <Flex alignItems="center" justifyContent="space-between" mb="20px">
               <Text fontFamily="'Metuo', sans-serif" fontSize="18px" fontWeight="900" lineHeight="1">{t('Progress')}</Text>
-              <Text minWidth={145} fontSize={["14px", "16px", "16px", "16px", "16px", "14px", "16px"]} lineHeight="1">
+              <Text textAlign="right" minWidth={145} fontSize={["14px", "16px", "16px", "16px", "16px", "14px", "16px"]} lineHeight="1">
 								<CountdownTime type={COUNTDOWN_TYPE.STRING} time={timeCountdown}/>
 							</Text>
             </Flex>
             <Flex alignItems="center" justifyContent="space-between" mb="10px">
               <Flex>
-                <Text fontSize="14px" fontWeight="700" lineHeight="24px">{formatNumber(totalCommit, 0, 6)}</Text>
-                <Text color='textSubtle' fontSize="10px" lineHeight="24px" ml="6px">U2U Raised</Text>
+                <Text fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="700" lineHeight="24px">{formatNumber(totalCommit, 0, 6)}</Text>
+                <Text color='textSubtle' fontSize={["10px", "10px", "10px", "10px", "10px", "10px", "10px", "12px"]} lineHeight="24px" ml="6px">U2U Raised</Text>
               </Flex>
-              <Text color='textSubtle' fontSize="14px" fontWeight="600">{formatNumber(item?.totalRaise ? (totalCommit / item?.totalRaise) * 100 : 0, 0, 2) }%</Text>
+              <Text color='textSubtle' fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600">{formatNumber(item?.totalRaise ? (totalCommit / item?.totalRaise) * 100 : 0, 0, 2) }%</Text>
             </Flex>
             <Progress primaryStep={item?.totalRaise ? (totalCommit / item?.totalRaise) * 100 : 0 } scale="sm" />
           </Box>

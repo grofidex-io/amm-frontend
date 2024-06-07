@@ -170,7 +170,7 @@ export const Overview = () => {
           <StyledFlex alignItems="center" justifyContent="space-between">
             <Box>
               <StyledHeading maxWidth={["100%", "100%", "560px", "560px", "620px"]}>{t('Put your funds to work by providing liquidity.')}</StyledHeading>
-              <Text maxWidth={["100%", "100%", "400px", "400px", "490px"]} mb="10px" fontSize={['14px', '14px', '16px', '16px', '18px']} fontWeight={["500", "500", "600"]} color="textSubtle">
+              <Text maxWidth={["100%", "100%", "400px", "400px", "490px"]} mb="10px" fontSize={['14px', '14px', '16px', '16px', '18px', '18px', '18px', '20px']} fontWeight={["500", "500", "600"]} color="textSubtle">
                 {t(
                   'When you add liquidity to a pair, you can receive a share of its trading volume and potentially snag extra rewards when there are incentives involved!',
                 )}

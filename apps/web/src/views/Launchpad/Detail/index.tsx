@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization';
-import { Box, Flex, Link, Progress, Tab, TabMenu, Text } from "@pancakeswap/uikit";
+import { ArrowBackIcon, Box, Button, Flex, Link, Progress, Tab, TabMenu, Text } from "@pancakeswap/uikit";
 import { formatNumber } from '@pancakeswap/utils/formatBalance';
 import BigNumber from 'bignumber.js';
 import Container from 'components/Layout/Container';
@@ -43,16 +43,20 @@ const StyledBanner = styled(Box)`
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
   }
   > div {
-    max-width: 1448px;
+    max-width: 1248px;
     margin: auto;
     height: 100%;
     padding: 0 16px;
-    @media screen and (max-width: 1559px) {
-      max-width: 1248px;
+    @media screen and (min-width: 576px) {
+      padding: 0 20px;
     }
-    @media screen and (min-width: 425px) {
+    @media screen and (min-width: 992px) {
       padding: 0 24px;
     }
+    @media screen and (min-width: 1440px) {
+      max-width: 1488px;
+    }
+
   }
   @media screen and (max-width: 1439px) {
     height: 220px;
@@ -91,16 +95,20 @@ const Image = styled.img`
   height: var(--size);
   object-fit: cover;
 `
-const StyledText = styled(Text)`
+const StyledTitle = styled(Text)`
   font-family: 'Metuo', sans-serif;
-  font-size: 36px;
+  font-size: 38px;
   font-weight: 900;
   line-height: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   margin-bottom: 20px;
-  max-width: 360px;
+  max-width: 400px;
+  @media screen and (max-width: 1559px) {
+    font-size: 36px;
+    max-width: 360px;
+  }
   @media screen and (max-width: 1439px) {
     font-size: 32px;
     margin-bottom: 16px;
@@ -143,15 +151,24 @@ const StyledDot = styled(Box)`
     background: inherit;
   }
 `
-const StyledTitle = styled(Text)`
+const StyledTitleCard = styled(Text)`
   font-family: 'Metuo', sans-serif;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 900;
   line-height: calc(24/20);
   color: ${({ theme }) => theme.colors.text};
   margin-bottom: 24px;
-  @media screen and (max-width: 991px) {
+  @media screen and (max-width: 1559px) {
+    font-size: 20px;
+  }
+  @media screen and (max-width: 1439px) {
+    margin-bottom: 22px;
+  }
+  @media screen and (max-width: 1199px) {
     margin-bottom: 20px;
+  }
+  @media screen and (max-width: 991px) {
+    margin-bottom: 18px;
   }
   @media screen and (max-width: 575px) {
     font-size: 18px;
@@ -302,10 +319,13 @@ const StyledSwiper = styled(Swiper)`
 
 const StyledListTitle = styled(Text)`
   color: ${({ theme }) => theme.colors.textSubtle};
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   line-height: 20px;
   flex: 1;
+  @media screen and (max-width: 1559px) {
+    font-size: 14px;
+  }
 `
 const StyledListText = styled(Text)`
   color: ${({ theme }) => theme.colors.text};
@@ -471,15 +491,23 @@ const LaunchpadDetailPage = () => {
   return (
     <>
       <StyledBanner style={{ backgroundImage: `url(${detail?.projectImageThumbnail})` }}>
-        <Flex justifyContent="flex-end" alignItems="flex-end" position="relative">
-          {detail?.socials.map(item => {
-						return SOCIAL_ICON[item.type] && (
-							<StyledLink external href={item.link}>
-								<img src={`/images/launchpad/icon-${SOCIAL_ICON[item.type]}.svg`} alt="" />
-							</StyledLink>
-						)
-						}
-          )}
+        <Flex justifyContent="space-between" alignItems="flex-end" position="relative">
+          <Link href="/launchpad">
+            <Button className="button-hover" px="12px" height="40px">
+              <ArrowBackIcon width="16px" mr="4px" color="black"/>
+              <span>{t('Back')}</span>
+            </Button>
+          </Link>
+          <Flex>
+            {detail?.socials.map(item => {
+              return SOCIAL_ICON[item.type] && (
+                <StyledLink external href={item.link}>
+                  <img src={`/images/launchpad/icon-${SOCIAL_ICON[item.type]}.svg`} alt="" />
+                </StyledLink>
+              )
+              }
+            )}
+          </Flex>
         </Flex>
       </StyledBanner>
       <Container>
@@ -489,14 +517,14 @@ const LaunchpadDetailPage = () => {
               <Image src={detail?.projectImageThumbnail} alt=''/>
             </StyledLogo>
             <Box overflow="hidden" ml={["16px", "16px", "20px", "20px", "24px"]}>
-              <StyledText >{detail?.projectName}</StyledText>
+              <StyledTitle >{detail?.projectName}</StyledTitle>
               <Flex alignItems="center">
                 <StyledDot
                   background={detail?.status && getColorLaunchpadByStatus(detail?.status, theme)}
                 />
                 <Text
                   ml="8px"
-                  fontSize={["14px", "14px", "16px"]}
+                  fontSize={["14px", "14px", "16px", "16px", "16px", "16px", "16px", "17px"]}
                   fontWeight="700"
                   lineHeight="20px"
                   color={detail?.status && getColorLaunchpadByStatus(detail?.status, theme)}
@@ -515,13 +543,13 @@ const LaunchpadDetailPage = () => {
             justifyContent="center"
             flexDirection="column"
           >
-            <Text color="primary" textAlign="center" fontSize="14px" fontWeight="600" lineHeight="17px" mb={["6px", "6px", "8px", "8px", "10px", "10px", "12px"]}>{isCountdownEnd ? t('Sale end in') : t('Sale start in')}</Text>
+            <Text color="primary" textAlign="center" fontSize={["13px", "13px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="1.25" mb={["6px", "6px", "8px", "8px", "10px", "10px", "12px"]}>{isCountdownEnd ? t('Sale end in') : t('Sale start in')}</Text>
 						{showCountdown ? <CountdownTime type={COUNTDOWN_TYPE.ARRAY} time={isCountdownEnd ? detail?.saleEnd : detail?.saleStart}/> : 	<Text color="hover" fontSize={["16px", "16px", "20px", "20px", "24px"]} fontWeight="600" lineHeight={["22px", "22px", "26px", "26px", "30px"]}>To be announcement</Text>}
           </Flex>
         </Flex>
         <Flex flexDirection={["column", "column", "column", "column", "row"]} mb="32px">
-          <StyledNeubrutal  p={["16px", "16px", "20px", "20px", "24px"]} mx="auto" width="100%" minWidth={["100%", "100%", "360px"]} maxWidth="460px" style={{ flex: "1" }}>
-            <StyledTitle>{t('Sale Info')}</StyledTitle>
+          <StyledNeubrutal  p={["16px", "16px", "20px", "20px", "24px"]} mx="auto" width="100%" minWidth={["100%", "100%", "360px"]} maxWidth={["460px", "460px", "460px", "460px", "460px", "460px", "460px", "500px"]} style={{ flex: "1" }}>
+            <StyledTitleCard>{t('Sale Info')}</StyledTitleCard>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Sale price')}</StyledListTitle>
               <Flex alignItems="center">
@@ -584,13 +612,13 @@ const LaunchpadDetailPage = () => {
           </StyledNeubrutal>
           <Box style={{ flex: "2" }} ml={["0", "0", "0", "0", "16px"]} mt={["16px", "16px", "16px", "16px", "0"]}>
             <StyledNeubrutal  p={["16px", "16px", "20px", "20px", "24px"]}>
-              <StyledTitle>{t('Progress')}</StyledTitle>
+              <StyledTitleCard>{t('Progress')}</StyledTitleCard>
               <Flex justifyContent="space-between" alignItems="center" mb={["8px", "8px", "10px", "10px", "12px"]}>
                 <Flex>
-                  <Text fontSize="14px" fontWeight="700" lineHeight="24px">{formatNumber(totalCommit, 0, 6)}</Text>
-                  <Text color='textSubtle' fontSize="10px" lineHeight="24px" ml="6px">U2U Raised</Text>
+                  <Text fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "16px"]} fontWeight="700" lineHeight="24px">{formatNumber(totalCommit, 0, 6)}</Text>
+                  <Text color='textSubtle' fontSize={["10px", "10px", "10px", "10px", "10px", "10px", "10px", "12px"]} lineHeight="24px" ml="6px">U2U Raised</Text>
                 </Flex>
-                <Text color='textSubtle' fontSize="14px" fontWeight="600">{formatNumber(detail?.totalRaise ? (totalCommit / detail?.totalRaise) * 100 : 0, 0, 2) }%</Text>
+                <Text color='textSubtle' fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "16px"]} fontWeight="600">{formatNumber(detail?.totalRaise ? (totalCommit / detail?.totalRaise) * 100 : 0, 0, 2) }%</Text>
               </Flex>
               <StyledProgress primaryStep={detail?.totalRaise ? (totalCommit / detail?.totalRaise) * 100 : 0 } scale="sm" />
               <Flex alignItems="center" justifyContent="center" mt="12px">
@@ -604,9 +632,9 @@ const LaunchpadDetailPage = () => {
                   <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" fill="none">
                     <path d="M7.47753 13.8008C7.47756 13.8665 7.46466 13.9315 7.43954 13.9922C7.41443 14.0529 7.3776 14.108 7.33116 14.1544C7.28473 14.2009 7.22959 14.2377 7.16891 14.2628C7.10823 14.2879 7.0432 14.3008 6.97753 14.3008H4.61584L4.81347 14.4985C4.86066 14.5448 4.89822 14.5999 4.92397 14.6608C4.94972 14.7216 4.96315 14.787 4.96348 14.8531C4.96382 14.9192 4.95105 14.9847 4.92591 15.0458C4.90078 15.1069 4.86378 15.1624 4.81706 15.2091C4.77033 15.2559 4.71481 15.2929 4.65369 15.318C4.59258 15.3431 4.52709 15.3559 4.46101 15.3556C4.39493 15.3552 4.32958 15.3418 4.26872 15.316C4.20787 15.2903 4.15272 15.2527 4.10647 15.2055L3.05565 14.1543C3.00921 14.1079 2.97238 14.0528 2.94725 13.9921C2.92211 13.9315 2.90918 13.8665 2.90918 13.8008C2.90918 13.7351 2.92211 13.6701 2.94725 13.6095C2.97238 13.5488 3.00921 13.4937 3.05565 13.4473L4.10644 12.3965C4.15269 12.3493 4.20784 12.3117 4.26869 12.286C4.32955 12.2602 4.3949 12.2468 4.46098 12.2465C4.52706 12.2461 4.59255 12.2589 4.65366 12.284C4.71478 12.3092 4.7703 12.3462 4.81703 12.3929C4.86375 12.4396 4.90075 12.4951 4.92588 12.5563C4.95102 12.6174 4.96379 12.6829 4.96345 12.7489C4.96312 12.815 4.94969 12.8804 4.92394 12.9412C4.89819 13.0021 4.86063 13.0572 4.81344 13.1035L4.61617 13.3008H6.97753C7.0432 13.3007 7.10824 13.3136 7.16892 13.3387C7.2296 13.3639 7.28474 13.4007 7.33118 13.4471C7.37761 13.4936 7.41444 13.5487 7.43955 13.6094C7.46467 13.6701 7.47757 13.7351 7.47753 13.8008ZM16.2275 5.44092H5.58788C5.19019 5.44135 4.80891 5.59953 4.5277 5.88074C4.24649 6.16195 4.08831 6.54323 4.08788 6.94092V10.75C4.08788 10.8826 4.14056 11.0098 4.23432 11.1036C4.32809 11.1973 4.45527 11.25 4.58788 11.25C4.72049 11.25 4.84766 11.1973 4.94143 11.1036C5.0352 11.0098 5.08788 10.8826 5.08788 10.75V6.94092C5.08805 6.80836 5.14078 6.68129 5.23451 6.58755C5.32825 6.49382 5.45532 6.44109 5.58788 6.44092H16.2275C16.3601 6.44109 16.4872 6.49382 16.5809 6.58755C16.6746 6.68129 16.7274 6.80836 16.7275 6.94092V12.8008C16.7274 12.9333 16.6746 13.0604 16.5809 13.1542C16.4872 13.2479 16.3601 13.3006 16.2275 13.3008H8.97753C8.84492 13.3008 8.71774 13.3535 8.62397 13.4472C8.53021 13.541 8.47753 13.6682 8.47753 13.8008C8.47753 13.9334 8.53021 14.0606 8.62397 14.1543C8.71774 14.2481 8.84492 14.3008 8.97753 14.3008H16.2275C16.6252 14.3004 17.0065 14.1422 17.2877 13.861C17.5689 13.5798 17.7271 13.1985 17.7275 12.8008V6.94092C17.7271 6.54323 17.5689 6.16195 17.2877 5.88074C17.0065 5.59953 16.6252 5.44135 16.2275 5.44092ZM8.60453 9.8711C8.60453 9.41547 8.73964 8.97007 8.99277 8.59123C9.24591 8.21238 9.6057 7.91711 10.0266 7.74275C10.4476 7.56839 10.9108 7.52276 11.3577 7.61165C11.8045 7.70054 12.215 7.91995 12.5372 8.24213C12.8594 8.56431 13.0788 8.97479 13.1677 9.42167C13.2566 9.86854 13.211 10.3317 13.0366 10.7527C12.8622 11.1736 12.567 11.5334 12.1881 11.7866C11.8093 12.0397 11.3639 12.1748 10.9082 12.1748C10.2974 12.1742 9.71181 11.9313 9.27991 11.4994C8.848 11.0675 8.60513 10.4819 8.60453 9.8711ZM9.60453 9.8711C9.60453 10.129 9.68099 10.381 9.82425 10.5954C9.9675 10.8098 10.1711 10.9769 10.4093 11.0756C10.6476 11.1742 10.9097 11.2001 11.1626 11.1498C11.4155 11.0994 11.6478 10.9753 11.8301 10.7929C12.0124 10.6106 12.1366 10.3783 12.1869 10.1254C12.2372 9.87251 12.2114 9.61038 12.1127 9.37216C12.014 9.13393 11.8469 8.93033 11.6325 8.78708C11.4181 8.64383 11.166 8.56738 10.9082 8.56739C10.5626 8.56782 10.2312 8.70531 9.9868 8.94971C9.7424 9.19411 9.60496 9.52547 9.60453 9.8711ZM7.2061 9.3711H6.74413C6.61152 9.3711 6.48434 9.42378 6.39057 9.51754C6.29681 9.61131 6.24413 9.73849 6.24413 9.8711C6.24413 10.0037 6.29681 10.1309 6.39057 10.2247C6.48434 10.3184 6.61152 10.3711 6.74413 10.3711H7.20605C7.33866 10.3711 7.46583 10.3184 7.5596 10.2247C7.65337 10.1309 7.70605 10.0037 7.70605 9.8711C7.70605 9.73849 7.65337 9.61131 7.5596 9.51754C7.46583 9.42378 7.33871 9.3711 7.2061 9.3711ZM15.0713 10.3711C15.2039 10.3711 15.3311 10.3184 15.4249 10.2247C15.5186 10.1309 15.5713 10.0037 15.5713 9.8711C15.5713 9.73849 15.5186 9.61131 15.4249 9.51754C15.3311 9.42378 15.2039 9.3711 15.0713 9.3711H14.6103C14.4777 9.3711 14.3506 9.42378 14.2568 9.51754C14.163 9.61131 14.1103 9.73849 14.1103 9.8711C14.1103 10.0037 14.163 10.1309 14.2568 10.2247C14.3506 10.3184 14.4777 10.3711 14.6103 10.3711H15.0713Z" fill="#FE5300"/>
                   </svg>
-                  <Text color="orange" fontSize="14px" fontWeight="500" ml="8px">{t('Refund Policy')}</Text>
+                  <Text color="orange" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "16px"]} fontWeight="500" ml="8px">{t('Refund Policy')}</Text>
                 </Flex>
-                <Text color="textSubtle" fontSize="12px" fontWeight="600" mt="8px" maxWidth="260px">{t('You can cancel your IDO Token purchase if you change your mind after U2U commits to the system.')}</Text>
+                <Text color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "14px"]} fontWeight="600" mt="8px" maxWidth={["260px", "260px", "260px", "260px", "260px", "260px", "260px", "280px"]}>{t('You can cancel your IDO Token purchase if you change your mind after U2U commits to the system.')}</Text>
               </StyledNeubrutal>
               <StyledNeubrutal  p="16px" minHeight={["120px", "120px", "140px"]} ml={["0", "0", "16px"]} mt={["16px", "16px", "0"]} style={{ flex: '1' }}>
                 <Flex alignItems="center">
@@ -621,9 +649,9 @@ const LaunchpadDetailPage = () => {
                     </clipPath>
                     </defs>
                   </svg>
-                  <Text color="cyan" fontSize="14px" fontWeight="500" ml="8px">{t('Investor protection mechanism')}</Text>
+                  <Text color="cyan" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "16px"]} fontWeight="500" ml="8px">{t('Investor protection mechanism')}</Text>
                 </Flex>
-                <Text color="textSubtle" fontSize="12px" fontWeight="600" mt="8px" maxWidth="260px">{t('In case, total raise U2U does not reach the value of Softcap, the launched will be cancelled and refund U2U for investors')}</Text>
+                <Text color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "14px"]} fontWeight="600" mt="8px" maxWidth={["260px", "260px", "260px", "260px", "260px", "260px", "260px", "300px"]}>{t('In case, total raise U2U does not reach the value of Softcap, the launched will be cancelled and refund U2U for investors')}</Text>
               </StyledNeubrutal>
             </Flex>
           </Box>
@@ -638,8 +666,8 @@ const LaunchpadDetailPage = () => {
 								<StyledBox>
 									<StyledContent style={{ background: `${isComplete(item) ? theme.colors.backgroundItem : isInProgress(item) ? theme.colors.primary : theme.colors.backgroundAlt}` }}>
 										<img style={{ filter: `${isComplete(item) && 'grayscale(1)'}` }} src={item.imageUrl || `/images/launchpad/icon-step-01.svg`} alt="" />
-										<Text style={{ color: `${isComplete(item) ? theme.colors.hover : isInProgress(item) ? theme.colors.black : theme.colors.primary}` }} fontSize="14px" fontWeight="600" lineHeight="17px" mt="8px">{item.name}</Text>
-										<Text style={{ color: `${isComplete(item) ? theme.colors.textSubtle : isInProgress(item) ? theme.colors.black : theme.colors.hover}` }} fontSize="11px" fontWeight="400" lineHeight="13px" mt="4px" minHeight={13}>{item.startTime ? formatDate(dayjs.unix(Math.floor(item.startTime/ 1000)).utc(), 'MMM D YYYY HH:mm:ss') : ''}</Text>
+										<Text style={{ color: `${isComplete(item) ? theme.colors.hover : isInProgress(item) ? theme.colors.black : theme.colors.primary}` }} fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="17px" mt="8px">{item.name}</Text>
+										<Text style={{ color: `${isComplete(item) ? theme.colors.textSubtle : isInProgress(item) ? theme.colors.black : theme.colors.hover}` }} fontSize={["11px", "11px", "11px", "11px", "11px", "11px", "11px", "12px"]} fontWeight="400" lineHeight="13px" mt="4px" minHeight={13}>{item.startTime ? formatDate(dayjs.unix(Math.floor(item.startTime/ 1000)).utc(), 'MMM D YYYY HH:mm:ss') : ''}</Text>
 									</StyledContent>
 									<svg style={{ color: `${isComplete(item) ? theme.colors.backgroundItem : isInProgress(item) ? theme.colors.primary : theme.colors.backgroundAlt}` }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 132" fill="none">
 										<g mask="url(#mask0_3011_2807)">
