@@ -468,12 +468,6 @@ const LaunchpadDetailPage = () => {
 
 	const isCountdownEnd = detail?.saleEnd && detail?.saleEnd > Date.now()
 
-	// useEffect(() => {
-	// 	if(detail?.phases) {
-	// 		forEach()
-	// 	}
-	// }, [detail])
-
   return (
     <>
       <StyledBanner style={{ backgroundImage: `url(${detail?.projectImageThumbnail})` }}>

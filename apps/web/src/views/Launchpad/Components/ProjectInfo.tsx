@@ -751,14 +751,16 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 										}
 										</>
 									)} 
-						
-									<StyledTextItalic mt="12px">
-										Please click the 
-										<Text onClick={openCommittedModal} fontSize="12px" fontStyle="italic" mx="4px" textTransform="uppercase" style={{ display: 'inline', color: theme.colors.primary, fontWeight: '300', cursor: 'pointer'}}>
-											{t('Claim')}
-										</Text>
-										button above to get your {info?.tokenName}
-									</StyledTextItalic>
+									{BigNumber(totalCommit).gt(BigNumber(info.softCap)) && (
+										<StyledTextItalic mt="12px">
+											Please click the 
+											<Text onClick={openCommittedModal} fontSize="12px" fontStyle="italic" mx="4px" textTransform="uppercase" style={{ display: 'inline', color: theme.colors.primary, fontWeight: '300', cursor: 'pointer'}}>
+												{t('Claim')}
+											</Text>
+											button above to get your {info?.tokenName}
+										</StyledTextItalic>
+									)}
+								
 								</Box>
 							)}
          
