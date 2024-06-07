@@ -159,6 +159,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	const [totalCommitByUser, setTotalCommitByUser] = useState<number>(0)
 	const [currentCommit, setCurrentCommit] = useState<number>(0)
 	const [isCommitting, setIsCommitting] = useState<boolean>(false)
+	const [isApplying, setApplyWhitelist] = useState<boolean>(false)
 
   const { fetchWithCatchTxError } = useCatchTxError()
 	const { toastSuccess, toastError } = useToast()
@@ -225,7 +226,8 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 
 	const getConfig = async () => {
 		const _configInfo: ITierInfo = await _launchpadContract.current.read.getConfigInfo()
-		setConfigInfo({..._configInfo, maxCommitAmount: BigNumber(formatEther(_configInfo.maxCommitAmount)).toNumber(), maxBuyPerUser: formatEther(_configInfo.maxBuyPerUser), startCancel: BigNumber(_configInfo.startCancel).toNumber() * 1000, endCancel: BigNumber(_configInfo.endCancel).toNumber() * 1000})
+		const _percentCancel: any = await _launchpadContract.current.read.percentCancel()
+		setConfigInfo({..._configInfo, maxCommitAmount: BigNumber(formatEther(_configInfo.maxCommitAmount)).toNumber(), maxBuyPerUser: formatEther(_configInfo.maxBuyPerUser), startCancel: BigNumber(_configInfo.startCancel).toNumber() * 1000, endCancel: BigNumber(_configInfo.endCancel).toNumber() * 1000, percentCancel: BigNumber(formatEther(_percentCancel)).toNumber()})
 	}
 
 	const getTokenRate = async () => {
@@ -278,10 +280,17 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	}
 
 	const handleWhitelist = async () => {
-		const _res = await _launchpadContractWhitelist.current.write.addWhiteList()
-		if(_res) {
-			getUserCommitted(_launchpadContractWhitelist.current)
+		setApplyWhitelist(true)
+		try {
+			const res = await fetchWithCatchTxError(() => _launchpadContractWhitelist.current.write.addWhiteList())
+			if(res?.status) {
+				getUserCommitted(_launchpadContractWhitelist.current)
+			}
+			setApplyWhitelist(false)
+		}catch(ex) {
+			setApplyWhitelist(false)
 		}
+		setApplyWhitelist(false)
 	}
 
 	// const checkTier = async (_contract: any, phases: IPhase) => {
@@ -308,7 +317,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		const _now = Date.now()
 		forEach(info.phases, (item: IPhase) => {
 			const _contract = getLaunchpadContract(item.contractAddress, signer ?? undefined, chainId)
-			if(item.type === PHASES_TYPE.TIER && item.contractAddress.toLowerCase() === currentTier?.toLowerCase() && item.startTime > _now) {
+			if(item.type === PHASES_TYPE.TIER && item.contractAddress.toLowerCase() === currentTier?.toLowerCase()) {
 				_schedule.push(item)
 			}
 			if(item.type === PHASES_TYPE.WHITELIST && item.startTime > _now) {
@@ -424,7 +433,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 
 
 	useEffect(() => {
-		if(info?.phases.length > 0 && account && currentTier) {
+		if(info?.phases.length > 0 && account) {
 			checkSchedule()
 		}
 		if(info?.contractAddress?.length > 0) {
@@ -437,9 +446,10 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [info, signer, account, currentTier])
+	const maxCommitAmountByTier = userConfigInfo && userCommitInfo && BigNumber(userConfigInfo.maxBuyPerUser).minus(BigNumber(userCommitInfo?.u2uCommitted)) || 0
 
 	const handleCommitU2U = async () => {
-		if(!disableCommitU2U && BigNumber(amountCommit).gt(0) && configInfo?.maxCommitAmount && BigNumber(configInfo?.maxCommitAmount).gt(BigNumber(amountCommit))) {
+		if(!disableCommitU2U && BigNumber(amountCommit).gt(0) && maxCommitAmountByTier && BigNumber(maxCommitAmountByTier).gt(BigNumber(amountCommit))) {
 			try {
 				setIsCommitting(true)
 				const res = await fetchWithCatchTxError(() => _launchpadContract.current.write.commit({value: parseEther(amountCommit)}))
@@ -464,17 +474,16 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	}
 	
 	let disableCommitU2U = false
-	const maxCommitAmountByTier = userConfigInfo && userCommitInfo && BigNumber(userConfigInfo.maxBuyPerUser).minus(BigNumber(userCommitInfo?.u2uCommitted)) || 0
 	if(configInfo?.typeRound === PHASES_TYPE.TIER) {
-		if(currentPhase?.contractAddress.toLowerCase() !== currentTier?.toLowerCase() || amountCommit?.length === 0 || BigNumber(amountCommit).lte(0) || userConfigInfo && BigNumber(amountCommit).gt(maxCommitAmountByTier) || !(userConfigInfo && (userConfigInfo.start < Date.now() && userConfigInfo.end > Date.now())) ) {
+		const _now = Date.now()
+		if(currentPhase?.contractAddress.toLowerCase() !== currentTier?.toLowerCase() || amountCommit?.length === 0 || BigNumber(amountCommit).lte(0) || userConfigInfo && BigNumber(amountCommit).gt(maxCommitAmountByTier) || !(userConfigInfo && (userConfigInfo.start < _now && userConfigInfo.end > _now)) ) {
 			disableCommitU2U = true
 		}
 	}
 
-	if(!userConfigInfo?.start || (userConfigInfo?.typeRound === PHASES_TYPE.WHITELIST && !userCommitInfo?.isWhiteList)) {
+	if(!userConfigInfo?.start || (userConfigInfo?.typeRound === PHASES_TYPE.WHITELIST && !userCommitInfo?.isWhiteList) || !currentPhase || (currentPhase.type === PHASES_TYPE.WHITELIST && !userCommitInfo?.isWhiteList)) {
 		disableCommitU2U = true
 	}
-
 	
 
 	const scheduleOrder = refSchedule.current.sort((a: IPhase, b: IPhase) => (a.startTime - b.startTime) )
@@ -489,6 +498,8 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		}
 		return ''
 	}
+
+	const isShowMaximum = (configInfo?.typeRound === PHASES_TYPE.TIER && currentPhase?.contractAddress.toLowerCase() === currentTier?.toLowerCase()) || (userConfigInfo?.typeRound === PHASES_TYPE.WHITELIST && userCommitInfo?.isWhiteList)
 
   return (
     <>
@@ -593,13 +604,17 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 									</Flex>
 									<Box>
 										{userConfigInfo &&<StyledTextItalic>{t(`Estimate maximum %maxBuyPerUser% U2U to buy IDO in round buy %tier%.`, { maxBuyPerUser: userConfigInfo?.maxBuyPerUser, tier: userConfigInfo?.name })}</StyledTextItalic>}
-										<StyledTextItalic>{t('The snapshot will be ended at ')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>
-										<StyledTextItalic>
-											{t('Staking more to upgrade your tier. ')}
-											<Link fontSize="12px" fontStyle="italic" style={{ display: 'inline', fontWeight: '300', textDecoration: 'underline' }} href="/staking">
-												{t('Staking Now')}
-											</Link>
-										</StyledTextItalic>
+										{info?.snapshotTime > Date.now() && 
+											<>
+												<StyledTextItalic>{t('The snapshot will be ended at ')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>
+												<StyledTextItalic>
+													{t('Staking more to upgrade your tier. ')}
+													<Link fontSize="12px" fontStyle="italic" style={{ display: 'inline', fontWeight: '300', textDecoration: 'underline' }} href="/staking">
+														{t('Staking Now')}
+													</Link>
+												</StyledTextItalic>
+												</>
+											}
 										{/* {userConfigInfo && <StyledTextItalic>{t('Maximum %maxBuyPerUser% U2U to buy IDO in round buy %tier%. The snapshot process has ended at 2024/05/03 14:22:22 UTC.', {maxBuyPerUser: userConfigInfo?.maxBuyPerUser, tier: userConfigInfo?.name })}</StyledTextItalic>} */}
 									</Box>
 								</Box>
@@ -615,8 +630,12 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 								</Flex>
 								{/* && configWhitelistInfo && configWhitelistInfo?.endAddWhiteList > Date.now() */}
 								{account ? !userCommitInfo?.isWhiteList && (
-									<StyledButton className="button-hover" onClick={handleWhitelist}>
-										{t('Apply Now')}
+									<StyledButton className="button-hover" onClick={handleWhitelist} disabled={isApplying}>
+										{		
+										isApplying ?	
+											<Dots>Applying</Dots> : 
+											'Apply Now' 
+										}
 									</StyledButton>
 								) : (
 									<ConnectWalletButton/>
@@ -672,7 +691,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
                 {/* <StyledTextItalic textAlign="right" mt="8px">Estimate 1.2345 U2U, 18,000.000 {info?.tokenName}</StyledTextItalic> */}
                 {configInfo?.startCancel && (
 									<StyledTextItalic mt="12px">
-										Note: You can cancel your request buy {diffCancelTime()} from {configInfo?.startCancel ? formatDate(dayjs.unix(configInfo.startCancel).utc()) : '--'} - {configInfo.endCancel ? formatDate(dayjs.unix(configInfo.endCancel).utc()) : '--'} UTC. <span style={{ color: theme.colors.hover }}>5% fee</span> when canceling IDO orders.&nbsp;
+										Note: You can cancel your request buy {diffCancelTime()} from {configInfo?.startCancel ? formatDate(dayjs.unix(configInfo.startCancel/ 1000).utc()) : '--'} - {configInfo.endCancel ? formatDate(dayjs.unix(configInfo.endCancel/ 1000).utc()) : '--'} UTC. <span style={{ color: theme.colors.hover }}>{configInfo.percentCancel}% fee</span> when canceling IDO orders.&nbsp;
 										<StyledButtonText variant="text" onClick={openCommittedModal}  >
 											{t('Cancel buy IDO')}
 										</StyledButtonText>
@@ -688,6 +707,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 											onFocus={() => {setIsFocusInput(true)}}
 											onBlur={() => {setIsFocusInput(false)}}
 											onUserInput={handleInputAmount}
+											align='left'
 											placeholder="Enter amount U2U commit"
 										/>
 										{!account ? <ConnectWalletButton/> : 				
@@ -705,8 +725,8 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 										} 
 						
 									</Flex>
-									{userConfigInfo?.maxBuyPerUser && (
-										<Text color="textSubtle" fontSize="12px" fontStyle="italic" lineHeight="16px" mt="8px">{t('Maximum %maxCommitAmount% U2U', { maxCommitAmount: maxCommitAmountByTier.toString() })}</Text>
+									{maxCommitAmountByTier && BigNumber(maxCommitAmountByTier).lt(0) && (
+										<Text color="textSubtle" fontSize="12px" fontStyle="italic" lineHeight="16px" mt="8px">{t('Maximum %maxCommitAmount% U2U', { maxCommitAmount: isShowMaximum ? maxCommitAmountByTier.toString() : '0' })}</Text>
 									)}
 									{Date.now() > info?.saleEnd && (
 										<>

@@ -1,5 +1,5 @@
 import { useTranslation } from "@pancakeswap/localization"
-import { Box, Flex, Text } from "@pancakeswap/uikit"
+import { Box, Dots, Flex, Text } from "@pancakeswap/uikit"
 import { useEffect, useRef, useState } from "react"
 import { COUNTDOWN_TYPE, countdownDate } from "../helpers"
 
@@ -12,8 +12,10 @@ interface IProps {
 const CountdownTime = ({type, time, cb} : IProps) => {
   const { t } = useTranslation()
 	const refInterval = useRef<any>()
+	const refTimeout = useRef<any>()
 	const [timeCountdownArray, setTimeCountdownArray] = useState<string[]>([])
 	const [timeCountdown, setTimeCountdown] = useState<number |string | undefined>(0)
+	const [loading, setLoading] = useState<boolean>(false)
 
 
 	useEffect(() => {
@@ -23,6 +25,7 @@ const CountdownTime = ({type, time, cb} : IProps) => {
 		} else {
 			refInterval.current = countdownDate(time, setTimeCountdown)
 		}
+
 	}, [time, type])
 
 	useEffect(() => {
@@ -34,6 +37,13 @@ const CountdownTime = ({type, time, cb} : IProps) => {
 
 
 	useEffect(() => {
+		if(timeCountdown === 0) {
+			setLoading(true)
+			clearTimeout(refTimeout.current)
+			refTimeout.current = setTimeout(() => {
+				setLoading(false)
+			}, 1000)
+		}
 		if(timeCountdown === 0 && cb) {
 			setTimeCountdown(undefined)
 			if(cb) {
@@ -41,6 +51,7 @@ const CountdownTime = ({type, time, cb} : IProps) => {
 			}
 		}
 	}, [timeCountdown, cb])
+
 
 	return (
 		<>
@@ -66,11 +77,11 @@ const CountdownTime = ({type, time, cb} : IProps) => {
 					</Box>
 				</>
 			) : (
-				<Text m="auto" textAlign="right" fontSize={["20px", "20px", "20px", "24px", "28px", "28px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>To be announcement</Text>
+				<Text m="auto" textAlign="right" fontSize={["20px", "20px", "20px", "24px", "28px", "28px", "32px"]} fontWeight="600" lineHeight="1" color='hover'> {loading ? '' : 'To be announcement'} </Text>
 			)}
 		</Flex>
 		) : (
-			<>{timeCountdown || t('To be announcement')}</>
+			<>{ loading ? <Dots />  : timeCountdown || t('To be announcement')}</>
 		)}
 	</>
 	)

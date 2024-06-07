@@ -12,7 +12,8 @@ export interface ITierInfo {
   startCancel: number
   endCancel: number
   typeRound: string,
-	name?: string
+	name?: string,
+	percentCancel?: number
 
 }
 

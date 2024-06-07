@@ -2,8 +2,10 @@ import { useTranslation } from '@pancakeswap/localization'
 import { ArrowBackIcon, ArrowForwardIcon, AutoColumn, Box, Flex, ScanLink, Skeleton, Text } from '@pancakeswap/uikit'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import dayjs from 'dayjs'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { getBlockExploreLink } from 'utils'
 import { formatEther } from 'viem'
 import { formatDate } from 'views/CakeStaking/components/DataSet/format'
 import { Arrow, Break, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
@@ -77,6 +79,7 @@ export default function Transactions({info, account}) {
   const { t } = useTranslation()
   const [page, setPage] = useState(1)
 	const {data, isLoading} = useFetchTransactionHistory(account, info?.contractAddress, page)
+	const { chainId } = useActiveChainId()
 	const listData = data || []
   const disableNext = listData ? listData?.length === 0 || listData?.length < 10 : false
   return (
@@ -105,7 +108,7 @@ export default function Transactions({info, account}) {
 									<React.Fragment key={item.hash}>
 										<ResponsiveGrid >
 											<Flex>
-												<StyledScanLink href='/'>
+												<StyledScanLink href={getBlockExploreLink(item.hash, 'transaction', chainId)}>
 													<Text color='primary'>
 														{item.hash && truncateHash(item.hash, 20, 8)}
 													</Text>
