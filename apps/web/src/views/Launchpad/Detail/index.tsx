@@ -95,25 +95,32 @@ const StyledText = styled(Text)`
   font-family: 'Metuo', sans-serif;
   font-size: 36px;
   font-weight: 900;
-  line-height: 24px;
+  line-height: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
+  max-width: 360px;
   @media screen and (max-width: 1439px) {
     font-size: 32px;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
   }
   @media screen and (max-width: 1199px) {
-    margin-bottom: 16px;
+    font-size: 30px;
+    margin-bottom: 12px;
   }
   @media screen and (max-width: 991px) {
     font-size: 28px;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
+  }
+  @media screen and (max-width: 767px) {
+    font-size: 26px;
   }
   @media screen and (max-width: 575px) {
     font-size: 24px;
-    margin-bottom: 8px;
+  }
+  @media screen and (max-width: 424px) {
+    font-size: 22px;
   }
 `
 const StyledDot = styled(Box)`
@@ -473,7 +480,7 @@ const LaunchpadDetailPage = () => {
         </Flex>
       </StyledBanner>
       <Container>
-        <Flex my="16px" flexDirection={["column", "column", "row"]}>
+        <Flex my="16px" flexDirection={["column", "column", "column", "row"]}>
           <Flex alignItems="center" flex={1.5}>
             <StyledLogo>
               <Image src={detail?.projectImageThumbnail} alt=''/>
@@ -492,7 +499,7 @@ const LaunchpadDetailPage = () => {
                   color={detail?.status && getColorLaunchpadByStatus(detail?.status, theme)}
                 >
                   {
-                   detail?.status && getStatusNameLaunchpad(detail.status)
+                    detail?.status && getStatusNameLaunchpad(detail.status)
                   }
                 </Text>
               </Flex>
@@ -505,9 +512,8 @@ const LaunchpadDetailPage = () => {
             justifyContent="center"
             flexDirection="column"
           >
-            <Text color="textSubtle" textAlign="center" fontSize="14px" fontWeight="600" lineHeight="17px" mb={["6px", "6px", "8px", "8px", "10px", "10px", "12px"]}>{isCountdownEnd ? t('Sale end in') : t('Sale start in')}</Text>
-						{showCountdown ? <CountdownTime type={COUNTDOWN_TYPE.ARRAY} time={isCountdownEnd ? detail?.saleEnd : detail?.saleStart}/> : 	<Text color="primary" fontSize="24px" fontWeight="600" lineHeight="30px">To be announcement</Text>}
-   
+            <Text color="primary" textAlign="center" fontSize="14px" fontWeight="600" lineHeight="17px" mb={["6px", "6px", "8px", "8px", "10px", "10px", "12px"]}>{isCountdownEnd ? t('Sale end in') : t('Sale start in')}</Text>
+						{showCountdown ? <CountdownTime type={COUNTDOWN_TYPE.ARRAY} time={isCountdownEnd ? detail?.saleEnd : detail?.saleStart}/> : 	<Text color="hover" fontSize={["16px", "16px", "20px", "20px", "24px"]} fontWeight="600" lineHeight={["22px", "22px", "26px", "26px", "30px"]}>To be announcement</Text>}
           </Flex>
         </Flex>
         <Flex flexDirection={["column", "column", "column", "column", "row"]} mb="32px">
