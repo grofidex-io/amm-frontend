@@ -56,6 +56,7 @@ export interface IPhase {
 	imageUrl: string | null,
 	contractAddress: Address,
 	type: string
+	minStake: number
 }
 
 export interface ILaunchpadDetail {
