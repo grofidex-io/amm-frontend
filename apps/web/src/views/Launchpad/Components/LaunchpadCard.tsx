@@ -282,7 +282,7 @@ const LaunchpadCard = ({ item }: LaunchpadProps) => {
             </Flex>
             <Flex alignItems="center" justifyContent="space-between" mb="10px">
               <Flex>
-                <Text fontSize="14px" fontWeight="700" lineHeight="24px">{formatNumber(item.totalRaise)}</Text>
+                <Text fontSize="14px" fontWeight="700" lineHeight="24px">{formatNumber(totalCommit, 0, 6)}</Text>
                 <Text color='textSubtle' fontSize="10px" lineHeight="24px" ml="6px">U2U Raised</Text>
               </Flex>
               <Text color='textSubtle' fontSize="14px" fontWeight="600">{formatNumber(item?.totalRaise ? (totalCommit / item?.totalRaise) * 100 : 0, 0, 2) }%</Text>

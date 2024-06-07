@@ -374,7 +374,7 @@ const LaunchpadDetailPage = () => {
 		let _startTime = 0
 		let _endTime = 0
 		forEach(detail?.phases, (item: IPhase) => {
-			if(item.type === PHASES_TYPE.WHITELIST) {
+			if(item.type === PHASES_TYPE.APPLY_WHITELIST) {
 				if(_startTime === 0) {
 					_startTime = item.startTime
 				}
@@ -636,7 +636,7 @@ const LaunchpadDetailPage = () => {
 									<StyledContent style={{ background: `${isComplete(item.endTime) ? theme.colors.backgroundItem : isInProgress(item) ? theme.colors.primary : theme.colors.backgroundAlt}` }}>
 										<img style={{ filter: `${isComplete(item.endTime) && 'grayscale(1)'}` }} src={item.imageUrl || `/images/launchpad/icon-step-01.svg`} alt="" />
 										<Text style={{ color: `${isComplete(item.endTime) ? theme.colors.hover : isInProgress(item) ? theme.colors.black : theme.colors.primary}` }} fontSize="14px" fontWeight="600" lineHeight="17px" mt="8px">{item.name}</Text>
-										<Text style={{ color: `${isComplete(item.endTime) ? theme.colors.textSubtle : isInProgress(item) ? theme.colors.black : theme.colors.hover}` }} fontSize="11px" fontWeight="400" lineHeight="13px" mt="4px">{formatDate(dayjs.unix(Math.floor(item.startTime/ 1000)).utc())}</Text>
+										<Text style={{ color: `${isComplete(item.endTime) ? theme.colors.textSubtle : isInProgress(item) ? theme.colors.black : theme.colors.hover}` }} fontSize="11px" fontWeight="400" lineHeight="13px" mt="4px" minHeight={13}>{item.startTime ? formatDate(dayjs.unix(Math.floor(item.startTime/ 1000)).utc(), 'MMM D YYYY HH:mm:ss') : ''}</Text>
 									</StyledContent>
 									<svg style={{ color: `${isComplete(item.endTime) ? theme.colors.backgroundItem : isInProgress(item) ? theme.colors.primary : theme.colors.backgroundAlt}` }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 132" fill="none">
 										<g mask="url(#mask0_3011_2807)">
