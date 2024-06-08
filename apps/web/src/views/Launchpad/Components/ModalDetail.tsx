@@ -181,7 +181,7 @@ export default function ModalDetail({
 											<StyledText>{item.roundType === PHASES_TYPE.TIER && formatNumber(Number(giveBackAmount), 0, 6)}</StyledText>
 											<StyledText>{ endTime ? `${formatNumber(BigNumber(formatEther(item.u2uAmount)).toNumber() * rate, 0, 6)} ${tokenName}`: null } </StyledText>
 											<Box style={{ textAlign: 'center' }}>
-												{(item.startCancel * 1000) < Date.now() && (item.endCancel * 1000) > Date.now() && (
+												{((item.startCancel * 1000) < Date.now() && (item.endCancel * 1000) > Date.now()) && (
 													<StyledButtonCancel variant="cancel" onClick={() => handleCancel(item)}>{t('Cancel')}</StyledButtonCancel>
 												)}
 											</Box>

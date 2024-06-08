@@ -490,8 +490,12 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [info, signer, account, currentTier])
+	const poolAvailable = Number(configInfo?.maxCommitAmount) - currentCommit
 
-	const maxCommitAmountByTier = (userConfigInfo || configInfo) && userCommitInfo && (currentPhase?.type === PHASES_TYPE.TIER ? userConfigInfo && BigNumber(userConfigInfo.maxBuyPerUser).minus(BigNumber(userCommitInfo?.u2uCommitted)) :  configInfo && BigNumber(configInfo.maxBuyPerUser).minus(BigNumber(userCommitInfo?.u2uCommitted))) || 0
+	let maxCommitAmountByTier = (userConfigInfo || configInfo) && userCommitInfo && (currentPhase?.type === PHASES_TYPE.TIER ? userConfigInfo && BigNumber(userConfigInfo.maxBuyPerUser).minus(BigNumber(userCommitInfo?.u2uCommitted)) :  configInfo && BigNumber(configInfo.maxBuyPerUser).minus(BigNumber(userCommitInfo?.u2uCommitted))) || 0
+	if(BigNumber(poolAvailable).lte(maxCommitAmountByTier)) {
+		maxCommitAmountByTier = poolAvailable
+	}
 
 	const handleCommitU2U = async () => {
 		if(!disableCommitU2U && BigNumber(amountCommit).gt(0) && maxCommitAmountByTier && BigNumber(maxCommitAmountByTier).gt(BigNumber(amountCommit))) {
@@ -502,6 +506,9 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 					getTotalUserCommitted()
 					setAmountCommit('')
 					getUserCommitted()
+					if(currentPhase?.type === PHASES_TYPE.WHITELIST || currentPhase?.type === PHASES_TYPE.COMMUNITY) {
+						getCurrentCommit()
+					}
 					toastSuccess(
 						t('Success!'),
 						<ToastDescriptionWithTx txHash={res.transactionHash}>
@@ -718,7 +725,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 									{(currentPhase?.type === PHASES_TYPE.WHITELIST || currentPhase?.type === PHASES_TYPE.COMMUNITY) && (
 										<StyledContent maxWidth="340px" m="auto" mt={["12px", "12px", "16px", "16px", "20px", "20px", "24px"]}>
 											<span style={{ color: theme.colors.hover }}>FCFS: </span>
-											First come first serve. Whitelist pool is available ${formatNumber(Number(configInfo?.maxCommitAmount) - currentCommit, 0, 6)} U2U ~ {formatNumber((Number(configInfo?.maxCommitAmount) - currentCommit) * rate, 0, 6)} {info?.tokenName}.
+											First come first serve. {currentPhase?.type === PHASES_TYPE.WHITELIST ? 'Whitelist' : 'Community'} pool is available ${formatNumber(Number(configInfo?.maxCommitAmount) - currentCommit, 0, 6)} U2U ~ {formatNumber((Number(configInfo?.maxCommitAmount) - currentCommit) * rate, 0, 6)} {info?.tokenName}.
 										</StyledContent>
 									 )}
 								</Box>
@@ -777,7 +784,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 										} 
 						
 									</Flex>
-									{(maxCommitAmountByTier && BigNumber(maxCommitAmountByTier).gt(0)) ? (
+									{(BigNumber(maxCommitAmountByTier).gte(0)) ? (
 										<Text color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" lineHeight="16px" mt="8px">{t('Maximum %maxCommitAmount% U2U', { maxCommitAmount: isShowMaximum ? maxCommitAmountByTier.toString() : '0' })}</Text>
 									) : ''}
 									{Date.now() > info?.saleEnd && (
