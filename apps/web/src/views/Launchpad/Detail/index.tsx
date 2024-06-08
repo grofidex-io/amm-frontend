@@ -514,7 +514,7 @@ const LaunchpadDetailPage = () => {
         <Flex my="16px" flexDirection={["column", "column", "column", "row"]}>
           <Flex alignItems="center" flex={1.5}>
             <StyledLogo>
-              <Image src={detail?.projectImageThumbnail} alt=''/>
+              <Image src={detail?.tokenLogo} alt=''/>
             </StyledLogo>
             <Box overflow="hidden" ml={["16px", "16px", "20px", "20px", "24px"]}>
               <StyledTitle >{detail?.projectName}</StyledTitle>
