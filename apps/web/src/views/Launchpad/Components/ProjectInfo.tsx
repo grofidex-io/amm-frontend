@@ -343,7 +343,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 			if(item.type === PHASES_TYPE.TIER && item.contractAddress.toLowerCase() === currentTier?.toLowerCase()) {
 				_schedule.push(item)
 			}
-			if(item.type === PHASES_TYPE.WHITELIST && item.startTime > _now) {
+			if(item.type === PHASES_TYPE.WHITELIST) {
 				checkWhiteList(_contract, item)
 			}
 			if(item.type === PHASES_TYPE.COMMUNITY) {
