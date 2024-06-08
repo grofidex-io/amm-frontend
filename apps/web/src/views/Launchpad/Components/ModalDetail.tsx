@@ -81,7 +81,7 @@ export default function ModalDetail({
 
 	const getGiveBack = async () => {
 		try {
-			if(launchpadContract.current.account) { 
+			if(launchpadContract.current?.account) { 
 				const res = await launchpadContract.current.read.getGiveBack([account])
 				setGiveBackAmount(formatEther(res))
 			}
@@ -139,7 +139,7 @@ export default function ModalDetail({
 					launchpadContract.current = getLaunchpadContract(item.roundAddress, signer, chainId)
 				}
 			})
-			if(launchpadContract.current.account) {
+			if(launchpadContract.current?.account) {
 				getGiveBack()
 			}
 		}
