@@ -343,7 +343,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 			if(item.type === PHASES_TYPE.TIER && item.contractAddress.toLowerCase() === currentTier?.toLowerCase()) {
 				_schedule.push(item)
 			}
-			if(item.type === PHASES_TYPE.WHITELIST && item.startTime > _now) {
+			if(item.type === PHASES_TYPE.WHITELIST) {
 				checkWhiteList(_contract, item)
 			}
 			if(item.type === PHASES_TYPE.COMMUNITY) {
@@ -655,7 +655,12 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 									</Box>
 								</Box>
              <Box mb={["20px", "20px", "24px"]}>
-							{isWhitelistTime() ? (
+							{!isWhitelistTime() && !userCommitInfo?.isWhiteList ?  (
+								<Flex alignItems="center">
+									<Image style={{ margin: 'unset', width: '24px', height: '24px' }} src="/images/launchpad/icon-error.svg" />
+									<Text color="failure" maxWidth="290px" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="20px" ml="12px">{t(`Apply whitelist has been expired. You don’t apply whitelist`)}</Text>
+								</Flex>
+							) : (
 								<>
 								<Flex mb="12px">
 									<Text color="textSubtle" fontSize={["16px", "16px", "16px", "16px", "16px", "16px", "16px", "17px"]} fontWeight="600" mr="10px">{t('Apply Whitlelist')}</Text>
@@ -687,11 +692,6 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 									<Text fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px" style={{ color: '#d6ddd0' }}>{`${timeWhiteList?.startTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.startTime/ 1000)).utc())} - ${timeWhiteList?.endTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.endTime/ 1000)).utc())}`}</Text>
 								</Box>
 							</>
-							): (
-								<Flex alignItems="center">
-									<Image style={{ margin: 'unset', width: '24px', height: '24px' }} src="/images/launchpad/icon-error.svg" />
-									<Text color="failure" maxWidth="290px" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="20px" ml="12px">{t(`Apply whitelist has been expired. You don’t apply whitelist`)}</Text>
-								</Flex>
 							)}
 					 		</Box>
 							{currentPhaseOrNext && (
