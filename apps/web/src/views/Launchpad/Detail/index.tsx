@@ -527,7 +527,7 @@ const LaunchpadDetailPage = () => {
               <Image src={detail?.tokenLogo} alt=''/>
             </StyledLogo>
             <Box overflow="hidden" ml={["16px", "16px", "20px", "20px", "24px"]}>
-              <StyledTitle >{detail?.projectName}</StyledTitle>
+              <StyledTitle title={detail?.projectName}>{detail?.projectName}</StyledTitle>
               <Flex alignItems="center">
                 <StyledDot
                   background={detail?.status && getColorLaunchpadByStatus(detail?.status, theme)}

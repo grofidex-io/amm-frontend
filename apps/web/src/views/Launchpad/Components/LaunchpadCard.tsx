@@ -26,18 +26,18 @@ const CardHeader = styled(Box)`
   position: relative;
   background: ${({ theme }) => theme.colors.backgroundPage};
   // aspect-ratio: 16/9;
-  min-height: 200px;
+  height: 200px;
   @media screen and (max-width: 1439px) {
-    min-height: 190px;
+    height: 190px;
   }
   @media screen and (max-width: 1199px) {
-    min-height: 180px;
+    height: 180px;
   }
   @media screen and (max-width: 991px) {
-    min-height: 170px;
+    height: 170px;
   }
   @media screen and (max-width: 575px) {
-    min-height: 160px;
+    height: 160px;
   }
   &:before {
     content: "";
@@ -57,7 +57,23 @@ const CardHeader = styled(Box)`
   }
 `
 const CardBody = styled.div`
+  --space: 200px;
   padding: 16px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - var(--space));
+  @media screen and (max-width: 1439px) {
+    --space: 190px;
+  }
+  @media screen and (max-width: 1199px) {
+    --space: 180px;
+  }
+  @media screen and (max-width: 991px) {
+    --space: 170px;
+  }
+  @media screen and (max-width: 575px) {
+    --space: 160px;
+  }
 `
 const Image = styled.img`
   position: absolute;
@@ -179,6 +195,12 @@ const IconUser = styled.div`
     width: var(--size);
     height: var(--size);
   }
+`
+const StyledTextInfo = styled(Text)`
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
 `
 
 type LaunchpadProps ={
@@ -311,35 +333,38 @@ const LaunchpadCard = ({ item }: LaunchpadProps) => {
             </StyledButton>
           </NextLink>
         </Flex>
-        <Box px={["0", "0", "16px", "16px", "0", "0", "16px"]} p="16px">
-          <Text minHeight={50} fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="400" mb="16px" color='textSubtle'>{item.shortDescription}</Text>
-          <Flex justifyContent="space-between" alignItems="center" mb="12px">
-            <Text fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="20px" color='textSubtle'>{t('Sale price')}</Text>
-            <Text fontSize={["15px", "15px", "16px", "16px", "15px", "16px", "17px"]} fontWeight="700" lineHeight="20px" color='text'>1 U2U = {item.priceToken} {item.tokenName}</Text>
-          </Flex>
-          <Flex justifyContent="space-between" alignItems="center">
-            <Text fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="20px" color='textSubtle'>{t('Total Raise')}</Text>
-            <Text fontSize={["15px", "15px", "16px", "16px", "15px", "16px", "17px"]} fontWeight="700" lineHeight="20px" color='text'>{formatNumber(item.totalRaise)} U2U</Text>
-          </Flex>
-        </Box>
+        <Flex flexDirection="column" height="100%" px={["0", "0", "16px", "16px", "0", "0", "16px"]} p="16px">
+          <StyledTextInfo fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="400" mb="16px" color='textSubtle'>{item.shortDescription}</StyledTextInfo>
+          <Box mt="auto">
+            <Flex justifyContent="space-between" mb="12px">
+              <Text minWidth="68px" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="20px" color='textSubtle'>{t('Sale price')}</Text>
+              <Text ml="12px" textAlign="right" fontSize={["15px", "15px", "16px", "16px", "15px", "16px", "17px"]} fontWeight="700" lineHeight="20px" color='text'>1 U2U = {item.priceToken} {item.tokenName}</Text>
+            </Flex>
+            <Flex justifyContent="space-between">
+              <Text minWidth="68px" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="20px" color='textSubtle'>{t('Total Raise')}</Text>
+              <Text ml="12px" textAlign="right" fontSize={["15px", "15px", "16px", "16px", "15px", "16px", "17px"]} fontWeight="700" lineHeight="20px" color='text'>{formatNumber(item.totalRaise)} U2U</Text>
+            </Flex>
+          </Box>
+        </Flex>
         {item.status === LAUNCHPAD_STATUS.UPCOMING ? (
-          <Flex 
-					borderRadius="8px"
-					flexDirection="column"
-					alignItems="center"
-					justifyContent="center"
-					className='border-neubrutal'
-					p={["27px 12px", "27px 16px", "27px 16px", "27px 16px", "27px 16px", "27px 16px", "30px 16px"]}
-					style={{ background: '#445434' }}
+          <Flex
+            mt="auto"
+            borderRadius="8px"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            className='border-neubrutal'
+            p={["27px 12px", "27px 16px", "27px 16px", "27px 16px", "27px 16px", "27px 16px", "30px 16px"]}
+            style={{ background: '#445434' }}
 					>
             <Text style={{ color: theme.colors.hover }} fontSize="16px" fontWeight="600" lineHeight="20px" mb="8px">{t('Sale start in')}</Text>
             <Text minWidth={250} textAlign="center" color='secondary' fontSize={["24px", "24px", "24px", "25px", "24px", "24px", "28px"]} fontWeight="600" style={{ lineHeight: 'calc(34/28)' }}>{ item.saleStart ? <CountdownTime type={COUNTDOWN_TYPE.STRING} time={timeCountdown}/> : t('To be announced')}</Text>
           </Flex>
         ) : (
-          <Box className='border-neubrutal' borderRadius="8px" p={["16px 12px", "16px 12px", "16px 12px", "16px 12px", "16px 12px", "16px 12px","20px 16px"]}>
+          <Box mt="auto" className='border-neubrutal' borderRadius="8px" p={["16px 12px", "16px 12px", "16px 12px", "16px 12px", "16px 12px", "16px 12px","20px 16px"]}>
             <Flex alignItems="center" justifyContent="space-between" mb="20px">
-              <Text fontFamily="'Metuo', sans-serif" fontSize="18px" fontWeight="900" lineHeight="1">{t('Progress')}</Text>
-              <Text textAlign="right" minWidth={145} fontSize={["14px", "16px", "16px", "16px", "16px", "14px", "16px"]} lineHeight="1">
+              <Text fontFamily="'Metuo', sans-serif" fontSize={["16px", "18px", "18px", "18px", "16px", "16px", "18px"]} fontWeight="900" lineHeight="1">{t('Progress')}</Text>
+              <Text textAlign="right" minWidth={145} fontSize={["14px", "16px", "16px", "16px", "14px", "14px", "16px"]} lineHeight="1">
 								<CountdownTime type={COUNTDOWN_TYPE.STRING} time={timeCountdown}/>
 							</Text>
             </Flex>
