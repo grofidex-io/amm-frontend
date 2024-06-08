@@ -273,8 +273,8 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		const contract = _contract || _launchpadContract.current
 		const _userWhiteList: any = await contract.read.userCommit([account])
 		setUserCommitInfo({
-			u2uCommitted: BigNumber(_userWhiteList[0]).toNumber(),
-			giveBackAmount: BigNumber(_userWhiteList[1]).toNumber(),
+			u2uCommitted: BigNumber(formatEther(_userWhiteList[0])).toNumber(),
+			giveBackAmount: BigNumber(formatEther(_userWhiteList[1])).toNumber(),
 			isWhiteList: _userWhiteList[2],
 		})
 	}
@@ -335,9 +335,9 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	}
 
 	const checkSchedule = () => {
+
 		refSchedule.current = []
 		const _schedule: any = []
-		const _now = Date.now()
 		forEach(info.phases, (item: IPhase) => {
 			const _contract = getLaunchpadContract(item.contractAddress, signer ?? undefined, chainId)
 			if(item.type === PHASES_TYPE.TIER && item.contractAddress.toLowerCase() === currentTier?.toLowerCase()) {
@@ -464,9 +464,18 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 
 
 	useEffect(() => {
+		if(!account) {
+			setTotalCommitByUser(0)
+			setUserConfigInfo(null)
+			refSchedule.current = []
+		}
+
 		if(info?.phases.length > 0 && account) {
+			refSchedule.current = []
 			checkSchedule()
 		}
+
+
 		if(info?.contractAddress?.length > 0) {
 			launchpadManagerContract.current = getLaunchpadManagerContract(info.contractAddress, signer ?? undefined, chainId )
 			if(launchpadManagerContract.current.account) {
@@ -482,7 +491,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [info, signer, account, currentTier])
 
-	const maxCommitAmountByTier = userConfigInfo && userCommitInfo && BigNumber(userConfigInfo.maxBuyPerUser).minus(BigNumber(userCommitInfo?.u2uCommitted)) || 0
+	const maxCommitAmountByTier = (userConfigInfo || configInfo) && userCommitInfo && (currentPhase?.type === PHASES_TYPE.TIER ? userConfigInfo && BigNumber(userConfigInfo.maxBuyPerUser).minus(BigNumber(userCommitInfo?.u2uCommitted)) :  configInfo && BigNumber(configInfo.maxBuyPerUser).minus(BigNumber(userCommitInfo?.u2uCommitted))) || 0
 
 	const handleCommitU2U = async () => {
 		if(!disableCommitU2U && BigNumber(amountCommit).gt(0) && maxCommitAmountByTier && BigNumber(maxCommitAmountByTier).gt(BigNumber(amountCommit))) {
@@ -492,6 +501,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 				if(res?.status) {
 					getTotalUserCommitted()
 					setAmountCommit('')
+					getUserCommitted()
 					toastSuccess(
 						t('Success!'),
 						<ToastDescriptionWithTx txHash={res.transactionHash}>
@@ -512,9 +522,12 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	let disableCommitU2U = false
 	if(configInfo?.typeRound === PHASES_TYPE.TIER) {
 		const _now = Date.now()
-		if(currentPhase?.contractAddress.toLowerCase() !== currentTier?.toLowerCase() || amountCommit?.length === 0 || BigNumber(amountCommit).lte(0) || userConfigInfo && BigNumber(amountCommit).gt(maxCommitAmountByTier) || !(userConfigInfo && (userConfigInfo.start < _now && userConfigInfo.end > _now)) ) {
+		if(currentPhase?.contractAddress.toLowerCase() !== currentTier?.toLowerCase() || amountCommit?.length === 0 || BigNumber(amountCommit).lte(0) || !(userConfigInfo && (userConfigInfo.start < _now && userConfigInfo.end > _now)) ) {
 			disableCommitU2U = true
 		}
+	}
+	if(BigNumber(amountCommit).gt(maxCommitAmountByTier)) {
+		disableCommitU2U = true
 	}
 
 	if(!userConfigInfo?.start || (userConfigInfo?.typeRound === PHASES_TYPE.WHITELIST && !userCommitInfo?.isWhiteList) || !currentPhase || (currentPhase.type === PHASES_TYPE.WHITELIST && !userCommitInfo?.isWhiteList)) {
@@ -535,7 +548,8 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		return ''
 	}
 
-	const isShowMaximum = (configInfo?.typeRound === PHASES_TYPE.TIER && currentPhase?.contractAddress.toLowerCase() === currentTier?.toLowerCase()) || (userConfigInfo?.typeRound === PHASES_TYPE.WHITELIST && userCommitInfo?.isWhiteList)
+	const isShowMaximum = ( currentPhase?.type === PHASES_TYPE.TIER && currentPhase?.contractAddress.toLowerCase() === currentTier?.toLowerCase()) || (userConfigInfo?.typeRound === PHASES_TYPE.WHITELIST && userCommitInfo?.isWhiteList) || currentPhase?.type === PHASES_TYPE.WHITELIST || currentPhase?.type === PHASES_TYPE.COMMUNITY 
+	
 
   return (
     <>
@@ -636,7 +650,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 									</Flex>
 									<Flex alignItems="flex-end" mb="12px">
 										<IconTier src={account ? '/images/launchpad/icon-tier-1.svg' : '/images/launchpad/icon-tier-starter.svg'} />
-										<StyledText ml="12px" style={{ fontSize: '20px', lineHeight: '24px' }}>{userConfigInfo?.name || 'Starter'}</StyledText>
+										<StyledText ml="12px" style={{ fontSize: '20px', lineHeight: '24px' }}>{account && userConfigInfo?.name || 'Starter'}</StyledText>
 									</Flex>
 									<Box>
 										{userConfigInfo &&<StyledTextItalic>{t(`Estimate maximum %maxBuyPerUser% U2U to buy IDO in round buy %tier%.`, { maxBuyPerUser: userConfigInfo?.maxBuyPerUser, tier: userConfigInfo?.name })}</StyledTextItalic>}
@@ -701,7 +715,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 										<CountdownTime type={COUNTDOWN_TYPE.STRING} time={timeCountdown} cb={recheckPhase}/>
 									</Text>
 									{/* <Text color="primary" fontSize="24px" fontWeight="600" lineHeight="30px">{timeCountdown || t('To be announcement')}</Text> */}
-									{currentPhase?.type === PHASES_TYPE.WHITELIST || currentPhase?.type === PHASES_TYPE.COMMUNITY && (
+									{(currentPhase?.type === PHASES_TYPE.WHITELIST || currentPhase?.type === PHASES_TYPE.COMMUNITY) && (
 										<StyledContent maxWidth="340px" m="auto" mt={["12px", "12px", "16px", "16px", "20px", "20px", "24px"]}>
 											<span style={{ color: theme.colors.hover }}>FCFS: </span>
 											First come first serve. Whitelist pool is available ${formatNumber(Number(configInfo?.maxCommitAmount) - currentCommit, 0, 6)} U2U ~ {formatNumber((Number(configInfo?.maxCommitAmount) - currentCommit) * rate, 0, 6)} {info?.tokenName}.
@@ -763,7 +777,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 										} 
 						
 									</Flex>
-									{maxCommitAmountByTier && BigNumber(maxCommitAmountByTier).lt(0) ? (
+									{(maxCommitAmountByTier && BigNumber(maxCommitAmountByTier).gt(0)) ? (
 										<Text color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" lineHeight="16px" mt="8px">{t('Maximum %maxCommitAmount% U2U', { maxCommitAmount: isShowMaximum ? maxCommitAmountByTier.toString() : '0' })}</Text>
 									) : ''}
 									{Date.now() > info?.saleEnd && (
