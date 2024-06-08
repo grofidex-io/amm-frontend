@@ -182,6 +182,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	const [currentCommit, setCurrentCommit] = useState<number>(0)
 	const [isCommitting, setIsCommitting] = useState<boolean>(false)
 	const [isApplying, setApplyWhitelist] = useState<boolean>(false)
+	const [totalGiveback, setTotalGiveback] = useState<number>(0) 
 
   const { fetchWithCatchTxError } = useCatchTxError()
 	const { toastSuccess, toastError } = useToast()
@@ -355,6 +356,14 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		}
 	}
 
+	const getGiveBack = async () => {
+		const _contract = getLaunchpadContract(currentTier, signer ?? undefined, chainId)
+		const _giveback: any = await _contract.read.getGiveBack([account])
+		if(_giveback) {
+			setTotalGiveback(BigNumber(formatEther(_giveback)).toNumber())
+		}
+	}
+
 	const [openCommittedModal] = useModal(
 		<ModalDetail
 			tokenName={info?.tokenName}
@@ -466,8 +475,13 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 			}
 		}
 
+		if(currentTier && account) {
+			getGiveBack()
+		}
+
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [info, signer, account, currentTier])
+
 	const maxCommitAmountByTier = userConfigInfo && userCommitInfo && BigNumber(userConfigInfo.maxBuyPerUser).minus(BigNumber(userCommitInfo?.u2uCommitted)) || 0
 
 	const handleCommitU2U = async () => {
@@ -708,9 +722,11 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
                 </Flex>
                 <Flex alignItems="center" justifyContent="space-between">
                   <Text color="text" fontSize="24px" fontWeight="700" lineHeight="32px">{formatNumber(totalCommitByUser, 2, 6)} U2U</Text>
-                  <StyledButton disabled={BigNumber(totalCommitByUser).lte(0)} onClick={openCommittedModal} className="button-hover">{t('Claim')}</StyledButton>
+                  {(totalGiveback || (info?.saleEnd < Date.now() && BigNumber(totalCommitByUser).gt(0))) && (<StyledButton disabled={totalGiveback < 0} onClick={openCommittedModal} className="button-hover">{t('Claim')}</StyledButton>)}
                 </Flex>
-                {/* <StyledTextItalic textAlign="right" mt="8px">Estimate 1.2345 U2U, 18,000.000 {info?.tokenName}</StyledTextItalic> */}
+                { (totalGiveback || (info?.saleEnd < Date.now() && BigNumber(totalCommitByUser).gt(0))) && (
+									<StyledTextItalic textAlign="right" mt="8px">Estimate {formatNumber(totalCommitByUser + totalGiveback, 0, 6)} U2U{ info?.saleEnd < Date.now() ? `, ${formatNumber(totalCommitByUser * rate, 0, 6)} ${info?.tokenName}` : '' } </StyledTextItalic>
+								) }
                 {configInfo?.startCancel && (
 									<StyledTextItalic mt="12px">
 										Note: You can cancel your request buy {diffCancelTime()} from {configInfo?.startCancel ? formatDate(dayjs.unix(configInfo.startCancel/ 1000).utc()) : '--'} - {configInfo.endCancel ? formatDate(dayjs.unix(configInfo.endCancel/ 1000).utc()) : '--'} UTC. <span style={{ color: theme.colors.hover }}>{configInfo.percentCancel}% fee</span> when canceling IDO orders.&nbsp;
