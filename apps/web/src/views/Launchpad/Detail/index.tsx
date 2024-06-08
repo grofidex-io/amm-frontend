@@ -472,9 +472,12 @@ const LaunchpadDetailPage = () => {
 	}, [])
 
 	const isComplete = (_item: IPhase) => {
-		const _now = Date.now()
-		if(_now > _item.startTime && _item.contractAddress !== currentPhase.current) {
-			return true
+		if(_item.type !== PHASES_TYPE.NONE) {
+			const _now = Date.now()
+			if(_now > _item.startTime && _item.contractAddress !== currentPhase.current) {
+				return true
+			}
+			return false
 		}
 		return false
 	}
@@ -485,6 +488,13 @@ const LaunchpadDetailPage = () => {
 		}
 		return false
 	}
+
+	const isUpComingOrFinish = (_item: IPhase) => {
+		if((!currentPhase.current || currentPhase.current?.length === 0) && (_item.endTime > Date.now() && Date.now() > _item.startTime) && _item.type === PHASES_TYPE.NONE) {
+			return true
+		}
+		return false
+	} 
 
 	const isCountdownEnd = detail?.saleEnd && detail?.saleEnd > Date.now()
 
@@ -593,6 +603,14 @@ const LaunchpadDetailPage = () => {
               <StyledListTitle>{t('Snapshot time')}</StyledListTitle>
               <StyledListText>{detail?.snapshotTime && formatDate(dayjs.unix(Math.floor(detail.snapshotTime/ 1000)).utc())} UTC</StyledListText>
             </Flex>
+						<Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
+              <StyledListTitle>{t('Sale Start')}</StyledListTitle>
+              <StyledListText>{detail?.saleStart && formatDate(dayjs.unix(Math.floor(detail.saleStart/ 1000)).utc())} UTC</StyledListText>
+            </Flex>
+            <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
+              <StyledListTitle>{t('Sale End')}</StyledListTitle>
+              <StyledListText>{detail?.saleEnd && formatDate(dayjs.unix(Math.floor(detail.saleEnd/ 1000)).utc())} UTC</StyledListText>
+            </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Start Apply Whitelist')}</StyledListTitle>
               <StyledListText>{timeWhiteList?.startTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.startTime/ 1000)).utc())} UTC</StyledListText>
@@ -601,14 +619,7 @@ const LaunchpadDetailPage = () => {
               <StyledListTitle>{t('End Apply Whitelist')}</StyledListTitle>
               <StyledListText>{timeWhiteList?.endTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.endTime/ 1000)).utc())} UTC</StyledListText>
             </Flex>
-            <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
-              <StyledListTitle>{t('Sale Start')}</StyledListTitle>
-              <StyledListText>{detail?.saleStart && formatDate(dayjs.unix(Math.floor(detail.saleStart/ 1000)).utc())} UTC</StyledListText>
-            </Flex>
-            <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
-              <StyledListTitle>{t('Sale End')}</StyledListTitle>
-              <StyledListText>{detail?.saleEnd && formatDate(dayjs.unix(Math.floor(detail.saleEnd/ 1000)).utc())} UTC</StyledListText>
-            </Flex>
+    
           </StyledNeubrutal>
           <Box style={{ flex: "2" }} ml={["0", "0", "0", "0", "16px"]} mt={["16px", "16px", "16px", "16px", "0"]}>
             <StyledNeubrutal  p={["16px", "16px", "20px", "20px", "24px"]}>
@@ -618,9 +629,9 @@ const LaunchpadDetailPage = () => {
                   <Text fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "16px"]} fontWeight="700" lineHeight="24px">{formatNumber(totalCommit, 0, 6)}</Text>
                   <Text color='textSubtle' fontSize={["10px", "10px", "10px", "10px", "10px", "10px", "10px", "12px"]} lineHeight="24px" ml="6px">U2U Raised</Text>
                 </Flex>
-                <Text color='textSubtle' fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "16px"]} fontWeight="600">{formatNumber(detail?.totalRaise ? (totalCommit / detail?.totalRaise) * 100 : 0, 0, 2) }%</Text>
+                <Text color='textSubtle' fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "16px"]} fontWeight="600">{formatNumber(detail?.totalRaise ? (totalCommit / detail?.totalRaise) * 100 < 100 ? (totalCommit / detail?.totalRaise) * 100 : 100 : 0, 0, 2) }%</Text>
               </Flex>
-              <StyledProgress primaryStep={detail?.totalRaise ? (totalCommit / detail?.totalRaise) * 100 : 0 } scale="sm" />
+              <StyledProgress primaryStep={detail?.totalRaise ? (totalCommit / detail?.totalRaise) * 100 < 100 ? (totalCommit / detail?.totalRaise) * 100 : 100 : 0 } scale="sm" />
               <Flex alignItems="center" justifyContent="center" mt="12px">
                 <Text color='text' fontSize="16px" fontWeight="700">{detail?.totalRaise ? formatNumber(detail.totalRaise) : '_'} U2U</Text>
                 <Text color='textSubtle' fontSize="14px" fontWeight="600" ml="8px">{t('Total Raise')}</Text>
@@ -664,12 +675,12 @@ const LaunchpadDetailPage = () => {
 						{detail?.phases.map((item, index) => (
 							<SwiperSlide className="swiper-launchpad" style={{ zIndex: detail?.phases.length - index }} key={item.name}>
 								<StyledBox>
-									<StyledContent style={{ background: `${isComplete(item) ? theme.colors.backgroundItem : isInProgress(item) ? theme.colors.primary : theme.colors.backgroundAlt}` }}>
+									<StyledContent style={{ background: `${isComplete(item) ? theme.colors.backgroundItem : (isInProgress(item) || isUpComingOrFinish(item)) ? theme.colors.primary : theme.colors.backgroundAlt}` }}>
 										<img style={{ filter: `${isComplete(item) && 'grayscale(1)'}` }} src={item.imageUrl || `/images/launchpad/icon-step-01.svg`} alt="" />
-										<Text style={{ color: `${isComplete(item) ? theme.colors.hover : isInProgress(item) ? theme.colors.black : theme.colors.primary}` }} fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="17px" mt="8px">{item.name}</Text>
-										<Text style={{ color: `${isComplete(item) ? theme.colors.textSubtle : isInProgress(item) ? theme.colors.black : theme.colors.hover}` }} fontSize={["11px", "11px", "11px", "11px", "11px", "11px", "11px", "12px"]} fontWeight="400" lineHeight="13px" mt="4px" minHeight={13}>{item.startTime ? formatDate(dayjs.unix(Math.floor(item.startTime/ 1000)).utc(), 'MMM D YYYY HH:mm:ss') : ''}</Text>
+										<Text style={{ color: `${isComplete(item) ? theme.colors.hover : isInProgress(item) || isUpComingOrFinish(item) ? theme.colors.black : theme.colors.primary}` }} fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="17px" mt="8px">{item.name}</Text>
+										<Text style={{ color: `${isComplete(item) ? theme.colors.textSubtle : isInProgress(item) || isUpComingOrFinish(item) ? theme.colors.black : theme.colors.hover}` }} fontSize={["11px", "11px", "11px", "11px", "11px", "11px", "11px", "12px"]} fontWeight="400" lineHeight="13px" mt="4px" minHeight={13}>{item.startTime ? formatDate(dayjs.unix(Math.floor(item.startTime/ 1000)).utc(), 'MMM D YYYY HH:mm:ss') : ''}</Text>
 									</StyledContent>
-									<svg style={{ color: `${isComplete(item) ? theme.colors.backgroundItem : isInProgress(item) ? theme.colors.primary : theme.colors.backgroundAlt}` }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 132" fill="none">
+									<svg style={{ color: `${isComplete(item) ? theme.colors.backgroundItem : isInProgress(item) || isUpComingOrFinish(item) ? theme.colors.primary : theme.colors.backgroundAlt}` }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 132" fill="none">
 										<g mask="url(#mask0_3011_2807)">
 										<path d="M6.5 5L4.5 4.5L3.5 125L8 128.5L48 67L7.5 6L6.5 5Z" fill="black" stroke="black"/>
 										<g filter="url(#filter0_d_3011_2807)">

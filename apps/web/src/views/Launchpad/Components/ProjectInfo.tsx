@@ -195,9 +195,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		try {
 			if(account && launchpadManagerContract.current.account) {
 				const _totalCommitted: any = await launchpadManagerContract.current.read.totalCommitByUser([account])
-				if(_totalCommitted) {
-					setTotalCommitByUser(BigNumber(formatEther(_totalCommitted)).toNumber())
-				}
+				setTotalCommitByUser(BigNumber(formatEther(_totalCommitted)).toNumber())
 			}
 		}catch(ex) {
 			//
