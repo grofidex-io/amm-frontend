@@ -11,6 +11,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId';
 import useCatchTxError from 'hooks/useCatchTxError';
 import forEach from 'lodash/forEach';
 import keyBy from 'lodash/keyBy';
+import uniqBy from 'lodash/uniqBy';
 import { useEffect, useRef, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { getLaunchpadContract, getLaunchpadManagerContract } from 'utils/contractHelpers';
@@ -269,14 +270,18 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		setUserConfigInfo({..._configInfo, maxCommitAmount: BigNumber(formatEther(_configInfo.maxCommitAmount)).toNumber(), maxBuyPerUser: formatEther(_configInfo.maxBuyPerUser), name: _phaseByContract[currentTier.toLowerCase()]?.name, start: BigNumber(_configInfo.start).toNumber() * 1000, end: BigNumber(_configInfo.start).toNumber() * 1000})
 	}
 
-	const getUserCommitted = async (_contract?: any) => {
+	const getUserCommitted = async (_contract?: any, type?: string) => {
 		const contract = _contract || _launchpadContract.current
 		const _userWhiteList: any = await contract.read.userCommit([account])
-		setUserCommitInfo({
+		const _data = {
 			u2uCommitted: BigNumber(formatEther(_userWhiteList[0])).toNumber(),
 			giveBackAmount: BigNumber(formatEther(_userWhiteList[1])).toNumber(),
-			isWhiteList: _userWhiteList[2],
-		})
+			isWhiteList: type === PHASES_TYPE.WHITELIST ?? _userWhiteList[2],
+		}
+		if(contract.address.toLowerCase() === currentPhase?.contractAddress.toLowerCase()) {
+			setUserCommitInfo(_data)
+		}
+	
 	}
 
 	const initContract = () => {
@@ -285,6 +290,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 			if(currentPhase.type === PHASES_TYPE.WHITELIST || currentPhase.type === PHASES_TYPE.COMMUNITY) {
 				getCurrentCommit()
 			}
+			getUserCommitted(_launchpadContract.current)
 			getConfig()
 		}
 	}
@@ -295,7 +301,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 				_launchpadContractWhitelist.current =  getLaunchpadContract(currentPhaseWhitelist.contractAddress, signer ?? undefined, chainId)
 				const _configInfo: ITierInfo = await _launchpadContractWhitelist.current.read.getConfigInfo()
 				setConfigWhitelistInfo(_configInfo)
-				getUserCommitted(_launchpadContractWhitelist.current)
+				getUserCommitted(_launchpadContractWhitelist.current, PHASES_TYPE.WHITELIST)
 			}
 		}catch(ex){
 			//
@@ -464,11 +470,6 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 
 
 	useEffect(() => {
-		if(!account) {
-			setTotalCommitByUser(0)
-			setUserConfigInfo(null)
-			refSchedule.current = []
-		}
 
 		if(info?.phases.length > 0 && account) {
 			refSchedule.current = []
@@ -490,6 +491,12 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [info, signer, account, currentTier])
+
+	useEffect(() => {
+		setTotalCommitByUser(0)
+		setUserConfigInfo(null)
+		refSchedule.current = []
+	}, [account])
 	const poolAvailable = Number(configInfo?.maxCommitAmount) - currentCommit
 
 	let maxCommitAmountByTier = (userConfigInfo || configInfo) && userCommitInfo && (currentPhase?.type === PHASES_TYPE.TIER ? userConfigInfo && BigNumber(userConfigInfo.maxBuyPerUser).minus(BigNumber(userCommitInfo?.u2uCommitted)) :  configInfo && BigNumber(configInfo.maxBuyPerUser).minus(BigNumber(userCommitInfo?.u2uCommitted))) || 0
@@ -527,22 +534,24 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	}
 	
 	let disableCommitU2U = false
+
 	if(configInfo?.typeRound === PHASES_TYPE.TIER) {
 		const _now = Date.now()
-		if(currentPhase?.contractAddress.toLowerCase() !== currentTier?.toLowerCase() || amountCommit?.length === 0 || BigNumber(amountCommit).lte(0) || !(userConfigInfo && (userConfigInfo.start < _now && userConfigInfo.end > _now)) ) {
+		if(!userConfigInfo?.start || currentPhase?.contractAddress.toLowerCase() !== currentTier?.toLowerCase() || amountCommit?.length === 0 || BigNumber(amountCommit).lte(0) || !(userConfigInfo && (userConfigInfo.start < _now && userConfigInfo.end > _now)) ) {
 			disableCommitU2U = true
 		}
+
 	}
 	if(BigNumber(amountCommit).gt(maxCommitAmountByTier)) {
 		disableCommitU2U = true
 	}
 
-	if(!userConfigInfo?.start || (userConfigInfo?.typeRound === PHASES_TYPE.WHITELIST && !userCommitInfo?.isWhiteList) || !currentPhase || (currentPhase.type === PHASES_TYPE.WHITELIST && !userCommitInfo?.isWhiteList)) {
+	if((userConfigInfo?.typeRound === PHASES_TYPE.WHITELIST && !userCommitInfo?.isWhiteList) || !currentPhase || (currentPhase.type === PHASES_TYPE.WHITELIST && !userCommitInfo?.isWhiteList)) {
 		disableCommitU2U = true
 	}
 	
 
-	const scheduleOrder = refSchedule.current.sort((a: IPhase, b: IPhase) => (a.startTime - b.startTime) )
+	const scheduleOrder = uniqBy(refSchedule.current.sort((a: IPhase, b: IPhase) => (a.startTime - b.startTime)), (item) => item.contractAddress)
 
 	const diffCancelTime = () => {
 		if(configInfo) {
@@ -746,7 +755,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
                   {(totalGiveback || (info?.saleEnd < Date.now() && BigNumber(totalCommitByUser).gt(0))) && (<StyledButton disabled={totalGiveback < 0} onClick={openCommittedModal} className="button-hover">{t('Claim')}</StyledButton>)}
                 </Flex>
                 { (totalGiveback || (info?.saleEnd < Date.now() && BigNumber(totalCommitByUser).gt(0))) && (
-									<StyledTextItalic textAlign="right" mt="8px">Estimate {formatNumber(totalCommitByUser + totalGiveback, 0, 6)} U2U{ info?.saleEnd < Date.now() ? `, ${formatNumber(totalCommitByUser * rate, 0, 6)} ${info?.tokenName}` : '' } </StyledTextItalic>
+									<StyledTextItalic textAlign="right" mt="8px">Estimate {formatNumber(totalGiveback, 0, 6)} U2U{ info?.saleEnd < Date.now() ? `, ${formatNumber(totalCommitByUser * rate, 0, 6)} ${info?.tokenName}` : '' } </StyledTextItalic>
 								) }
                 {configInfo?.startCancel && (
 									<StyledTextItalic mt="12px">
@@ -810,7 +819,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 										}
 										</>
 									)} 
-									{BigNumber(totalCommit).gt(BigNumber(info.softCap)) && (
+									{(BigNumber(totalCommit).gt(BigNumber(info.softCap)) && info?.saleEnd < Date.now()) && (
 										<StyledTextItalic mt="12px">
 											Please click the 
 											<Text onClick={openCommittedModal} fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" mx="4px" textTransform="uppercase" style={{ display: 'inline', color: theme.colors.primary, fontWeight: '300', cursor: 'pointer'}}>
