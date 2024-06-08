@@ -747,9 +747,9 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 										} 
 						
 									</Flex>
-									{maxCommitAmountByTier && BigNumber(maxCommitAmountByTier).lt(0) && (
+									{maxCommitAmountByTier && BigNumber(maxCommitAmountByTier).lt(0) ? (
 										<Text color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" lineHeight="16px" mt="8px">{t('Maximum %maxCommitAmount% U2U', { maxCommitAmount: isShowMaximum ? maxCommitAmountByTier.toString() : '0' })}</Text>
-									)}
+									) : ''}
 									{Date.now() > info?.saleEnd && (
 										<>
 										{
@@ -782,10 +782,8 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 											button above to get your {info?.tokenName}
 										</StyledTextItalic>
 									)}
-								
 								</Box>
 							)}
-         
               <Box>
 								{!account && (
 									<StyledContent>
