@@ -505,20 +505,20 @@ const LaunchpadDetailPage = () => {
 		return false
 	}
 
-	// const isInProgress = (_item: IPhase) => {
-	// 	const _now = Date.now()
-	// 	if(_now > _item.startTime && _now < _item.endTime && currentPhase.current === _item.contractAddress) {
-	// 		return true
-	// 	}
-	// 	return false
-	// }
+	const isInProgress = (_item: IPhase) => {
+		const _now = Date.now()
+		if(_now > _item.startTime && _now < _item.endTime && currentPhase.current === _item.contractAddress) {
+			return true
+		}
+		return false
+	}
 
-	// const isUpComingOrFinish = (_item: IPhase) => {
-	// 	if((!currentPhase.current || currentPhase.current?.length === 0) && (lastTime.current.endTime ? _item.endTime >= lastTime.current.endTime : _item.startTime === lastTime.current.startTime) && _item.type === PHASES_TYPE.NONE) {
-	// 		return true
-	// 	}
-	// 	return false
-	// } 
+	const isUpComingOrFinish = (_item: IPhase) => {
+		if((!currentPhase.current || currentPhase.current?.length === 0) && (lastTime.current.endTime ? _item.endTime >= lastTime.current.endTime : _item.startTime === lastTime.current.startTime) && _item.type === PHASES_TYPE.NONE) {
+			return true
+		}
+		return false
+	} 
 
 	const isCountdownEnd = detail?.status === LAUNCHPAD_STATUS.UPCOMING ? false : detail?.saleEnd && detail?.saleEnd > Date.now()
 
@@ -699,12 +699,12 @@ const LaunchpadDetailPage = () => {
 						{detail?.phases.map((item, index) => (
 							<SwiperSlide className="swiper-launchpad" style={{ zIndex: detail?.phases.length - index }} key={item.name}>
 								<StyledBox>
-									<StyledContent style={{ background: `${isComplete(item) ? theme.colors.backgroundItem : item.isActive ? theme.colors.primary : theme.colors.backgroundAlt}` }}>
+									<StyledContent style={{ background: `${isComplete(item) ? theme.colors.backgroundItem : (isInProgress(item) ||  item.isActive) ? theme.colors.primary : theme.colors.backgroundAlt}` }}>
 										<img style={{ filter: `${isComplete(item) && 'grayscale(1)'}` }} src={item.imageUrl || `/images/launchpad/icon-step-01.svg`} alt="" />
-										<Text style={{ color: `${isComplete(item) ? theme.colors.hover : item.isActive ? theme.colors.black : theme.colors.primary}` }} fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="17px" mt="8px">{item.name}</Text>
-										<Text style={{ color: `${isComplete(item) ? theme.colors.textSubtle : item.isActive ? theme.colors.black : theme.colors.hover}` }} fontSize={["11px", "11px", "11px", "11px", "11px", "11px", "11px", "12px"]} fontWeight="400" lineHeight="13px" mt="4px" minHeight={13}>{item.startTime ? formatDate(dayjs.unix(Math.floor(item.startTime/ 1000)).utc(), 'MMM D YYYY HH:mm:ss') : ''}</Text>
+										<Text style={{ color: `${isComplete(item) ? theme.colors.hover : (isInProgress(item) ||  item.isActive) ? theme.colors.black : theme.colors.primary}` }} fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="17px" mt="8px">{item.name}</Text>
+										<Text style={{ color: `${isComplete(item) ? theme.colors.textSubtle : (isInProgress(item) ||  item.isActive) ? theme.colors.black : theme.colors.hover}` }} fontSize={["11px", "11px", "11px", "11px", "11px", "11px", "11px", "12px"]} fontWeight="400" lineHeight="13px" mt="4px" minHeight={13}>{item.startTime ? formatDate(dayjs.unix(Math.floor(item.startTime/ 1000)).utc(), 'MMM D YYYY HH:mm:ss') : ''}</Text>
 									</StyledContent>
-									<svg style={{ color: `${isComplete(item) ? theme.colors.backgroundItem : item.isActive ? theme.colors.primary : theme.colors.backgroundAlt}` }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 132" fill="none">
+									<svg style={{ color: `${isComplete(item) ? theme.colors.backgroundItem : (isInProgress(item) ||  item.isActive) ? theme.colors.primary : theme.colors.backgroundAlt}` }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 132" fill="none">
 										<g mask="url(#mask0_3011_2807)">
 										<path d="M6.5 5L4.5 4.5L3.5 125L8 128.5L48 67L7.5 6L6.5 5Z" fill="black" stroke="black"/>
 										<g filter="url(#filter0_d_3011_2807)">
