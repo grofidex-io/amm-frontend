@@ -393,7 +393,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	)
 	
 	useEffect(() => {
-		if(currentTier) {
+		if(currentTier && account) {
 			getUserConfig()
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -505,6 +505,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		setUserConfigInfo(null)
 		setTotalGiveback(0)
 		refSchedule.current = []
+		setAmountCommit('')
 	}, [account])
 	const poolAvailable = Number(configInfo?.maxCommitAmount) - currentCommit
 
@@ -693,8 +694,6 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 										{/* {userConfigInfo && <StyledTextItalic>{t('Maximum %maxBuyPerUser% U2U to buy IDO in round buy %tier%. The snapshot process has ended at 2024/05/03 14:22:22 UTC.', {maxBuyPerUser: userConfigInfo?.maxBuyPerUser, tier: userConfigInfo?.name })}</StyledTextItalic>} */}
 									</Box>
 								</Box>
-							AAA{userCommitInfo?.isWhiteList.toString()}
-
              <Box mb={["20px", "20px", "24px"]}>
 							{!isWhitelistTime() && !userCommitInfo?.isWhiteList ?  (
 								<Flex alignItems="center">

@@ -439,6 +439,8 @@ const LaunchpadDetailPage = () => {
 				const _address: any = await launchpadManagerContract.current.read.viewTierPharse([account])
 				if(_address !== '0x0000000000000000000000000000000000000000') {
 					setCurrentTier(_address)
+				} else {
+					setCurrentTier(undefined)
 				}
 			}catch(ex){
 				console.error(ex)
@@ -469,7 +471,7 @@ const LaunchpadDetailPage = () => {
 		}
 		getTimeWhiteList()
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [detail, signer])
+	}, [detail, signer, account])
 
 
 
