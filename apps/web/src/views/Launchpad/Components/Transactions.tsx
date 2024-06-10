@@ -137,7 +137,7 @@ export default function Transactions({info, account}) {
 												</StyledScanLink>
 											</Flex>
 											<StyledText color="text" textAlign="center">{TRANSACTION_STATUS[item.transactionType]}</StyledText>
-											<StyledText color="text" textAlign="center">{item.transactionType === 'CLAIM' ? `${formatEther(item.tokenAmount)} ${info?.tokenName}` : `${formatEther(item.u2uAmount)} U2U` }</StyledText>
+											<StyledText color="text" textAlign="center">{item.transactionType === 'CLAIM_TOKEN' ? `${formatEther(item.tokenAmount)} ${info?.tokenName}` : `${formatEther(item.u2uAmount)} U2U` }</StyledText>
 											<StyledText color="text" textAlign="right">{formatDate(dayjs.unix(Math.floor(item.processTime)).utc())}</StyledText>
 										</ResponsiveGrid>
 									<Break/>
