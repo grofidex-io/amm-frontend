@@ -379,7 +379,7 @@ const LaunchpadDetailPage = () => {
 	const [totalCommit, setTotalCommit] = useState<number>(0)
 	const router = useRouter()
   const { launchpadId } = router.query
-	const { data: detail } = useFetchLaunchpadDetail(launchpadId as string)
+	const { data: detail, refetch } = useFetchLaunchpadDetail(launchpadId as string)
 	const { chainId } = useActiveChainId()
 	const { data: signer } = useWalletClient()
 	const getTotalCommit = async () => {
@@ -579,7 +579,7 @@ const LaunchpadDetailPage = () => {
             flexDirection="column"
           >
             <Text color="primary" textAlign="center" fontSize={["13px", "13px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="1.25" mb={["6px", "6px", "8px", "8px", "10px", "10px", "12px"]}>{isCountdownEnd ? t('Sale end in') : t('Sale start in')}</Text>
-						{showCountdown ? <CountdownTime type={COUNTDOWN_TYPE.ARRAY} time={isCountdownEnd ? detail?.saleEnd : detail?.saleStart}/> : 	<Text color="hover" fontSize={["16px", "16px", "20px", "20px", "24px"]} fontWeight="600" lineHeight={["22px", "22px", "26px", "26px", "30px"]}>To be announcement</Text>}
+						{showCountdown ? <CountdownTime type={COUNTDOWN_TYPE.ARRAY} time={isCountdownEnd ? detail?.saleEnd : detail?.saleStart} cb={refetch}/> : 	<Text color="hover" fontSize={["16px", "16px", "20px", "20px", "24px"]} fontWeight="600" lineHeight={["22px", "22px", "26px", "26px", "30px"]}>To be announcement</Text>}
           </Flex>
         </Flex>
         <Flex flexDirection={["column", "column", "column", "column", "row"]} mb="32px">

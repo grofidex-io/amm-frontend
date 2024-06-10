@@ -395,7 +395,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 			getUserConfig()
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentTier, info?.phases])
+	}, [currentTier, info?.phases, account])
 
 	useEffect(() => {
 		if(currentPhase?.contractAddress && signer) {
@@ -513,7 +513,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	}
 
 	const handleCommitU2U = async () => {
-		if(!disableCommitU2U && BigNumber(amountCommit).gt(0) && maxCommitAmountByTier && BigNumber(maxCommitAmountByTier).gt(BigNumber(amountCommit))) {
+		if(!disableCommitU2U && BigNumber(amountCommit).gt(0) && maxCommitAmountByTier && BigNumber(maxCommitAmountByTier).gte(BigNumber(amountCommit))) {
 			try {
 				setIsCommitting(true)
 				const res = await fetchWithCatchTxError(() => _launchpadContract.current.write.commit({value: parseEther(amountCommit)}))
