@@ -66,6 +66,12 @@ const StyledText = styled(Text)`
     font-size: 14px;
   }
 `
+const TRANSACTION_STATUS = {
+	"CLAIM_TOKEN": 'CLAIM TOKEN', 
+	"COMMIT": "COMMIT", 
+	"REFUND": "REFUND", 
+	"GIVE_BACK": "GIVE BACK"
+}
 const TableLoader: React.FC<React.PropsWithChildren> = () => {
   const loadingRow = (
     <ResponsiveGrid>
@@ -130,7 +136,7 @@ export default function Transactions({info, account}) {
 													</StyledText>
 												</StyledScanLink>
 											</Flex>
-											<StyledText color="text" textAlign="center">{item.transactionType}</StyledText>
+											<StyledText color="text" textAlign="center">{TRANSACTION_STATUS[item.transactionType]}</StyledText>
 											<StyledText color="text" textAlign="center">{item.transactionType === 'CLAIM' ? `${formatEther(item.tokenAmount)} ${info?.tokenName}` : `${formatEther(item.u2uAmount)} U2U` }</StyledText>
 											<StyledText color="text" textAlign="right">{formatDate(dayjs.unix(Math.floor(item.processTime)).utc())}</StyledText>
 										</ResponsiveGrid>

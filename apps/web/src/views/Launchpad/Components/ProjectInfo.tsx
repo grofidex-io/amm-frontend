@@ -349,7 +349,6 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	}
 
 	const checkSchedule = () => {
-
 		refSchedule.current = []
 		const _schedule: any = []
 		forEach(info.phases, (item: IPhase) => {
@@ -368,6 +367,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		if(_schedule.length > 0) {
 			refSchedule.current = [...refSchedule.current, ..._schedule]
 		}
+
 	}
 
 	const getGiveBack = async () => {
@@ -478,12 +478,9 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 
 
 	useEffect(() => {
-
 		if(info?.phases.length > 0 && account) {
-			refSchedule.current = []
 			checkSchedule()
 		}
-
 
 		if(info?.contractAddress?.length > 0) {
 			launchpadManagerContract.current = getLaunchpadManagerContract(info.contractAddress, signer ?? undefined, chainId )
@@ -501,11 +498,13 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	}, [info, signer, account, currentTier])
 
 	useEffect(() => {
-		setTotalCommitByUser(0)
-		setUserConfigInfo(null)
-		setTotalGiveback(0)
-		refSchedule.current = []
-		setAmountCommit('')
+		if(!account) {
+			setTotalCommitByUser(0)
+			setUserConfigInfo(null)
+			setTotalGiveback(0)
+			refSchedule.current = []
+			setAmountCommit('')
+		}
 	}, [account])
 	const poolAvailable = Number(configInfo?.maxCommitAmount) - currentCommit
 
