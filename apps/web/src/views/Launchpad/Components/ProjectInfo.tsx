@@ -269,7 +269,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		const _contract = getLaunchpadContract(currentTier, signer ?? undefined, chainId)
 		const _configInfo: any = await _contract.read.getConfigInfo()
 		const _phaseByContract = keyBy(info?.phases, (o) => o.contractAddress.toLowerCase() )
-		setUserConfigInfo({..._configInfo, maxCommitAmount: BigNumber(formatEther(_configInfo.maxCommitAmount)).toNumber(), maxBuyPerUser: formatEther(_configInfo.maxBuyPerUser), name: _phaseByContract[currentTier.toLowerCase()]?.name, start: BigNumber(_configInfo.start).toNumber() * 1000, end: BigNumber(_configInfo.start).toNumber() * 1000})
+		setUserConfigInfo({..._configInfo, maxCommitAmount: BigNumber(formatEther(_configInfo.maxCommitAmount)).toNumber(), maxBuyPerUser: formatEther(_configInfo.maxBuyPerUser), name: _phaseByContract[currentTier.toLowerCase()]?.name, start: BigNumber(_configInfo.start).toNumber() * 1000, end: BigNumber(_configInfo.end).toNumber() * 1000})
 	}
 
 	const getUserCommitted = async (_contract?: any, type?: string) => {
@@ -321,7 +321,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		try {
 			const res = await fetchWithCatchTxError(() => _launchpadContractWhitelist.current.write.addWhiteList())
 			if(res?.status) {
-				getUserCommitted(_launchpadContractWhitelist.current)
+				getUserCommitted(_launchpadContractWhitelist.current, PHASES_TYPE.WHITELIST)
 			}
 			setApplyWhitelist(false)
 		}catch(ex) {
@@ -547,11 +547,12 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 
 	if(configInfo?.typeRound === PHASES_TYPE.TIER) {
 		const _now = Date.now()
+
 		if(!userConfigInfo?.start || currentPhase?.contractAddress.toLowerCase() !== currentTier?.toLowerCase() || amountCommit?.length === 0 || BigNumber(amountCommit).lte(0) || !(userConfigInfo && (userConfigInfo.start < _now && userConfigInfo.end > _now)) ) {
 			disableCommitU2U = true
 		}
-
 	}
+	
 	if(BigNumber(amountCommit).gt(maxCommitAmountByTier)) {
 		disableCommitU2U = true
 	}
