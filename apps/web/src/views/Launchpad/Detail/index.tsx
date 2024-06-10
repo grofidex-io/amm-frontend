@@ -458,7 +458,7 @@ const LaunchpadDetailPage = () => {
 
 
 	useEffect(() => {
-		if(detail?.saleEnd && detail.status === LAUNCHPAD_STATUS.ON_GOING) {
+		if(detail?.saleEnd && detail.status === LAUNCHPAD_STATUS.ON_GOING || detail?.saleStart && detail.status === LAUNCHPAD_STATUS.UPCOMING) {
 			setShowCountdown(true)
 		}
 		if(detail?.contractAddress) {
@@ -486,7 +486,6 @@ const LaunchpadDetailPage = () => {
 
 	const isComplete = (_item: IPhase) => {
 		const _now = Date.now()
-
 		if(_item.type !== PHASES_TYPE.NONE) {
 			if(_now > _item.startTime && _item.contractAddress !== currentPhase.current) {
 				return true
@@ -498,8 +497,8 @@ const LaunchpadDetailPage = () => {
 			return true
 		}
 		return false
-
 	}
+
 	const isInProgress = (_item: IPhase) => {
 		const _now = Date.now()
 		if(_now > _item.startTime && _now < _item.endTime && currentPhase.current === _item.contractAddress) {
