@@ -178,7 +178,11 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	const [configInfo, setConfigInfo] = useState<ITierInfo | null>()
 	const [userConfigInfo, setUserConfigInfo] = useState<ITierInfo | null>()
 	const [configWhitelistInfo, setConfigWhitelistInfo] = useState<ITierInfo | null>()
-	const [userCommitInfo, setUserCommitInfo] = useState<IUserWhiteListInfo>()
+	const [userCommitInfo, setUserCommitInfo] = useState<IUserWhiteListInfo>({
+		u2uCommitted: 0,
+		giveBackAmount: 0,
+		isWhiteList: false
+	})
 	const [totalCommitByUser, setTotalCommitByUser] = useState<number>(0)
 	const [currentCommit, setCurrentCommit] = useState<number>(0)
 	const [isCommitting, setIsCommitting] = useState<boolean>(false)
@@ -274,13 +278,19 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		const _data = {
 			u2uCommitted: BigNumber(formatEther(_userWhiteList[0])).toNumber(),
 			giveBackAmount: BigNumber(formatEther(_userWhiteList[1])).toNumber(),
-			isWhiteList: type === PHASES_TYPE.WHITELIST ?? _userWhiteList[2],
+			isWhiteList:  _userWhiteList[2],
 		}
 		if(contract.address.toLowerCase() === currentPhase?.contractAddress.toLowerCase()) {
 			setUserCommitInfo(_data)
 		}
-	
+		if(type === PHASES_TYPE.WHITELIST) {
+			setUserCommitInfo({
+				...userCommitInfo,
+				isWhiteList: _userWhiteList[2]
+			})
+		}
 	}
+	
 
 	const initContract = () => {
 		if(currentPhase?.contractAddress) {
@@ -493,6 +503,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	useEffect(() => {
 		setTotalCommitByUser(0)
 		setUserConfigInfo(null)
+		setTotalGiveback(0)
 		refSchedule.current = []
 	}, [account])
 	const poolAvailable = Number(configInfo?.maxCommitAmount) - currentCommit
@@ -682,6 +693,8 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 										{/* {userConfigInfo && <StyledTextItalic>{t('Maximum %maxBuyPerUser% U2U to buy IDO in round buy %tier%. The snapshot process has ended at 2024/05/03 14:22:22 UTC.', {maxBuyPerUser: userConfigInfo?.maxBuyPerUser, tier: userConfigInfo?.name })}</StyledTextItalic>} */}
 									</Box>
 								</Box>
+							AAA{userCommitInfo?.isWhiteList.toString()}
+
              <Box mb={["20px", "20px", "24px"]}>
 							{!isWhitelistTime() && !userCommitInfo?.isWhiteList ?  (
 								<Flex alignItems="center">
