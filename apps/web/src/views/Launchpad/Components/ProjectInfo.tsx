@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization';
-import { AutoColumn, Box, Button, Dots, Flex, Link, Text, TooltipText, useModal, useToast, useTooltip } from '@pancakeswap/uikit';
+import { Box, Button, Dots, Flex, Link, Text, TooltipText, useModal, useToast, useTooltip } from '@pancakeswap/uikit';
 import { formatNumber } from '@pancakeswap/utils/formatBalance';
 import { NumericalInput } from '@pancakeswap/widgets-internal';
 import BigNumber from 'bignumber.js';
@@ -9,6 +9,7 @@ import dayjs from 'dayjs';
 import { formatEther, parseEther } from 'ethers/lib/utils';
 import { useActiveChainId } from 'hooks/useActiveChainId';
 import useCatchTxError from 'hooks/useCatchTxError';
+import parse from 'html-react-parser';
 import forEach from 'lodash/forEach';
 import keyBy from 'lodash/keyBy';
 import uniqBy from 'lodash/uniqBy';
@@ -16,13 +17,14 @@ import { useEffect, useRef, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { getLaunchpadContract, getLaunchpadManagerContract } from 'utils/contractHelpers';
 import { formatDate } from 'views/CakeStaking/components/DataSet/format';
-import { Break, TableWrapper } from 'views/Info/components/InfoTables/shared';
+import { Break } from 'views/Info/components/InfoTables/shared';
 import { Address, useWalletClient } from 'wagmi';
 import { COUNTDOWN_TYPE, LAUNCHPAD_STATUS, PHASES_TYPE } from '../helpers';
 import { StyledButton, StyledNeubrutal } from '../styles';
 import { ILaunchpadDetail, IPhase, ITierInfo, ITimeOfPhase, IUserWhiteListInfo } from '../types/LaunchpadType';
 import CountdownTime from './CountdownTime';
 import ModalDetail from './ModalDetail';
+
 
 const StyledTitle = styled(Text)`
   font-family: 'Metuo', sans-serif;
@@ -585,9 +587,9 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
         <StyledNeubrutal p={["24px 16px", "24px 16px", "28px 20px", "28px 20px", "32px 24px"]} height="100%" style={{ flex: '2' }}>
           <Box px={["0", "0", "12px", "12px", "16px", "16px", "20px"]} mb={["20px", "20px", "26px", "26px", "32px"]}>
             <StyledTitle mb={["12px", "12px", "16px"]}>{t('About %token% Project', {token: info?.tokenName})}</StyledTitle>
-            <StyledContent>{info?.description}</StyledContent>
+            <StyledContent>{info?.description && parse(info?.description)}</StyledContent>
           </Box>
-          <Box px={["0", "0", "12px", "12px", "16px", "16px", "20px"]} mb={["20px", "20px", "26px", "26px", "32px"]}>
+          {/* <Box px={["0", "0", "12px", "12px", "16px", "16px", "20px"]} mb={["20px", "20px", "26px", "26px", "32px"]}>
             <StyledTitle mb={["12px", "12px", "16px"]}>{t('Roadmap')}</StyledTitle>
             <Box ml={["18px", "18px", "24px", "24px", "30px"]}>
               <StyledText>{t('2024 Q1')}</StyledText>
@@ -621,8 +623,8 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
           </Box>
           <Box px={["0", "0", "12px", "12px", "16px", "16px", "20px"]}>
             <StyledTitle mb={["20px", "20px", "24px"]}>{t('Schedule Time IDO')}</StyledTitle>
-          </Box>
-          <Wrapper>
+          </Box> */}
+          {/* <Wrapper>
             <TableWrapper>
               <LayoutScroll>
                 <ResponsiveGrid>
@@ -659,7 +661,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
                 </AutoColumn>
               </LayoutScroll>
             </TableWrapper>
-          </Wrapper>
+          </Wrapper> */}
         </StyledNeubrutal>
         {info?.status !== LAUNCHPAD_STATUS.UPCOMING && (
           <StyledNeubrutal style={{ flex: '1' }} height="100%" mx="auto" width="100%" minWidth={["100%", "100%", "360px"]} maxWidth={["460px", "460px", "460px", "460px", "460px", "460px", "460px", "500px"]} ml={["auto", "auto", "auto", "auto", "16px"]} mb={["16px", "16px", "16px", "16px", "0"]}>
