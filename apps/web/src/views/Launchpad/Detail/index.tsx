@@ -399,15 +399,18 @@ const LaunchpadDetailPage = () => {
 		let _startTime = 0
 		let _endTime = 0
 		const _now = Date.now()
+		let _currentPhase
 		forEach(detail?.phases, (item: IPhase) => {
 			if(item.startTime < _now &&  _now < item.endTime && item.contractAddress.length > 0) {
 				currentPhase.current = item.contractAddress
+				_currentPhase = item
 			}
 			if(_now > item.endTime) {
 				if(lastTime.current.endTime < item.endTime && item.type !== PHASES_TYPE.NONE) {
 					lastTime.current = item
 				}
 			}
+		
 
 			if(item.type === PHASES_TYPE.APPLY_WHITELIST) {
 				if(_startTime === 0) {
@@ -422,6 +425,10 @@ const LaunchpadDetailPage = () => {
 				if(item.endTime > _endTime) {
 					_endTime = item.endTime
 				}
+			}
+
+			if(lastTime.current.endTime === 0 && _currentPhase) {
+				lastTime.current = _currentPhase
 			}
 
 			setTimeWhiteList({
@@ -492,7 +499,6 @@ const LaunchpadDetailPage = () => {
 			}
 			return false
 		}
-
 		if(_item.startTime < lastTime.current.startTime && _item.type === PHASES_TYPE.NONE) {
 			return true
 		}
