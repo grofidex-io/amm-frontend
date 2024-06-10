@@ -178,6 +178,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	const [configInfo, setConfigInfo] = useState<ITierInfo | null>()
 	const [userConfigInfo, setUserConfigInfo] = useState<ITierInfo | null>()
 	const [configWhitelistInfo, setConfigWhitelistInfo] = useState<ITierInfo | null>()
+	const [isWhiteList, setIsWhiteList] = useState<boolean>(false)
 	const [userCommitInfo, setUserCommitInfo] = useState<IUserWhiteListInfo>({
 		u2uCommitted: 0,
 		giveBackAmount: 0,
@@ -284,10 +285,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 			setUserCommitInfo(_data)
 		}
 		if(type === PHASES_TYPE.WHITELIST) {
-			setUserCommitInfo({
-				...userCommitInfo,
-				isWhiteList: _userWhiteList[2]
-			})
+			setIsWhiteList(_userWhiteList[2])
 		}
 	}
 	
@@ -557,7 +555,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		disableCommitU2U = true
 	}
 
-	if((userConfigInfo?.typeRound === PHASES_TYPE.WHITELIST && !userCommitInfo?.isWhiteList) || !currentPhase || (currentPhase.type === PHASES_TYPE.WHITELIST && !userCommitInfo?.isWhiteList)) {
+	if((userConfigInfo?.typeRound === PHASES_TYPE.WHITELIST && !isWhiteList) || !currentPhase || (currentPhase.type === PHASES_TYPE.WHITELIST && !isWhiteList)) {
 		disableCommitU2U = true
 	}
 	
@@ -575,7 +573,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		return ''
 	}
 
-	const isShowMaximum = ( currentPhase?.type === PHASES_TYPE.TIER && currentPhase?.contractAddress.toLowerCase() === currentTier?.toLowerCase()) || (userConfigInfo?.typeRound === PHASES_TYPE.WHITELIST && userCommitInfo?.isWhiteList) || currentPhase?.type === PHASES_TYPE.WHITELIST || currentPhase?.type === PHASES_TYPE.COMMUNITY 
+	const isShowMaximum = ( currentPhase?.type === PHASES_TYPE.TIER && currentPhase?.contractAddress.toLowerCase() === currentTier?.toLowerCase()) || (userConfigInfo?.typeRound === PHASES_TYPE.WHITELIST && isWhiteList) || currentPhase?.type === PHASES_TYPE.WHITELIST || currentPhase?.type === PHASES_TYPE.COMMUNITY 
 	
 
   return (
@@ -702,7 +700,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 									</Box>
 								</Box>
              <Box mb={["20px", "20px", "24px"]}>
-							{!isWhitelistTime() && !userCommitInfo?.isWhiteList ?  (
+							{!isWhitelistTime() && !isWhiteList ?  (
 								<Flex alignItems="center">
 									<Image style={{ margin: 'unset', width: '24px', height: '24px' }} src="/images/launchpad/icon-error.svg" />
 									<Text color="failure" maxWidth="290px" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="20px" ml="12px">{t(`Apply whitelist has been expired. You don’t apply whitelist`)}</Text>
@@ -717,7 +715,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 									{applyTooltip.tooltipVisible && applyTooltip.tooltip}
 								</Flex>
 								{/* && configWhitelistInfo && configWhitelistInfo?.endAddWhiteList > Date.now() */}
-								{account ? !userCommitInfo?.isWhiteList && (
+								{account ? !isWhiteList && (
 									<StyledButton className="button-hover" onClick={handleWhitelist} disabled={isApplying}>
 										{		
 										isApplying ?	
@@ -728,7 +726,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 								) : (
 									<ConnectWalletButton/>
 								)}
-								{userCommitInfo?.isWhiteList && account && (
+								{isWhiteList && account && (
 									<Flex alignItems="center">
 										<Image style={{ margin: 'unset', width: '24px', height: '24px' }} src="/images/launchpad/icon-success.svg" />
 										<Text color="success" maxWidth="290px" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="20px" ml="12px">{t(`Congratulation! You have applied whitelist.`)}</Text>
