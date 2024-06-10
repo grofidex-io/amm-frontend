@@ -71,6 +71,7 @@ export default function ModalDetail({
 }) {
 	const { data: signer } = useWalletClient()
 	const { chainId } = useActiveChainId()
+	const configByContract = useRef<any>({})
   const { fetchWithCatchTxError } = useCatchTxError()
 	const { toastSuccess, toastError } = useToast()
   const { t } = useTranslation();
@@ -132,11 +133,20 @@ export default function ModalDetail({
 		}
 	}
 
+	const getConfig = async (item) => {
+		const _contract = getLaunchpadContract(item.roundAddress, signer ?? undefined, chainId)
+		const _configInfo: any = await _contract.read.getConfigInfo()
+		configByContract.current[item.roundAddress.toLowerCase()] = {..._configInfo, startCancel: BigNumber(_configInfo.startCancel).toNumber() * 1000, endCancel: BigNumber(_configInfo.endCancel).toNumber() * 1000}
+	}
+
 	useEffect(() => {
 		if(list && list?.length > 0 && signer) {
 			forEach(list, (item) => {
 				if(item.roundType === PHASES_TYPE.TIER) {
 					launchpadContract.current = getLaunchpadContract(item.roundAddress, signer, chainId)
+				}
+				if(item.roundAddress) {
+					getConfig(item)
 				}
 			})
 			if(launchpadContract.current?.account) {
@@ -145,10 +155,17 @@ export default function ModalDetail({
 		}
 	}, [list, signer])
 
+	const checkTimeCancel = (item) => {
+		const _config = configByContract.current[item.roundAddress.toLowerCase()]
+		if(_config) {
+			return _config.startCancel < Date.now() && _config.endCancel > Date.now()
+		}
+		return false
+	}
+
 	const endTime = saleEnd < Date.now()
 
 	const enableClaim = BigNumber(giveBackAmount).gt(0) || endTime
-
   return (
       <StyledModal title={t('Your Committed Detail')} onDismiss={onDismiss}  >
           <TableWrapper>
@@ -181,7 +198,7 @@ export default function ModalDetail({
 											<StyledText>{item.roundType === PHASES_TYPE.TIER && formatNumber(Number(giveBackAmount), 0, 6)}</StyledText>
 											<StyledText>{ endTime ? `${formatNumber(BigNumber(formatEther(item.u2uAmount)).toNumber() * rate, 0, 6)} ${tokenName}`: null } </StyledText>
 											<Box style={{ textAlign: 'center' }}>
-												{((item.startCancel * 1000) < Date.now() && (item.endCancel * 1000) > Date.now()) && (
+												{checkTimeCancel(item) && (
 													<StyledButtonCancel variant="cancel" onClick={() => handleCancel(item)}>{t('Cancel')}</StyledButtonCancel>
 												)}
 											</Box>
