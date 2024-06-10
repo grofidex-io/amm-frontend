@@ -367,6 +367,10 @@ const LaunchpadDetailPage = () => {
 	const refIntervalFetchTotalCommitted = useRef<any>()
 	const launchpadManagerContract = useRef<any>()
 	const currentPhase = useRef<string>()
+	const lastTime = useRef<any>({
+		startTime: 0,
+		endTime: 0
+	})
   const [tab, setTab] = useState<number>(0)
   const { account } = useAccountActiveChain()
 	const [timeWhiteList, setTimeWhiteList] = useState<ITimeOfPhase>()
@@ -399,6 +403,12 @@ const LaunchpadDetailPage = () => {
 			if(item.startTime < _now &&  _now < item.endTime && item.contractAddress.length > 0) {
 				currentPhase.current = item.contractAddress
 			}
+			if(_now > item.endTime) {
+				if(lastTime.current.endTime < item.endTime && item.type !== PHASES_TYPE.NONE) {
+					lastTime.current = item
+				}
+			}
+
 			if(item.type === PHASES_TYPE.APPLY_WHITELIST) {
 				if(_startTime === 0) {
 					_startTime = item.startTime
@@ -413,6 +423,7 @@ const LaunchpadDetailPage = () => {
 					_endTime = item.endTime
 				}
 			}
+
 			setTimeWhiteList({
 				startTime: _startTime,
 				endTime: _endTime
@@ -472,14 +483,20 @@ const LaunchpadDetailPage = () => {
 	}, [])
 
 	const isComplete = (_item: IPhase) => {
+		const _now = Date.now()
+
 		if(_item.type !== PHASES_TYPE.NONE) {
-			const _now = Date.now()
 			if(_now > _item.startTime && _item.contractAddress !== currentPhase.current) {
 				return true
 			}
 			return false
 		}
+
+		if(_item.startTime < lastTime.current.startTime && _item.type === PHASES_TYPE.NONE) {
+			return true
+		}
 		return false
+
 	}
 	const isInProgress = (_item: IPhase) => {
 		const _now = Date.now()
@@ -490,13 +507,14 @@ const LaunchpadDetailPage = () => {
 	}
 
 	const isUpComingOrFinish = (_item: IPhase) => {
-		if((!currentPhase.current || currentPhase.current?.length === 0) && (_item.endTime > Date.now() && Date.now() > _item.startTime) && _item.type === PHASES_TYPE.NONE) {
+		const _now = Date.now()
+		if((!currentPhase.current || currentPhase.current?.length === 0) && (lastTime.current.endTime ? _item.endTime >= lastTime.current.endTime : _item.startTime === lastTime.current.startTime) && _item.type === PHASES_TYPE.NONE) {
 			return true
 		}
 		return false
 	} 
 
-	const isCountdownEnd = detail?.saleEnd && detail?.saleEnd > Date.now()
+	const isCountdownEnd = detail?.status === LAUNCHPAD_STATUS.UPCOMING ? false : detail?.saleEnd && detail?.saleEnd > Date.now()
 
   return (
     <>
@@ -527,7 +545,7 @@ const LaunchpadDetailPage = () => {
               <Image src={detail?.tokenLogo} alt=''/>
             </StyledLogo>
             <Box overflow="hidden" ml={["16px", "16px", "20px", "20px", "24px"]}>
-              <StyledTitle >{detail?.projectName}</StyledTitle>
+              <StyledTitle title={detail?.projectName}>{detail?.projectName}</StyledTitle>
               <Flex alignItems="center">
                 <StyledDot
                   background={detail?.status && getColorLaunchpadByStatus(detail?.status, theme)}
