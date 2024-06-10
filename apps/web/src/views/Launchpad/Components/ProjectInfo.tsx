@@ -393,11 +393,15 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	)
 	
 	useEffect(() => {
-		if(currentTier && account) {
-			getUserConfig()
+		if(account) {
+			if(currentTier) {
+				getUserConfig()
+			} else {
+				setUserConfigInfo(null)
+			}
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentTier, info?.phases, account])
+	}, [currentTier, info?.phases])
 
 	useEffect(() => {
 		if(currentPhase?.contractAddress && signer) {
@@ -498,13 +502,11 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	}, [info, signer, account, currentTier])
 
 	useEffect(() => {
-		if(!account) {
-			setTotalCommitByUser(0)
-			setUserConfigInfo(null)
-			setTotalGiveback(0)
-			refSchedule.current = []
-			setAmountCommit('')
-		}
+		setTotalCommitByUser(0)
+		setUserConfigInfo(null)
+		setTotalGiveback(0)
+		refSchedule.current = []
+		setAmountCommit('')
 	}, [account])
 	const poolAvailable = Number(configInfo?.maxCommitAmount) - currentCommit
 
@@ -546,7 +548,6 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 
 	if(configInfo?.typeRound === PHASES_TYPE.TIER) {
 		const _now = Date.now()
-
 		if(!userConfigInfo?.start || currentPhase?.contractAddress.toLowerCase() !== currentTier?.toLowerCase() || amountCommit?.length === 0 || BigNumber(amountCommit).lte(0) || !(userConfigInfo && (userConfigInfo.start < _now && userConfigInfo.end > _now)) ) {
 			disableCommitU2U = true
 		}
@@ -822,7 +823,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 													<Image style={{ margin: 'unset', width: '24px', height: '24px' }} src="/images/launchpad/icon-card-success.svg" />
 													<Box ml="16px">
 														<Text color='success' fontSize={["16px", "16px", "16px", "16px", "16px", "16px", "16px", "17px"]} fontWeight="600" lineHeight="20px" textTransform="uppercase">{t('IDO Successfully')}</Text>
-														<StyledContent lineHeight="20px" mt="4px">{t('The project has been IDO successfully, your committed U2U has been swapped to TOKENX. Claim to your wallet.')}</StyledContent>
+														<StyledContent lineHeight="20px" mt="4px">{t('The project has been IDO successfully, your committed U2U has been swapped to %tokenName%. Claim to your wallet.', {tokenName: info?.tokenSymbol})}</StyledContent>
 													</Box>
 												</Flex>
 											) : (

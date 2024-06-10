@@ -1,5 +1,5 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { AutoColumn, Box, Button, Flex, Modal, Text, useToast } from "@pancakeswap/uikit";
+import { AutoColumn, Box, Button, Dots, Flex, Modal, Text, useToast } from "@pancakeswap/uikit";
 import { formatNumber } from "@pancakeswap/utils/formatBalance";
 import BigNumber from "bignumber.js";
 import { ToastDescriptionWithTx } from "components/Toast";
@@ -79,6 +79,7 @@ export default function ModalDetail({
 	const list = data || []
 	const [giveBackAmount, setGiveBackAmount] = useState<number | string>(0)
 	const launchpadContract = useRef<any>()
+	const [loadingClaim, setLoadingClaim] = useState<boolean>(false)
 
 	const getGiveBack = async () => {
 		try {
@@ -113,6 +114,7 @@ export default function ModalDetail({
 	}
 
 	const handleClaim = async () => {
+		setLoadingClaim(true)
 		const _contract = getLaunchpadManagerContract(launchpad, signer ?? undefined, chainId)
 		try {
 			const res = await fetchWithCatchTxError(() => isSortCap ? _contract.write.withdrawSoftCap() : _contract.write.claimToken())
@@ -120,6 +122,7 @@ export default function ModalDetail({
 				refetch()
 				getGiveBack()
 				getTotalUserCommitted()
+				setLoadingClaim(false)
 				toastSuccess(
 					t('Success!'),
 					<ToastDescriptionWithTx txHash={res.transactionHash}>
@@ -130,6 +133,7 @@ export default function ModalDetail({
 		} catch(error: any) {
 			const errorDescription = `${error.message} - ${error.data?.message}`
 			toastError(t('Failed'), errorDescription)
+			setLoadingClaim(false)
 		}
 	}
 
@@ -165,7 +169,7 @@ export default function ModalDetail({
 
 	const endTime = saleEnd < Date.now()
 
-	const enableClaim = BigNumber(giveBackAmount).gt(0) || endTime
+	const enableClaim = BigNumber(giveBackAmount).gt(0) || (endTime && list.length > 0)
   return (
       <StyledModal title={t('Your Committed Detail')} onDismiss={onDismiss}  >
           <TableWrapper>
@@ -217,7 +221,7 @@ export default function ModalDetail({
             </LayoutScroll>
           </TableWrapper>
         <Box mt="16px" style={{ textAlign: 'center' }}>
-          <StyledButton disabled={!enableClaim} className="button-hover" width="200px" onClick={handleClaim}>{t('Claim Now')}</StyledButton>
+          <StyledButton disabled={!enableClaim || loadingClaim} className="button-hover" width="200px" onClick={handleClaim}>{ loadingClaim ? <Dots>Claim Now</Dots> : 'Claim Now'}</StyledButton>
         </Box>
       </StyledModal>
   )
