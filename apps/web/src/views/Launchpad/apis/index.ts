@@ -131,7 +131,7 @@ export const fetchLaunchpadDetail = async (_contract: string) : Promise<{data: I
 const LIST_COMMITTED = `
 query listCommitted($user: String!, $launchpad: String!)  {
 	userCommits(
-		where: {user: $user, launchpadAddress: $launchpad, u2uAmount_gt: "0"}
+		where: {user: $user, launchpadAddress: $launchpad}, orderBy: processTime, orderDirection: asc
 	) {
 		id
 		u2uAmount
@@ -139,6 +139,7 @@ query listCommitted($user: String!, $launchpad: String!)  {
 		roundAddress
 		startCancel
     endCancel
+		isClaimed
 	}
 }
 `

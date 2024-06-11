@@ -102,6 +102,7 @@ export interface ICommittedItem {
 	roundAddress: Address
 	startCancel: number
 	endCancel: number
+	isClaimed: boolean
 }
 
 export interface IHistoryTransaction {
