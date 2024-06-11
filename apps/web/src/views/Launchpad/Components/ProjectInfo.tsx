@@ -372,10 +372,14 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	}
 
 	const getGiveBack = async () => {
-		const _contract = getLaunchpadContract(currentTier, signer ?? undefined, chainId)
-		const _giveback: any = await _contract.read.getGiveBack([account])
-		if(_giveback) {
-			setTotalGiveback(BigNumber(formatEther(_giveback)).toNumber())
+		if(BigNumber(totalCommit).lt(info?.softCap) && info?.saleEnd < Date.now()) {
+			setTotalGiveback(totalCommitByUser)
+		} else {
+			const _contract = getLaunchpadContract(currentTier, signer ?? undefined, chainId)
+			const _giveback: any = await _contract.read.getGiveBack([account])
+			if(_giveback) {
+				setTotalGiveback(BigNumber(formatEther(_giveback)).toNumber())
+			}
 		}
 	}
 
@@ -855,13 +859,13 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 									}
 									</>
 								)} 
-								{(BigNumber(totalCommit).gt(BigNumber(info?.softCap)) && info?.saleEnd < Date.now() && BigNumber(totalCommitByUser).gt(0)) && (
+								{(info?.saleEnd < Date.now() && BigNumber(totalCommitByUser).gt(0)) && (
 									<StyledTextItalic mt="12px">
 										Please click the 
 										<Text onClick={openCommittedModal} fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" mx="4px" textTransform="uppercase" style={{ display: 'inline', color: theme.colors.primary, fontWeight: '300', cursor: 'pointer'}}>
 											{t('Claim')}
 										</Text>
-										button above to get your {info?.tokenName}
+										button above to get your  { BigNumber(totalCommit).gt(BigNumber(info?.softCap)) ? info?.tokenName : 'U2U committed'}
 									</StyledTextItalic>
 								)}
 							</Box>
