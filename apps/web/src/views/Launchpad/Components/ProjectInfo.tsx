@@ -797,70 +797,73 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 									</StyledTextItalic>
 								)}
               </Box>
-							{Date.now() < info?.saleEnd  && (
-								<Box my={["20px", "20px", "24px"]}>
-									<Text color="textSubtle" fontSize={["16px", "16px", "16px", "16px", "16px", "16px", "16px", "17px"]} fontWeight="600" mb="8px">{t('U2U Commit')}</Text>
-									<Flex alignItems="center">
-										<StyledInput
-											value={isFocusInput ? amountCommit : amountCommit && formatNumber(Number(amountCommit), 0, 6)}
-											onFocus={() => {setIsFocusInput(true)}}
-											onBlur={() => {setIsFocusInput(false)}}
-											onUserInput={handleInputAmount}
-											align='left'
-											placeholder="Enter amount U2U commit"
-										/>
-										{!account ? <ConnectWalletButton/> : 				
-											<StyledButton
-												className="button-hover"
-												px="16px"
-												disabled={disableCommitU2U || isCommitting}
-												onClick={handleCommitU2U}
-											>
-											{isCommitting ?
-												<Dots>Commit U2U</Dots> : 
-													'Commit U2U'
-											}
-											</StyledButton>
-										} 
-						
-									</Flex>
-									{(BigNumber(maxCommitAmountByTier).gte(0)) ? (
-										<Text color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" lineHeight="16px" mt="8px">{t('Maximum %maxCommitAmount% U2U', { maxCommitAmount: isShowMaximum ? maxCommitAmountByTier.toString() : '0' })}</Text>
-									) : ''}
-									{Date.now() > info?.saleEnd && (
+							<Box my={["20px", "20px", "24px"]}>
+								{Date.now() < info?.saleEnd && (
 										<>
-										{
-											BigNumber(totalCommit).gt(info.softCap) ? (
-												<Flex alignItems="center">
-													<Image style={{ margin: 'unset', width: '24px', height: '24px' }} src="/images/launchpad/icon-card-success.svg" />
-													<Box ml="16px">
-														<Text color='success' fontSize={["16px", "16px", "16px", "16px", "16px", "16px", "16px", "17px"]} fontWeight="600" lineHeight="20px" textTransform="uppercase">{t('IDO Successfully')}</Text>
-														<StyledContent lineHeight="20px" mt="4px">{t('The project has been IDO successfully, your committed U2U has been swapped to %tokenName%. Claim to your wallet.', {tokenName: info?.tokenSymbol})}</StyledContent>
-													</Box>
-												</Flex>
-											) : (
-												<Flex alignItems="center">
-													<Image style={{ margin: 'unset', width: '24px', height: '24px' }} src="/images/launchpad/icon-card-failed.svg" />
-													<Box ml="16px">
-														<Text color='failure' fontSize={["16px", "16px", "16px", "16px", "16px", "16px", "16px", "17px"]} fontWeight="600" lineHeight="20px" textTransform="uppercase">{t('IDO Failed')}</Text>
-														<StyledContent lineHeight="20px" mt="4px">{t('Unfortunately, the IDO project failed. The total raised value does not reach the softcap minimum.')}</StyledContent>
-													</Box>
-												</Flex>
-											)
-										}
+											<Text color="textSubtle" fontSize={["16px", "16px", "16px", "16px", "16px", "16px", "16px", "17px"]} fontWeight="600" mb="8px">{t('U2U Commit')}</Text>
+											<Flex alignItems="center">
+												<StyledInput
+													value={isFocusInput ? amountCommit : amountCommit && formatNumber(Number(amountCommit), 0, 6)}
+													onFocus={() => {setIsFocusInput(true)}}
+													onBlur={() => {setIsFocusInput(false)}}
+													onUserInput={handleInputAmount}
+													align='left'
+													placeholder="Enter amount U2U commit"
+												/>
+												{!account ? <ConnectWalletButton/> : 				
+													<StyledButton
+														className="button-hover"
+														px="16px"
+														disabled={disableCommitU2U || isCommitting}
+														onClick={handleCommitU2U}
+													>
+													{isCommitting ?
+														<Dots>Commit U2U</Dots> : 
+															'Commit U2U'
+													}
+													</StyledButton>
+												} 
+								
+											</Flex>
+											{(BigNumber(maxCommitAmountByTier).gte(0)) ? (
+												<Text color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" lineHeight="16px" mt="8px">{t('Maximum %maxCommitAmount% U2U', { maxCommitAmount: isShowMaximum ? maxCommitAmountByTier.toString() : '0' })}</Text>
+											) : ''}
 										</>
-									)} 
-									{(BigNumber(totalCommit).gt(BigNumber(info.softCap)) && info?.saleEnd < Date.now()) && (
-										<StyledTextItalic mt="12px">
-											Please click the 
-											<Text onClick={openCommittedModal} fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" mx="4px" textTransform="uppercase" style={{ display: 'inline', color: theme.colors.primary, fontWeight: '300', cursor: 'pointer'}}>
-												{t('Claim')}
-											</Text>
-											button above to get your {info?.tokenName}
-										</StyledTextItalic>
-									)}
-								</Box>
-							)}
+								)}
+				
+								{Date.now() > info?.saleEnd && (
+									<>
+									{
+										BigNumber(totalCommit).gt(info?.softCap) ? (
+											<Flex alignItems="center">
+												<Image style={{ margin: 'unset', width: '24px', height: '24px' }} src="/images/launchpad/icon-card-success.svg" />
+												<Box ml="16px">
+													<Text color='success' fontSize={["16px", "16px", "16px", "16px", "16px", "16px", "16px", "17px"]} fontWeight="600" lineHeight="20px" textTransform="uppercase">{t('IDO Successfully')}</Text>
+													<StyledContent lineHeight="20px" mt="4px">{t('The project has been IDO successfully, your committed U2U has been swapped to %tokenName%. Claim to your wallet.', {tokenName: info?.tokenSymbol})}</StyledContent>
+												</Box>
+											</Flex>
+										) : (
+											<Flex alignItems="center">
+												<Image style={{ margin: 'unset', width: '24px', height: '24px' }} src="/images/launchpad/icon-card-failed.svg" />
+												<Box ml="16px">
+													<Text color='failure' fontSize={["16px", "16px", "16px", "16px", "16px", "16px", "16px", "17px"]} fontWeight="600" lineHeight="20px" textTransform="uppercase">{t('IDO Failed')}</Text>
+													<StyledContent lineHeight="20px" mt="4px">{t('Unfortunately, the IDO project failed. The total raised value does not reach the softcap minimum.')}</StyledContent>
+												</Box>
+											</Flex>
+										)
+									}
+									</>
+								)} 
+								{(BigNumber(totalCommit).gt(BigNumber(info?.softCap)) && info?.saleEnd < Date.now()) && (
+									<StyledTextItalic mt="12px">
+										Please click the 
+										<Text onClick={openCommittedModal} fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" mx="4px" textTransform="uppercase" style={{ display: 'inline', color: theme.colors.primary, fontWeight: '300', cursor: 'pointer'}}>
+											{t('Claim')}
+										</Text>
+										button above to get your {info?.tokenName}
+									</StyledTextItalic>
+								)}
+							</Box>
               <Box>
 								{!account && (
 									<StyledContent>
