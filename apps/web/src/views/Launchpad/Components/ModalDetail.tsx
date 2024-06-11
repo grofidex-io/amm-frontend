@@ -67,7 +67,8 @@ export default function ModalDetail({
 	onDismiss,
 	getTotalUserCommitted,
 	rate,
-	isSortCap
+	isSortCap,
+	initContract
 }) {
 	const { data: signer } = useWalletClient()
 	const { chainId } = useActiveChainId()
@@ -81,6 +82,7 @@ export default function ModalDetail({
 	const launchpadContract = useRef<any>()
 	const [loadingClaim, setLoadingClaim] = useState<boolean>(false)
 	const [disableClaim, setDisableClaim] = useState<boolean>(false)
+	const [isCancel, setIsCancel] = useState<boolean>(false)
 
 	const getGiveBack = async () => {
 		try {
@@ -94,6 +96,7 @@ export default function ModalDetail({
 	}
 
 	const handleCancel = async (item) => {
+		setIsCancel(true)
 		const _contract = getLaunchpadContract(item.roundAddress, signer ?? undefined, chainId)
 		try {
 			const res = await fetchWithCatchTxError(() => _contract.write.cancelCommit())
@@ -101,14 +104,17 @@ export default function ModalDetail({
 				refetch()
 				getGiveBack()
 				getTotalUserCommitted()
+				initContract()
 				toastSuccess(
 					t('Success!'),
 					<ToastDescriptionWithTx txHash={res.transactionHash}>
 						Cancel successfully
 					</ToastDescriptionWithTx>,
 				)
+				setIsCancel(false)
 			}
 		} catch(error: any) {
+			setIsCancel(false)
 			const errorDescription = `${error.message} - ${error.data?.message}`
 			toastError(t('Failed'), errorDescription)
 		}
@@ -177,7 +183,7 @@ export default function ModalDetail({
 
 	const endTime = saleEnd < Date.now()
 
-	const enableClaim = BigNumber(giveBackAmount).gt(0) || endTime
+	const enableClaim = (BigNumber(giveBackAmount).gt(0) || endTime) && list.length > 0
 
 	const renderAction = (item) => {
 		if(item?.isClaimed) {
@@ -190,7 +196,7 @@ export default function ModalDetail({
 			return 'Canceled'
 		}
 		if(checkTimeCancel(configByContract[item.roundAddress.toLowerCase()])){
-			return <StyledButtonCancel variant="cancel" onClick={() => handleCancel(item)}>{t('Cancel')}</StyledButtonCancel>
+			return <StyledButtonCancel disabled={isCancel} variant="cancel" onClick={() => handleCancel(item)}>{isCancel ? <Dots>Canceling</Dots> : 'Cancel'}</StyledButtonCancel>
 		} 
 		return null
 	}

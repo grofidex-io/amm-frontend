@@ -12,7 +12,7 @@ export const useFetchListCommit = (_user: Address, _launchpadManager: Address) =
 		enabled: Boolean(_user) && Boolean(_launchpadManager),
 		retry: 3,
 		retryDelay: 3000,
-		refetchOnMount: false,
+		refetchOnMount: true,
 		refetchOnReconnect: false,
 		refetchOnWindowFocus: false,
   })

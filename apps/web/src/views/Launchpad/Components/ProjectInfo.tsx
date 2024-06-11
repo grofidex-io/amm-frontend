@@ -387,6 +387,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 			account={account}
 			launchpad={info?.contractAddress}
 			getTotalUserCommitted={getTotalUserCommitted}
+			initContract={initContract}
 			listPhase={keyBy(info?.phases, (o) => o.contractAddress.toLowerCase())}
 			rate={rate}
 			isSortCap={BigNumber(totalCommit).lt(info?.softCap) && Date.now() > info.saleEnd  }
@@ -854,7 +855,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 									}
 									</>
 								)} 
-								{(BigNumber(totalCommit).gt(BigNumber(info?.softCap)) && info?.saleEnd < Date.now()) && (
+								{(BigNumber(totalCommit).gt(BigNumber(info?.softCap)) && info?.saleEnd < Date.now() && BigNumber(totalCommitByUser).gt(0)) && (
 									<StyledTextItalic mt="12px">
 										Please click the 
 										<Text onClick={openCommittedModal} fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" mx="4px" textTransform="uppercase" style={{ display: 'inline', color: theme.colors.primary, fontWeight: '300', cursor: 'pointer'}}>

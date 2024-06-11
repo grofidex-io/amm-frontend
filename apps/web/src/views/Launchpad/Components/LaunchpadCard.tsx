@@ -254,8 +254,7 @@ const LaunchpadCard = ({ item }: LaunchpadProps) => {
 
 
 	useEffect(() => {
-
-		if(item.contractAddress && item.contractAddress?.length > 0 && item.status === LAUNCHPAD_STATUS.ON_GOING) {
+		if(item.contractAddress && item.contractAddress?.length > 0) {
 			launchpadManagerContract.current = getLaunchpadManagerContract(item.contractAddress, signer ?? undefined, chainId)
 			getTotalCommit()
 			getTotalUserCommitted()
@@ -365,7 +364,7 @@ const LaunchpadCard = ({ item }: LaunchpadProps) => {
             <Flex alignItems="center" justifyContent="space-between" mb="20px">
               <Text fontFamily="'Metuo', sans-serif" fontSize={["16px", "18px", "18px", "18px", "16px", "16px", "18px"]} fontWeight="900" lineHeight="1">{t('Progress')}</Text>
               <Text textAlign="right" minWidth={145} fontSize={["14px", "16px", "16px", "16px", "14px", "14px", "16px"]} lineHeight="1">
-								<CountdownTime type={COUNTDOWN_TYPE.STRING} time={timeCountdown}/>
+								{item.saleEnd > Date.now() ? <CountdownTime type={COUNTDOWN_TYPE.STRING} time={timeCountdown}/> : 'Ended'} 
 							</Text>
             </Flex>
             <Flex alignItems="center" justifyContent="space-between" mb="10px">
