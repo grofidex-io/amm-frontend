@@ -259,7 +259,7 @@ const LaunchpadCard = ({ item }: LaunchpadProps) => {
 			getTotalCommit()
 			getTotalUserCommitted()
 		}
-	}, [item, account])
+	}, [item, account, signer])
 
 
 	useEffect(() => {
