@@ -230,7 +230,7 @@ export default function ModalDetail({
 											<StyledText>{listPhase[item.roundAddress.toLowerCase()]?.name}</StyledText>
 											<StyledText>{formatNumber(BigNumber(formatEther(item.u2uAmount)).toNumber(), 0, 6)} U2U</StyledText>
 											<StyledText>{item.roundType === PHASES_TYPE.TIER && formatNumber(Number(giveBackAmount), 0, 6)}</StyledText>
-											<StyledText>{ endTime ? `${formatNumber(BigNumber(formatEther(item.u2uAmount)).minus(item.roundType === PHASES_TYPE.TIER ? giveBackAmount : 0).toNumber() * rate, 0, 6)} ${tokenName}`: !isSortCap && 'Calculating' } </StyledText>
+											<StyledText>{ endTime && !isSortCap ? `${formatNumber(BigNumber(formatEther(item.u2uAmount)).minus(item.roundType === PHASES_TYPE.TIER ? giveBackAmount : 0).toNumber() * rate, 0, 6)} ${tokenName}`: !isSortCap && 'Calculating' } </StyledText>
 											<Box style={{ textAlign: 'center' }}>
 												{renderAction(item)}
 											</Box>
