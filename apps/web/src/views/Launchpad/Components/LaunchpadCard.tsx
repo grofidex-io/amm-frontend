@@ -27,6 +27,7 @@ const CardHeader = styled(Box)`
   background: ${({ theme }) => theme.colors.backgroundPage};
   // aspect-ratio: 16/9;
   height: 120px;
+  overflow: hidden;
   &:before {
     content: "";
     position: absolute;

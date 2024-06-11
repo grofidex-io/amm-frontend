@@ -32,6 +32,7 @@ const StyledBanner = styled(Box)`
   width: 100%;
   height: 240px;
   padding: 30px 0;
+  overflow: hidden;
   &::after {
     content: "";
     position: absolute;
