@@ -513,12 +513,12 @@ const LaunchpadDetailPage = () => {
 		return false
 	}
 
-	const isUpComingOrFinish = (_item: IPhase) => {
-		if((!currentPhase.current || currentPhase.current?.length === 0) && (lastTime.current.endTime ? _item.endTime >= lastTime.current.endTime : _item.startTime === lastTime.current.startTime) && _item.type === PHASES_TYPE.NONE) {
-			return true
-		}
-		return false
-	} 
+	// const isUpComingOrFinish = (_item: IPhase) => {
+	// 	if((!currentPhase.current || currentPhase.current?.length === 0) && (lastTime.current.endTime ? _item.endTime >= lastTime.current.endTime : _item.startTime === lastTime.current.startTime) && _item.type === PHASES_TYPE.NONE) {
+	// 		return true
+	// 	}
+	// 	return false
+	// } 
 
 	const isCountdownEnd = detail?.status === LAUNCHPAD_STATUS.UPCOMING ? false : detail?.saleEnd && (detail?.saleEnd > Date.now() || detail.saleEnd < Date.now())
 
@@ -577,8 +577,12 @@ const LaunchpadDetailPage = () => {
             justifyContent="center"
             flexDirection="column"
           >
-            <Text color="primary" textAlign="center" fontSize={["13px", "13px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="1.25" mb={["6px", "6px", "8px", "8px", "10px", "10px", "12px"]}>{ isCountdownEnd ? t('Sale end in') : t('Sale start in')}</Text>
-						{showCountdown ? <CountdownTime type={COUNTDOWN_TYPE.ARRAY} time={isCountdownEnd ? detail?.saleEnd : detail?.saleStart} cb={refetch}/> : 	<Text color="hover" fontSize={["16px", "16px", "20px", "20px", "24px"]} fontWeight="600" lineHeight={["22px", "22px", "26px", "26px", "30px"]}>To be announcement</Text>}
+						{(detail && detail?.saleEnd > Date.now())  && (
+							<>
+								<Text color="primary" textAlign="center" fontSize={["13px", "13px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="1.25" mb={["6px", "6px", "8px", "8px", "10px", "10px", "12px"]}>{ isCountdownEnd ? t('Sale end in') : t('Sale start in')}</Text>
+								{showCountdown ? <CountdownTime type={COUNTDOWN_TYPE.ARRAY} time={isCountdownEnd ? detail?.saleEnd : detail?.saleStart} cb={refetch}/> : 	<Text color="hover" fontSize={["16px", "16px", "20px", "20px", "24px"]} fontWeight="600" lineHeight={["22px", "22px", "26px", "26px", "30px"]}>To be announcement</Text>}
+							</>
+						)}
           </Flex>
         </Flex>
         <Flex flexDirection={["column", "column", "column", "column", "row"]} mb="32px">

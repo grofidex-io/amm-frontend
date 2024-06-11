@@ -12,7 +12,7 @@ export const useFetchTransactionHistory = (_user: Address, _launchpadManager: Ad
 		enabled: Boolean(_user) && Boolean(_launchpadManager),
 		retry: 3,
 		retryDelay: 3000,
-		refetchOnMount: false,
+		refetchOnMount: true,
 		refetchOnReconnect: false,
 		refetchOnWindowFocus: false,
   })
