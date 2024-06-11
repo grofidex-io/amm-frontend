@@ -510,8 +510,11 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		setTotalCommitByUser(0)
 		setUserConfigInfo(null)
 		setTotalGiveback(0)
-		refSchedule.current = []
+
 		setAmountCommit('')
+		if(!account) {
+			refSchedule.current = []
+		}
 	}, [account])
 	const poolAvailable = Number(configInfo?.maxCommitAmount) - currentCommit
 

@@ -338,7 +338,7 @@ const LaunchpadCard = ({ item }: LaunchpadProps) => {
           <Box mt="auto">
             <Flex justifyContent="space-between" mb="12px">
               <Text minWidth="68px" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="20px" color='textSubtle'>{t('Sale price')}</Text>
-              <Text ml="12px" textAlign="right" fontSize={["15px", "15px", "16px", "16px", "15px", "16px", "17px"]} fontWeight="700" lineHeight="20px" color='text'>1 U2U = {item.priceToken} {item.tokenName}</Text>
+              <Text ml="12px" textAlign="right" fontSize={["15px", "15px", "16px", "16px", "15px", "16px", "17px"]} fontWeight="700" lineHeight="20px" color='text'>1 U2U = {item.priceToken} {item.tokenSymbol}</Text>
             </Flex>
             <Flex justifyContent="space-between">
               <Text minWidth="68px" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="20px" color='textSubtle'>{t('Total Raise')}</Text>
@@ -373,9 +373,9 @@ const LaunchpadCard = ({ item }: LaunchpadProps) => {
                 <Text fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="700" lineHeight="24px">{formatNumber(totalCommit, 0, 6)}</Text>
                 <Text color='textSubtle' fontSize={["10px", "10px", "10px", "10px", "10px", "10px", "10px", "12px"]} lineHeight="24px" ml="6px">U2U Raised</Text>
               </Flex>
-              <Text color='textSubtle' fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600">{formatNumber(item?.totalRaise ? (totalCommit / item?.totalRaise) * 100 < 100 ? (totalCommit / item?.totalRaise) * 100 : 100  : 0, 0, 2) }%</Text>
+              <Text color='textSubtle' fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600">{formatNumber(item?.totalRaise ? (totalCommit / item?.totalRaise) * 100 : 0, 0, 2) }%</Text>
             </Flex>
-            <Progress primaryStep={item?.totalRaise ? (totalCommit / item?.totalRaise) * 100 < 100 ? (totalCommit / item?.totalRaise) * 100 : 100 : 0 } scale="sm" />
+            <Progress primaryStep={item?.totalRaise ? (totalCommit / item?.totalRaise) * 100 : 0 } scale="sm" />
           </Box>
         )}
       </CardBody>
