@@ -7,7 +7,7 @@ import { formatEther } from "ethers/lib/utils";
 import { useActiveChainId } from "hooks/useActiveChainId";
 import useCatchTxError from "hooks/useCatchTxError";
 import forEach from "lodash/forEach";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { getLaunchpadContract, getLaunchpadManagerContract } from "utils/contractHelpers";
 import { Break, TableWrapper } from 'views/Info/components/InfoTables/shared';
@@ -177,7 +177,7 @@ export default function ModalDetail({
 
 	const endTime = saleEnd < Date.now()
 
-	const enableClaim = BigNumber(giveBackAmount).gt(0) || disableClaim
+	const enableClaim = BigNumber(giveBackAmount).gt(0) || endTime
 
 	const renderAction = (item) => {
 		if(item?.isClaimed) {
@@ -185,6 +185,9 @@ export default function ModalDetail({
 		}
 		if(endTime && item.amountCommit) {
 			return 'Ready to claim'
+		}
+		if(BigNumber(item.u2uAmount).lte(0)) {
+			return 'Canceled'
 		}
 		if(checkTimeCancel(configByContract[item.roundAddress.toLowerCase()])){
 			return <StyledButtonCancel variant="cancel" onClick={() => handleCancel(item)}>{t('Cancel')}</StyledButtonCancel>
@@ -216,20 +219,18 @@ export default function ModalDetail({
               <AutoColumn gap="16px">
                 <Break/>
                 {list?.map(item => (
-                  <>
-										{BigNumber(item.u2uAmount).gt(0) && (
-											<ResponsiveGrid key={item.id}>
+                  <React.Fragment key={item.id}>
+										<ResponsiveGrid>
 											<StyledText>{listPhase[item.roundAddress.toLowerCase()]?.name}</StyledText>
 											<StyledText>{formatNumber(BigNumber(formatEther(item.u2uAmount)).toNumber(), 0, 6)} U2U</StyledText>
 											<StyledText>{item.roundType === PHASES_TYPE.TIER && formatNumber(Number(giveBackAmount), 0, 6)}</StyledText>
-											<StyledText>{ endTime ? `${formatNumber(BigNumber(formatEther(item.u2uAmount)).toNumber() * rate, 0, 6)} ${tokenName}`: 'Calculating' } </StyledText>
+											<StyledText>{ endTime ? `${formatNumber(BigNumber(formatEther(item.u2uAmount)).minus(item.roundType === PHASES_TYPE.TIER ? giveBackAmount : 0).toNumber() * rate, 0, 6)} ${tokenName}`: 'Calculating' } </StyledText>
 											<Box style={{ textAlign: 'center' }}>
 												{renderAction(item)}
 											</Box>
 										</ResponsiveGrid>
-										)}
                     <Break />
-                  </>
+									</React.Fragment>
                 ))}
 								{list?.length === 0 && (
 									<Flex my="16px" flexDirection="column" alignItems="center" justifyContent="center">
