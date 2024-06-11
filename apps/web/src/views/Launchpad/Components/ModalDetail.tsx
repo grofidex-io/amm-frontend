@@ -8,7 +8,7 @@ import { useActiveChainId } from "hooks/useActiveChainId";
 import useCatchTxError from "hooks/useCatchTxError";
 import forEach from "lodash/forEach";
 import React, { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { getLaunchpadContract, getLaunchpadManagerContract } from "utils/contractHelpers";
 import { Break, TableWrapper } from 'views/Info/components/InfoTables/shared';
 import { useWalletClient } from "wagmi";
@@ -76,6 +76,7 @@ export default function ModalDetail({
   const { fetchWithCatchTxError } = useCatchTxError()
 	const { toastSuccess, toastError } = useToast()
   const { t } = useTranslation();
+	const theme = useTheme()
 	const { data, refetch } = useFetchListCommit(account, launchpad)
 	const list = data || []
 	const [giveBackAmount, setGiveBackAmount] = useState<number | string>(0)
@@ -231,7 +232,7 @@ export default function ModalDetail({
 											<StyledText>{formatNumber(BigNumber(formatEther(item.u2uAmount)).toNumber(), 0, 6)} U2U</StyledText>
 											<StyledText>{item.roundType === PHASES_TYPE.TIER && formatNumber(Number(giveBackAmount), 0, 6)}</StyledText>
 											<StyledText>{ endTime && !isSortCap ? `${formatNumber(BigNumber(formatEther(item.u2uAmount)).minus(item.roundType === PHASES_TYPE.TIER ? giveBackAmount : 0).toNumber() * rate, 0, 6)} ${tokenName}`: !isSortCap && 'Calculating' } </StyledText>
-											<Box style={{ textAlign: 'center' }}>
+											<Box style={{ textAlign: 'center', color: `${ renderAction(item) === 'Claimed' ? theme.colors.primary : renderAction(item) === 'Canceled' ? theme.colors.failure : renderAction(item) === 'Ready to claim' ? theme.colors.yellow : theme.colors.text }` }}>
 												{renderAction(item)}
 											</Box>
 										</ResponsiveGrid>

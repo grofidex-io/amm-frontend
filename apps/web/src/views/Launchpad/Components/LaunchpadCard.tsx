@@ -26,19 +26,7 @@ const CardHeader = styled(Box)`
   position: relative;
   background: ${({ theme }) => theme.colors.backgroundPage};
   // aspect-ratio: 16/9;
-  height: 200px;
-  @media screen and (max-width: 1439px) {
-    height: 190px;
-  }
-  @media screen and (max-width: 1199px) {
-    height: 180px;
-  }
-  @media screen and (max-width: 991px) {
-    height: 170px;
-  }
-  @media screen and (max-width: 575px) {
-    height: 160px;
-  }
+  height: 120px;
   &:before {
     content: "";
     position: absolute;
@@ -57,23 +45,11 @@ const CardHeader = styled(Box)`
   }
 `
 const CardBody = styled.div`
-  --space: 200px;
+  --space: 120px;
   padding: 16px;
   display: flex;
   flex-direction: column;
   height: calc(100% - var(--space));
-  @media screen and (max-width: 1439px) {
-    --space: 190px;
-  }
-  @media screen and (max-width: 1199px) {
-    --space: 180px;
-  }
-  @media screen and (max-width: 991px) {
-    --space: 170px;
-  }
-  @media screen and (max-width: 575px) {
-    --space: 160px;
-  }
 `
 const Image = styled.img`
   position: absolute;
@@ -97,6 +73,23 @@ const StyledLogo = styled(Box)`
   box-shadow: ${({ theme }) => theme.shadows.card};
   border: 2px solid ${({ theme }) => theme.colors.cardBorder};
   overflow: hidden;
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    transform: translate(-100%);
+    background-image: linear-gradient(270deg, rgba(255, 255, 255, 0.2) 0, rgba(255, 255, 255, 0));
+    animation: shimmer 2.25s infinite;
+    z-index: 1;
+  }
+  @keyframes shimmer {
+    to {
+      transform:translate(100%)
+    }
+  }
   @media screen and (max-width: 1439px) {
     --size: 66px;
   }

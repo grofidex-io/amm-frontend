@@ -32,13 +32,30 @@ const StyledBanner = styled(Box)`
   width: 100%;
   height: 240px;
   padding: 30px 0;
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    transform: translate(-100%);
+    background-image: linear-gradient(270deg, rgba(255, 255, 255, 0.1) 0, rgba(255, 255, 255, 0));
+    animation: shimmer 1.5s infinite;
+    z-index: -1;
+  }
+  @keyframes shimmer {
+    to {
+      transform:translate(100%)
+    }
+  }
   &::before {
     content: '';
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 75px;
+    height: 100px;
     width: 100%;
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
   }
@@ -72,6 +89,7 @@ const StyledBanner = styled(Box)`
 `
 const StyledLogo = styled(Box)`
   --size: 120px;
+  position: relative;
   min-width: var(--size);
   width: var(--size);
   height: var(--size);
@@ -79,6 +97,23 @@ const StyledLogo = styled(Box)`
   border: 2px solid ${({ theme }) => theme.colors.cardBorder};
   box-shadow: ${({ theme }) => theme.shadows.card};
   overflow: hidden;
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    transform: translate(-100%);
+    background-image: linear-gradient(270deg, rgba(255, 255, 255, 0.2) 0, rgba(255, 255, 255, 0));
+    animation: shimmer 2.25s infinite;
+    z-index: 1;
+  }
+  @keyframes shimmer {
+    to {
+      transform:translate(100%)
+    }
+  }
   @media screen and (max-width: 1439px) {
     --size: 100px;
   }
@@ -90,9 +125,15 @@ const StyledLogo = styled(Box)`
   }
 `
 const Image = styled.img`
-  --size: 100%;
-  width: var(--size);
-  height: var(--size);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  max-height: 100%;
   object-fit: cover;
 `
 const StyledTitle = styled(Text)`
@@ -310,7 +351,7 @@ const StyledContent = styled.div`
 `
 const StyledSwiper = styled(Swiper)`
 	position: relative;
-	@media screen and (min-width: 1200px) {
+	@media screen and (min-width: 1440px) {
 		.swiper-wrapper {
 			justify-content: center;
 		}
@@ -605,7 +646,7 @@ const LaunchpadDetailPage = () => {
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Total for Sale')}</StyledListTitle>
               <Flex alignItems="center">
-                <IconImg src={detail?.tokenLogo}/>
+                <IconImg style={{ borderRadius: '2px' }} src={detail?.tokenLogo}/>
                 <StyledListText>{detail?.totalSale && formatNumber(detail.totalSale)} {detail?.tokenSymbol}</StyledListText>
               </Flex>
             </Flex>
