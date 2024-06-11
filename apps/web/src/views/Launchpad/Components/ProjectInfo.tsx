@@ -166,6 +166,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	const _refTimeoutCheckPhase = useRef<any>()
 	const _launchpadContract = useRef<any>()
 	const _launchpadContractWhitelist = useRef<any>()
+	const _timeoutGetConfig = useRef<any>()
 	const launchpadManagerContract = useRef<any>()
 	const [rate, setRate] = useState<number>(0)
 
@@ -380,7 +381,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 
 	const [openCommittedModal] = useModal(
 		<ModalDetail
-			tokenName={info?.tokenName}
+			tokenName={info?.tokenSymbol}
 			onDismiss
 			saleEnd={info?.saleEnd}
 			account={account}
@@ -393,15 +394,19 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	)
 	
 	useEffect(() => {
-		if(account) {
-			if(currentTier) {
-				getUserConfig()
+		clearTimeout(_timeoutGetConfig.current)
+		_timeoutGetConfig.current = setTimeout(() => {
+			if(account) {
+				if(currentTier) {
+					getUserConfig()
+				}
 			} else {
 				setUserConfigInfo(null)
 			}
-		}
+		}, 500)
+
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentTier, info?.phases])
+	}, [currentTier, info?.phases, account])
 
 	useEffect(() => {
 		if(currentPhase?.contractAddress && signer) {
@@ -548,7 +553,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 
 	if(configInfo?.typeRound === PHASES_TYPE.TIER) {
 		const _now = Date.now()
-		if(!userConfigInfo?.start || currentPhase?.contractAddress.toLowerCase() !== currentTier?.toLowerCase() || amountCommit?.length === 0 || BigNumber(amountCommit).lte(0) || !(userConfigInfo && (userConfigInfo.start < _now && userConfigInfo.end > _now)) ) {
+		if(!userConfigInfo?.start || currentPhase?.contractAddress.toLowerCase() !== currentTier?.toLowerCase() || !(userConfigInfo && (userConfigInfo.start < _now && userConfigInfo.end > _now)) ) {
 			disableCommitU2U = true
 		}
 	}
@@ -558,6 +563,10 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	}
 
 	if((userConfigInfo?.typeRound === PHASES_TYPE.WHITELIST && !isWhiteList) || !currentPhase || (currentPhase.type === PHASES_TYPE.WHITELIST && !isWhiteList)) {
+		disableCommitU2U = true
+	}
+
+	if(amountCommit?.length === 0 || BigNumber(amountCommit).lte(0)) {
 		disableCommitU2U = true
 	}
 	

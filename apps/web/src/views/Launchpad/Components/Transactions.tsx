@@ -70,7 +70,8 @@ const TRANSACTION_STATUS = {
 	"CLAIM_TOKEN": 'CLAIM TOKEN', 
 	"COMMIT": "COMMIT", 
 	"REFUND": "REFUND", 
-	"GIVE_BACK": "GIVE BACK"
+	"GIVE_BACK": "GIVE BACK",
+	"CANCEL": "CANCEL"
 }
 const TableLoader: React.FC<React.PropsWithChildren> = () => {
   const loadingRow = (
