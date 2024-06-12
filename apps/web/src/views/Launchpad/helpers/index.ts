@@ -85,10 +85,10 @@ export const getStatusNameByTime = (item: ILaunchpadItem, totalCommitByUser?: nu
 		return 'Upcoming'
 	}
 	if(item.saleEnd < _now) {
-		if(totalCommitByUser && totalCommit && BigNumber(totalCommitByUser).gt(0)) {
-			if(BigNumber(totalCommit).lt(item?.softCap)) {
-				return 'Cancel'
-			} 
+		if(totalCommit && BigNumber(totalCommit).lt(item?.softCap)) {
+			return 'Cancelled'
+		} 
+		if(totalCommitByUser && BigNumber(totalCommitByUser).gt(0)) {
 			return 'Claimable'
 		}
 		return 'Ended'
