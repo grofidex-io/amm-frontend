@@ -194,7 +194,7 @@ export default function ModalDetail({
 			return 'Ready to claim'
 		}
 		if(BigNumber(item.u2uAmount).lte(0)) {
-			return 'Canceled'
+			return 'Cancelled'
 		}
 		if(checkTimeCancel(configByContract[item.roundAddress.toLowerCase()])){
 			return <StyledButtonCancel disabled={isCancel} variant="cancel" onClick={() => handleCancel(item)}>{isCancel ? <Dots>Canceling</Dots> : 'Cancel'}</StyledButtonCancel>
@@ -232,7 +232,7 @@ export default function ModalDetail({
 											<StyledText>{formatNumber(BigNumber(formatEther(item.u2uAmount)).toNumber(), 0, 6)} U2U</StyledText>
 											<StyledText>{item.roundType === PHASES_TYPE.TIER && formatNumber(Number(giveBackAmount), 0, 6)}</StyledText>
 											<StyledText>{ endTime && !isSortCap ? `${formatNumber(BigNumber(formatEther(item.u2uAmount)).minus(item.roundType === PHASES_TYPE.TIER ? giveBackAmount : 0).toNumber() * rate, 0, 6)} ${tokenName}`: !isSortCap && 'Calculating' } </StyledText>
-											<Box style={{ textAlign: 'center', color: `${ renderAction(item) === 'Claimed' ? theme.colors.primary : renderAction(item) === 'Canceled' ? theme.colors.failure : renderAction(item) === 'Ready to claim' ? theme.colors.yellow : theme.colors.text }` }}>
+											<Box style={{ textAlign: 'center', color: `${ renderAction(item) === 'Claimed' ? theme.colors.primary : renderAction(item) === 'Cancelled' ? theme.colors.failure : renderAction(item) === 'Ready to claim' ? theme.colors.yellow : theme.colors.text }` }}>
 												{renderAction(item)}
 											</Box>
 										</ResponsiveGrid>
