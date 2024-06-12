@@ -805,7 +805,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
                   {(totalGiveback || (info?.saleEnd < Date.now() && BigNumber(totalCommitByUser).gt(0))) && (<StyledButton disabled={totalGiveback < 0} onClick={openCommittedModal} className="button-hover">{t('Claim')}</StyledButton>)}
                 </Flex>
                 { (totalGiveback || (info?.saleEnd < Date.now() && BigNumber(totalCommitByUser).gt(0))) && (
-									<StyledTextItalic textAlign="right" mt="8px">Estimate {formatNumber(totalGiveback, 0, 6)} U2U{ info?.saleEnd < Date.now() && BigNumber(totalCommit).gt(info?.softCap) ? `, ${formatNumber(totalCommitByUser * rate, 0, 6)} ${info?.tokenName}` : '' } </StyledTextItalic>
+									<StyledTextItalic textAlign="right" mt="8px">Estimate {formatNumber(totalGiveback, 0, 6)} U2U{ info?.saleEnd < Date.now() && BigNumber(totalCommit).gt(info?.softCap) ? `, ${formatNumber((totalCommitByUser  - totalGiveback) * rate, 0, 6)} ${info?.tokenSymbol}` : '' } </StyledTextItalic>
 								) }
                 { (configInfo?.startCancel && configInfo?.startCancel < Date.now()) && (
 									<StyledTextItalic mt="12px">
