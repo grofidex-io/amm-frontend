@@ -531,6 +531,9 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	if(BigNumber(poolAvailable).lte(maxCommitAmountByTier)) {
 		maxCommitAmountByTier = poolAvailable
 	}
+	if(currentPhase?.type === PHASES_TYPE.WHITELIST && !isWhiteList) {
+		maxCommitAmountByTier = 0
+	}
 
 	const handleCommitU2U = async () => {
 		if(!disableCommitU2U && BigNumber(amountCommit).gt(0) && maxCommitAmountByTier && BigNumber(maxCommitAmountByTier).gte(BigNumber(amountCommit))) {
