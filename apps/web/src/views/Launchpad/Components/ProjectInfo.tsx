@@ -203,7 +203,11 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		try {
 			if(account && launchpadManagerContract.current.account) {
 				const _totalCommitted: any = await launchpadManagerContract.current.read.totalCommitByUser([account])
-				setTotalCommitByUser(BigNumber(formatEther(_totalCommitted)).toNumber())
+				const _totalCommitByUser = BigNumber(formatEther(_totalCommitted)).toNumber()
+				setTotalCommitByUser(_totalCommitByUser)
+				if(BigNumber(totalCommit).lt(info?.softCap) && info?.saleEnd < Date.now()) {
+					setTotalGiveback(_totalCommitByUser)
+				}
 			}
 		}catch(ex) {
 			//
@@ -683,7 +687,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
         {info?.status !== LAUNCHPAD_STATUS.UPCOMING && (
           <StyledNeubrutal style={{ flex: '1' }} height="100%" mx="auto" width="100%" minWidth={["100%", "100%", "360px"]} maxWidth={["460px", "460px", "460px", "460px", "460px", "460px", "460px", "500px"]} ml={["auto", "auto", "auto", "auto", "16px"]} mb={["16px", "16px", "16px", "16px", "0"]}>
             <Box p={["20px 16px", "20px 16px", "24px 20px"]}>
-              <StyledTitle mb={["20px", "20px", "26px", "26px", "32px"]}>{t('Buy IDO %name%', { name: info?.tokenName })}</StyledTitle>
+              <StyledTitle mb={["20px", "20px", "26px", "26px", "32px"]}>{t('Buy IDO %name%', { name: info?.tokenSymbol })}</StyledTitle>
 								<Box mb={["20px", "20px", "24px"]}>
 									<Flex mb="12px">
 										<Text color="textSubtle" fontSize={["16px", "16px", "16px", "16px", "16px", "16px", "16px", "17px"]} fontWeight="600" mr="10px">{t('Your Tier')}</Text>
@@ -705,7 +709,10 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 											<StyledTextItalic>{t(`Estimate maximum %maxBuyPerUser% U2U to buy IDO in round buy %tier%.`, { maxBuyPerUser: configInfo?.maxBuyPerUser, tier: currentPhase?.name })}</StyledTextItalic>
 											{info.snapshotTime < Date.now() && <StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>}
 											</>
-											)}
+										)}
+										{(!userConfigInfo && info?.snapshotTime < Date.now()) && (
+											<StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>
+										) }
 										{info?.snapshotTime > Date.now() && 
 											<>
 												<StyledTextItalic>{t('The snapshot will be ended at ')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>
@@ -753,12 +760,16 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 										<Text color="success" maxWidth="290px" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="20px" ml="12px">{t(`Congratulation! You have applied whitelist.`)}</Text>
 									</Flex>
 								)}
+
+							</>
+							)}
+							{isWhitelistTime() && (
 								<Box mt="12px">
 									<Text color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px">{t('Time during (UTC):')}</Text>
 									<Text fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px" style={{ color: '#d6ddd0' }}>{`${timeWhiteList?.startTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.startTime/ 1000)).utc())} - ${timeWhiteList?.endTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.endTime/ 1000)).utc())}`}</Text>
 								</Box>
-							</>
 							)}
+			
 					 		</Box>
 							{currentPhaseOrNext && (
 								<Box style={{ textAlign: 'center' }}>

@@ -1,4 +1,6 @@
+import BigNumber from "bignumber.js";
 import { DefaultTheme } from "styled-components/dist/types";
+import { ILaunchpadItem } from "../types/LaunchpadType";
 
 export const LAUNCHPAD_STATUS = {
 	UPCOMING: 'UPCOMING',
@@ -75,6 +77,28 @@ export const getStatusNameLaunchpad = (_type: string) => {
 	: _type === LAUNCHPAD_STATUS.CLAIMABLE ? 'Claimable'
 	: _type === LAUNCHPAD_STATUS.ENDED ? 'Ended'
 	: 'On Going'
+}
+
+export const getStatusNameByTime = (item: ILaunchpadItem, totalCommitByUser?: number, totalCommit?: number) => {
+	const _now = Date.now()
+	if(item.saleStart > _now) {
+		return 'Upcoming'
+	}
+	if(item.saleEnd < _now) {
+		if(totalCommitByUser && totalCommit && BigNumber(totalCommitByUser).gt(0)) {
+			if(BigNumber(totalCommit).lt(item?.softCap)) {
+				return 'Cancel'
+			} 
+			return 'Claimable'
+		}
+		return 'Ended'
+	}
+
+	if(item.saleEnd > _now && _now > item.saleStart ) {
+		return 'On Going'
+	}
+
+	return getStatusNameLaunchpad(item.status)
 }
 
 export const getColorLaunchpadByStatus = (_status: string, theme: DefaultTheme) => {
