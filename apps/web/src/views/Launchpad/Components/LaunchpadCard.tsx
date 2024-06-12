@@ -10,7 +10,7 @@ import styled, { useTheme } from 'styled-components'
 import { getLaunchpadManagerContract } from 'utils/contractHelpers'
 import { formatEther } from 'viem'
 import { useWalletClient } from 'wagmi'
-import { COUNTDOWN_TYPE, LAUNCHPAD_STATUS, getColorLaunchpadByStatus, getStatusNameLaunchpad } from '../helpers'
+import { COUNTDOWN_TYPE, LAUNCHPAD_STATUS, getColorLaunchpadByStatus, getStatusNameByTime } from '../helpers'
 import { ILaunchpadItem } from '../types/LaunchpadType'
 import CountdownTime from './CountdownTime'
 
@@ -231,8 +231,8 @@ const LaunchpadCard = ({ item }: LaunchpadProps) => {
 			const _totalCommit: any = await launchpadManagerContract.current.read.totalCommit()
 			const _total = BigNumber(formatEther(_totalCommit)).toNumber()
 			setTotalCommit(_total)
-		}catch(ex) {
-			console.error(ex)
+		}catch {
+			//
 		}
 	}
 
@@ -248,7 +248,7 @@ const LaunchpadCard = ({ item }: LaunchpadProps) => {
 
 
 	useEffect(() => {
-		if(item.contractAddress && item.contractAddress?.length > 0) {
+		if(item.contractAddress && item.contractAddress?.length > 0 && signer) {
 			launchpadManagerContract.current = getLaunchpadManagerContract(item.contractAddress, signer ?? undefined, chainId)
 			getTotalCommit()
 			getTotalUserCommitted()
@@ -312,7 +312,7 @@ const LaunchpadCard = ({ item }: LaunchpadProps) => {
                 color={getColorLaunchpadByStatus(item.status, theme)}
               >
                 {
-                  getStatusNameLaunchpad(item.status)
+                  getStatusNameByTime(item, totalCommitByUser, totalCommit)
                 }
               </Text>
             </Flex>

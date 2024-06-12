@@ -36,6 +36,7 @@ export interface ILaunchpadItem {
 	tokenName: string,
 	totalRaise: number
 	tokenSymbol: string
+	softCap: number
 }
 
 export interface IPagination {
