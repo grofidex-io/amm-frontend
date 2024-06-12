@@ -19,7 +19,7 @@ import { Address, useWalletClient } from 'wagmi';
 import CountdownTime from '../Components/CountdownTime';
 import ProjectInfo from '../Components/ProjectInfo';
 import Transactions from '../Components/Transactions';
-import { COUNTDOWN_TYPE, LAUNCHPAD_STATUS, PHASES_TYPE, getColorLaunchpadByStatus, getStatusNameLaunchpad } from '../helpers';
+import { COUNTDOWN_TYPE, LAUNCHPAD_STATUS, PHASES_TYPE, getColorLaunchpadByStatus, getStatusNameByTime } from '../helpers';
 import { useFetchLaunchpadDetail } from '../hooks/useFetchLaunchpadDetail';
 import { StyledNeubrutal } from '../styles';
 import { IPhase, ITimeOfPhase } from '../types/LaunchpadType';
@@ -419,6 +419,7 @@ const LaunchpadDetailPage = () => {
 	const [showCountdown, setShowCountdown] = useState<boolean>(false)
 	const [currentTier, setCurrentTier] = useState<Address>()
 	const [totalCommit, setTotalCommit] = useState<number>(0)
+	const [totalCommitByUser, setTotalCommitByUser] = useState<number>(0)
 	const router = useRouter()
   const { launchpadId } = router.query
 	const { data: detail, refetch } = useFetchLaunchpadDetail(launchpadId as string)
@@ -433,6 +434,19 @@ const LaunchpadDetailPage = () => {
 			}
 		}catch(ex) {
 			console.error(ex)
+		}
+	}
+
+	const getTotalUserCommitted = async () => {
+		try {
+			if(account && launchpadManagerContract.current.account) {
+				const _totalCommitted: any = await launchpadManagerContract.current.read.totalCommitByUser([account])
+				const _totalCommitByUser = BigNumber(formatEther(_totalCommitted)).toNumber()
+				setTotalCommitByUser(_totalCommitByUser)
+		
+			}
+		}catch(ex) {
+			//
 		}
 	}
 
@@ -510,9 +524,10 @@ const LaunchpadDetailPage = () => {
 		if(detail?.saleEnd && detail.status === LAUNCHPAD_STATUS.ON_GOING || detail?.saleStart && detail.status === LAUNCHPAD_STATUS.UPCOMING) {
 			setShowCountdown(true)
 		}
-		if(detail?.contractAddress) {
+		if(detail?.contractAddress && signer) {
 			launchpadManagerContract.current = getLaunchpadManagerContract(detail.contractAddress, signer ?? undefined, chainId)
 			getTotalCommit()
+			getTotalUserCommitted()
 			refIntervalFetchTotalCommitted.current = setInterval(() => {
 				getTotalCommit()
 			}, 600000)
@@ -606,7 +621,7 @@ const LaunchpadDetailPage = () => {
                   color={detail?.status && getColorLaunchpadByStatus(detail?.status, theme)}
                 >
                   {
-                    detail?.status && getStatusNameLaunchpad(detail.status)
+                    detail?.status && getStatusNameByTime(detail, totalCommitByUser, totalCommit)
                   }
                 </Text>
               </Flex>
