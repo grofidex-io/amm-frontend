@@ -531,6 +531,9 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	if(BigNumber(poolAvailable).lte(maxCommitAmountByTier)) {
 		maxCommitAmountByTier = poolAvailable
 	}
+	if(currentPhase?.type === PHASES_TYPE.WHITELIST && !isWhiteList) {
+		maxCommitAmountByTier = 0
+	}
 
 	const handleCommitU2U = async () => {
 		if(!disableCommitU2U && BigNumber(amountCommit).gt(0) && maxCommitAmountByTier && BigNumber(maxCommitAmountByTier).gte(BigNumber(amountCommit))) {
@@ -550,8 +553,8 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 							Commit successfully
 						</ToastDescriptionWithTx>,
 					)
-					setIsCommitting(false)
 				}
+				setIsCommitting(false)
 			}catch(error: any) {
 				setIsCommitting(false)
 				const errorDescription = `${error.message} - ${error.data?.message}`
@@ -728,6 +731,13 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 									</Box>
 								</Box>
              <Box mb={["20px", "20px", "24px"]}>
+						 	<Flex mb="12px">
+								<Text color="textSubtle" fontSize={["16px", "16px", "16px", "16px", "16px", "16px", "16px", "17px"]} fontWeight="600" mr="10px">{t('Apply Whitlelist')}</Text>
+								<TooltipText ref={applyTooltip.targetRef} decorationColor="secondary">
+									<ImageInfo src="/images/launchpad/icon-exclamation.svg" />
+								</TooltipText>
+								{applyTooltip.tooltipVisible && applyTooltip.tooltip}
+							</Flex>
 							{!isWhitelistTime() && !isWhiteList ?  (
 								<Flex alignItems="center">
 									<Image style={{ margin: 'unset', width: '24px', height: '24px' }} src="/images/launchpad/icon-error.svg" />
@@ -735,13 +745,6 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 								</Flex>
 							) : (
 								<>
-								<Flex mb="12px">
-									<Text color="textSubtle" fontSize={["16px", "16px", "16px", "16px", "16px", "16px", "16px", "17px"]} fontWeight="600" mr="10px">{t('Apply Whitlelist')}</Text>
-									<TooltipText ref={applyTooltip.targetRef} decorationColor="secondary">
-										<ImageInfo src="/images/launchpad/icon-exclamation.svg" />
-									</TooltipText>
-									{applyTooltip.tooltipVisible && applyTooltip.tooltip}
-								</Flex>
 								{/* && configWhitelistInfo && configWhitelistInfo?.endAddWhiteList > Date.now() */}
 								{account ? !isWhiteList && (
 									<StyledButton className="button-hover" onClick={handleWhitelist} disabled={isApplying}>

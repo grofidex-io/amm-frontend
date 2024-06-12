@@ -112,8 +112,8 @@ export default function ModalDetail({
 						Cancel successfully
 					</ToastDescriptionWithTx>,
 				)
-				setIsCancel(false)
 			}
+			setIsCancel(false)
 		} catch(error: any) {
 			setIsCancel(false)
 			const errorDescription = `${error.message} - ${error.data?.message}`
@@ -130,7 +130,6 @@ export default function ModalDetail({
 				refetch()
 				getGiveBack()
 				getTotalUserCommitted()
-				setLoadingClaim(false)
 				toastSuccess(
 					t('Success!'),
 					<ToastDescriptionWithTx txHash={res.transactionHash}>
@@ -138,6 +137,7 @@ export default function ModalDetail({
 					</ToastDescriptionWithTx>,
 				)
 			}
+			setLoadingClaim(false)
 		} catch(error: any) {
 			const errorDescription = `${error.message} - ${error.data?.message}`
 			toastError(t('Failed'), errorDescription)
