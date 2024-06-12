@@ -550,8 +550,8 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 							Commit successfully
 						</ToastDescriptionWithTx>,
 					)
-					setIsCommitting(false)
 				}
+				setIsCommitting(false)
 			}catch(error: any) {
 				setIsCommitting(false)
 				const errorDescription = `${error.message} - ${error.data?.message}`
