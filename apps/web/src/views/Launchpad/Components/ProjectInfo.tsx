@@ -261,7 +261,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	const getConfig = async () => {
 		const _configInfo: ITierInfo = await _launchpadContract.current.read.getConfigInfo()
 		const _percentCancel: any = await _launchpadContract.current.read.percentCancel()
-		setConfigInfo({..._configInfo, maxCommitAmount: BigNumber(formatEther(_configInfo.maxCommitAmount)).toNumber(), maxBuyPerUser: formatEther(_configInfo.maxBuyPerUser), startCancel: BigNumber(_configInfo.startCancel).toNumber() * 1000, endCancel: BigNumber(_configInfo.endCancel).toNumber() * 1000, percentCancel: BigNumber(formatEther(_percentCancel)).toNumber()})
+		setConfigInfo({..._configInfo, maxCommitAmount: BigNumber(formatEther(_configInfo.maxCommitAmount)).toNumber(), maxBuyPerUser: BigNumber(formatEther(_configInfo.maxBuyPerUser)).toNumber(), startCancel: BigNumber(_configInfo.startCancel).toNumber() * 1000, endCancel: BigNumber(_configInfo.endCancel).toNumber() * 1000, percentCancel: BigNumber(formatEther(_percentCancel)).toNumber()})
 	}
 
 	const getTokenRate = async () => {
@@ -705,11 +705,11 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 									</Flex>
 									<Box>
 										{(userConfigInfo && currentPhase?.type === PHASES_TYPE.TIER) && <>
-											<StyledTextItalic>{t(`Estimate maximum %maxBuyPerUser% U2U to buy IDO in round buy %tier%.`, { maxBuyPerUser: userConfigInfo?.maxBuyPerUser, tier: userConfigInfo?.name })} {info.snapshotTime < Date.now() && <StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>}</StyledTextItalic>
+											<StyledTextItalic>{t(`%estimate% %maxBuyPerUser% U2U to buy IDO in round buy %tier%.`, { maxBuyPerUser: userConfigInfo?.maxBuyPerUser, tier: userConfigInfo?.name, estimate: info?.snapshotTime < Date.now() ? 'Maximum' : 'Estimate maximum'})} {info.snapshotTime < Date.now() && <StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>}</StyledTextItalic>
 										</>}
 										{(configInfo && currentPhase?.type !== PHASES_TYPE.TIER) && (
 											<>
-											<StyledTextItalic>{t(`Estimate maximum %maxBuyPerUser% U2U to buy IDO in round buy %tier%.`, { maxBuyPerUser: configInfo?.maxBuyPerUser, tier: currentPhase?.name })}</StyledTextItalic>
+											<StyledTextItalic>{t(`%estimate% %maxBuyPerUser% U2U to buy IDO in round buy %tier%.`, { maxBuyPerUser: configInfo?.maxBuyPerUser, tier: currentPhase?.name, estimate: info?.snapshotTime < Date.now() ? 'Maximum' : 'Estimate maximum' })}</StyledTextItalic>
 											{info.snapshotTime < Date.now() && <StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>}
 											</>
 										)}
