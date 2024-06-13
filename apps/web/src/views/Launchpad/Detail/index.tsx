@@ -440,6 +440,7 @@ const LaunchpadDetailPage = () => {
 	const [currentTier, setCurrentTier] = useState<Address>()
 	const [totalCommit, setTotalCommit] = useState<number>(0)
 	const [totalCommitByUser, setTotalCommitByUser] = useState<number>(0)
+	const [timeFetch, setTimeFetch] = useState<number>(0)
 	const router = useRouter()
   const { launchpadId } = router.query
 	const { data: detail, refetch } = useFetchLaunchpadDetail(launchpadId as string)
@@ -470,25 +471,13 @@ const LaunchpadDetailPage = () => {
 		}
 	}
 
-
-	const getTimeWhiteList = () => {
+	const initTime = () => {
 		let _startTime = 0
 		let _endTime = 0
 		const _now = Date.now()
-		clearListTimeout()
 		let _currentPhase
+		currentPhase.current = null
 		forEach(detail?.phases, (item: IPhase) => {
-			if((item.startTime && item.startTime > _now  && !listTimeoutRefetch.current[item.startTime]) || (item.endTime && item.endTime > _now  && !listTimeoutRefetch.current[item.endTime])) {
-				const _timeout:number = item.startTime - _now 
-				listTimeoutRefetch.current[item.startTime] = setTimeout(() => {
-					refetch()
-				}, _timeout + 1000)
-				const _timeoutEnd:number = item.endTime - _now 
-				listTimeoutRefetch.current[item.endTime] = setTimeout(() => {
-					refetch()
-				}, _timeoutEnd + 1000)
-			}
-			
 			if(item.startTime < _now &&  _now < item.endTime && item.contractAddress.length > 0) {
 				currentPhase.current = item.contractAddress
 				_currentPhase = item
@@ -521,11 +510,31 @@ const LaunchpadDetailPage = () => {
 			}
 
 		})
-
+		console.log("🚀 ~ forEach ~ currentPhase.current:", currentPhase.current)
 
 		setTimeWhiteList({
 			startTime: _startTime,
 			endTime: _endTime
+		})
+	}
+
+
+	const getTimeWhiteList = () => {
+		const _now = Date.now()
+		forEach(detail?.phases, (item: IPhase) => {
+			if((item.startTime && item.startTime > _now  && !listTimeoutRefetch.current[item.startTime]) || (item.endTime && item.endTime > _now  && !listTimeoutRefetch.current[item.endTime])) {
+				const _timeout:number = item.startTime - _now 
+				listTimeoutRefetch.current[item.startTime] = setTimeout(() => {
+					initTime()
+					refetch()
+				}, _timeout + 1000)
+				const _timeoutEnd:number = item.endTime - _now 
+				listTimeoutRefetch.current[item.endTime] = setTimeout(() => {
+					initTime()
+					refetch()
+				}, _timeoutEnd + 1000)
+			}
+			initTime()
 		})
 
 	}
@@ -556,8 +565,9 @@ const LaunchpadDetailPage = () => {
 				getTotalCommit()
 			}, 600000)
 			getUserTier()
+			getTimeWhiteList()
+
 		}
-		getTimeWhiteList()
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [detail, signer, account])
 
@@ -586,7 +596,6 @@ const LaunchpadDetailPage = () => {
 			}
 			return false
 		}
-
 		if(_item.startTime < lastTime.current.startTime && PHASES_NONE.indexOf(_item.type) !== -1) {
 			return true
 		}
@@ -793,7 +802,7 @@ const LaunchpadDetailPage = () => {
 					>
 						{detail?.phases.map((item, index) => (
 							<SwiperSlide className="swiper-launchpad" style={{ zIndex: detail?.phases.length - index }} key={item.name}>
-								<StyledBox>
+								<StyledBox key={timeFetch} >
 									<StyledContent style={{ background: `${isComplete(item) ? theme.colors.backgroundItem : (isInProgress(item) ||  item.isActive) ? theme.colors.primary : theme.colors.backgroundAlt}` }}>
 										<img style={{ filter: `${isComplete(item) && 'grayscale(1)'}` }} src={item.imageUrl || `/images/launchpad/icon-step-01.svg`} alt="" />
 										<Text style={{ color: `${isComplete(item) ? theme.colors.hover : (isInProgress(item) ||  item.isActive) ? theme.colors.black : theme.colors.primary}` }} fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="17px" mt="8px">{item.name}</Text>
