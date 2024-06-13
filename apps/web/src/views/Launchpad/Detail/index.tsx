@@ -408,6 +408,7 @@ const LaunchpadDetailPage = () => {
   const theme = useTheme()
 	const refIntervalFetchTotalCommitted = useRef<any>()
 	const launchpadManagerContract = useRef<any>()
+	const listTimeoutRefetch = useRef<any>({})
 	const currentPhase = useRef<string>()
 	const lastTime = useRef<any>({
 		startTime: 0,
@@ -420,7 +421,6 @@ const LaunchpadDetailPage = () => {
 	const [currentTier, setCurrentTier] = useState<Address>()
 	const [totalCommit, setTotalCommit] = useState<number>(0)
 	const [totalCommitByUser, setTotalCommitByUser] = useState<number>(0)
-	// const [refetchTimeRefetchSchedule, setTimeRefetchSchedule] = useState<number>(0)
 	const router = useRouter()
   const { launchpadId } = router.query
 	const { data: detail, refetch } = useFetchLaunchpadDetail(launchpadId as string)
@@ -458,6 +458,14 @@ const LaunchpadDetailPage = () => {
 		const _now = Date.now()
 		let _currentPhase
 		forEach(detail?.phases, (item: IPhase) => {
+			if(item.startTime && item.startTime > _now && !listTimeoutRefetch.current[item.startTime]) {
+				const _timeout:number = item.startTime - _now 
+				listTimeoutRefetch.current[item.startTime] = setTimeout(() => {
+					console.log('refetch')
+					refetch()
+				}, _timeout + 3000)
+			}
+			
 			if(item.startTime < _now &&  _now < item.endTime && item.contractAddress.length > 0) {
 				currentPhase.current = item.contractAddress
 				_currentPhase = item
@@ -558,6 +566,10 @@ const LaunchpadDetailPage = () => {
 			// clearInterval(refInterval.current)
 			setShowCountdown(false)
 			clearInterval(refIntervalFetchTotalCommitted.current)
+			forEach(listTimeoutRefetch.current, (_item) => {
+				clearTimeout(_item)
+			})
+
 		}
 	}, [])
 
