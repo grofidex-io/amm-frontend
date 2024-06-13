@@ -26,7 +26,7 @@ const CardHeader = styled(Box)`
   position: relative;
   background: ${({ theme }) => theme.colors.backgroundPage};
   // aspect-ratio: 16/9;
-  height: 120px;
+  height: 110px;
   overflow: hidden;
   &:before {
     content: "";
@@ -46,7 +46,7 @@ const CardHeader = styled(Box)`
   }
 `
 const CardBody = styled.div`
-  --space: 120px;
+  --space: 110px;
   padding: 16px;
   display: flex;
   flex-direction: column;
