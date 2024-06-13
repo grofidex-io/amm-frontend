@@ -24,7 +24,6 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { useDataDogRUM } from 'hooks/useDataDogRUM'
 import { useLoadExperimentalFeatures } from 'hooks/useExperimentalFeatureEnabled'
 import { useInitGlobalWorker } from 'hooks/useWorker'
-import Script from 'next/script'
 import { persistor, useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
 import { Updaters } from '..'
@@ -102,7 +101,7 @@ function MyApp(props: AppProps<{ initialReduxState: any; dehydratedState: any }>
           <App {...props} />
         </PersistGate>
       </Providers>
-      <Script
+      {/* <Script
         strategy="afterInteractive"
         id="google-tag"
         dangerouslySetInnerHTML={{
@@ -114,7 +113,7 @@ function MyApp(props: AppProps<{ initialReduxState: any; dehydratedState: any }>
           })(window,document,'script','dataLayer','G-BJ6E447TDD');
           `,
         }}
-      />
+      /> */}
     </>
   )
 }
