@@ -190,7 +190,7 @@ export default function ModalDetail({
 		if(item?.isClaimed) {
 			return 'Claimed'
 		}
-		if(endTime && BigNumber(item.u2uAmount).lt(0)) {
+		if(endTime && BigNumber(item.u2uAmount).gt(0)) {
 			return 'Ready to claim'
 		}
 		if(BigNumber(item.u2uAmount).lte(0)) {

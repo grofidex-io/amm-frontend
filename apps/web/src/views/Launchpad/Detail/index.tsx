@@ -9,7 +9,7 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain';
 import { useActiveChainId } from 'hooks/useActiveChainId';
 import forEach from 'lodash/forEach';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled, { useTheme } from "styled-components";
 import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -420,6 +420,7 @@ const LaunchpadDetailPage = () => {
 	const [currentTier, setCurrentTier] = useState<Address>()
 	const [totalCommit, setTotalCommit] = useState<number>(0)
 	const [totalCommitByUser, setTotalCommitByUser] = useState<number>(0)
+	// const [refetchTimeRefetchSchedule, setTimeRefetchSchedule] = useState<number>(0)
 	const router = useRouter()
   const { launchpadId } = router.query
 	const { data: detail, refetch } = useFetchLaunchpadDetail(launchpadId as string)
@@ -462,7 +463,7 @@ const LaunchpadDetailPage = () => {
 				_currentPhase = item
 			}
 			if(_now > item.endTime) {
-				if(lastTime.current.endTime < item.endTime && item.type !== PHASES_TYPE.NONE && item.type !== PHASES_TYPE.APPLY_WHITELIST) {
+				if(lastTime.current.endTime < item.endTime && (item.type === PHASES_TYPE.TIER || item.type === PHASES_TYPE.WHITELIST || item.type === PHASES_TYPE.COMMUNITY)) {
 					lastTime.current = item
 				}
 			}
@@ -494,30 +495,42 @@ const LaunchpadDetailPage = () => {
 		})
 	}
 
-
-  const initFunction = useCallback(() => {
-
-    const getUserTier = async () => {
-			try {
-				const _address: any = await launchpadManagerContract.current.read.viewTierPharse([account])
-				if(_address !== '0x0000000000000000000000000000000000000000') {
-					setCurrentTier(_address)
-				} else {
-					setCurrentTier(undefined)
-				}
-			}catch(ex){
-				console.error(ex)
+	const getUserTier = async () => {
+		try {
+			const _address: any = await launchpadManagerContract.current.read.viewTierPharse([account])
+			if(_address !== '0x0000000000000000000000000000000000000000') {
+				setCurrentTier(_address)
+			} else {
+				setCurrentTier(undefined)
 			}
-    }
+		}catch(ex){
+			console.log(ex)
+		}
+	}
 
-    if( launchpadManagerContract.current?.account) {
-      getUserTier()
-    }
-    return {
-      getUserTier
-    }
+  // const initFunction = useCallback(() => {
 
-  }, [launchpadManagerContract, account])
+  //   const getUserTier = async () => {
+	// 		try {
+	// 			const _address: any = await launchpadManagerContract.current.read.viewTierPharse([account])
+	// 			if(_address !== '0x0000000000000000000000000000000000000000') {
+	// 				setCurrentTier(_address)
+	// 			} else {
+	// 				setCurrentTier(undefined)
+	// 			}
+	// 		}catch(ex){
+	// 			console.log(ex)
+	// 		}
+  //   }
+
+  //   if( launchpadManagerContract.current?.account) {
+  //     getUserTier()
+  //   }
+  //   return {
+  //     getUserTier
+  //   }
+
+  // }, [launchpadManagerContract, account])
 
 
 	useEffect(() => {
@@ -525,13 +538,13 @@ const LaunchpadDetailPage = () => {
 			setShowCountdown(true)
 		}
 		if(detail?.contractAddress && signer) {
-			launchpadManagerContract.current = getLaunchpadManagerContract(detail.contractAddress, signer ?? undefined, chainId)
+			launchpadManagerContract.current = getLaunchpadManagerContract(detail.contractAddress, signer, chainId)
 			getTotalCommit()
 			getTotalUserCommitted()
 			refIntervalFetchTotalCommitted.current = setInterval(() => {
 				getTotalCommit()
 			}, 600000)
-			initFunction()
+			getUserTier()
 		}
 		getTimeWhiteList()
 	// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -550,13 +563,14 @@ const LaunchpadDetailPage = () => {
 
 	const isComplete = (_item: IPhase) => {
 		const _now = Date.now()
-		if(_item.type !== PHASES_TYPE.NONE) {
+		const PHASES_NONE = [PHASES_TYPE.IDO_START, PHASES_TYPE.NONE, PHASES_TYPE.UPCOMING, PHASES_TYPE.FINISH]
+		if(PHASES_NONE.indexOf(_item.type) === -1) {
 			if(_now > _item.startTime && _item.contractAddress !== currentPhase.current) {
 				return true
 			}
 			return false
 		}
-		if(_item.startTime < lastTime.current.startTime && _item.type === PHASES_TYPE.NONE) {
+		if(_item.startTime < lastTime.current.startTime && PHASES_NONE.indexOf(_item.type) !== -1) {
 			return true
 		}
 		return false

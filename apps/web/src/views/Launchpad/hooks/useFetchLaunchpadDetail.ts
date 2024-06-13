@@ -11,8 +11,9 @@ export const useFetchLaunchpadDetail = (_contract: string) => {
 		enabled: Boolean(_contract),
 		retry: 3,
 		retryDelay: 3000,
-		refetchOnMount: false,
+		refetchOnMount: true,
 		refetchOnReconnect: false,
 		refetchOnWindowFocus: false,
+		// refetchInterval: 60000,
   })
 }

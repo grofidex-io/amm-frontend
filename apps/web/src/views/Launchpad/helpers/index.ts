@@ -81,9 +81,7 @@ export const getStatusNameLaunchpad = (_type: string) => {
 
 export const getStatusNameByTime = (item: ILaunchpadItem, totalCommitByUser?: number, totalCommit?: number) => {
 	const _now = Date.now()
-	if(item.saleStart > _now) {
-		return 'Upcoming'
-	}
+
 	if(item.saleEnd < _now) {
 		if(totalCommit && BigNumber(totalCommit).lt(item?.softCap)) {
 			return 'Cancelled'
@@ -94,9 +92,9 @@ export const getStatusNameByTime = (item: ILaunchpadItem, totalCommitByUser?: nu
 		return 'Ended'
 	}
 
-	if(item.saleEnd > _now && _now > item.saleStart ) {
-		return 'On Going'
-	}
+	// if(item.saleEnd > _now && _now > item.saleStart ) {
+	// 	return 'On Going'
+	// }
 
 	return getStatusNameLaunchpad(item.status)
 }
@@ -115,5 +113,9 @@ export const PHASES_TYPE = {
 	WHITELIST: "WHITELIST",
 	NONE: "NONE",
 	TIER: "TIER",
-	APPLY_WHITELIST: "APPLY_WHITELIST"
+	APPLY_WHITELIST: "APPLY_WHITELIST",
+	IDO_START: 'IDO_START',
+	FINISH: 'FINISH',
+	UPCOMING: 'UPCOMING'
 }
+export const PHASES_NONE = [PHASES_TYPE.NONE, PHASES_TYPE.APPLY_WHITELIST, PHASES_TYPE.IDO_START, PHASES_TYPE.FINISH, PHASES_TYPE.UPCOMING]
