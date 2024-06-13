@@ -100,10 +100,10 @@ export const getStatusNameByTime = (item: ILaunchpadItem, totalCommitByUser?: nu
 }
 
 export const getColorLaunchpadByStatus = (_status: string, theme: DefaultTheme) => {
-	return  _status === LAUNCHPAD_STATUS.UPCOMING ? theme.colors.yellow
-	: _status === LAUNCHPAD_STATUS.CANCELLED ? theme.colors.orange
-	: _status ===  LAUNCHPAD_STATUS.CLAIMABLE  ? theme.colors.cyan
-	: _status === LAUNCHPAD_STATUS.ENDED ? theme.colors.textSubtle
+	return  _status === 'Upcoming' ? theme.colors.yellow
+	: _status === 'Cancelled' ? theme.colors.orange
+	: _status ===  'Claimable'  ? theme.colors.cyan
+	: _status === 'Ended' ? theme.colors.textSubtle
 	: theme.colors.primary
 }
 
