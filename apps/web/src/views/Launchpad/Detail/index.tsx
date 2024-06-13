@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization';
-import { ArrowBackIcon, Box, Button, Flex, Link, Progress, Tab, TabMenu, Text } from "@pancakeswap/uikit";
+import { ArrowBackIcon, Box, Button, Flex, Progress, Tab, TabMenu, Text } from "@pancakeswap/uikit";
 import { formatNumber } from '@pancakeswap/utils/formatBalance';
 import BigNumber from 'bignumber.js';
 import Container from 'components/Layout/Container';
@@ -8,6 +8,7 @@ import { formatEther } from 'ethers/lib/utils';
 import useAccountActiveChain from 'hooks/useAccountActiveChain';
 import { useActiveChainId } from 'hooks/useActiveChainId';
 import forEach from 'lodash/forEach';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import styled, { useTheme } from "styled-components";
@@ -19,7 +20,7 @@ import { Address, useWalletClient } from 'wagmi';
 import CountdownTime from '../Components/CountdownTime';
 import ProjectInfo from '../Components/ProjectInfo';
 import Transactions from '../Components/Transactions';
-import { COUNTDOWN_TYPE, LAUNCHPAD_STATUS, PHASES_TYPE, getColorLaunchpadByStatus, getStatusNameByTime } from '../helpers';
+import { COUNTDOWN_TYPE, LAUNCHPAD_STATUS, PHASES_NONE, PHASES_TYPE, getColorLaunchpadByStatus, getStatusNameByTime } from '../helpers';
 import { useFetchLaunchpadDetail } from '../hooks/useFetchLaunchpadDetail';
 import { StyledNeubrutal } from '../styles';
 import { IPhase, ITimeOfPhase } from '../types/LaunchpadType';
@@ -481,19 +482,19 @@ const LaunchpadDetailPage = () => {
 				const _timeout:number = item.startTime - _now 
 				listTimeoutRefetch.current[item.startTime] = setTimeout(() => {
 					refetch()
-				}, _timeout + 3000)
+				}, _timeout + 1000)
 				const _timeoutEnd:number = item.endTime - _now 
 				listTimeoutRefetch.current[item.endTime] = setTimeout(() => {
 					refetch()
-				}, _timeoutEnd + 3000)
+				}, _timeoutEnd + 1000)
 			}
 			
 			if(item.startTime < _now &&  _now < item.endTime && item.contractAddress.length > 0) {
 				currentPhase.current = item.contractAddress
 				_currentPhase = item
 			}
-			if(_now > item.endTime) {
-				if(lastTime.current.endTime < item.endTime && (item.type === PHASES_TYPE.TIER || item.type === PHASES_TYPE.WHITELIST || item.type === PHASES_TYPE.COMMUNITY)) {
+			if(_now > item.startTime) {
+				if(lastTime.current.startTime < item.startTime) {
 					lastTime.current = item
 				}
 			}
@@ -514,12 +515,14 @@ const LaunchpadDetailPage = () => {
 				}
 			}
 
+
 			if(lastTime.current.endTime === 0 && _currentPhase) {
 				lastTime.current = _currentPhase
 			}
 
-
 		})
+
+
 		setTimeWhiteList({
 			startTime: _startTime,
 			endTime: _endTime
@@ -577,13 +580,13 @@ const LaunchpadDetailPage = () => {
 
 	const isComplete = (_item: IPhase) => {
 		const _now = Date.now()
-		const PHASES_NONE = [PHASES_TYPE.IDO_START, PHASES_TYPE.NONE, PHASES_TYPE.UPCOMING, PHASES_TYPE.FINISH]
 		if(PHASES_NONE.indexOf(_item.type) === -1) {
 			if(_now > _item.startTime && _item.contractAddress !== currentPhase.current) {
 				return true
 			}
 			return false
 		}
+
 		if(_item.startTime < lastTime.current.startTime && PHASES_NONE.indexOf(_item.type) !== -1) {
 			return true
 		}
@@ -592,7 +595,7 @@ const LaunchpadDetailPage = () => {
 
 	const isInProgress = (_item: IPhase) => {
 		const _now = Date.now()
-		if(_now > _item.startTime && _now < _item.endTime && currentPhase.current === _item.contractAddress) {
+		if(_now > _item.startTime && _now < _item.endTime && (PHASES_NONE.indexOf(_item.type) === -1 ? currentPhase.current === _item.contractAddress : true)) {
 			return true
 		}
 		return false
@@ -614,7 +617,7 @@ const LaunchpadDetailPage = () => {
           <Image src={detail?.projectImageThumbnail} alt=''/>
         </StyledBackground>
         <StyledContainer justifyContent="space-between">
-          <Link href="/launchpad">
+          <Link href="/launchpad" legacyBehavior>
             <Button className="button-hover" px="12px" height={["32px", "32px", "36px", "36px", "40px"]}>
               <ArrowBackIcon width="16px" mr={["2px", "2px", "4px"]} color="black"/>
               <span>{t('Back')}</span>
