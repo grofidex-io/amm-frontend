@@ -474,14 +474,18 @@ const LaunchpadDetailPage = () => {
 		let _startTime = 0
 		let _endTime = 0
 		const _now = Date.now()
+		clearListTimeout()
 		let _currentPhase
 		forEach(detail?.phases, (item: IPhase) => {
-			if(item.startTime && item.startTime > _now && !listTimeoutRefetch.current[item.startTime]) {
+			if((item.startTime && item.startTime > _now  && !listTimeoutRefetch.current[item.startTime]) || (item.endTime && item.endTime > _now  && !listTimeoutRefetch.current[item.endTime])) {
 				const _timeout:number = item.startTime - _now 
 				listTimeoutRefetch.current[item.startTime] = setTimeout(() => {
-					console.log('refetch')
 					refetch()
 				}, _timeout + 3000)
+				const _timeoutEnd:number = item.endTime - _now 
+				listTimeoutRefetch.current[item.endTime] = setTimeout(() => {
+					refetch()
+				}, _timeoutEnd + 3000)
 			}
 			
 			if(item.startTime < _now &&  _now < item.endTime && item.contractAddress.length > 0) {
@@ -514,11 +518,13 @@ const LaunchpadDetailPage = () => {
 				lastTime.current = _currentPhase
 			}
 
-			setTimeWhiteList({
-				startTime: _startTime,
-				endTime: _endTime
-			})
+
 		})
+		setTimeWhiteList({
+			startTime: _startTime,
+			endTime: _endTime
+		})
+
 	}
 
 	const getUserTier = async () => {
@@ -533,30 +539,6 @@ const LaunchpadDetailPage = () => {
 			console.log(ex)
 		}
 	}
-
-  // const initFunction = useCallback(() => {
-
-  //   const getUserTier = async () => {
-	// 		try {
-	// 			const _address: any = await launchpadManagerContract.current.read.viewTierPharse([account])
-	// 			if(_address !== '0x0000000000000000000000000000000000000000') {
-	// 				setCurrentTier(_address)
-	// 			} else {
-	// 				setCurrentTier(undefined)
-	// 			}
-	// 		}catch(ex){
-	// 			console.log(ex)
-	// 		}
-  //   }
-
-  //   if( launchpadManagerContract.current?.account) {
-  //     getUserTier()
-  //   }
-  //   return {
-  //     getUserTier
-  //   }
-
-  // }, [launchpadManagerContract, account])
 
 
 	useEffect(() => {
@@ -577,16 +559,18 @@ const LaunchpadDetailPage = () => {
 	}, [detail, signer, account])
 
 
-
+	const clearListTimeout = () => {
+		forEach(listTimeoutRefetch.current, (_item) => {
+			clearTimeout(_item)
+		})
+	}
 
 	useEffect(() => {
 		return () => {
 			// clearInterval(refInterval.current)
 			setShowCountdown(false)
 			clearInterval(refIntervalFetchTotalCommitted.current)
-			forEach(listTimeoutRefetch.current, (_item) => {
-				clearTimeout(_item)
-			})
+			clearListTimeout()
 
 		}
 	}, [])
