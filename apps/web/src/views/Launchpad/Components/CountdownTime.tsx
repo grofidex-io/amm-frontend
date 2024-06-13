@@ -42,7 +42,7 @@ const CountdownTime = ({type, time, cb} : IProps) => {
 			clearTimeout(refTimeout.current)
 			refTimeout.current = setTimeout(() => {
 				setLoading(false)
-			}, 1000)
+			}, 2000)
 		}
 		if(timeCountdown === 0 && cb) {
 			setTimeCountdown(undefined)

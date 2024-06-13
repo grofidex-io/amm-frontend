@@ -208,6 +208,9 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 				if(totalCommit && BigNumber(totalCommit).lt(info?.softCap) && info?.saleEnd < Date.now()) {
 					setTotalGiveback(_totalCommitByUser)
 				}
+				if(!_totalCommitByUser) {
+					setTotalGiveback(_totalCommitByUser)
+				}
 			}
 		}catch(ex) {
 			//
@@ -277,7 +280,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		const _contract = getLaunchpadContract(currentTier, signer ?? undefined, chainId)
 		const _configInfo: any = await _contract.read.getConfigInfo()
 		const _phaseByContract = keyBy(info?.phases, (o) => o.contractAddress.toLowerCase() )
-		setUserConfigInfo({..._configInfo, maxCommitAmount: BigNumber(formatEther(_configInfo.maxCommitAmount)).toNumber(), maxBuyPerUser: formatEther(_configInfo.maxBuyPerUser), name: _phaseByContract[currentTier.toLowerCase()]?.name, start: BigNumber(_configInfo.start).toNumber() * 1000, end: BigNumber(_configInfo.end).toNumber() * 1000})
+		setUserConfigInfo({..._configInfo, maxCommitAmount: BigNumber(formatEther(_configInfo.maxCommitAmount)).toNumber(), maxBuyPerUser: BigNumber(formatEther(_configInfo.maxBuyPerUser)).toNumber(), name: _phaseByContract[currentTier.toLowerCase()]?.name, start: BigNumber(_configInfo.start).toNumber() * 1000, end: BigNumber(_configInfo.end).toNumber() * 1000})
 	}
 
 	const getUserCommitted = async (_contract?: any, type?: string) => {
@@ -327,6 +330,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 			const res = await fetchWithCatchTxError(() => _launchpadContractWhitelist.current.write.addWhiteList())
 			if(res?.status) {
 				getUserCommitted(_launchpadContractWhitelist.current, PHASES_TYPE.WHITELIST)
+				checkSchedule()
 			}
 			setApplyWhitelist(false)
 		}catch(ex) {
@@ -588,16 +592,16 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 
 	const scheduleOrder = uniqBy(refSchedule.current.sort((a: IPhase, b: IPhase) => (a.startTime - b.startTime)), (item) => item.contractAddress)
 
-	const diffCancelTime = () => {
-		if(configInfo) {
-			const diffTime = dayjs(configInfo?.endCancel).diff(dayjs(configInfo?.startCancel), 'hour')
-			if(diffTime < 0) {
-				return `in ${dayjs(configInfo?.endCancel).diff(dayjs(configInfo?.startCancel), 'second')} seconds`
-			}
-			return `in ${diffTime} hours`
-		}
-		return ''
-	}
+	// const diffCancelTime = () => {
+	// 	if(configInfo) {
+	// 		const diffTime = dayjs(configInfo?.endCancel).diff(dayjs(configInfo?.startCancel), 'hour')
+	// 		if(diffTime < 0) {
+	// 			return `in ${dayjs(configInfo?.endCancel).diff(dayjs(configInfo?.startCancel), 'second')} seconds`
+	// 		}
+	// 		return `in ${diffTime} hours`
+	// 	}
+	// 	return ''
+	// }
 
 	const isShowMaximum = (currentPhase?.type === PHASES_TYPE.TIER && currentPhase?.contractAddress.toLowerCase() === currentTier?.toLowerCase()) || (userConfigInfo?.typeRound === PHASES_TYPE.WHITELIST && isWhiteList) || currentPhase?.type === PHASES_TYPE.WHITELIST || currentPhase?.type === PHASES_TYPE.COMMUNITY 
 
@@ -702,19 +706,20 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 										<IconTier src={account ? '/images/launchpad/icon-tier-1.svg' : '/images/launchpad/icon-tier-starter.svg'} />
 										<StyledText ml="12px" style={{ fontSize: '20px', lineHeight: '24px' }}>{account && userConfigInfo?.name || 'Starter'}</StyledText>
 									</Flex>
+
 									<Box>
-										{(userConfigInfo && (currentPhase?.type === PHASES_TYPE.TIER || !currentPhase)) && <>
+										{(userConfigInfo && (currentPhase?.type === PHASES_TYPE.TIER || !currentPhase?.type)) && <>
 											<StyledTextItalic>{t(`%estimate% %maxBuyPerUser% U2U to buy IDO in round buy %tier%.`, { maxBuyPerUser: userConfigInfo?.maxBuyPerUser, tier: userConfigInfo?.name, estimate: info?.snapshotTime < Date.now() ? 'Maximum' : 'Estimate maximum'})} {info.snapshotTime < Date.now() && <StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>}</StyledTextItalic>
 										</>}
-										{(userConfigInfo && configInfo && currentPhase?.type !== PHASES_TYPE.TIER) && (
+										{(configInfo && currentPhase && currentPhase?.type !== PHASES_TYPE.TIER) && (
 											<>
 											<StyledTextItalic>{t(`%estimate% %maxBuyPerUser% U2U to buy IDO in round buy %tier%.`, { maxBuyPerUser: configInfo?.maxBuyPerUser, tier: currentPhase?.name, estimate: info?.snapshotTime < Date.now() ? 'Maximum' : 'Estimate maximum' })}</StyledTextItalic>
 											{info.snapshotTime < Date.now() && <StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>}
 											</>
 										)}
-										{(!userConfigInfo && info?.snapshotTime < Date.now()) && (
+										{/* {(!userConfigInfo && info?.snapshotTime < Date.now()) && (
 											<StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>
-										) }
+										) } */}
 										{info?.snapshotTime > Date.now()  && 
 											<>
 												<StyledTextItalic>{t('The snapshot will be ended at ')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>
@@ -737,45 +742,47 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 								</TooltipText>
 								{applyTooltip.tooltipVisible && applyTooltip.tooltip}
 							</Flex>
-							{isWhitelistTime() && (
+							{/* {isWhitelistTime() && ( */}
+							{isWhiteList && account ? (
+								<Flex alignItems="center">
+									<Image style={{ margin: 'unset', width: '24px', height: '24px' }} src="/images/launchpad/icon-success.svg" />
+									<Text color="success" maxWidth="290px" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="20px" ml="12px">{t(`Congratulation! You have applied whitelist.`)}</Text>
+								</Flex>
+							) : (
 								<>
-									{!isWhitelistTime() && !isWhiteList ?  (
-									<Flex alignItems="center">
-										<Image style={{ margin: 'unset', width: '24px', height: '24px' }} src="/images/launchpad/icon-error.svg" />
-										<Text color="failure" maxWidth="290px" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="20px" ml="12px">{t(`Apply whitelist has been expired. You don’t apply whitelist`)}</Text>
-									</Flex>
-									) : (
+									{account ? (
 										<>
-										{/* && configWhitelistInfo && configWhitelistInfo?.endAddWhiteList > Date.now() */}
-										{account ? !isWhiteList && (
+										{isWhitelistTime() ? (
 											<StyledButton className="button-hover" onClick={handleWhitelist} disabled={isApplying}>
-												{		
+											{		
 												isApplying ?	
-													<Dots>Applying</Dots> : 
-													'Apply Now' 
-												}
-											</StyledButton>
+												<Dots>Applying</Dots> : 
+												'Apply Now' 
+											}
+										</StyledButton>
 										) : (
-											<ConnectWalletButton/>
+											<>
+											{ timeWhiteList?.endTime < Date.now() && (
+												<Flex alignItems="center">
+													<Image style={{ margin: 'unset', width: '24px', height: '24px' }} src="/images/launchpad/icon-error.svg" />
+													<Text color="failure" maxWidth="290px" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="20px" ml="12px">{t(`Apply whitelist has been expired. You don’t apply whitelist`)}</Text>
+												</Flex>
+												)}
+											</>
 										)}
-										{isWhiteList && account && (
-											<Flex alignItems="center">
-												<Image style={{ margin: 'unset', width: '24px', height: '24px' }} src="/images/launchpad/icon-success.svg" />
-												<Text color="success" maxWidth="290px" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="20px" ml="12px">{t(`Congratulation! You have applied whitelist.`)}</Text>
-											</Flex>
-										)}
-
-									</>
+										</>
+									) : (
+										<ConnectWalletButton/>
 									)}
 								</>
-							)}
-					
-							{timeWhiteList?.endTime > Date.now() && (
-								<Box mt="12px">
-									<Text color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px">{t('Time during (UTC):')}</Text>
-									<Text fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px" style={{ color: '#d6ddd0' }}>{`${timeWhiteList?.startTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.startTime/ 1000)).utc())} - ${timeWhiteList?.endTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.endTime/ 1000)).utc())}`}</Text>
-								</Box>
-							)}
+							)
+						}
+						{timeWhiteList?.endTime > Date.now() && (
+							<Box mt="12px">
+								<Text color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px">{t('Time during (UTC):')}</Text>
+								<Text fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px" style={{ color: '#d6ddd0' }}>{`${timeWhiteList?.startTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.startTime/ 1000)).utc())} - ${timeWhiteList?.endTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.endTime/ 1000)).utc())}`}</Text>
+							</Box>
+						)}
 			
 					 		</Box>
 							{currentPhaseOrNext && (
@@ -811,9 +818,9 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
                 { (totalGiveback || (info?.saleEnd < Date.now() && BigNumber(totalCommitByUser).gt(0))) && (
 									<StyledTextItalic textAlign="right" mt="8px">Estimate {formatNumber(totalGiveback, 0, 6)} U2U{ info?.saleEnd < Date.now() && BigNumber(totalCommit).gt(info?.softCap) ? `, ${formatNumber((totalCommitByUser  - totalGiveback) * rate, 0, 6)} ${info?.tokenSymbol}` : '' } </StyledTextItalic>
 								) }
-                {(configInfo?.startCancel && configInfo?.startCancel < Date.now()) && (
+                {(currentPhase && configInfo?.startCancel && configInfo?.startCancel < Date.now()) && (
 									<StyledTextItalic mt="12px">
-										Note: You can cancel your request buy {diffCancelTime()} from {configInfo?.startCancel ? formatDate(dayjs.unix(configInfo.startCancel/ 1000).utc()) : '--'} - {configInfo.endCancel ? formatDate(dayjs.unix(configInfo.endCancel/ 1000).utc()) : '--'} UTC. <span style={{ color: theme.colors.hover }}>{configInfo.percentCancel}% fee</span> when canceling IDO orders.&nbsp;
+										Note: You can cancel your request buy from {configInfo?.startCancel ? formatDate(dayjs.unix(configInfo.startCancel/ 1000).utc()) : '--'} - {configInfo.endCancel ? formatDate(dayjs.unix(configInfo.endCancel/ 1000).utc()) : '--'} UTC. <span style={{ color: theme.colors.hover }}>{configInfo.percentCancel}% fee</span> when canceling IDO orders.&nbsp;
 										<StyledButtonText variant="text" onClick={openCommittedModal}  >
 											{t('Cancel buy IDO')}
 										</StyledButtonText>
