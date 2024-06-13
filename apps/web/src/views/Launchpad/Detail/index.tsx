@@ -30,9 +30,10 @@ const StyledBanner = styled(Box)`
   background-size: cover;
   background-repeat: no-repeat;
   width: 100%;
-  height: 240px;
-  padding: 30px 0;
+  // max-height: 240px;
   overflow: hidden;
+  // background-image: url('/images/bg-1.jpg');
+  // aspect-ratio: 12/2;
   &::after {
     content: "";
     position: absolute;
@@ -59,34 +60,51 @@ const StyledBanner = styled(Box)`
     height: 100px;
     width: 100%;
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+    z-index: 1;
   }
-  > div {
-    max-width: 1248px;
-    margin: auto;
-    height: 100%;
-    padding: 0 16px;
-    @media screen and (min-width: 576px) {
-      padding: 0 20px;
-    }
-    @media screen and (min-width: 992px) {
-      padding: 0 24px;
-    }
-    @media screen and (min-width: 1440px) {
-      max-width: 1488px;
-    }
-
+  // @media screen and (max-width: 1439px) {
+  //   height: 220px;
+  //   padding: 25px 0;
+  // }
+  // @media screen and (max-width: 991px) {
+  //   height: 200px;
+  //   padding: 20px 0;
+  // }
+  // @media screen and (max-width: 575px) {
+  //   height: 180px;
+  // }
+`
+const StyledContainer = styled(Flex)`
+  position: relative;
+  width: 100%;
+  max-width: 1248px;
+  margin: auto;
+  height: 100%;
+  padding: 16px;
+  z-index: 2;
+  background: ${({ theme }) => theme.colors.background};
+  padding-bottom: 4px;
+  align-items: center;
+  @media screen and (min-width: 576px) {
+    padding: 20px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: transparent;
+    align-items: flex-end;
   }
-  @media screen and (max-width: 1439px) {
-    height: 220px;
-    padding: 25px 0;
+  @media screen and (min-width: 992px) {
+    padding: 24px;
   }
-  @media screen and (max-width: 991px) {
-    height: 200px;
-    padding: 20px 0;
+  @media screen and (min-width: 1440px) {
+    max-width: 1488px;
+    padding: 30px 24px;
   }
-  @media screen and (max-width: 575px) {
-    height: 180px;
-  }
+`
+const StyledBackground = styled.div`
+  position: relative;
+  padding-bottom: 20%;
 `
 const StyledLogo = styled(Box)`
   --size: 120px;
@@ -608,10 +626,13 @@ const LaunchpadDetailPage = () => {
   return (
     <>
       <StyledBanner style={{ backgroundImage: `url(${detail?.projectImageThumbnail})` }}>
-        <Flex justifyContent="space-between" alignItems="flex-end" position="relative">
+        <StyledBackground>
+          <Image src={detail?.projectImageThumbnail} alt=''/>
+        </StyledBackground>
+        <StyledContainer justifyContent="space-between">
           <Link href="/launchpad">
-            <Button className="button-hover" px="12px" height="40px">
-              <ArrowBackIcon width="16px" mr="4px" color="black"/>
+            <Button className="button-hover" px="12px" height={["32px", "32px", "36px", "36px", "40px"]}>
+              <ArrowBackIcon width="16px" mr={["2px", "2px", "4px"]} color="black"/>
               <span>{t('Back')}</span>
             </Button>
           </Link>
@@ -625,7 +646,7 @@ const LaunchpadDetailPage = () => {
               }
             )}
           </Flex>
-        </Flex>
+        </StyledContainer>
       </StyledBanner>
       <Container>
         <Flex my="16px" flexDirection={["column", "column", "column", "row"]}>
