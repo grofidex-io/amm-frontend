@@ -172,7 +172,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 
 	const [isFocusInput, setIsFocusInput] = useState(false)
 	const [timeCountdown, setTimeCountdown] = useState<number>(0)
-	const [currentPhaseOrNext, setCurrentPhaseOrNext] = useState<IPhase>()
+	const [currentPhaseOrNext, setCurrentPhaseOrNext] = useState<IPhase| null>()
 	const [currentPhase, setCurrentPhase] = useState<IPhase | null>()
 	const [currentPhaseWhitelist, setCurrentPhaseWhitelist] = useState<IPhase | null>()
 	const [typeCountdown, setTypeCountdown] = useState<number>(0)
@@ -454,6 +454,8 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 			const _now = Date.now()
 			let _nextPhase: any = null
 			let _currentPhase: any = null
+			setCurrentPhaseOrNext(null)
+			setCurrentPhase(null)
 			forEach(info.phases, (item: IPhase) => {
 				if(PHASES_NONE.indexOf(item.type) === -1) {
 					if(item?.type === PHASES_TYPE.WHITELIST) {
