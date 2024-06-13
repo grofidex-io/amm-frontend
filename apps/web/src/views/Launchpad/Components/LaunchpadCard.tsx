@@ -302,14 +302,14 @@ const LaunchpadCard = ({ item }: LaunchpadProps) => {
             <StyledText title={item.projectName}>{item.projectName}</StyledText>
             <Flex alignItems="center" mt={["4px", "6px", "6px", "8px", "8px", "10px", "12px"]}>
               <StyledDot
-                background={getColorLaunchpadByStatus(item.status, theme)}
+                background={getColorLaunchpadByStatus(getStatusNameByTime(item, totalCommitByUser, totalCommit), theme)}
               />
               <Text
                 ml={["6px", "6px", "6px", "6px", "6px", "8px"]}
                 fontSize={["14px", "14px", "14px", "15px", "15px", "16px"]}
                 fontWeight="700"
                 lineHeight="20px"
-                color={getColorLaunchpadByStatus(item.status, theme)}
+                color={getColorLaunchpadByStatus(getStatusNameByTime(item, totalCommitByUser, totalCommit), theme)}
               >
                 {
                   getStatusNameByTime(item, totalCommitByUser, totalCommit)

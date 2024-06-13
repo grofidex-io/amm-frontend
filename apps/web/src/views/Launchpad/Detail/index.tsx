@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization';
-import { ArrowBackIcon, Box, Button, Flex, Progress, Tab, TabMenu, Text } from "@pancakeswap/uikit";
+import { ArrowBackIcon, Box, Button, Flex, Link as LinkDefault, Progress, Tab, TabMenu, Text } from "@pancakeswap/uikit";
 import { formatNumber } from '@pancakeswap/utils/formatBalance';
 import BigNumber from 'bignumber.js';
 import Container from 'components/Layout/Container';
@@ -285,7 +285,7 @@ const StyledTab = styled(Tab)`
     }
   }
 `
-const StyledLink = styled(Link)`
+const StyledLink = styled(LinkDefault)`
   opacity: 0.8;
   transition: all 0.3s ease-out;
   &:not(:last-child) {
@@ -645,14 +645,14 @@ const LaunchpadDetailPage = () => {
               <StyledTitle title={detail?.projectName}>{detail?.projectName}</StyledTitle>
               <Flex alignItems="center">
                 <StyledDot
-                  background={detail?.status && getColorLaunchpadByStatus(detail?.status, theme)}
+                  background={detail?.status && getColorLaunchpadByStatus(getStatusNameByTime(detail, totalCommitByUser, totalCommit), theme)}
                 />
                 <Text
                   ml="8px"
                   fontSize={["14px", "14px", "16px", "16px", "16px", "16px", "16px", "17px"]}
                   fontWeight="700"
                   lineHeight="20px"
-                  color={detail?.status && getColorLaunchpadByStatus(detail?.status, theme)}
+                  color={detail?.status && getColorLaunchpadByStatus(getStatusNameByTime(detail, totalCommitByUser, totalCommit), theme)}
                 >
                   {
                     detail?.status && getStatusNameByTime(detail, totalCommitByUser, totalCommit)
