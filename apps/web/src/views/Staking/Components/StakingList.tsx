@@ -21,8 +21,8 @@ function StakingList() {
           <StyledIconImage src={image} />
         </StyledIcon>
         <Box ml={["0", "0", "12px", "12px", "12px", "16px"]} mt={["6px", "8px", "0px"]}>
-          <StyledTextTitle fontSize="10px">{t(title)}</StyledTextTitle>
-          {loading ? <Skeleton m={["auto", "auto", "unset"]} height={12} width={60}/> : <Text style={{ textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '120px' }} textAlign={["center", "center", "left"]} fontSize="16px" fontWeight="600">
+          <StyledTextTitle fontSize={["10px", "10px", "10px", "10px", "10px", "10px", "12px", "12px"]}>{t(title)}</StyledTextTitle>
+          {loading ? <Skeleton m={["auto", "auto", "unset"]} height={12} width={60}/> : <Text style={{ textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '120px' }} textAlign={["center", "center", "left"]} fontSize={["16px", "16px", "16px", "16px", "16px", "16px", "17px", "17px"]} fontWeight="600">
             {value ?? '0'}
           </Text>}
         </Box>

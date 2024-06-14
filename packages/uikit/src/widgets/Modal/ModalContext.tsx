@@ -1,21 +1,21 @@
 import { DismissableLayer } from "@radix-ui/react-dismissable-layer";
 import { AnimatePresence, LazyMotion, m } from "framer-motion";
+import get from "lodash/get";
 import React, { createContext, useCallback, useMemo, useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { createPortal } from "react-dom";
 import { styled } from "styled-components";
-import get from "lodash/get";
 import { mountAnimation, unmountAnimation } from "../../components/BottomDrawer/styles";
 import { Overlay } from "../../components/Overlay";
 import { useIsomorphicEffect } from "../../hooks";
 import {
-  animationHandler,
-  animationMap,
-  animationVariants,
-  appearAnimation,
-  disappearAnimation,
+	animationHandler,
+	animationMap,
+	animationVariants,
+	appearAnimation,
+	disappearAnimation,
 } from "../../util/animationToolkit";
-import getPortalRoot from "../../util/getPortalRoot";
+import getModalRoot from "../../util/getModalRoot";
 import { ModalContainer } from "./styles";
 import { Handler } from "./types";
 
@@ -118,7 +118,7 @@ const ModalProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const handleAnimationStart = useCallback(() => animationHandler(animationRef.current), []);
 
-  const portal = useMemo(() => getPortalRoot(), []);
+  const portal = useMemo(() => getModalRoot(), []);
 
   return (
     <Context.Provider value={providerValue}>

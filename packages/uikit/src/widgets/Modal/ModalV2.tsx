@@ -6,7 +6,7 @@ import { createPortal } from "react-dom";
 import { BoxProps } from "../../components/Box";
 import { Overlay } from "../../components/Overlay";
 import { animationHandler, animationMap, animationVariants } from "../../util/animationToolkit";
-import getPortalRoot from "../../util/getPortalRoot";
+import getModalRoot from "../../util/getModalRoot";
 import { StyledModalWrapper } from "./ModalContext";
 
 const DomMax = () => import("./motionDomMax").then((mod) => mod.default);
@@ -55,7 +55,7 @@ export function ModalV2({
       onDismiss?.();
     }
   };
-  const portal = getPortalRoot();
+  const portal = getModalRoot();
 
   if (portal) {
     return createPortal(

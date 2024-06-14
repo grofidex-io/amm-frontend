@@ -20,6 +20,7 @@ export const variants = {
   BUBBLEGUM: "bubblegum",
   SILVER: "silver",
   HOVER: "hover",
+  CANCEL: "cancel",
 } as const;
 
 export type Scale = (typeof scales)[keyof typeof scales];
@@ -42,4 +43,4 @@ export interface BaseButtonProps extends LayoutProps, SpaceProps, BorderRadiusPr
   };
 }
 
-export type ButtonProps<P extends ElementType = "button"> = PolymorphicComponentProps<P, BaseButtonProps>;
+export type ButtonProps<P extends ElementType = "button" | "a"> = PolymorphicComponentProps<P, BaseButtonProps>;

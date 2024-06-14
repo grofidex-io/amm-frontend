@@ -2,20 +2,20 @@ import { ChainDefault } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { NATIVE, WNATIVE } from '@pancakeswap/sdk'
 import {
-  ArrowBackIcon,
-  ArrowForwardIcon,
-  AutoColumn,
-  Box,
-  Flex,
-  ScanLink,
-  SortArrowIcon,
-  Text,
-  Toggle,
+	ArrowBackIcon,
+	ArrowForwardIcon,
+	AutoColumn,
+	Box,
+	Flex,
+	ScanLink,
+	SortArrowIcon,
+	Text,
+	Toggle,
 } from '@pancakeswap/uikit'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { ChainLinkSupportChains, multiChainId } from 'state/info/constant'
 import { useChainIdByQuery, useChainNameByQuery } from 'state/info/hooks'
-import { styled } from 'styled-components'
+import { styled, useTheme } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { getTokenSymbolAlias } from 'utils/getTokenAlias'
@@ -130,6 +130,7 @@ const DataRow = ({
   type?: string
   filterFn?: () => void
 }) => {
+  const theme = useTheme()
   const abs0 = Math.abs(transaction.amountToken0)
   const abs1 = Math.abs(transaction.amountToken1)
   const chainName = useChainNameByQuery()
@@ -175,12 +176,12 @@ const DataRow = ({
             fontWeight={400}
             color={
               transaction.type === TransactionType.MINT
-                ? '#00B58D'
+                ? theme.colors.cyan
                 : transaction.type === TransactionType.SWAP
                 ? transaction.amountToken0 > 0
-                  ? '#FE5300'
-                  : '#00B58D'
-                : '#FE5300'
+                  ? theme.colors.orange
+                  : theme.colors.green
+                : theme.colors.yellow
             }
           >
             {transaction.type === TransactionType.MINT

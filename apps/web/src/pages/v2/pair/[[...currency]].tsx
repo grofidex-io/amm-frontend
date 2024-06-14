@@ -6,12 +6,12 @@ import { AppHeader } from 'components/App'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 import { styled } from 'styled-components'
 import { CHAIN_IDS } from 'utils/wagmi'
-import Page from 'views/Page'
 
 import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { useTranslation } from '@pancakeswap/localization'
 import { useQuery } from '@tanstack/react-query'
 import { LightGreyCard } from 'components/Card'
+import Container from 'components/Layout/Container'
 import { usePoolTokenPercentage, useTokensDeposited, useTotalUSDValue } from 'components/PositionCard'
 import { useCurrency } from 'hooks/Tokens'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -29,6 +29,7 @@ export const BodyWrapper = styled(Card)`
   max-width: 858px;
   width: 100%;
   z-index: 1;
+  margin: 32px auto 0;
 `
 
 export default function PoolV2Page() {
@@ -89,7 +90,7 @@ export default function PoolV2Page() {
   const poolData = useLPApr(pair)
 
   return (
-    <Page>
+    <Container>
       <BodyWrapper>
         <AppHeader
           title={
@@ -203,7 +204,7 @@ export default function PoolV2Page() {
           </Text>
         </CardBody>
       </BodyWrapper>
-    </Page>
+    </Container>
   )
 }
 

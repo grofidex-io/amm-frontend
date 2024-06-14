@@ -42,6 +42,7 @@ import { Trans, useTranslation } from '@pancakeswap/localization'
 import { useQuery } from '@tanstack/react-query'
 import { LightGreyCard } from 'components/Card'
 import FormattedCurrencyAmount from 'components/FormattedCurrencyAmount/FormattedCurrencyAmount'
+import Container from 'components/Layout/Container'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 import { MerklSection } from 'components/Merkl/MerklSection'
 import { MerklTag } from 'components/Merkl/MerklTag'
@@ -81,7 +82,6 @@ import { unwrappedToken } from 'utils/wrappedCurrency'
 import { hexToBigInt } from 'viem'
 import { AprCalculator } from 'views/AddLiquidityV3/components/AprCalculator'
 import RateToggle from 'views/AddLiquidityV3/formViews/V3FormView/components/RateToggle'
-import Page from 'views/Page'
 import { useSendTransaction, useWalletClient } from 'wagmi'
 
 export const BodyWrapper = styled(Card)`
@@ -89,6 +89,7 @@ export const BodyWrapper = styled(Card)`
   max-width: 858px;
   width: 100%;
   z-index: 1;
+  margin: 32px auto 0;
 `
 
 const StyledLightGreyCard = styled(LightGreyCard)`
@@ -537,7 +538,7 @@ export default function PoolPage() {
     ) : null
 
   return (
-    <Page>
+    <Container>
       {!isLoading && <NextSeo title={`${currencyQuote?.symbol}-${currencyBase?.symbol} LP #${tokenIdFromUrl}`} />}
       <BodyWrapper>
         {isLoading ? (
@@ -851,7 +852,7 @@ export default function PoolPage() {
         )}
       </BodyWrapper>
       <V3SubgraphHealthIndicator />
-    </Page>
+    </Container>
   )
 }
 

@@ -3,6 +3,7 @@ export const baseColors = {
   black: "black",
   transparent: "transparent",
   failure: "#FE5300",
+  failure20: "#FE530020",
   failure33: "#FE530033",
   primary: "#8EF102",
   primary0f: "#1FC7D40f",
@@ -22,7 +23,10 @@ export const additionalColors = {
   gold: "#FFC700",
   silver: "#B2B2B2",
   bronze: "#E7974D",
-  yellow: "#D67E0A",
+  yellow: "#FFE500",
+  cyan: "#00DEFF",
+  orange: "#FE5300",
+  green: "#00B58D",
 };
 
 export const lightColors = {

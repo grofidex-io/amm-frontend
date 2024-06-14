@@ -162,17 +162,17 @@ const FormStaking = () => {
     <>
       <Box>
         <Flex alignItems="center" justifyContent="space-between" mb="8px">
-          <StyledText fontSize={["12px", "14px", "16px"]} fontWeight="600" color="textSubtle">
+          <StyledText fontSize={["12px", "14px", "16px", "16px", "16px", "16px", "17px", "17px"]} fontWeight="600" color="textSubtle">
             {t('Staking amount')}
           </StyledText>
           <Flex alignItems="center">
-            <Text fontSize="12px" color="textSubtle" ml="3px">
+            <Text fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "13px", "13px"]} color="textSubtle" ml="3px">
               {t('%symbol% Available', {symbol: currency.symbol})}
             </Text>
-            <Text fontSize="12px" fontWeight="700" color="primary" ml="3px">
+            <Text fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "13px", "13px"]} fontWeight="700" color="primary" ml="3px">
               {isWrongNetwork ? '--' : BigNumber(rawBalance).toFixed(2, BigNumber.ROUND_DOWN)}
             </Text>
-            <Text fontSize="12px" ml="3px">
+            <Text fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "13px", "13px"]} ml="3px">
               {currency.symbol}
             </Text>
           </Flex>
@@ -202,10 +202,10 @@ const FormStaking = () => {
         </Box>
         <Box my="24px">
           <Flex alignItems="center" justifyContent="space-between" mb="8px">
-            <Text color="textSubtle" fontSize={["13px", "14px"]}>
+            <Text color="textSubtle" fontSize={["13px", "14px", "14px", "14px", "14px", "14px", "15px", "15px"]}>
               {t('Current estimated APR (%)')}
             </Text>
-            <Text fontSize="14px">{apr === 'NaN' ? '--' : apr}</Text>
+            <Text fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "15px", "15px"]}>{apr === 'NaN' ? '--' : apr}</Text>
           </Flex>
           {/* <Flex alignItems="center" justifyContent="space-between" mb="8px">
             <Text color="textSubtle" fontSize="14px">
@@ -226,10 +226,10 @@ const FormStaking = () => {
             <Text fontSize="14px">0 U2U</Text>
           </Flex> */}
           <Flex alignItems="center" justifyContent="space-between">
-            <Text color="textSubtle" fontSize={["13px", "14px"]}>
+            <Text color="textSubtle" fontSize={["13px", "14px", "14px", "14px", "14px", "14px", "15px", "15px"]}>
               {t('Estimated rewards')}
             </Text>
-            <Text fontSize="14px">{estimatedRewards === 'NaN' ? '--' : estimatedRewards} {currency.symbol}</Text>
+            <Text fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "15px", "15px"]}>{estimatedRewards === 'NaN' ? '--' : estimatedRewards} {currency.symbol}</Text>
           </Flex>
         </Box>
       </Box>
