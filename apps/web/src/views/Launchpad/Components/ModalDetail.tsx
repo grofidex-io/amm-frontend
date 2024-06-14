@@ -69,7 +69,8 @@ export default function ModalDetail({
 	fetchGiveBack,
 	rate,
 	isSortCap,
-	initContract
+	initContract,
+	refetchListLaunchpad
 }) {
 	const { data: signer } = useWalletClient()
 	const { chainId } = useActiveChainId()
@@ -78,7 +79,7 @@ export default function ModalDetail({
 	const { toastSuccess, toastError } = useToast()
   const { t } = useTranslation();
 	const theme = useTheme()
-	const { data, refetch } = useFetchListCommit(account, launchpad)
+	const { data, refetch, isLoading } = useFetchListCommit(account, launchpad)
 	const list = data || []
 	const [giveBackAmount, setGiveBackAmount] = useState<number | string>(0)
 	const launchpadContract = useRef<any>()
@@ -124,6 +125,7 @@ export default function ModalDetail({
 	}
 
 	const handleClaim = async () => {
+		refetchListLaunchpad()
 		setLoadingClaim(true)
 		const _contract = getLaunchpadManagerContract(launchpad, signer ?? undefined, chainId)
 		try {
@@ -132,6 +134,7 @@ export default function ModalDetail({
 				refetch()
 				getTotalUserCommitted()
 				getGiveBack()
+				refetchListLaunchpad()
 				toastSuccess(
 					t('Success!'),
 					<ToastDescriptionWithTx txHash={res.transactionHash}>
@@ -241,7 +244,7 @@ export default function ModalDetail({
                     <Break />
 									</React.Fragment>
                 ))}
-								{list?.length === 0 && (
+								{!isLoading && list?.length === 0 && (
 									<Flex my="16px" flexDirection="column" alignItems="center" justifyContent="center">
 										<img src='/images/no-data.svg' alt="" />
 										<Text color='textSubtle'>{t('No Data')}</Text>

@@ -81,7 +81,6 @@ export const getStatusNameLaunchpad = (_type: string) => {
 
 export const getStatusNameByTime = (item: ILaunchpadItem, totalCommitByUser?: number, totalCommit?: number) => {
 	const _now = Date.now()
-
 	if(item.saleEnd && item.saleEnd < _now) {
 		if(totalCommit && BigNumber(totalCommit).lt(item?.softCap)) {
 			return 'Cancelled'

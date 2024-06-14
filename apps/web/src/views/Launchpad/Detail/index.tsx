@@ -440,11 +440,20 @@ const LaunchpadDetailPage = () => {
 	const [currentTier, setCurrentTier] = useState<Address>()
 	const [totalCommit, setTotalCommit] = useState<number>(0)
 	const [totalCommitByUser, setTotalCommitByUser] = useState<number>(0)
+	const [fetchStatus, updateStatusLaunchpad] = useState<number>(0)
 	const router = useRouter()
   const { launchpadId } = router.query
 	const { data: detail, refetch } = useFetchLaunchpadDetail(launchpadId as string)
+	
 	const { chainId } = useActiveChainId()
 	const { data: signer } = useWalletClient()
+
+	const fetchStatusLaunchpad = () => {
+		refetch()
+		updateStatusLaunchpad(Date.now())
+		getTotalUserCommitted()
+	}
+
 	const getTotalCommit = async () => {
 		try {
 			if(launchpadManagerContract.current?.account) {
@@ -651,7 +660,7 @@ const LaunchpadDetailPage = () => {
             </StyledLogo>
             <Box overflow="hidden" ml={["16px", "16px", "20px", "20px", "24px"]}>
               <StyledTitle title={detail?.projectName}>{detail?.projectName}</StyledTitle>
-              <Flex alignItems="center">
+              <Flex alignItems="center" key={fetchStatus}>
                 <StyledDot
                   background={detail?.status && getColorLaunchpadByStatus(getStatusNameByTime(detail, totalCommitByUser, totalCommit), theme)}
                 />
@@ -679,7 +688,7 @@ const LaunchpadDetailPage = () => {
 						{(detail && detail?.status !== LAUNCHPAD_STATUS.ENDED)  && (
 							<>
 								<Text color="primary" textAlign="center" fontSize={["13px", "13px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="1.25" mb={["6px", "6px", "8px", "8px", "10px", "10px", "12px"]}>{ isCountdownEnd ? t('Sale end in') : t('Sale start in')}</Text>
-								{showCountdown ? <CountdownTime type={COUNTDOWN_TYPE.ARRAY} time={isCountdownEnd ? detail?.saleEnd : detail?.saleStart} cb={refetch}/> : 	<Text color="hover" fontSize={["16px", "16px", "20px", "20px", "24px"]} fontWeight="600" lineHeight={["22px", "22px", "26px", "26px", "30px"]}>To be announcement</Text>}
+								{showCountdown ? <CountdownTime type={COUNTDOWN_TYPE.ARRAY} time={isCountdownEnd ? detail?.saleEnd : detail?.saleStart} cb={refetch}/> : 	<Text color="hover" fontSize={["16px", "16px", "20px", "20px", "24px"]} fontWeight="600" lineHeight={["22px", "22px", "26px", "26px", "30px"]}>To be announced</Text>}
 							</>
 						)}
           </Flex>
@@ -760,7 +769,7 @@ const LaunchpadDetailPage = () => {
               </Flex>
               <StyledProgress primaryStep={detail?.totalRaise ? (totalCommit / detail?.totalRaise) * 100 : 0 } scale="sm" />
               <Flex alignItems="center" justifyContent="center" mt="12px">
-                <Text color='text' fontSize="16px" fontWeight="700">{detail?.totalRaise ? `${formatNumber(detail.totalRaise)} U2U` : 'To be announcement'}</Text>
+                <Text color='text' fontSize="16px" fontWeight="700">{detail?.totalRaise ? `${formatNumber(detail.totalRaise)} U2U` : 'To be announced'}</Text>
                 {detail?.totalRaise ? <Text color='textSubtle' fontSize="14px" fontWeight="600" ml="8px">{t('Total Raise')}</Text> : null}
               </Flex>
             </StyledNeubrutal>
@@ -861,7 +870,7 @@ const LaunchpadDetailPage = () => {
               {t('Transactions')}
             </StyledTab>
           </TabMenu>
-          {tab === 0 && <ProjectInfo info={detail} timeWhiteList={timeWhiteList} currentTier={currentTier} account={account} totalCommit={totalCommit}/>}
+          {tab === 0 && <ProjectInfo info={detail} timeWhiteList={timeWhiteList} currentTier={currentTier} account={account} totalCommit={totalCommit} updateStatusLaunchpad={fetchStatusLaunchpad}/>}
           {tab === 1 && <Transactions info={detail} account={account}/>}
         </StyledBoxTab>
       </Container>

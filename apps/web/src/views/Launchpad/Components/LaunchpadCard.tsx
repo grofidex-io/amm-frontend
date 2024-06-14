@@ -199,12 +199,13 @@ const StyledTextInfo = styled(Text)`
 
 type LaunchpadProps ={
   type?: string,
-	item: ILaunchpadItem
+	item: ILaunchpadItem,
+	filterType?: string | null
 }
 
 
 
-const LaunchpadCard = ({ item }: LaunchpadProps) => {
+const LaunchpadCard = ({ item, filterType }: LaunchpadProps) => {
   const { t } = useTranslation()
   const theme = useTheme();
 	const launchpadManagerContract = useRef<any>()
@@ -259,6 +260,10 @@ const LaunchpadCard = ({ item }: LaunchpadProps) => {
 	useEffect(() => {
 		checkTimeCountdown()
 	}, [])
+
+	if(filterType && filterType === LAUNCHPAD_STATUS.ENDED && getStatusNameByTime(item, totalCommitByUser, totalCommit) !== 'Ended') {
+		return null
+	}
 
 
   return (

@@ -226,10 +226,6 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
                   value: LAUNCHPAD_STATUS.ON_GOING
                 },
                 {
-                  label: t('Cancelled'),
-                  value: LAUNCHPAD_STATUS.CANCELLED
-                },
-                {
                   label: t('Ended'),
                   value: LAUNCHPAD_STATUS.ENDED,
                 }

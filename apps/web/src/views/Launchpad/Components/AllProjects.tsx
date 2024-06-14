@@ -36,7 +36,6 @@ export default function AllProjects({filter}: IProjectProp) {
 			return _statusFilterName && _statusFilterType
 		} 
 		return true
-		
 	})
 	const list: any = {
 		...launchpad,
@@ -49,7 +48,7 @@ export default function AllProjects({filter}: IProjectProp) {
 				{isLoading ? <LoanLoading/> : (
 					<>
 					{list?.data.map((item: ILaunchpadItem) => (
-						<LaunchpadCard type='upcoming' item={item}/>
+						<LaunchpadCard type='upcoming' item={item} filterType={filterType}/>
 					))}
 					</>
 				)}

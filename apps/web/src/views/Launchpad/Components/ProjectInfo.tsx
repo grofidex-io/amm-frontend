@@ -159,7 +159,7 @@ const data = [
   { round: 'Community', startTime: '12h', endTime: '12h', cancelTime: '12h', Claimable: '12h' },
 ]
 
-export default function ProjectInfo({ info, timeWhiteList, account, currentTier, totalCommit }: { info: ILaunchpadDetail, timeWhiteList: ITimeOfPhase, account: string, currentTier: Address, totalCommit: number }) {
+export default function ProjectInfo({ info, timeWhiteList, account, currentTier, totalCommit, updateStatusLaunchpad }: { info: ILaunchpadDetail, timeWhiteList: ITimeOfPhase, account: string, currentTier: Address, totalCommit: number, updateStatusLaunchpad: any }) {
   const { t } = useTranslation()
   const theme = useTheme()
 	const _refIntervalCheckPhase = useRef<any>()
@@ -182,6 +182,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	const [userConfigInfo, setUserConfigInfo] = useState<ITierInfo | null>()
 	const [configWhitelistInfo, setConfigWhitelistInfo] = useState<ITierInfo | null>()
 	const [isWhiteList, setIsWhiteList] = useState<boolean>(false)
+	const [loadUserInfo, setLoadUserInfo] = useState<boolean>(false)
 	const [userCommitInfo, setUserCommitInfo] = useState<IUserWhiteListInfo>({
 		u2uCommitted: 0,
 		giveBackAmount: 0,
@@ -192,6 +193,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	const [isCommitting, setIsCommitting] = useState<boolean>(false)
 	const [isApplying, setApplyWhitelist] = useState<boolean>(false)
 	const [totalGiveback, setTotalGiveback] = useState<number>(0) 
+	const [listTooltip, setListTooltip] = useState<IPhase[]>([])
 
   const { fetchWithCatchTxError } = useCatchTxError()
 	const { toastSuccess, toastError } = useToast()
@@ -219,13 +221,13 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
   const tierTooltip =useTooltip(
     <>
       <Text fontFamily="'Metuo', sans-serif" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="18px" mb="4px">{t('The tier depends on the number of U2Us staked in the GrofiDex staking system.')}</Text>
-			{info?.phases && info?.phases.slice().reverse().map((item: IPhase) => {
+			{listTooltip && listTooltip.map((item: IPhase) => {
 
 				if(item.type === PHASES_TYPE.TIER || item.type === PHASES_TYPE.IDO_START) {
 						if(item.type === PHASES_TYPE.IDO_START) {
-							return (<StyledContentDot fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px">{`${item.name?.replace('IDO', '')}: No stake or U2U stake amount less than ${item?.maxStake} U2U`}</StyledContentDot>)
+							return (<StyledContentDot fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px">{`${item.name}: No stake or U2U stake amount less than ${item?.maxStake} U2U`}</StyledContentDot>)
 						} 
-						return (<StyledContentDot fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px">{`${item.name?.replace('IDO', '')}: Minimum U2U stake amount is ${item.minStake || '--'} U2U`}</StyledContentDot>)
+						return (<StyledContentDot fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px">{`${item.name}: Minimum U2U stake amount is ${item.minStake || '--'} U2U`}</StyledContentDot>)
 						
 				}
 				return <></>
@@ -278,10 +280,12 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	}
 
 	const getUserConfig = async () => {
+		setLoadUserInfo(true)
 		const _contract = getLaunchpadContract(currentTier, signer ?? undefined, chainId)
 		const _configInfo: any = await _contract.read.getConfigInfo()
 		const _phaseByContract = keyBy(info?.phases, (o) => o.contractAddress.toLowerCase() )
-		setUserConfigInfo({..._configInfo, maxCommitAmount: BigNumber(formatEther(_configInfo.maxCommitAmount)).toNumber(), maxBuyPerUser: BigNumber(formatEther(_configInfo.maxBuyPerUser)).toNumber(), name: _phaseByContract[currentTier.toLowerCase()]?.name, img: _phaseByContract[currentTier.toLowerCase()]?.imageUrl, start: BigNumber(_configInfo.start).toNumber() * 1000, end: BigNumber(_configInfo.end).toNumber() * 1000})
+		setUserConfigInfo({..._configInfo, maxCommitAmount: BigNumber(formatEther(_configInfo.maxCommitAmount)).toNumber(), maxBuyPerUser: BigNumber(formatEther(_configInfo.maxBuyPerUser)).toNumber(), name: _phaseByContract[currentTier.toLowerCase()]?.name?.replace('IDO', ''), img: _phaseByContract[currentTier.toLowerCase()]?.imageUrl, start: BigNumber(_configInfo.start).toNumber() * 1000, end: BigNumber(_configInfo.end).toNumber() * 1000})
+		setLoadUserInfo(false)
 	}
 
 	const getUserCommitted = async (_contract?: any, type?: string) => {
@@ -361,6 +365,8 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	const checkSchedule = () => {
 		refSchedule.current = []
 		const _schedule: any = []
+		const _listTooltip: any = []
+		let _idoStart: any
 		forEach(info.phases, (item: IPhase) => {
 			const _contract = getLaunchpadContract(item.contractAddress, signer ?? undefined, chainId)
 			if(item.type === PHASES_TYPE.TIER && item.contractAddress.toLowerCase() === currentTier?.toLowerCase()) {
@@ -372,8 +378,18 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 			if(item.type === PHASES_TYPE.COMMUNITY) {
 				_schedule.push(item)
 			}
+			if(item.type === PHASES_TYPE.TIER) {
+				_listTooltip.push({...item, name: item.name?.replace('IDO', '')})
+			}
+			if(item.type === PHASES_TYPE.IDO_START) {
+				_idoStart = {...item, name: 'Starter'}
+			}
 		})
 
+		if(_idoStart) {
+			_listTooltip.push(_idoStart)
+		}
+		setListTooltip(_listTooltip)
 		if(_schedule.length > 0) {
 			refSchedule.current = [...refSchedule.current, ..._schedule]
 		}
@@ -384,11 +400,11 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		if(totalCommit && BigNumber(totalCommit).lt(info?.softCap) && info?.saleEnd < Date.now()) {
 			setTotalGiveback(totalCommitByUser)
 
-		} else {
-			const _contract = getLaunchpadContract(currentTier, signer ?? undefined, chainId)
-			const _giveback: any = await _contract.read.getGiveBack([account])
-			setTotalGiveback(BigNumber(formatEther(_giveback)).toNumber())
-		}
+		} else if(account) {
+				const _contract = getLaunchpadContract(currentTier, signer ?? undefined, chainId)
+				const _giveback: any = await _contract.read.getGiveBack([account])
+				setTotalGiveback(BigNumber(formatEther(_giveback)).toNumber())
+			}
 	}
 
 	const [openCommittedModal] = useModal(
@@ -401,6 +417,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 			getTotalUserCommitted={getTotalUserCommitted}
 			fetchGiveBack={getGiveBack}
 			initContract={initContract}
+			refetchListLaunchpad={updateStatusLaunchpad}
 			listPhase={keyBy(info?.phases, (o) => o.contractAddress.toLowerCase())}
 			rate={rate}
 			isSortCap={BigNumber(totalCommit).lt(info?.softCap) && Date.now() > info.saleEnd  }
@@ -409,12 +426,16 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	
 	useEffect(() => {
 		clearTimeout(_timeoutGetConfig.current)
+		setLoadUserInfo(true)
 		_timeoutGetConfig.current = setTimeout(() => {
 			if(account) {
 				if(currentTier) {
 					getUserConfig()
+				} else {
+					setLoadUserInfo(false)
 				}
 			} else {
+				setLoadUserInfo(false)
 				setUserConfigInfo(null)
 			}
 		}, 500)
@@ -705,10 +726,12 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 										</TooltipText>
 										{tierTooltip.tooltipVisible && tierTooltip.tooltip}
 									</Flex>
-									<Flex alignItems="flex-end" mb="12px">
-										<IconTier src={account && userConfigInfo ? userConfigInfo?.img : '/images/launchpad/icon-tier-starter.svg'} />
-										<StyledText ml="12px" style={{ fontSize: '20px', lineHeight: '24px' }}>{account && userConfigInfo?.name?.replace('IDO', '') || 'Starter'}</StyledText>
-									</Flex>
+									{loadUserInfo ?  <Text fontSize={16}><Dots/></Text>  : (
+										<Flex alignItems="flex-end" mb="12px">
+											<IconTier src={account && userConfigInfo ? userConfigInfo?.img : '/images/launchpad/icon-tier-starter.svg'} />
+											<StyledText ml="12px" style={{ fontSize: '20px', lineHeight: '24px' }}>{account && userConfigInfo?.name?.replace('IDO', '') || 'Starter'}</StyledText>
+										</Flex>
+									)}
 
 									<Box>
 										{(userConfigInfo && (currentPhase?.type === PHASES_TYPE.TIER || !currentPhase?.type)) ? <>
