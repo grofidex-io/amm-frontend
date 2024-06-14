@@ -71,7 +71,7 @@ export const getBreakpointChecks = (state: State): BreakpointChecks => {
     ...state,
     isMobile: state.isXs || state.isSm,
     isTablet: state.isMd || state.isLg,
-    isDesktop: state.isXl || state.isXxl,
+    isDesktop: state.isXl || state.isXxl || state.isXxxl,
   };
 };
 
@@ -89,7 +89,6 @@ export const MatchBreakpointsProvider: React.FC<React.PropsWithChildren> = ({ ch
 
         handler = (matchMediaQuery: MediaQueryListEvent) => {
           const key = getKey(size);
-
           setState((prevState) =>
             getBreakpointChecks({
               ...prevState,

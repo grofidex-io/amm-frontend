@@ -1,15 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
-  Flex,
-  LinkExternal,
-  Message,
-  MessageText,
-  ScanLink,
-  Skeleton,
-  Text,
-  VerifiedIcon,
-  useMatchBreakpoints,
-  useModalV2,
+	Flex,
+	LinkExternal,
+	Message,
+	MessageText,
+	ScanLink,
+	Skeleton,
+	Text,
+	VerifiedIcon,
+	useMatchBreakpoints,
+	useModalV2,
 } from '@pancakeswap/uikit'
 import { FarmWidget } from '@pancakeswap/widgets-internal'
 import ConnectWalletButton from 'components/ConnectWalletButton'

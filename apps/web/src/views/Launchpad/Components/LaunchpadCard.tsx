@@ -331,11 +331,11 @@ const LaunchpadCard = ({ item }: LaunchpadProps) => {
           <Box mt="auto">
             <Flex justifyContent="space-between" mb="12px">
               <Text minWidth="68px" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="20px" color='textSubtle'>{t('Sale price')}</Text>
-              <Text ml="12px" textAlign="right" fontSize={["15px", "15px", "16px", "16px", "15px", "16px", "17px"]} fontWeight="700" lineHeight="20px" color='text'>1 U2U = {item.priceToken} {item.tokenSymbol}</Text>
+              <Text ml="12px" textAlign="right" fontSize={["15px", "15px", "16px", "16px", "15px", "16px", "17px"]} fontWeight="700" lineHeight="20px" color='text'>{item?.priceToken ? `1 U2U = ${item?.priceToken} ${item?.tokenSymbol}` : 'TBA'}</Text>
             </Flex>
             <Flex justifyContent="space-between">
               <Text minWidth="68px" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="20px" color='textSubtle'>{t('Total Raise')}</Text>
-              <Text ml="12px" textAlign="right" fontSize={["15px", "15px", "16px", "16px", "15px", "16px", "17px"]} fontWeight="700" lineHeight="20px" color='text'>{formatNumber(item.totalRaise)} U2U</Text>
+              <Text ml="12px" textAlign="right" fontSize={["15px", "15px", "16px", "16px", "15px", "16px", "17px"]} fontWeight="700" lineHeight="20px" color='text'>{item?.totalRaise ? `${formatNumber(item?.totalRaise)} U2U` : 'TBA'}</Text>
             </Flex>
           </Box>
         </Flex>
