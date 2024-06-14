@@ -216,18 +216,16 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 			//
 		}
 	}
-
-
   const tierTooltip =useTooltip(
     <>
       <Text fontFamily="'Metuo', sans-serif" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="18px" mb="4px">{t('The tier depends on the number of U2Us staked in the GrofiDex staking system.')}</Text>
-			{info?.phases.map((item: IPhase) => {
+			{info?.phases && info?.phases.slice().reverse().map((item: IPhase) => {
+
 				if(item.type === PHASES_TYPE.TIER || item.type === PHASES_TYPE.IDO_START) {
-			
 						if(item.type === PHASES_TYPE.IDO_START) {
-							return (<StyledContentDot fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px">{`${item.name}: No stake or U2U stake amount less than ${item?.maxStake} U2U`}</StyledContentDot>)
+							return (<StyledContentDot fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px">{`${item.name?.replace('IDO', '')}: No stake or U2U stake amount less than ${item?.maxStake} U2U`}</StyledContentDot>)
 						} 
-						return (<StyledContentDot fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px">{`${item.name}: Minimum U2U stake amount is ${item.minStake || '--'} U2U`}</StyledContentDot>)
+						return (<StyledContentDot fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px">{`${item.name?.replace('IDO', '')}: Minimum U2U stake amount is ${item.minStake || '--'} U2U`}</StyledContentDot>)
 						
 				}
 				return <></>
@@ -283,7 +281,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		const _contract = getLaunchpadContract(currentTier, signer ?? undefined, chainId)
 		const _configInfo: any = await _contract.read.getConfigInfo()
 		const _phaseByContract = keyBy(info?.phases, (o) => o.contractAddress.toLowerCase() )
-		setUserConfigInfo({..._configInfo, maxCommitAmount: BigNumber(formatEther(_configInfo.maxCommitAmount)).toNumber(), maxBuyPerUser: BigNumber(formatEther(_configInfo.maxBuyPerUser)).toNumber(), name: _phaseByContract[currentTier.toLowerCase()]?.name, start: BigNumber(_configInfo.start).toNumber() * 1000, end: BigNumber(_configInfo.end).toNumber() * 1000})
+		setUserConfigInfo({..._configInfo, maxCommitAmount: BigNumber(formatEther(_configInfo.maxCommitAmount)).toNumber(), maxBuyPerUser: BigNumber(formatEther(_configInfo.maxBuyPerUser)).toNumber(), name: _phaseByContract[currentTier.toLowerCase()]?.name, img: _phaseByContract[currentTier.toLowerCase()]?.imageUrl, start: BigNumber(_configInfo.start).toNumber() * 1000, end: BigNumber(_configInfo.end).toNumber() * 1000})
 	}
 
 	const getUserCommitted = async (_contract?: any, type?: string) => {
@@ -389,9 +387,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		} else {
 			const _contract = getLaunchpadContract(currentTier, signer ?? undefined, chainId)
 			const _giveback: any = await _contract.read.getGiveBack([account])
-			if(_giveback) {
-				setTotalGiveback(BigNumber(formatEther(_giveback)).toNumber())
-			}
+			setTotalGiveback(BigNumber(formatEther(_giveback)).toNumber())
 		}
 	}
 
@@ -710,23 +706,26 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 										{tierTooltip.tooltipVisible && tierTooltip.tooltip}
 									</Flex>
 									<Flex alignItems="flex-end" mb="12px">
-										<IconTier src={account ? '/images/launchpad/icon-tier-1.svg' : '/images/launchpad/icon-tier-starter.svg'} />
-										<StyledText ml="12px" style={{ fontSize: '20px', lineHeight: '24px' }}>{account && userConfigInfo?.name || 'Starter'}</StyledText>
+										<IconTier src={account && userConfigInfo ? userConfigInfo?.img : '/images/launchpad/icon-tier-starter.svg'} />
+										<StyledText ml="12px" style={{ fontSize: '20px', lineHeight: '24px' }}>{account && userConfigInfo?.name?.replace('IDO', '') || 'Starter'}</StyledText>
 									</Flex>
 
 									<Box>
-										{(userConfigInfo && (currentPhase?.type === PHASES_TYPE.TIER || !currentPhase?.type)) && <>
+										{(userConfigInfo && (currentPhase?.type === PHASES_TYPE.TIER || !currentPhase?.type)) ? <>
 											<StyledTextItalic>{t(`%estimate% %maxBuyPerUser% U2U to buy IDO in round buy %tier%.`, { maxBuyPerUser: userConfigInfo?.maxBuyPerUser, tier: userConfigInfo?.name, estimate: info?.snapshotTime < Date.now() ? 'Maximum' : 'Estimate maximum'})} {info.snapshotTime < Date.now() && <StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>}</StyledTextItalic>
-										</>}
+										</> : (
+											<>
+												{info?.snapshotTime < Date.now() && (
+													<StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>
+												)}
+												</>
+										)}
 										{(configInfo && currentPhase && currentPhase?.type !== PHASES_TYPE.TIER) && (
 											<>
 											<StyledTextItalic>{t(`%estimate% %maxBuyPerUser% U2U to buy IDO in round buy %tier%.`, { maxBuyPerUser: configInfo?.maxBuyPerUser, tier: currentPhase?.name, estimate: info?.snapshotTime < Date.now() ? 'Maximum' : 'Estimate maximum' })}</StyledTextItalic>
 											{info.snapshotTime < Date.now() && <StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>}
 											</>
 										)}
-										{(!userConfigInfo && !configInfo && info?.snapshotTime < Date.now()) && (
-											<StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>
-										) }
 										{info?.snapshotTime > Date.now()  && 
 											<>
 												<StyledTextItalic>{t('The snapshot will be ended at ')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>
