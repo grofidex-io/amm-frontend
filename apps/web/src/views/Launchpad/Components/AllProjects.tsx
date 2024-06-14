@@ -70,7 +70,7 @@ export default function AllProjects({filter}: IProjectProp) {
 				>
 					<ArrowForwardIcon color={page === list?.pagination.totalPages ? 'textDisabled' : 'primary'} />
 				</Arrow>
-			</PageButtons>) : <NoData/>
+			</PageButtons>) : !isLoading && <NoData/>
 	
 			}
     </>
