@@ -1,5 +1,5 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { AutoColumn, Box, Button, Dots, Flex, Modal, Text, useToast } from "@pancakeswap/uikit";
+import { AutoColumn, Box, Button, Dots, Flex, Modal, Skeleton, Text, useToast } from "@pancakeswap/uikit";
 import { formatNumber } from "@pancakeswap/utils/formatBalance";
 import BigNumber from "bignumber.js";
 import { ToastDescriptionWithTx } from "components/Toast";
@@ -56,7 +56,24 @@ const StyledButtonCancel = styled(Button)`
   font-weight: 500;
 `
 
-
+const TableLoader: React.FC<React.PropsWithChildren> = () => {
+  const loadingRow = (
+    <ResponsiveGrid>
+      <Skeleton />
+      <Skeleton />
+      <Skeleton />
+      <Skeleton />
+			<Skeleton />
+    </ResponsiveGrid>
+  )
+	return (
+    <>
+      {loadingRow}
+      {loadingRow}
+      {loadingRow}
+    </>
+  )
+}
 
 export default function ModalDetail({
 	tokenName,
@@ -230,7 +247,7 @@ export default function ModalDetail({
               </ResponsiveGrid>
               <AutoColumn gap="16px">
                 <Break/>
-                {list?.map(item => (
+                { isLoading ? <TableLoader/> : list?.map(item => (
                   <React.Fragment key={item.id}>
 										<ResponsiveGrid>
 											<StyledText>{listPhase[item.roundAddress.toLowerCase()]?.name}</StyledText>
