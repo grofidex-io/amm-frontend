@@ -105,8 +105,8 @@ export default function ModalDetail({
 			const res = await fetchWithCatchTxError(() => _contract.write.cancelCommit())
 			if(res?.status) {
 				refetch()
-				getGiveBack()
 				getTotalUserCommitted()
+				getGiveBack()
 				initContract()
 				toastSuccess(
 					t('Success!'),
@@ -130,8 +130,8 @@ export default function ModalDetail({
 			const res = await fetchWithCatchTxError(() => isSortCap ? _contract.write.withdrawSoftCap() : _contract.write.claimToken())
 			if(res?.status) {
 				refetch()
-				getGiveBack()
 				getTotalUserCommitted()
+				getGiveBack()
 				toastSuccess(
 					t('Success!'),
 					<ToastDescriptionWithTx txHash={res.transactionHash}>
