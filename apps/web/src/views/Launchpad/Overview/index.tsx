@@ -1,9 +1,12 @@
 import { useTranslation } from "@pancakeswap/localization"
 import { Box, Flex, Heading, SearchInput, Select, Tab, TabMenu } from "@pancakeswap/uikit"
 import Container from "components/Layout/Container"
+import debounce from "lodash/debounce"
 import React, { useState } from 'react'
 import styled, { useTheme } from "styled-components"
 import AllProjects from "../Components/AllProjects"
+import MyPools from "../Components/MyPools"
+import { LAUNCHPAD_STATUS } from "../helpers"
 
 const StyledFlex = styled(Flex)`
   align-items: center;
@@ -167,6 +170,17 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const theme = useTheme()
   const [tab, setTab] = useState<number>(0)
+	const [valueSearch, setValueSearch] = useState<string>('')
+	const [filterType, setFilterType] = useState<string | null>('')
+
+	const inputSearch = debounce((event: any) => {
+		setValueSearch(event.target.value)
+	}, 200)
+
+	const handleSelectType = (item: any) => {
+		setFilterType(item.value)
+		
+	}
 
   return (
     <>
@@ -195,33 +209,30 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
         </Box>
         <StyledBoxTab>
           <StyledFilter>
-            <SearchInput onChange={()=>{}} placeholder="Search Type symbol, the project name to find your launchpad" />
+            <SearchInput onChange={inputSearch} placeholder="Search Type symbol, the project name to find your launchpad" />
             <Select
+							onOptionChange={handleSelectType}
               options={[
                 {
                   label: t('All status'),
-                  value: 'all',
+                  value: null,
                 },
                 {
                   label: t('Upcoming'),
-                  value: 'upcoming',
+                  value: LAUNCHPAD_STATUS.UPCOMING
                 },
                 {
                   label: t('On Going'),
-                  value: 'onGoing',
+                  value: LAUNCHPAD_STATUS.ON_GOING
                 },
                 {
                   label: t('Cancelled'),
-                  value: 'cancelled',
+                  value: LAUNCHPAD_STATUS.CANCELLED
                 },
                 {
                   label: t('Ended'),
-                  value: 'ended',
-                },
-                {
-                  label: t('Claimable'),
-                  value: 'claimable',
-                },
+                  value: LAUNCHPAD_STATUS.ENDED,
+                }
               ]}
             />
           </StyledFilter>
@@ -261,7 +272,8 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
               {t('My pools')}
             </StyledTab>
           </TabMenu>
-          {tab === 0 && <AllProjects/>}
+          {tab === 0 && <AllProjects filter={{valueSearch, filterType}} />}
+					{tab === 1 && <MyPools/>}
         </StyledBoxTab>
       </Container>
     </>

@@ -4,7 +4,7 @@ import { FarmsV3Context, FarmsV3PageLayout } from 'views/Farms'
 import FarmCard from 'views/Farms/components/FarmCard/FarmCard'
 import { FarmV3Card } from 'views/Farms/components/FarmCard/V3/FarmV3Card'
 import ProxyFarmContainer, {
-  YieldBoosterStateContext,
+	YieldBoosterStateContext,
 } from 'views/Farms/components/YieldBooster/components/ProxyFarmContainer'
 import { getDisplayApr } from 'views/Farms/components/getDisplayApr'
 import { useETHPriceData } from 'views/V3Info/hooks'

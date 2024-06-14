@@ -222,10 +222,13 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
     <>
       <Text fontFamily="'Metuo', sans-serif" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="18px" mb="4px">{t('The tier depends on the number of U2Us staked in the GrofiDex staking system.')}</Text>
 			{info?.phases.map((item: IPhase) => {
-				if(item.type === PHASES_TYPE.TIER) {
-					return (
-						<StyledContentDot fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px">{`${item.name}: Minimum U2U stake amount is ${item.minStake || '--'} U2U`}</StyledContentDot>
-					)
+				if(item.type === PHASES_TYPE.TIER || item.type === PHASES_TYPE.IDO_START) {
+			
+						if(item.type === PHASES_TYPE.IDO_START) {
+							return (<StyledContentDot fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px">{`${item.name}: No stake or U2U stake amount less than ${item?.maxStake} U2U`}</StyledContentDot>)
+						} 
+						return (<StyledContentDot fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px">{`${item.name}: Minimum U2U stake amount is ${item.minStake || '--'} U2U`}</StyledContentDot>)
+						
 				}
 				return <></>
 			})}
@@ -527,6 +530,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		setTotalGiveback(0)
 
 		setAmountCommit('')
+		setApplyWhitelist(false)
 		if(!account) {
 			refSchedule.current = []
 		}
@@ -719,9 +723,9 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 											{info.snapshotTime < Date.now() && <StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>}
 											</>
 										)}
-										{/* {(!userConfigInfo && info?.snapshotTime < Date.now()) && (
+										{(!userConfigInfo && !configInfo && info?.snapshotTime < Date.now()) && (
 											<StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>
-										) } */}
+										) }
 										{info?.snapshotTime > Date.now()  && 
 											<>
 												<StyledTextItalic>{t('The snapshot will be ended at ')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>

@@ -60,6 +60,7 @@ export interface IPhase {
 	contractAddress: Address,
 	type: string
 	minStake: number
+	maxStake: number
 }
 
 export interface ILaunchpadDetail {

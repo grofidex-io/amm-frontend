@@ -82,7 +82,7 @@ export const getStatusNameLaunchpad = (_type: string) => {
 export const getStatusNameByTime = (item: ILaunchpadItem, totalCommitByUser?: number, totalCommit?: number) => {
 	const _now = Date.now()
 
-	if(item.saleEnd < _now) {
+	if(item.saleEnd && item.saleEnd < _now) {
 		if(totalCommit && BigNumber(totalCommit).lt(item?.softCap)) {
 			return 'Cancelled'
 		} 
@@ -91,11 +91,6 @@ export const getStatusNameByTime = (item: ILaunchpadItem, totalCommitByUser?: nu
 		}
 		return 'Ended'
 	}
-
-	// if(item.saleEnd > _now && _now > item.saleStart ) {
-	// 	return 'On Going'
-	// }
-
 	return getStatusNameLaunchpad(item.status)
 }
 

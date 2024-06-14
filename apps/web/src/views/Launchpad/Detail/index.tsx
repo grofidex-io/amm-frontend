@@ -428,7 +428,7 @@ const LaunchpadDetailPage = () => {
 	const refIntervalFetchTotalCommitted = useRef<any>()
 	const launchpadManagerContract = useRef<any>()
 	const listTimeoutRefetch = useRef<any>({})
-	const currentPhase = useRef<string>()
+	const currentPhase = useRef<string | null>()
 	const lastTime = useRef<any>({
 		startTime: 0,
 		endTime: 0
@@ -510,7 +510,6 @@ const LaunchpadDetailPage = () => {
 			}
 
 		})
-		console.log("🚀 ~ forEach ~ currentPhase.current:", currentPhase.current)
 
 		setTimeWhiteList({
 			startTime: _startTime,
@@ -677,7 +676,7 @@ const LaunchpadDetailPage = () => {
             justifyContent="center"
             flexDirection="column"
           >
-						{(detail && detail?.saleEnd > Date.now())  && (
+						{(detail && detail?.status !== LAUNCHPAD_STATUS.ENDED)  && (
 							<>
 								<Text color="primary" textAlign="center" fontSize={["13px", "13px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="1.25" mb={["6px", "6px", "8px", "8px", "10px", "10px", "12px"]}>{ isCountdownEnd ? t('Sale end in') : t('Sale start in')}</Text>
 								{showCountdown ? <CountdownTime type={COUNTDOWN_TYPE.ARRAY} time={isCountdownEnd ? detail?.saleEnd : detail?.saleStart} cb={refetch}/> : 	<Text color="hover" fontSize={["16px", "16px", "20px", "20px", "24px"]} fontWeight="600" lineHeight={["22px", "22px", "26px", "26px", "30px"]}>To be announcement</Text>}
@@ -692,21 +691,21 @@ const LaunchpadDetailPage = () => {
               <StyledListTitle>{t('Sale price')}</StyledListTitle>
               <Flex alignItems="center">
                 <IconImg src='/images/u2u.svg' />
-                <StyledListText>{detail?.priceToken && formatNumber(detail?.priceToken)} U2U</StyledListText>
+                <StyledListText>{detail?.priceToken ? `${formatNumber(detail?.priceToken)} U2U` : 'To be announced'}</StyledListText>
               </Flex>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Total Raise')}</StyledListTitle>
               <Flex alignItems="center">
                 <IconImg src='/images/u2u.svg' />
-                <StyledListText>{detail?.totalRaise && formatNumber(detail.totalRaise)} U2U</StyledListText>
+                <StyledListText>{detail?.totalRaise ? `${formatNumber(detail.totalRaise)} U2U` : 'To be announced'} </StyledListText>
               </Flex>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Total for Sale')}</StyledListTitle>
               <Flex alignItems="center">
                 <IconImg style={{ borderRadius: '2px' }} src={detail?.tokenLogo}/>
-                <StyledListText>{detail?.totalSale && formatNumber(detail.totalSale)} {detail?.tokenSymbol}</StyledListText>
+                <StyledListText>{detail?.totalSale ? `${formatNumber(detail.totalSale)} ${detail?.tokenSymbol}` : 'To be announced'} </StyledListText>
               </Flex>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
@@ -724,28 +723,28 @@ const LaunchpadDetailPage = () => {
               <StyledListTitle>{t('Softcap')}</StyledListTitle>
               <Flex alignItems="center">
                 <IconImg src='/images/u2u.svg' />
-                <StyledListText>{detail?.softCap && formatNumber(detail.softCap)} U2U</StyledListText>
+                <StyledListText>{detail?.softCap ? `${formatNumber(detail.softCap)} U2U` : 'To be announced' }</StyledListText>
               </Flex>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Snapshot time')}</StyledListTitle>
-              <StyledListText>{detail?.snapshotTime && formatDate(dayjs.unix(Math.floor(detail.snapshotTime/ 1000)).utc())} UTC</StyledListText>
+              <StyledListText>{detail?.snapshotTime ? `${formatDate(dayjs.unix(Math.floor(detail.snapshotTime/ 1000)).utc())} UTC` : 'To be announced'}</StyledListText>
             </Flex>
 						<Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Sale Start')}</StyledListTitle>
-              <StyledListText>{detail?.saleStart && formatDate(dayjs.unix(Math.floor(detail.saleStart/ 1000)).utc())} UTC</StyledListText>
+              <StyledListText>{detail?.saleStart ? `${formatDate(dayjs.unix(Math.floor(detail.saleStart/ 1000)).utc())} UTC` : 'To be announced'}</StyledListText>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Sale End')}</StyledListTitle>
-              <StyledListText>{detail?.saleEnd && formatDate(dayjs.unix(Math.floor(detail.saleEnd/ 1000)).utc())} UTC</StyledListText>
+              <StyledListText>{detail?.saleEnd ? `${formatDate(dayjs.unix(Math.floor(detail.saleEnd/ 1000)).utc())} UTC` : 'To be announced'}</StyledListText>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Start Apply Whitelist')}</StyledListTitle>
-              <StyledListText>{timeWhiteList?.startTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.startTime/ 1000)).utc())} UTC</StyledListText>
+              <StyledListText>{timeWhiteList?.startTime ? `${formatDate(dayjs.unix(Math.floor(timeWhiteList.startTime/ 1000)).utc())} UTC` : 'To be announced'}</StyledListText>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('End Apply Whitelist')}</StyledListTitle>
-              <StyledListText>{timeWhiteList?.endTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.endTime/ 1000)).utc())} UTC</StyledListText>
+              <StyledListText>{timeWhiteList?.endTime ? `${formatDate(dayjs.unix(Math.floor(timeWhiteList.endTime/ 1000)).utc())} UTC` : 'To be announced'}</StyledListText>
             </Flex>
     
           </StyledNeubrutal>
@@ -761,8 +760,8 @@ const LaunchpadDetailPage = () => {
               </Flex>
               <StyledProgress primaryStep={detail?.totalRaise ? (totalCommit / detail?.totalRaise) * 100 : 0 } scale="sm" />
               <Flex alignItems="center" justifyContent="center" mt="12px">
-                <Text color='text' fontSize="16px" fontWeight="700">{detail?.totalRaise ? formatNumber(detail.totalRaise) : '_'} U2U</Text>
-                <Text color='textSubtle' fontSize="14px" fontWeight="600" ml="8px">{t('Total Raise')}</Text>
+                <Text color='text' fontSize="16px" fontWeight="700">{detail?.totalRaise ? `${formatNumber(detail.totalRaise)} U2U` : 'To be announcement'}</Text>
+                {detail?.totalRaise ? <Text color='textSubtle' fontSize="14px" fontWeight="600" ml="8px">{t('Total Raise')}</Text> : null}
               </Flex>
             </StyledNeubrutal>
             <Flex mt="16px" width="100%" flexDirection={["column", "column", "row"]}>
