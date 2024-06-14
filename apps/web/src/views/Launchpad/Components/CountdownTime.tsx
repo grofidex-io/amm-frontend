@@ -77,11 +77,11 @@ const CountdownTime = ({type, time, cb} : IProps) => {
 					</Box>
 				</>
 			) : (
-				<Text m="auto" textAlign="right" fontSize={["20px", "20px", "20px", "24px", "28px", "28px", "32px"]} fontWeight="600" lineHeight="1" color='hover'> {loading ? '' : 'To be announcement'} </Text>
+				<Text m="auto" textAlign="right" fontSize={["20px", "20px", "20px", "24px", "28px", "28px", "32px"]} fontWeight="600" lineHeight="1" color='hover'> {loading ? '' : 'To be announced'} </Text>
 			)}
 		</Flex>
 		) : (
-			<>{ loading ? <Dots />  : timeCountdown || t('To be announcement')}</>
+			<>{ loading ? <Dots />  : timeCountdown || t('To be announced')}</>
 		)}
 	</>
 	)
