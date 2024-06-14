@@ -403,6 +403,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 			account={account}
 			launchpad={info?.contractAddress}
 			getTotalUserCommitted={getTotalUserCommitted}
+			fetchGiveBack={getGiveBack}
 			initContract={initContract}
 			listPhase={keyBy(info?.phases, (o) => o.contractAddress.toLowerCase())}
 			rate={rate}
@@ -798,7 +799,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 										<CountdownTime type={COUNTDOWN_TYPE.STRING} time={timeCountdown} cb={recheckPhase}/>
 									</Text>
 									{/* <Text color="primary" fontSize="24px" fontWeight="600" lineHeight="30px">{timeCountdown || t('To be announcement')}</Text> */}
-									{(currentPhase?.type === PHASES_TYPE.WHITELIST || currentPhase?.type === PHASES_TYPE.COMMUNITY) && (
+									{((currentPhase?.type === PHASES_TYPE.WHITELIST || currentPhase?.type === PHASES_TYPE.COMMUNITY) && configInfo) && (
 										<StyledContent maxWidth="340px" m="auto" mt={["12px", "12px", "16px", "16px", "20px", "20px", "24px"]}>
 											<span style={{ color: theme.colors.hover }}>FCFS: </span>
 											First come first serve. {currentPhase?.type === PHASES_TYPE.WHITELIST ? 'Whitelist' : 'Community'} pool is available ${formatNumber(Number(configInfo?.maxCommitAmount) - currentCommit, 0, 6)} U2U ~ {formatNumber((Number(configInfo?.maxCommitAmount) - currentCommit) * rate, 0, 6)} {info?.tokenName}.

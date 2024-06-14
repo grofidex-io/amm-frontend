@@ -105,7 +105,7 @@ const StyledContainer = styled(Flex)`
 `
 const StyledBackground = styled.div`
   position: relative;
-  padding-bottom: 20%;
+  padding-bottom: 25%;
 `
 const StyledLogo = styled(Box)`
   --size: 120px;
@@ -440,7 +440,6 @@ const LaunchpadDetailPage = () => {
 	const [currentTier, setCurrentTier] = useState<Address>()
 	const [totalCommit, setTotalCommit] = useState<number>(0)
 	const [totalCommitByUser, setTotalCommitByUser] = useState<number>(0)
-	const [timeFetch, setTimeFetch] = useState<number>(0)
 	const router = useRouter()
   const { launchpadId } = router.query
 	const { data: detail, refetch } = useFetchLaunchpadDetail(launchpadId as string)
@@ -565,8 +564,9 @@ const LaunchpadDetailPage = () => {
 			}, 600000)
 			getUserTier()
 			getTimeWhiteList()
-
 		}
+
+		initTime()
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [detail, signer, account])
 
@@ -590,7 +590,7 @@ const LaunchpadDetailPage = () => {
 	const isComplete = (_item: IPhase) => {
 		const _now = Date.now()
 		if(PHASES_NONE.indexOf(_item.type) === -1) {
-			if(_now > _item.startTime && _item.contractAddress !== currentPhase.current) {
+			if(_now > _item.endTime && _item.contractAddress !== currentPhase.current) {
 				return true
 			}
 			return false
@@ -801,7 +801,7 @@ const LaunchpadDetailPage = () => {
 					>
 						{detail?.phases.map((item, index) => (
 							<SwiperSlide className="swiper-launchpad" style={{ zIndex: detail?.phases.length - index }} key={item.name}>
-								<StyledBox key={timeFetch} >
+								<StyledBox >
 									<StyledContent style={{ background: `${isComplete(item) ? theme.colors.backgroundItem : (isInProgress(item) ||  item.isActive) ? theme.colors.primary : theme.colors.backgroundAlt}` }}>
 										<img style={{ filter: `${isComplete(item) && 'grayscale(1)'}` }} src={item.imageUrl || `/images/launchpad/icon-step-01.svg`} alt="" />
 										<Text style={{ color: `${isComplete(item) ? theme.colors.hover : (isInProgress(item) ||  item.isActive) ? theme.colors.black : theme.colors.primary}` }} fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="17px" mt="8px">{item.name}</Text>
