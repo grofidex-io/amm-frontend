@@ -66,6 +66,7 @@ export default function ModalDetail({
 	listPhase,
 	onDismiss,
 	getTotalUserCommitted,
+	fetchGiveBack,
 	rate,
 	isSortCap,
 	initContract
@@ -87,6 +88,7 @@ export default function ModalDetail({
 
 	const getGiveBack = async () => {
 		try {
+			fetchGiveBack()
 			if(launchpadContract.current?.account) { 
 				const res = await launchpadContract.current.read.getGiveBack([account])
 				setGiveBackAmount(formatEther(res))
