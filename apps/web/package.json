@@ -93,6 +93,7 @@
     "easymde": "2.16.1",
     "ethers": "^5.7.0",
     "fast-json-stable-stringify": "^2.1.0",
+    "google": "link:@next/third-parties/google",
     "graphql": "^16.8.1",
     "graphql-request": "5.0.0",
     "html-react-parser": "^5.1.10",
