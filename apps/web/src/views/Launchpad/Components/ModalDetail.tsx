@@ -82,8 +82,7 @@ export default function ModalDetail({
 	launchpad,
 	listPhase,
 	onDismiss,
-	getTotalUserCommitted,
-	fetchGiveBack,
+	fetchUserData,
 	rate,
 	isSortCap,
 	initContract,
@@ -106,7 +105,6 @@ export default function ModalDetail({
 
 	const getGiveBack = async () => {
 		try {
-			fetchGiveBack()
 			if(launchpadContract.current?.account) { 
 				const res = await launchpadContract.current.read.getGiveBack([account])
 				setGiveBackAmount(formatEther(res))
@@ -123,7 +121,7 @@ export default function ModalDetail({
 			const res = await fetchWithCatchTxError(() => _contract.write.cancelCommit())
 			if(res?.status) {
 				refetch()
-				getTotalUserCommitted()
+				fetchUserData()
 				getGiveBack()
 				initContract()
 				toastSuccess(
@@ -149,7 +147,7 @@ export default function ModalDetail({
 			const res = await fetchWithCatchTxError(() => isSortCap ? _contract.write.withdrawSoftCap() : _contract.write.claimToken())
 			if(res?.status) {
 				refetch()
-				getTotalUserCommitted()
+				fetchUserData()
 				getGiveBack()
 				refetchListLaunchpad()
 				toastSuccess(

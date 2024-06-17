@@ -265,7 +265,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
                 </clipPath>
                 </defs>
               </svg>
-              {t('My pools')}
+              {t('My Contributions')}
             </StyledTab>
           </TabMenu>
           {tab === 0 && <AllProjects filter={{valueSearch, filterType}} />}

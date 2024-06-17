@@ -444,6 +444,7 @@ const LaunchpadDetailPage = () => {
 	const router = useRouter()
   const { launchpadId } = router.query
 	const { data: detail, refetch } = useFetchLaunchpadDetail(launchpadId as string)
+
 	
 	const { chainId } = useActiveChainId()
 	const { data: signer } = useWalletClient()

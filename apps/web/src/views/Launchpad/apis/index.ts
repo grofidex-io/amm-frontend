@@ -4,7 +4,7 @@ import { ICommittedItem, IHistoryTransaction, ILaunchpadDetail, ILaunchpadItem, 
 
 const BASE_LAUNCHPAD_URL = process.env.NEXT_PUBLIC_LAUNCHPAD_API
 export const fetchListLaunchpad = async (page: number) : Promise<{data: ILaunchpadItem[], status: boolean, pagination: IPagination}> => {
-	const response = await fetch(`${BASE_LAUNCHPAD_URL}/launchpad?page=${page}`)
+	const response = await fetch(`${BASE_LAUNCHPAD_URL}/launchpad?page=${page}&size=12`)
 	const data = await response.json()
 	return data
 }
