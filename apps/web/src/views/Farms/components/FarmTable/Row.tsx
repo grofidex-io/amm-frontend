@@ -131,7 +131,6 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
   }, [initialActivity])
 
   const { isDesktop, isMobile } = useMatchBreakpoints()
-  console.log("🚀 ~ isDesktop:", isDesktop, isMobile)
 
   const isSmallerScreen = !isDesktop
 

@@ -213,10 +213,12 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 				if(!_totalCommitByUser) {
 					setTotalGiveback(_totalCommitByUser)
 				}
+				return _totalCommitByUser
 			}
 		}catch(ex) {
 			//
 		}
+		return 0
 	}
   const tierTooltip =useTooltip(
     <>
@@ -396,15 +398,19 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 
 	}
 
-	const getGiveBack = async () => {
+	const getGiveBack = async (_totalCommitByUser?: number) => {
 		if(totalCommit && BigNumber(totalCommit).lt(info?.softCap) && info?.saleEnd < Date.now()) {
-			setTotalGiveback(totalCommitByUser)
-
+			setTotalGiveback(_totalCommitByUser !== undefined ? _totalCommitByUser : totalCommitByUser)
 		} else if(account) {
 				const _contract = getLaunchpadContract(currentTier, signer ?? undefined, chainId)
 				const _giveback: any = await _contract.read.getGiveBack([account])
 				setTotalGiveback(BigNumber(formatEther(_giveback)).toNumber())
 			}
+	}
+
+	const fetchUserData = async () => {
+		const _total = await getTotalUserCommitted()
+		getGiveBack(_total)
 	}
 
 	const [openCommittedModal] = useModal(
@@ -414,8 +420,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 			saleEnd={info?.saleEnd}
 			account={account}
 			launchpad={info?.contractAddress}
-			getTotalUserCommitted={getTotalUserCommitted}
-			fetchGiveBack={getGiveBack}
+			fetchUserData={fetchUserData}
 			initContract={initContract}
 			refetchListLaunchpad={updateStatusLaunchpad}
 			listPhase={keyBy(info?.phases, (o) => o.contractAddress.toLowerCase())}
