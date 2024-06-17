@@ -60,24 +60,24 @@ const CountdownTime = ({type, time, cb} : IProps) => {
 			{timeCountdownArray.length > 0 ? (
 				<>
 					<Box style={{ textAlign: 'center' }} mr={["12px", "12px", "16px", "16px", "20px", "20px", "24px"]}>
-						<Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>{timeCountdownArray[0]}</Text>
-						<Text fontSize="11px" fontWeight="400" color='hover'>{t('Days')}</Text>
+						<Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='bright'>{timeCountdownArray[0]}</Text>
+						<Text fontSize="11px" fontWeight="400" color='bright'>{t('Days')}</Text>
 					</Box>
 					<Box style={{ textAlign: 'center' }} mr={["12px", "12px", "16px", "16px", "20px", "20px", "24px"]}>
-						<Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>{timeCountdownArray[1]}</Text>
-						<Text fontSize="11px" fontWeight="400" color='hover'>{t('Hours')}</Text>
+						<Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='bright'>{timeCountdownArray[1]}</Text>
+						<Text fontSize="11px" fontWeight="400" color='bright'>{t('Hours')}</Text>
 					</Box>
 					<Box style={{ textAlign: 'center' }} mr={["12px", "12px", "16px", "16px", "20px", "20px", "24px"]}>
-						<Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>{timeCountdownArray[2]}</Text>
-						<Text fontSize="11px" fontWeight="400" color='hover'>{t('Minutes')}</Text>
+						<Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='bright'>{timeCountdownArray[2]}</Text>
+						<Text fontSize="11px" fontWeight="400" color='bright'>{t('Minutes')}</Text>
 					</Box>
 					<Box style={{ textAlign: 'center' }}>
-						<Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='hover'>{timeCountdownArray[3]}</Text>
-						<Text fontSize="11px" fontWeight="400" color='hover'>{t('Seconds')}</Text>
+						<Text m="auto" width={["30px", "30px", "32px", "32px", "36px", "36px", "40px"]} fontSize={["24px", "24px", "26px", "26px", "30px", "30px", "32px"]} fontWeight="600" lineHeight="1" color='bright'>{timeCountdownArray[3]}</Text>
+						<Text fontSize="11px" fontWeight="400" color='bright'>{t('Seconds')}</Text>
 					</Box>
 				</>
 			) : (
-				<Text m="auto" textAlign="right" fontSize={["20px", "20px", "20px", "24px", "28px", "28px", "32px"]} fontWeight="600" lineHeight="1" color='hover'> {loading ? '' : 'To be announced'} </Text>
+				<Text m="auto" textAlign="right" fontSize={["20px", "20px", "20px", "24px", "28px", "28px", "32px"]} fontWeight="600" lineHeight="1" color='bright'> {loading ? '' : 'To be announced'} </Text>
 			)}
 		</Flex>
 		) : (

@@ -29,13 +29,17 @@ const Image = styled.img`
     max-width: 100%;
   }
   ${({ theme }) => theme.mediaQueries.lg} {
-    --size: 422px;
-    min-width: var(--size);
-    margin-top: 12px;
+    --size: 502px;
+    // min-width: var(--size);
+    margin-top: 16px;
     display: block;
+    max-height: 250px;
+  }
+  ${({ theme }) => theme.mediaQueries.xl} {
+    max-height: 275px;
   }
   ${({ theme }) => theme.mediaQueries.xxl} {
-    --size: 502px;
+    max-height: 300px;
   }
 `
 

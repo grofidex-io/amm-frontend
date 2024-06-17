@@ -4,6 +4,7 @@ import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { forEach } from 'lodash'
 import NextLink from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import styled, { useTheme } from 'styled-components'
@@ -16,11 +17,29 @@ import CountdownTime from './CountdownTime'
 
 
 const CardLayout = styled(Box)`
+  @property --angle {
+    syntax: '<angle>';
+    inherits: true;
+    initial-value: 0deg;
+  }
+	--angle: 0deg;
+  position: relative;
   border-radius: 8px;
   border: 2px solid ${({ theme }) => theme.colors.cardBorder};
   box-shadow: ${({ theme }) => theme.shadows.card};
   background: ${({ theme }) => theme.colors.backgroundAlt};
   overflow: hidden;
+  transition: all 0.3s ease 0s;
+  &:hover {
+    transform: translateY(-5px);
+    background: linear-gradient(#272727, #272727) padding-box, conic-gradient(from var(--angle), #000, #9A6AFF, #53DEE9, #000 25%) border-box;
+    border-color: transparent;
+    animation: rotate-gradient 5s linear 0s infinite normal none running;
+  }
+  @keyframes rotate-gradient {
+    from { --angle: 0deg; }
+    to { --angle: 360deg; }
+  }
 `
 const CardHeader = styled(Box)`
   position: relative;
@@ -53,6 +72,18 @@ const CardBody = styled.div`
   height: calc(100% - var(--space));
 `
 const Image = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  object-fit: cover;
+`
+const Video = styled.video`
   position: absolute;
   top: 0;
   left: 0;
@@ -203,7 +234,8 @@ type LaunchpadProps ={
 	filterType?: string | null
 }
 
-
+const imageExtensions = ['.gif','.jpg','.jpeg','.png']
+const videoExtensions =['.mpg', '.mp2', '.mpeg', '.mpe', '.mpv', '.mp4']
 
 const LaunchpadCard = ({ item, filterType }: LaunchpadProps) => {
   const { t } = useTranslation()
@@ -215,6 +247,16 @@ const LaunchpadCard = ({ item, filterType }: LaunchpadProps) => {
 	const { data: signer } = useWalletClient()
   const { account } = useAccountActiveChain()
 	const [totalCommitByUser, setTotalCommitByUser] = useState<number>(0)
+
+  const isImageOrVideo = (list, v) => {
+    let status = false
+    forEach(list, (e) => {
+      if(v?.includes(e)) {
+        status = true
+      }
+    })
+    return status
+  }
 	
 	const getTotalUserCommitted = async () => {
 		try {
@@ -269,7 +311,14 @@ const LaunchpadCard = ({ item, filterType }: LaunchpadProps) => {
   return (
     <CardLayout>
       <CardHeader>
-        <Image src={item.projectImageThumbnail} alt='' />
+        {isImageOrVideo(imageExtensions, item?.projectImageThumbnail) && (
+          <Image src={item?.projectImageThumbnail} alt=''/>
+        )}
+        {isImageOrVideo(videoExtensions, item?.projectImageThumbnail) && (
+          <Video autoPlay loop muted>
+            <source src={item?.projectImageThumbnail} type="video/mp4" />
+          </Video>
+        )}
 				{BigNumber(totalCommitByUser).gt(0) && (
 					<IconUser>
 						<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
@@ -355,7 +404,7 @@ const LaunchpadCard = ({ item, filterType }: LaunchpadProps) => {
             p={["27px 12px", "27px 16px", "27px 16px", "27px 16px", "27px 16px", "27px 16px", "30px 16px"]}
             style={{ background: '#445434' }}
 					>
-            <Text style={{ color: theme.colors.hover }} fontSize="16px" fontWeight="600" lineHeight="20px" mb="8px">{t('Sale start in')}</Text>
+            <Text style={{ color: theme.colors.bright }} fontSize="16px" fontWeight="600" lineHeight="20px" mb="8px">{t('Sale start in')}</Text>
             <Text minWidth={250} textAlign="center" color='secondary' fontSize={["24px", "24px", "24px", "25px", "24px", "24px", "28px"]} fontWeight="600" style={{ lineHeight: 'calc(34/28)' }}>{ item.saleStart ? <CountdownTime type={COUNTDOWN_TYPE.STRING} time={timeCountdown}/> : t('To be announced')}</Text>
           </Flex>
         ) : (

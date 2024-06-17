@@ -1,26 +1,26 @@
 import { ChainId } from '@pancakeswap/chains'
 import {
-	DeserializedFarm,
-	FarmV3DataWithPriceAndUserInfo,
-	FarmWithStakedValue,
-	filterFarmsByQuery,
-	supportedChainIdV3,
+  DeserializedFarm,
+  FarmV3DataWithPriceAndUserInfo,
+  FarmWithStakedValue,
+  filterFarmsByQuery,
+  supportedChainIdV3,
 } from '@pancakeswap/farms'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import {
-	Box,
-	Flex,
-	FlexLayout,
-	Heading,
-	Image,
-	Link,
-	Loading,
-	OptionProps,
-	SearchInput,
-	Select,
-	Text,
-	ToggleView
+  Box,
+  Flex,
+  FlexLayout,
+  Heading,
+  Image,
+  Link,
+  Loading,
+  OptionProps,
+  SearchInput,
+  Select,
+  Text,
+  ToggleView
 } from '@pancakeswap/uikit'
 
 import { BIG_ONE, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
@@ -85,13 +85,19 @@ const ImageBanner = styled.img`
     max-width: 100%;
   }
   ${({ theme }) => theme.mediaQueries.lg} {
-    --size: 403px;
+    --size: 362px;
     min-width: var(--size);
     margin: 5px 0;
     display: block;
+    max-height: 256px;
+  }
+  ${({ theme }) => theme.mediaQueries.xl} {
+    --size: 397px;
+    max-height: 281px;
   }
   ${({ theme }) => theme.mediaQueries.xxl} {
-    --size: 423px;
+    --size: 432px;
+    max-height: 306px;
   }
 `
 const FarmFlexWrapper = styled(Flex)`

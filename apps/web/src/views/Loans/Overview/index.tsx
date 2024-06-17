@@ -58,8 +58,11 @@ export const LoansText = styled.p`
     max-width: 600px;
   }
   ${({ theme }) => theme.mediaQueries.lg} {
-    font-size: 18px;
+    font-size: 16px;
     max-width: 100%;
+  }
+  ${({ theme }) => theme.mediaQueries.xl} {
+    font-size: 18px;
   }
   ${({ theme }) => theme.mediaQueries.xxxl} {
     font-size: 20px;
@@ -81,10 +84,14 @@ const Image = styled.img`
   --size: 384px;
   width: var(--size);
   height: calc(var(--size) * 320 / 384);
-  ${({ theme }) => theme.mediaQueries.xxl} {
-    margin-right: 40px;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    max-height: 226px;
   }
-  ${({ theme }) => theme.mediaQueries.xxxl} {
+  ${({ theme }) => theme.mediaQueries.xl} {
+    max-height: 251px;
+  }
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    max-height: 276px;
     margin-right: 60px;
   }
   @media screen and (max-width: 991px) {
@@ -96,9 +103,13 @@ const LoansInfo = styled.div`
   gap: 100px;
   margin-top: 40px;
   margin-bottom: 10px;
-  @media screen and (max-width: 991px) {
+  @media screen and (max-width: 1199px) {
     margin-top: 30px;
+    margin-bottom: 8px;
     gap: 60px;
+  }
+  @media screen and (max-width: 991px) {
+    margin-bottom: 10px;
   }
   @media screen and (max-width: 575px) {
     margin-top: 20px;
