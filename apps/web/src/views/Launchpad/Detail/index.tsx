@@ -156,6 +156,18 @@ const Image = styled.img`
   max-height: 100%;
   object-fit: cover;
 `
+const Video = styled.video`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  object-fit: cover;
+`
 const StyledTitle = styled(Text)`
   font-family: 'Metuo', sans-serif;
   font-size: 38px;
@@ -422,6 +434,9 @@ const SOCIAL_ICON = {
 	DISCORD: 'discord'
 }
 
+const imageExtensions = ['.gif','.jpg','.jpeg','.png']
+const videoExtensions =['.mpg', '.mp2', '.mpeg', '.mpe', '.mpv', '.mp4']
+
 const LaunchpadDetailPage = () => {
   const { t } = useTranslation()
   const theme = useTheme()
@@ -448,6 +463,16 @@ const LaunchpadDetailPage = () => {
 	
 	const { chainId } = useActiveChainId()
 	const { data: signer } = useWalletClient()
+
+  const isImageOrVideo = (list, v) => {
+    let status = false
+    forEach(list, (e) => {
+      if(v?.includes(e)) {
+        status = true
+      }
+    })
+    return status
+  }
 
 	const fetchStatusLaunchpad = () => {
 		refetch()
@@ -633,9 +658,16 @@ const LaunchpadDetailPage = () => {
 
   return (
     <>
-      <StyledBanner style={{ backgroundImage: `url(${detail?.projectImageThumbnail})` }}>
+      <StyledBanner>
         <StyledBackground>
-          <Image src={detail?.projectImageThumbnail} alt=''/>
+          {isImageOrVideo(imageExtensions, detail?.projectImageThumbnail) && (
+            <Image src={detail?.projectImageThumbnail} alt=''/>
+          )}
+          {isImageOrVideo(videoExtensions, detail?.projectImageThumbnail) && (
+            <Video autoPlay loop muted>
+              <source src={detail?.projectImageThumbnail} type="video/mp4" />
+            </Video>
+          )}
         </StyledBackground>
         <StyledContainer justifyContent="space-between">
           <Link href="/launchpad" legacyBehavior>
@@ -692,7 +724,7 @@ const LaunchpadDetailPage = () => {
 						{(detail && detail?.status !== LAUNCHPAD_STATUS.ENDED)  && (
 							<>
 								<Text color="primary" textAlign="center" fontSize={["13px", "13px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="1.25" mb={["6px", "6px", "8px", "8px", "10px", "10px", "12px"]}>{ isCountdownEnd ? t('Sale end in') : t('Sale start in')}</Text>
-								{showCountdown ? <CountdownTime type={COUNTDOWN_TYPE.ARRAY} time={isCountdownEnd ? detail?.saleEnd : detail?.saleStart} cb={refetch}/> : 	<Text color="hover" fontSize={["16px", "16px", "20px", "20px", "24px"]} fontWeight="600" lineHeight={["22px", "22px", "26px", "26px", "30px"]}>To be announced</Text>}
+								{showCountdown ? <CountdownTime type={COUNTDOWN_TYPE.ARRAY} time={isCountdownEnd ? detail?.saleEnd : detail?.saleStart} cb={refetch}/> : 	<Text color="bright" fontSize={["16px", "16px", "20px", "20px", "24px"]} fontWeight="600" lineHeight={["22px", "22px", "26px", "26px", "30px"]}>To be announced</Text>}
 							</>
 						)}
           </Flex>
@@ -817,8 +849,8 @@ const LaunchpadDetailPage = () => {
 								<StyledBox >
 									<StyledContent style={{ background: `${isComplete(item) ? theme.colors.backgroundItem : (isInProgress(item) ||  item.isActive) ? theme.colors.primary : theme.colors.backgroundAlt}` }}>
 										<img style={{ filter: `${isComplete(item) && 'grayscale(1)'}` }} src={item.imageUrl || `/images/launchpad/icon-step-01.svg`} alt="" />
-										<Text style={{ color: `${isComplete(item) ? theme.colors.hover : (isInProgress(item) ||  item.isActive) ? theme.colors.black : theme.colors.primary}` }} fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="17px" mt="8px">{item.name}</Text>
-										<Text style={{ color: `${isComplete(item) ? theme.colors.textSubtle : (isInProgress(item) ||  item.isActive) ? theme.colors.black : theme.colors.hover}` }} fontSize={["11px", "11px", "11px", "11px", "11px", "11px", "11px", "12px"]} fontWeight="400" lineHeight="13px" mt="4px" minHeight={13}>{item.startTime ? formatDate(dayjs.unix(Math.floor(item.startTime/ 1000)).utc(), 'MMM D YYYY HH:mm:ss') : ''}</Text>
+										<Text style={{ color: `${isComplete(item) ? theme.colors.bright : (isInProgress(item) ||  item.isActive) ? theme.colors.black : theme.colors.primary}` }} fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="17px" mt="8px">{item.name}</Text>
+										<Text style={{ color: `${isComplete(item) ? theme.colors.textSubtle : (isInProgress(item) ||  item.isActive) ? theme.colors.black : theme.colors.bright}` }} fontSize={["11px", "11px", "11px", "11px", "11px", "11px", "11px", "12px"]} fontWeight="400" lineHeight="13px" mt="4px" minHeight={13}>{item.startTime ? formatDate(dayjs.unix(Math.floor(item.startTime/ 1000)).utc(), 'MMM D YYYY HH:mm:ss') : ''}</Text>
 									</StyledContent>
 									<svg style={{ color: `${isComplete(item) ? theme.colors.backgroundItem : (isInProgress(item) ||  item.isActive) ? theme.colors.primary : theme.colors.backgroundAlt}` }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 132" fill="none">
 										<g mask="url(#mask0_3011_2807)">

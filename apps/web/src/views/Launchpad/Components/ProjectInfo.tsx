@@ -201,6 +201,51 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	const { data: signer } = useWalletClient()
 	const refSchedule = useRef<IPhase[]>([])
 
+	// const [chart, setChart] = useState({
+  //   series: [55, 20, 35],
+  //   options: {
+  //     colors: ['#6C4999', '#ff9800', '#00B58D', '#FE5300', '#00DEFF', '#c3f976'],
+  //     stroke: {
+  //       colors: theme.colors.backgroundAlt,
+  //       width: 8
+  //     },
+  //     legend: {
+  //       position: "bottom",
+  //       labels: {
+  //         colors: theme.colors.text
+  //       }
+  //     },
+  //     plotOptions: {
+  //       pie: {
+  //         donut: {
+  //           labels: {
+  //             show: true,
+  //             value: {
+  //               color: theme.colors.text
+  //             },
+  //             total: {
+  //               show: true,
+  //               color: theme.colors.textSubtle
+  //             }
+  //           }
+  //         }
+  //       }
+  //     },
+  //     dataLabels: {
+  //       enabled: false
+  //     },
+  //     labels: ["Web Design", "Mobile App", "Design System"],
+  //     states: {
+  //       hover: {
+  //         filter: "none"
+  //       },
+	// 			active: {
+	// 				filter: "none"
+	// 			}
+  //     }
+  //   },
+  // })
+
 	const getTotalUserCommitted = async () => {
 		try {
 			if(account && launchpadManagerContract.current.account) {
@@ -220,7 +265,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		}
 		return 0
 	}
-  const tierTooltip =useTooltip(
+  const tierTooltip = useTooltip(
     <>
       <Text fontFamily="'Metuo', sans-serif" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="18px" mb="4px">{t('The tier depends on the number of U2Us staked in the GrofiDex staking system.')}</Text>
 			{listTooltip && listTooltip.map((item: IPhase) => {
@@ -645,6 +690,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
             <StyledTitle mb={["12px", "12px", "16px"]}>{t('About %token% Project', {token: info?.tokenName})}</StyledTitle>
             <StyledContent>{info?.description && parse(info?.description)}</StyledContent>
           </Box>
+					{/* <ReactApexChart options={chart.options} series={chart.series} type="donut" height={300} /> */}
           {/* <Box px={["0", "0", "12px", "12px", "16px", "16px", "20px"]} mb={["20px", "20px", "26px", "26px", "32px"]}>
             <StyledTitle mb={["12px", "12px", "16px"]}>{t('Roadmap')}</StyledTitle>
             <Box ml={["18px", "18px", "24px", "24px", "30px"]}>
@@ -822,14 +868,14 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 					 		</Box>
 							{currentPhaseOrNext && (
 								<Box style={{ textAlign: 'center' }}>
-									<Text color="hover" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600">{`Sale token for ${currentPhaseOrNext?.name} ${typeCountdown === 0 ? 'start in' : 'end in'}`}</Text>
+									<Text color="bright" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600">{`Sale token for ${currentPhaseOrNext?.name} ${typeCountdown === 0 ? 'start in' : 'end in'}`}</Text>
 									<Text color="primary" fontSize="24px" fontWeight="600" lineHeight="30px">
 										<CountdownTime type={COUNTDOWN_TYPE.STRING} time={timeCountdown} cb={recheckPhase}/>
 									</Text>
 									{/* <Text color="primary" fontSize="24px" fontWeight="600" lineHeight="30px">{timeCountdown || t('To be announcement')}</Text> */}
 									{((currentPhase?.type === PHASES_TYPE.WHITELIST || currentPhase?.type === PHASES_TYPE.COMMUNITY) && configInfo) && (
 										<StyledContent maxWidth="340px" m="auto" mt={["12px", "12px", "16px", "16px", "20px", "20px", "24px"]}>
-											<span style={{ color: theme.colors.hover }}>FCFS: </span>
+											<span style={{ color: theme.colors.bright }}>FCFS: </span>
 											First come first serve. {currentPhase?.type === PHASES_TYPE.WHITELIST ? 'Whitelist' : 'Community'} pool is available ${formatNumber(Number(configInfo?.maxCommitAmount) - currentCommit, 0, 6)} U2U ~ {formatNumber((Number(configInfo?.maxCommitAmount) - currentCommit) * rate, 0, 6)} {info?.tokenName}.
 										</StyledContent>
 									 )}
@@ -855,7 +901,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 								) }
                 {(currentPhase && configInfo?.startCancel && configInfo?.startCancel < Date.now()) && (
 									<StyledTextItalic mt="12px">
-										Note: You can cancel your request buy from {configInfo?.startCancel ? formatDate(dayjs.unix(configInfo.startCancel/ 1000).utc()) : '--'} - {configInfo.endCancel ? formatDate(dayjs.unix(configInfo.endCancel/ 1000).utc()) : '--'} UTC. <span style={{ color: theme.colors.hover }}>{configInfo.percentCancel}% fee</span> when canceling IDO orders.&nbsp;
+										Note: You can cancel your request buy from {configInfo?.startCancel ? formatDate(dayjs.unix(configInfo.startCancel/ 1000).utc()) : '--'} - {configInfo.endCancel ? formatDate(dayjs.unix(configInfo.endCancel/ 1000).utc()) : '--'} UTC. <span style={{ color: theme.colors.bright }}>{configInfo.percentCancel}% fee</span> when canceling IDO orders.&nbsp;
 										<StyledButtonText variant="text" onClick={openCommittedModal}  >
 											{t('Cancel buy IDO')}
 										</StyledButtonText>
