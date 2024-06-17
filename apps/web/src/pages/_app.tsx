@@ -21,6 +21,7 @@ import Head from 'next/head'
 import { Fragment } from 'react'
 import { PersistGate } from 'redux-persist/integration/react'
 
+import { GoogleAnalytics } from '@next/third-parties/google'
 import { useDataDogRUM } from 'hooks/useDataDogRUM'
 import { useLoadExperimentalFeatures } from 'hooks/useExperimentalFeatureEnabled'
 import { useInitGlobalWorker } from 'hooks/useWorker'
@@ -101,6 +102,7 @@ function MyApp(props: AppProps<{ initialReduxState: any; dehydratedState: any }>
           <App {...props} />
         </PersistGate>
       </Providers>
+			<GoogleAnalytics gaId="G-BJ6E447TDD" />
       {/* <Script
         strategy="afterInteractive"
         id="google-tag"
@@ -110,9 +112,10 @@ function MyApp(props: AppProps<{ initialReduxState: any; dehydratedState: any }>
           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
           j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer','${process.env.NEXT_PUBLIC_NEW_GTAG}');
+          })(window,document,'script','dataLayer','G-BJ6E447TDD');
           `,
         }}
+
       /> */}
     </>
   )
