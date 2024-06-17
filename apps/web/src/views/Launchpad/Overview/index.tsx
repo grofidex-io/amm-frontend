@@ -65,18 +65,24 @@ const Image = styled.img`
   --size: 100%;
   width: var(--size);
   height: calc(var(--size) * 410 / 493);
-  margin-bottom: -40px;
+  margin-bottom: -35px;
   margin-top: 10px;
   display: none;
   ${({ theme }) => theme.mediaQueries.lg} {
-    --size: 403px;
+    --size: 350px;
+    max-height: 291px;
     display: block;
   }
+  ${({ theme }) => theme.mediaQueries.xl} {
+    --size: 385px;
+    max-height: 320px;
+    margin-bottom: -39px;
+  }
   ${({ theme }) => theme.mediaQueries.xxl} {
-    --size: 493px;
-    margin-bottom: -50px;
+    --size: 420px;
+    margin-bottom: -43px;
     margin-right: 30px;
-
+    max-height: 349px;
   }
   ${({ theme }) => theme.mediaQueries.xxxl} {
     margin-right: 50px;

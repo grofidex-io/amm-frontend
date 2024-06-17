@@ -27,13 +27,19 @@ const Image = styled.img`
     max-width: 100%;
   }
   ${({ theme }) => theme.mediaQueries.lg} {
-    --size: 400px;
+    --size: 366px;
     min-width: var(--size);
     margin-top: 0;
     display: block;
+    max-height: 226px;
+  }
+  ${({ theme }) => theme.mediaQueries.xl} {
+    --size: 407px;
+    max-height: 251px;
   }
   ${({ theme }) => theme.mediaQueries.xxl} {
-    --size: 450px;
+    --size: 448px;
+    max-height: 276px;
   }
 `
 const ImageIcon = styled.img`
