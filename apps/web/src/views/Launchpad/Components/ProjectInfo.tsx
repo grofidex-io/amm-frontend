@@ -284,7 +284,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		const _contract = getLaunchpadContract(currentTier, signer ?? undefined, chainId)
 		const _configInfo: any = await _contract.read.getConfigInfo()
 		const _phaseByContract = keyBy(info?.phases, (o) => o.contractAddress.toLowerCase() )
-		setUserConfigInfo({..._configInfo, maxCommitAmount: BigNumber(formatEther(_configInfo.maxCommitAmount)).toNumber(), maxBuyPerUser: BigNumber(formatEther(_configInfo.maxBuyPerUser)).toNumber(), name: _phaseByContract[currentTier.toLowerCase()]?.name?.replace('IDO', ''), img: _phaseByContract[currentTier.toLowerCase()]?.imageUrl, start: BigNumber(_configInfo.start).toNumber() * 1000, end: BigNumber(_configInfo.end).toNumber() * 1000})
+		setUserConfigInfo({..._configInfo, maxCommitAmount: BigNumber(formatEther(_configInfo.maxCommitAmount)).toNumber(), maxBuyPerUser: BigNumber(formatEther(_configInfo.maxBuyPerUser)).toNumber(), name: _phaseByContract[currentTier.toLowerCase()]?.name?.replace('IDO', ''), img: _phaseByContract[currentTier.toLowerCase()]?.imageUrl || null, start: BigNumber(_configInfo.start).toNumber() * 1000, end: BigNumber(_configInfo.end).toNumber() * 1000})
 		setLoadUserInfo(false)
 	}
 
@@ -728,7 +728,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 									</Flex>
 									{loadUserInfo ?  <Text fontSize={16}><Dots/></Text>  : (
 										<Flex alignItems="flex-end" mb="12px">
-											<IconTier src={account && userConfigInfo ? userConfigInfo?.img : '/images/launchpad/icon-tier-starter.svg'} />
+											<IconTier src={(account && userConfigInfo && userConfigInfo?.img) ? userConfigInfo?.img : '/images/launchpad/icon-tier-starter.svg'} />
 											<StyledText ml="12px" style={{ fontSize: '20px', lineHeight: '24px' }}>{account && userConfigInfo?.name?.replace('IDO', '') || 'Starter'}</StyledText>
 										</Flex>
 									)}
