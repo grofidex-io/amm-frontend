@@ -608,6 +608,9 @@ const LaunchpadDetailPage = () => {
 		if(_item.startTime < lastTime.current.startTime && PHASES_NONE.indexOf(_item.type) !== -1) {
 			return true
 		}
+		if(_item.type === PHASES_TYPE.FINISH && _item.endTime < Date.now()) {
+			return true
+		}
 		return false
 	}
 
