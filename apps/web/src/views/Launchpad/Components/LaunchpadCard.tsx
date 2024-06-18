@@ -231,13 +231,14 @@ const StyledTextInfo = styled(Text)`
 type LaunchpadProps ={
   type?: string,
 	item: ILaunchpadItem,
-	filterType?: string | null
+	filterType?: string | null,
+	isContribution: boolean
 }
 
 const imageExtensions = ['.gif','.jpg','.jpeg','.png']
 const videoExtensions =['.mpg', '.mp2', '.mpeg', '.mpe', '.mpv', '.mp4']
 
-const LaunchpadCard = ({ item, filterType }: LaunchpadProps) => {
+const LaunchpadCard = ({ item, filterType, isContribution }: LaunchpadProps) => {
   const { t } = useTranslation()
   const theme = useTheme();
 	const launchpadManagerContract = useRef<any>()
@@ -319,7 +320,7 @@ const LaunchpadCard = ({ item, filterType }: LaunchpadProps) => {
             <source src={item?.projectImageThumbnail} type="video/mp4" />
           </Video>
         )}
-				{BigNumber(totalCommitByUser).gt(0) && (
+				{isContribution && (
 					<IconUser>
 						<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
 							<g clip-path="url(#clip0_1413_11014)">
