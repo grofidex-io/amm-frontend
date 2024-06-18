@@ -1,6 +1,5 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { Box, Button, Flex, OpenNewIcon, Text } from "@pancakeswap/uikit";
-import NextLink from 'next/link';
 import styled from "styled-components";
 import { StyledNeubrutal } from "../styles";
 
@@ -92,12 +91,12 @@ export default function Action() {
             <br />
             {t('your project on GroFi Dex?')}
           </StyledTitle>
-          <NextLink href="javascript:;" passHref>
+          {/* <NextLink href=":" passHref> */}
             <StyledButton className="button-hover" display={["none", "none", "none", "none", "inline-flex"]}>
               {t('Apply to Launch')}
               <OpenNewIcon ml="6px" color="black"/>
             </StyledButton>
-          </NextLink>
+          {/* </NextLink> */}
         </Box>
         <Flex flex={["1", "1", "1", "1", "1", "unset", "unset"]} flexDirection="column">
           <StyledItem>
@@ -114,12 +113,12 @@ export default function Action() {
           </StyledItem>
         </Flex>
         <Box mt="24px" display={["block", "block", "block", "block", "none"]}>
-          <NextLink href="javascript:;" passHref>
+          {/* <NextLink href="#" passHref> */}
             <StyledButton className="button-hover">
               {t('Apply to Launch')}
               <OpenNewIcon ml="6px" color="black"/>
             </StyledButton>
-          </NextLink>
+          {/* </NextLink> */}
         </Box>
       </Flex>
     </StyledNeubrutal>
