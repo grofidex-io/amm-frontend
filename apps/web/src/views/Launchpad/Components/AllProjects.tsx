@@ -53,7 +53,7 @@ export default function AllProjects({filter}: IProjectProp) {
 				{isLoading ? <LoanLoading/> : (
 					<>
 					{list?.data.map((item: ILaunchpadItem) => (
-						<LaunchpadCard isContribution={listProject?.indexOf(item.contractAddress) !== -1} type='upcoming' item={item} filterType={filterType}/>
+						<LaunchpadCard isContribution={listProject && item.contractAddress ? listProject?.indexOf(item.contractAddress) !== -1 : false} type='upcoming' item={item} filterType={filterType}/>
 					))}
 					</>
 				)}
