@@ -308,6 +308,14 @@ const LaunchpadCard = ({ item, filterType, isContribution }: LaunchpadProps) => 
 		return null
 	}
 
+	if(filterType && filterType === `${LAUNCHPAD_STATUS.ENDED}-${LAUNCHPAD_STATUS.CANCELLED}` && getStatusNameByTime(item, totalCommitByUser, totalCommit) !== 'Cancelled') {
+		return null
+	}
+
+	if(filterType && filterType === `${LAUNCHPAD_STATUS.ENDED}-${LAUNCHPAD_STATUS.CLAIMABLE}` && getStatusNameByTime(item, totalCommitByUser, totalCommit) !== 'Claimable') {
+		return null
+	}
+
 
   return (
     <CardLayout>

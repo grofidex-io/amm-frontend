@@ -36,7 +36,8 @@ export default function AllProjects({filter}: IProjectProp) {
 	const newData = _listLaunchpad?.filter((item: ILaunchpadItem) => {
 		if(valueSearch?.length > 0 || filterType && filterType?.length > 0) {
 			const _statusFilterName = valueSearch.length > 0 ? item.projectName.toLowerCase().includes(valueSearch.toLowerCase()) : true
-			const _statusFilterType = filterType && filterType.length > 0 ? item.status.includes(filterType) : true
+			const _filterTypeSplit = filterType?.split('-')
+			const _statusFilterType = _filterTypeSplit && _filterTypeSplit.length > 0 ? item.status.includes(_filterTypeSplit[0]) : true
 			return _statusFilterName && _statusFilterType
 		} 
 		return true
