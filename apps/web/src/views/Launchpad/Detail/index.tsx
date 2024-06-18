@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization';
-import { ArrowBackIcon, Box, Button, Flex, Link as LinkDefault, Progress, Tab, TabMenu, Text } from "@pancakeswap/uikit";
+import { ArrowBackIcon, Box, Button, DiscordIcon, DribbbleIcon, FbIcon, Flex, GitbookIcon, GithubIcon, GlobeIcon, InstagramIcon, Link as LinkDefault, LinkIcon, LinkedinIcon, MediumIcon, Progress, RedditIcon, SkypeIcon, Tab, TabMenu, TelegramIcon, Text, TiktokIcon, XIcon, YoutubeIcon } from "@pancakeswap/uikit";
 import { formatNumber } from '@pancakeswap/utils/formatBalance';
 import BigNumber from 'bignumber.js';
 import Container from 'components/Layout/Container';
@@ -17,6 +17,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { getLaunchpadManagerContract } from 'utils/contractHelpers';
 import { formatDate } from 'views/CakeStaking/components/DataSet/format';
 import { Address, useWalletClient } from 'wagmi';
+import Action from '../Components/Action';
 import CountdownTime from '../Components/CountdownTime';
 import ProjectInfo from '../Components/ProjectInfo';
 import Transactions from '../Components/Transactions';
@@ -298,28 +299,40 @@ const StyledTab = styled(Tab)`
   }
 `
 const StyledLink = styled(LinkDefault)`
+  --size: 32px;
+  width: var(--size);
+  height: var(--size);
   opacity: 0.8;
   transition: all 0.3s ease-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #69CF00;
   &:not(:last-child) {
     margin-right: 12px;
   }
   &:hover {
     opacity: 1;
-    img {
-      transform: scale(1.1);
-    }
+    transform: scale(1.1);
   }
-  img {
-    --size: 32px;
-    width: var(--size);
-    height: var(--size);
-    transition: all 0.3s ease-out;
+  svg {
+    color: ${({ theme }) => theme.colors.black};
+    fill: ${({ theme }) => theme.colors.black};
     @media screen and (max-width: 991px) {
-      --size: 28px;
+      --size: 18px;
+      width: var(--size);
+      height: var(--size);
     }
     @media screen and (max-width: 575px) {
-      --size: 24px;
+      --size: 16px;
     }
+  }
+  @media screen and (max-width: 991px) {
+    --size: 28px;
+  }
+  @media screen and (max-width: 575px) {
+    --size: 24px;
   }
 `
 const StyledSlide = styled(Box)`
@@ -424,14 +437,21 @@ const StyledListText = styled(Text)`
 
 
 const SOCIAL_ICON = {
-	WEBSITE: 'global',
-	TWITTER: 'x',
-	FACEBOOK: 'facebook',
-	YOUTUBE: 'youtube',
-	TELEGRAM: 'telegram',
-	LINKEDIN: 'linkedin',
-	MEDIUM: 'medium',
-	DISCORD: 'discord'
+	WEBSITE: <GlobeIcon />,
+	TWITTER: <XIcon />,
+	FACEBOOK: <FbIcon />,
+	YOUTUBE: <YoutubeIcon />,
+	TELEGRAM: <TelegramIcon />,
+	LINKEDIN: <LinkedinIcon />,
+	MEDIUM: <MediumIcon />,
+	DISCORD: <DiscordIcon />,
+  GITBOOK: <GitbookIcon />,
+  INSTGRAM: <InstagramIcon />,
+  TIKTOK: <TiktokIcon />,
+  SKYPE: <SkypeIcon />,
+  REDDIT: <RedditIcon />,
+  GITHUB: <GithubIcon />,
+  DRIBBBLE: <DribbbleIcon />,
 }
 
 const imageExtensions = ['.gif','.jpg','.jpeg','.png']
@@ -678,9 +698,13 @@ const LaunchpadDetailPage = () => {
           </Link>
           <Flex>
             {detail?.socials.map(item => {
-              return SOCIAL_ICON[item.type] && (
+              return SOCIAL_ICON[item.type] ? (
                 <StyledLink external href={item.link}>
-                  <img src={`/images/launchpad/icon-${SOCIAL_ICON[item.type]}.svg`} alt="" />
+                  {SOCIAL_ICON[item.type]}
+                </StyledLink>
+              ) : (
+                <StyledLink external href={item.link}>
+                  <LinkIcon />
                 </StyledLink>
               )
               }
@@ -909,6 +933,7 @@ const LaunchpadDetailPage = () => {
           {tab === 0 && <ProjectInfo info={detail} timeWhiteList={timeWhiteList} currentTier={currentTier} account={account} totalCommit={totalCommit} updateStatusLaunchpad={fetchStatusLaunchpad}/>}
           {tab === 1 && <Transactions info={detail} account={account}/>}
         </StyledBoxTab>
+        <Action/>
       </Container>
     </>
   )
