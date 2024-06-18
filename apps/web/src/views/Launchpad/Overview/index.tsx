@@ -4,6 +4,7 @@ import Container from "components/Layout/Container"
 import debounce from "lodash/debounce"
 import React, { useState } from 'react'
 import styled, { useTheme } from "styled-components"
+import Action from "../Components/Action"
 import AllProjects from "../Components/AllProjects"
 import MyPools from "../Components/MyPools"
 import { LAUNCHPAD_STATUS } from "../helpers"
@@ -285,6 +286,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
           {tab === 0 && <AllProjects filter={{valueSearch, filterType}} />}
 					{tab === 1 && <MyPools/>}
         </StyledBoxTab>
+        <Action/>
       </Container>
     </>
   )
