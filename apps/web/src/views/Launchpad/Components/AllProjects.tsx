@@ -1,11 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ArrowBackIcon, ArrowForwardIcon, Text } from '@pancakeswap/uikit'
 import NoData from 'components/NoData'
+import useAccountActiveChain from 'hooks/useAccountActiveChain'
 import { useState } from 'react'
 import styled from 'styled-components'
 import { Arrow, PageButtons } from 'views/Info/components/InfoTables/shared'
 import LoanLoading from 'views/Loans/Components/LoanLoading'
 import { useFetchListLaunchpad } from '../hooks/useFetchListLaunchpad'
+import { useFetchListProjectByUser } from '../hooks/useFetchListProjectByUser'
 import { Layout } from '../styles'
 import { ILaunchpadItem } from '../types/LaunchpadType'
 import LaunchpadCard from './LaunchpadCard'
@@ -27,12 +29,15 @@ export default function AllProjects({filter}: IProjectProp) {
 	const {valueSearch, filterType} = filter
 	const { t } = useTranslation()
   const [page, setPage] = useState(1)
+	const { account } = useAccountActiveChain()
 	const { data: launchpad, isLoading } = useFetchListLaunchpad(page)
+	const {data: listProject} = useFetchListProjectByUser(account)
 	const _listLaunchpad: any = launchpad?.data || []
 	const newData = _listLaunchpad?.filter((item: ILaunchpadItem) => {
 		if(valueSearch?.length > 0 || filterType && filterType?.length > 0) {
 			const _statusFilterName = valueSearch.length > 0 ? item.projectName.toLowerCase().includes(valueSearch.toLowerCase()) : true
-			const _statusFilterType = filterType && filterType.length > 0 ? item.status.includes(filterType) : true
+			const _filterTypeSplit = filterType?.split('-')
+			const _statusFilterType = _filterTypeSplit && _filterTypeSplit.length > 0 ? item.status.includes(_filterTypeSplit[0]) : true
 			return _statusFilterName && _statusFilterType
 		} 
 		return true
@@ -48,7 +53,7 @@ export default function AllProjects({filter}: IProjectProp) {
 				{isLoading ? <LoanLoading/> : (
 					<>
 					{list?.data.map((item: ILaunchpadItem) => (
-						<LaunchpadCard type='upcoming' item={item} filterType={filterType}/>
+						<LaunchpadCard isContribution={listProject?.indexOf(item.contractAddress) !== -1} type='upcoming' item={item} filterType={filterType}/>
 					))}
 					</>
 				)}

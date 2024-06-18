@@ -234,6 +234,14 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
                 {
                   label: t('Ended'),
                   value: LAUNCHPAD_STATUS.ENDED,
+                },
+								{
+                  label: t('Cancelled'),
+                  value: `${LAUNCHPAD_STATUS.ENDED}-${LAUNCHPAD_STATUS.CANCELLED}`,
+                },
+								{
+                  label: t('Claimable'),
+                  value: `${LAUNCHPAD_STATUS.ENDED}-${LAUNCHPAD_STATUS.CLAIMABLE}`,
                 }
               ]}
             />

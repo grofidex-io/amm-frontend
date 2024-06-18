@@ -46,6 +46,13 @@ query listTransaction($user: String!, $launchpad: String!, $skip: Int)  {
 }
 `
 
+const LIST_PROJECT_BY_USER = `
+query listProject($user: String!)  {
+  users(where: {id: $user}) {
+    projects
+  }
+}`
+
 export async function fetchListCommitted(user: Address, launchpad: Address): Promise<{
   data: ICommittedItem[]
 }> {
@@ -82,6 +89,26 @@ export async function fetchListHistory(user: Address, launchpad: Address, page: 
 
     return {
       data: data.transactionHistories
+    }
+  } catch (e) {
+    console.error(e)
+    return {
+      data: [],
+    }
+  }
+}
+
+export async function fetchListProjectByUser(user?: Address): Promise<{
+  data: string[]
+}> {
+  try {
+    const data = await launchpadClients.request(LIST_PROJECT_BY_USER, {
+      client: launchpadClients,
+      user: user?.toLowerCase()
+    })
+
+    return {
+      data: data.users[0]?.projects || []
     }
   } catch (e) {
     console.error(e)
