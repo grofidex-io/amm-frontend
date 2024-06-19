@@ -27,13 +27,19 @@ const Image = styled.img`
     max-width: 100%;
   }
   ${({ theme }) => theme.mediaQueries.lg} {
-    --size: 400px;
+    --size: 366px;
     min-width: var(--size);
     margin-top: 0;
     display: block;
+    max-height: 226px;
+  }
+  ${({ theme }) => theme.mediaQueries.xl} {
+    --size: 407px;
+    max-height: 251px;
   }
   ${({ theme }) => theme.mediaQueries.xxl} {
-    --size: 450px;
+    --size: 448px;
+    max-height: 276px;
   }
 `
 const ImageIcon = styled.img`
@@ -51,6 +57,7 @@ const ImageIcon = styled.img`
   }
 `
 const StyledFlex = styled(Flex)`
+  justify-content: space-between;
   // flex-direction: column;
   gap: 0;
   ${({ theme }) => theme.mediaQueries.lg} {
@@ -167,8 +174,8 @@ export const Overview = () => {
           my="32px"
           background="var(--colors-backgroundAlt)"
         >
-          <StyledFlex alignItems="center" justifyContent="space-between">
-            <Box>
+          <StyledFlex>
+            <Box py={["0", "0", "0", "0", "10px"]}>
               <StyledHeading maxWidth={["100%", "100%", "560px", "560px", "620px"]}>{t('Put your funds to work by providing liquidity.')}</StyledHeading>
               <Text maxWidth={["100%", "100%", "400px", "400px", "490px"]} mb="10px" fontSize={['14px', '14px', '16px', '16px', '18px', '18px', '18px', '20px']} fontWeight={["500", "500", "600"]} color="textSubtle">
                 {t(

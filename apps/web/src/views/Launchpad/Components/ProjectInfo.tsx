@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization';
-import { Box, Button, Dots, Flex, Link, Text, TooltipText, useModal, useToast, useTooltip } from '@pancakeswap/uikit';
+import { Box, Button, Dots, Flex, Text, TooltipText, useModal, useToast, useTooltip } from '@pancakeswap/uikit';
 import { formatNumber } from '@pancakeswap/utils/formatBalance';
 import { NumericalInput } from '@pancakeswap/widgets-internal';
 import BigNumber from 'bignumber.js';
@@ -13,6 +13,7 @@ import parse from 'html-react-parser';
 import forEach from 'lodash/forEach';
 import keyBy from 'lodash/keyBy';
 import uniqBy from 'lodash/uniqBy';
+import NextLink from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { getLaunchpadContract, getLaunchpadManagerContract } from 'utils/contractHelpers';
@@ -20,7 +21,7 @@ import { formatDate } from 'views/CakeStaking/components/DataSet/format';
 import { Break } from 'views/Info/components/InfoTables/shared';
 import { Address, useWalletClient } from 'wagmi';
 import { COUNTDOWN_TYPE, LAUNCHPAD_STATUS, PHASES_NONE, PHASES_TYPE } from '../helpers';
-import { StyledButton, StyledNeubrutal } from '../styles';
+import { StyledButton, StyledNeubrutal, StyledTypography } from '../styles';
 import { ILaunchpadDetail, IPhase, ITierInfo, ITimeOfPhase, IUserWhiteListInfo } from '../types/LaunchpadType';
 import CountdownTime from './CountdownTime';
 import ModalDetail from './ModalDetail';
@@ -59,7 +60,7 @@ const StyledContentDot = styled(Text)`
   }
 `
 const StyledText = styled(Text)`
-  color: #d6ddd0;
+  color: ${({ theme }) => theme.colors.textHighlight};
   font-size: 17px;
   font-weight: 700;
   line-height: 20px;
@@ -111,6 +112,21 @@ const StyledTextItalic = styled(Text)`
   font-size: 13px;
   font-style: italic;
   line-height: 16px;
+	@media screen and (max-width: 1559px) {
+		font-size: 12px;
+	}
+`
+const StyledNextLink = styled(NextLink)`
+  color: ${({ theme }) => theme.colors.primary};
+  font-size: 13px;
+	font-weight: 300;
+  font-style: italic;
+  line-height: 16px;
+	text-decoration: underline;
+	transition: all 0.3s;
+	&:hover {
+		color: ${({ theme }) => theme.colors.hover};
+	}
 	@media screen and (max-width: 1559px) {
 		font-size: 12px;
 	}
@@ -167,6 +183,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	const _launchpadContract = useRef<any>()
 	const _launchpadContractWhitelist = useRef<any>()
 	const _timeoutGetConfig = useRef<any>()
+	const _timeoutCheckCancel = useRef<any>()
 	const launchpadManagerContract = useRef<any>()
 	const [rate, setRate] = useState<number>(0)
 
@@ -180,6 +197,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	const [amountCommit, setAmountCommit] = useState<string>('')
 	const [configInfo, setConfigInfo] = useState<ITierInfo | null>()
 	const [userConfigInfo, setUserConfigInfo] = useState<ITierInfo | null>()
+	const [isShowCancel, setShowCancel] = useState<number>(Date.now())
 	const [configWhitelistInfo, setConfigWhitelistInfo] = useState<ITierInfo | null>()
 	const [isWhiteList, setIsWhiteList] = useState<boolean>(false)
 	const [loadUserInfo, setLoadUserInfo] = useState<boolean>(false)
@@ -201,6 +219,51 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	const { data: signer } = useWalletClient()
 	const refSchedule = useRef<IPhase[]>([])
 
+	// const [chart, setChart] = useState({
+  //   series: [55, 20, 35],
+  //   options: {
+  //     colors: ['#6C4999', '#ff9800', '#00B58D', '#FE5300', '#00DEFF', '#c3f976'],
+  //     stroke: {
+  //       colors: theme.colors.backgroundAlt,
+  //       width: 8
+  //     },
+  //     legend: {
+  //       position: "bottom",
+  //       labels: {
+  //         colors: theme.colors.text
+  //       }
+  //     },
+  //     plotOptions: {
+  //       pie: {
+  //         donut: {
+  //           labels: {
+  //             show: true,
+  //             value: {
+  //               color: theme.colors.text
+  //             },
+  //             total: {
+  //               show: true,
+  //               color: theme.colors.textSubtle
+  //             }
+  //           }
+  //         }
+  //       }
+  //     },
+  //     dataLabels: {
+  //       enabled: false
+  //     },
+  //     labels: ["Web Design", "Mobile App", "Design System"],
+  //     states: {
+  //       hover: {
+  //         filter: "none"
+  //       },
+	// 			active: {
+	// 				filter: "none"
+	// 			}
+  //     }
+  //   },
+  // })
+
 	const getTotalUserCommitted = async () => {
 		try {
 			if(account && launchpadManagerContract.current.account) {
@@ -213,12 +276,14 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 				if(!_totalCommitByUser) {
 					setTotalGiveback(_totalCommitByUser)
 				}
+				return _totalCommitByUser
 			}
 		}catch(ex) {
 			//
 		}
+		return 0
 	}
-  const tierTooltip =useTooltip(
+  const tierTooltip = useTooltip(
     <>
       <Text fontFamily="'Metuo', sans-serif" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="18px" mb="4px">{t('The tier depends on the number of U2Us staked in the GrofiDex staking system.')}</Text>
 			{listTooltip && listTooltip.map((item: IPhase) => {
@@ -268,6 +333,14 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		const _configInfo: ITierInfo = await _launchpadContract.current.read.getConfigInfo()
 		const _percentCancel: any = await _launchpadContract.current.read.percentCancel()
 		setConfigInfo({..._configInfo, maxCommitAmount: BigNumber(formatEther(_configInfo.maxCommitAmount)).toNumber(), maxBuyPerUser: BigNumber(formatEther(_configInfo.maxBuyPerUser)).toNumber(), startCancel: BigNumber(_configInfo.startCancel).toNumber() * 1000, endCancel: BigNumber(_configInfo.endCancel).toNumber() * 1000, percentCancel: BigNumber(formatEther(_percentCancel)).toNumber()})
+		const _timeCancel = BigNumber(_configInfo.startCancel).toNumber() * 1000
+		const _now = Date.now()
+		if(_timeCancel && _timeCancel > _now) {
+			clearTimeout(_timeoutCheckCancel.current)
+			_timeoutCheckCancel.current = setTimeout(() => {
+				setShowCancel(_now)
+			}, ((_timeCancel - _now) + 1000))
+		}
 	}
 
 	const getTokenRate = async () => {
@@ -284,7 +357,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		const _contract = getLaunchpadContract(currentTier, signer ?? undefined, chainId)
 		const _configInfo: any = await _contract.read.getConfigInfo()
 		const _phaseByContract = keyBy(info?.phases, (o) => o.contractAddress.toLowerCase() )
-		setUserConfigInfo({..._configInfo, maxCommitAmount: BigNumber(formatEther(_configInfo.maxCommitAmount)).toNumber(), maxBuyPerUser: BigNumber(formatEther(_configInfo.maxBuyPerUser)).toNumber(), name: _phaseByContract[currentTier.toLowerCase()]?.name?.replace('IDO', ''), img: _phaseByContract[currentTier.toLowerCase()]?.imageUrl, start: BigNumber(_configInfo.start).toNumber() * 1000, end: BigNumber(_configInfo.end).toNumber() * 1000})
+		setUserConfigInfo({..._configInfo, maxCommitAmount: BigNumber(formatEther(_configInfo.maxCommitAmount)).toNumber(), maxBuyPerUser: BigNumber(formatEther(_configInfo.maxBuyPerUser)).toNumber(), name: _phaseByContract[currentTier.toLowerCase()]?.name?.replace('IDO', ''), img: _phaseByContract[currentTier.toLowerCase()]?.imageUrl || null, start: BigNumber(_configInfo.start).toNumber() * 1000, end: BigNumber(_configInfo.end).toNumber() * 1000})
 		setLoadUserInfo(false)
 	}
 
@@ -396,15 +469,19 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 
 	}
 
-	const getGiveBack = async () => {
+	const getGiveBack = async (_totalCommitByUser?: number) => {
 		if(totalCommit && BigNumber(totalCommit).lt(info?.softCap) && info?.saleEnd < Date.now()) {
-			setTotalGiveback(totalCommitByUser)
-
+			setTotalGiveback(_totalCommitByUser !== undefined ? _totalCommitByUser : totalCommitByUser)
 		} else if(account) {
 				const _contract = getLaunchpadContract(currentTier, signer ?? undefined, chainId)
 				const _giveback: any = await _contract.read.getGiveBack([account])
 				setTotalGiveback(BigNumber(formatEther(_giveback)).toNumber())
 			}
+	}
+
+	const fetchUserData = async () => {
+		const _total = await getTotalUserCommitted()
+		getGiveBack(_total)
 	}
 
 	const [openCommittedModal] = useModal(
@@ -414,8 +491,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 			saleEnd={info?.saleEnd}
 			account={account}
 			launchpad={info?.contractAddress}
-			getTotalUserCommitted={getTotalUserCommitted}
-			fetchGiveBack={getGiveBack}
+			fetchUserData={fetchUserData}
 			initContract={initContract}
 			refetchListLaunchpad={updateStatusLaunchpad}
 			listPhase={keyBy(info?.phases, (o) => o.contractAddress.toLowerCase())}
@@ -463,10 +539,12 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		setTimeCountdown(currentPhaseOrNext?.startTime)
 		setTypeCountdown(0)
 	}
-	if(currentPhaseOrNext?.endTime && currentPhaseOrNext.endTime > _now && currentPhaseOrNext.startTime < _now) {
-		setTimeCountdown(currentPhaseOrNext?.endTime)
-		setTypeCountdown(1)
-	}
+
+	const _endTime = currentPhaseOrNext?.endSaleTime || currentPhaseOrNext?.endTime
+		if(_endTime && _endTime > _now && currentPhaseOrNext.startTime < _now) {
+			setTimeCountdown(_endTime)
+			setTypeCountdown(1)
+		}
 	}, [currentPhaseOrNext, currentPhase])
 
 
@@ -499,6 +577,11 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 					setCurrentPhaseOrNext(_nextPhase)
 				}
 			}
+			if(_currentPhase?.endSaleTime < Date.now() && Date.now() < _currentPhase.endTime) {
+				if(_nextPhase) {
+					setCurrentPhaseOrNext(_nextPhase)
+				}
+			}
 		}
 	}, [info, checkPhase])
 
@@ -517,6 +600,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 
 	useEffect(() => {
 		return () => {
+			clearTimeout(_timeoutCheckCancel.current)
 			clearInterval(_refIntervalCheckPhase.current)
 		}
 	}, [])
@@ -591,6 +675,10 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 			setIsCommitting(false)
 		}
 	}
+
+	const handleSelectCommit = () => {
+		setAmountCommit(maxCommitAmountByTier.toString())
+	}
 	
 	let disableCommitU2U = false
 
@@ -638,8 +726,9 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
         <StyledNeubrutal p={["24px 16px", "24px 16px", "28px 20px", "28px 20px", "32px 24px"]} height="100%" style={{ flex: '2' }}>
           <Box px={["0", "0", "12px", "12px", "16px", "16px", "20px"]} mb={["20px", "20px", "26px", "26px", "32px"]}>
             <StyledTitle mb={["12px", "12px", "16px"]}>{t('About %token% Project', {token: info?.tokenName})}</StyledTitle>
-            <StyledContent>{info?.description && parse(info?.description)}</StyledContent>
+            <StyledTypography>{info?.description && parse(info?.description)}</StyledTypography>
           </Box>
+					{/* <ReactApexChart options={chart.options} series={chart.series} type="donut" height={300} /> */}
           {/* <Box px={["0", "0", "12px", "12px", "16px", "16px", "20px"]} mb={["20px", "20px", "26px", "26px", "32px"]}>
             <StyledTitle mb={["12px", "12px", "16px"]}>{t('Roadmap')}</StyledTitle>
             <Box ml={["18px", "18px", "24px", "24px", "30px"]}>
@@ -728,7 +817,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 									</Flex>
 									{loadUserInfo ?  <Text fontSize={16}><Dots/></Text>  : (
 										<Flex alignItems="flex-end" mb="12px">
-											<IconTier src={account && userConfigInfo ? userConfigInfo?.img : '/images/launchpad/icon-tier-starter.svg'} />
+											<IconTier src={(account && userConfigInfo && userConfigInfo?.img) ? userConfigInfo?.img : '/images/launchpad/icon-tier-starter.svg'} />
 											<StyledText ml="12px" style={{ fontSize: '20px', lineHeight: '24px' }}>{account && userConfigInfo?.name?.replace('IDO', '') || 'Starter'}</StyledText>
 										</Flex>
 									)}
@@ -736,36 +825,37 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 									<Box>
 										{(userConfigInfo && (currentPhase?.type === PHASES_TYPE.TIER || !currentPhase?.type)) && <>
 											<StyledTextItalic>{t(`%estimate% %maxBuyPerUser% U2U to buy IDO in round buy %tier%.`, { maxBuyPerUser: userConfigInfo?.maxBuyPerUser, tier: userConfigInfo?.name, estimate: info?.snapshotTime < Date.now() ? 'Maximum' : 'Estimate maximum'})} 
-											{/* {info.snapshotTime < Date.now() && <StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>} */}
+											{/* {info.snapshotTime < Date.now() && <StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: theme.colors.textHighlight }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} </span></StyledTextItalic>} */}
 											</StyledTextItalic>
 										</>
 										}
 										{(configInfo && currentPhase && currentPhase?.type !== PHASES_TYPE.TIER) && (
 											<>
 											<StyledTextItalic>{t(`%estimate% %maxBuyPerUser% U2U to buy IDO in round buy %tier%.`, { maxBuyPerUser: configInfo?.maxBuyPerUser, tier: currentPhase?.name, estimate: info?.snapshotTime < Date.now() ? 'Maximum' : 'Estimate maximum' })}</StyledTextItalic>
-											{/* {info.snapshotTime < Date.now() && <StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>} */}
+											{/* {info.snapshotTime < Date.now() && <StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: theme.colors.textHighlight }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} </span></StyledTextItalic>} */}
 											</>
 										)}
 							
 										{info?.snapshotTime < Date.now() && (
-											<StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>
+											<StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: theme.colors.textHighlight }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} </span></StyledTextItalic>
 										)}
 										{info?.snapshotTime > Date.now()  && 
 											<>
-												<StyledTextItalic>{t('The snapshot will be ended at ')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>
+												<StyledTextItalic>{t('The snapshot will be ended at ')} <span style={{ color: theme.colors.textHighlight }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} </span></StyledTextItalic>
 												<StyledTextItalic>
 													{t('Staking more to upgrade your tier. ')}
-													<Link fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" style={{ display: 'inline', fontWeight: '300', textDecoration: 'underline' }} href="/staking">
+													<StyledNextLink href="/staking" passHref>{t('Staking Now')}</StyledNextLink>
+													{/* <Link fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" style={{ display: 'inline', fontWeight: '300', textDecoration: 'underline' }} href="/staking">
 														{t('Staking Now')}
-													</Link>
+													</Link> */}
 												</StyledTextItalic>
 												</>
 											}
-										{/* {userConfigInfo && <StyledTextItalic>{t('Maximum %maxBuyPerUser% U2U to buy IDO in round buy %tier%. The snapshot process has ended at 2024/05/03 14:22:22 UTC.', {maxBuyPerUser: userConfigInfo?.maxBuyPerUser, tier: userConfigInfo?.name })}</StyledTextItalic>} */}
+										{/* {userConfigInfo && <StyledTextItalic>{t('Maximum %maxBuyPerUser% U2U to buy IDO in round buy %tier%. The snapshot process has ended at 2024/05/03 14:22:22 .', {maxBuyPerUser: userConfigInfo?.maxBuyPerUser, tier: userConfigInfo?.name })}</StyledTextItalic>} */}
 									</Box>
 								</Box>
-             <Box mb={["20px", "20px", "24px"]}>
-						 	<Flex mb="12px">
+            <Box mb={["20px", "20px", "24px"]}>
+							<Flex mb="12px">
 								<Text color="textSubtle" fontSize={["16px", "16px", "16px", "16px", "16px", "16px", "16px", "17px"]} fontWeight="600" mr="10px">{t('Apply Whitlelist')}</Text>
 								<TooltipText ref={applyTooltip.targetRef} decorationColor="secondary">
 									<ImageInfo src="/images/launchpad/icon-exclamation.svg" />
@@ -810,21 +900,21 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 						{timeWhiteList?.endTime > Date.now() && (
 							<Box mt="12px">
 								<Text color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px">{t('Time during (UTC):')}</Text>
-								<Text fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px" style={{ color: '#d6ddd0' }}>{`${timeWhiteList?.startTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.startTime/ 1000)).utc())} - ${timeWhiteList?.endTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.endTime/ 1000)).utc())}`}</Text>
+								<Text fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px" style={{ color: theme.colors.textHighlight }}>{`${timeWhiteList?.startTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.startTime/ 1000)).utc())} - ${timeWhiteList?.endTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.endTime/ 1000)).utc())}`}</Text>
 							</Box>
 						)}
 			
 					 		</Box>
 							{currentPhaseOrNext && (
 								<Box style={{ textAlign: 'center' }}>
-									<Text color="hover" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600">{`Sale token for ${currentPhaseOrNext?.name} ${typeCountdown === 0 ? 'start in' : 'end in'}`}</Text>
+									<Text color="bright" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600">{`Sale token for ${currentPhaseOrNext?.name} ${typeCountdown === 0 ? 'start in' : 'end in'}`}</Text>
 									<Text color="primary" fontSize="24px" fontWeight="600" lineHeight="30px">
 										<CountdownTime type={COUNTDOWN_TYPE.STRING} time={timeCountdown} cb={recheckPhase}/>
 									</Text>
 									{/* <Text color="primary" fontSize="24px" fontWeight="600" lineHeight="30px">{timeCountdown || t('To be announcement')}</Text> */}
 									{((currentPhase?.type === PHASES_TYPE.WHITELIST || currentPhase?.type === PHASES_TYPE.COMMUNITY) && configInfo) && (
 										<StyledContent maxWidth="340px" m="auto" mt={["12px", "12px", "16px", "16px", "20px", "20px", "24px"]}>
-											<span style={{ color: theme.colors.hover }}>FCFS: </span>
+											<span style={{ color: theme.colors.bright }}>FCFS: </span>
 											First come first serve. {currentPhase?.type === PHASES_TYPE.WHITELIST ? 'Whitelist' : 'Community'} pool is available ${formatNumber(Number(configInfo?.maxCommitAmount) - currentCommit, 0, 6)} U2U ~ {formatNumber((Number(configInfo?.maxCommitAmount) - currentCommit) * rate, 0, 6)} {info?.tokenName}.
 										</StyledContent>
 									 )}
@@ -848,9 +938,9 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
                 { (totalGiveback || (info?.saleEnd < Date.now() && BigNumber(totalCommitByUser).gt(0))) && (
 									<StyledTextItalic textAlign="right" mt="8px">Estimate {formatNumber(totalGiveback, 0, 6)} U2U{ info?.saleEnd < Date.now() && BigNumber(totalCommit).gt(info?.softCap) ? `, ${formatNumber((totalCommitByUser  - totalGiveback) * rate, 0, 6)} ${info?.tokenSymbol}` : '' } </StyledTextItalic>
 								) }
-                {(currentPhase && configInfo?.startCancel && configInfo?.startCancel < Date.now()) && (
+                {(isShowCancel && currentPhase && configInfo?.startCancel && configInfo?.startCancel < Date.now()) && (
 									<StyledTextItalic mt="12px">
-										Note: You can cancel your request buy from {configInfo?.startCancel ? formatDate(dayjs.unix(configInfo.startCancel/ 1000).utc()) : '--'} - {configInfo.endCancel ? formatDate(dayjs.unix(configInfo.endCancel/ 1000).utc()) : '--'} UTC. <span style={{ color: theme.colors.hover }}>{configInfo.percentCancel}% fee</span> when canceling IDO orders.&nbsp;
+										Note: You can cancel your request buy from {configInfo?.startCancel ? formatDate(dayjs.unix(configInfo.startCancel/ 1000).utc()) : '--'} - {configInfo.endCancel ? formatDate(dayjs.unix(configInfo.endCancel/ 1000).utc()) : '--'} . <span style={{ color: theme.colors.bright }}>{configInfo.percentCancel}% fee</span> when canceling IDO orders.&nbsp;
 										<StyledButtonText variant="text" onClick={openCommittedModal}  >
 											{t('Cancel buy IDO')}
 										</StyledButtonText>
@@ -886,7 +976,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 								
 											</Flex>
 											{(BigNumber(maxCommitAmountByTier).gte(0)) ? (
-												<Text color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" lineHeight="16px" mt="8px">{t('Maximum %maxCommitAmount% U2U', { maxCommitAmount: isShowMaximum ? maxCommitAmountByTier.toString() : '0' })}</Text>
+												<Text color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" lineHeight="16px" mt="8px">Maximum {isShowMaximum && maxCommitAmountByTier ? <StyledButtonText variant="text" onClick={handleSelectCommit}  >{maxCommitAmountByTier.toString() } U2U</StyledButtonText> : '0 U2U'}</Text>
 											) : ''}
 										</>
 								)}
@@ -931,12 +1021,11 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 										<ConnectWalletButton as="a"> <Text fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} style={{ textDecoration: "underline", color: theme.colors.primary, cursor: "pointer"}}>			{t('Connect now')}</Text> </ConnectWalletButton>
 									</StyledContent>
 								)}
-             
                 {scheduleOrder?.length > 0 && (<StyledContent mb="3px">{t(`Schedule time for you (UTC), don't miss it:`)}</StyledContent>)}
 								{scheduleOrder?.map((item: IPhase) => (
 									<StyledContentDot lineHeight="17px" mb="4px">
 										{item.name}
-										<Text fontSize="14px" lineHeight="20px" mt="2px" style={{ color: '#d6ddd0' }}>{`${formatDate(dayjs.unix(Math.floor(item.startTime/ 1000)).utc())} - ${formatDate(dayjs.unix(Math.floor(item.endTime/ 1000)).utc())}`}</Text>
+										<Text fontSize="14px" lineHeight="20px" mt="2px" style={{ color: theme.colors.textHighlight }}>{`${formatDate(dayjs.unix(Math.floor(item.startTime/ 1000)).utc())} - ${formatDate(dayjs.unix(Math.floor((item.endSaleTime || item.endTime)/ 1000)).utc())} `}</Text>
 									</StyledContentDot>
 								))}
           

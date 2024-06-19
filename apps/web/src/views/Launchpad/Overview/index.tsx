@@ -4,12 +4,13 @@ import Container from "components/Layout/Container"
 import debounce from "lodash/debounce"
 import React, { useState } from 'react'
 import styled, { useTheme } from "styled-components"
+import Action from "../Components/Action"
 import AllProjects from "../Components/AllProjects"
 import MyPools from "../Components/MyPools"
 import { LAUNCHPAD_STATUS } from "../helpers"
 
 const StyledFlex = styled(Flex)`
-  align-items: center;
+  // align-items: center;
   justify-content: space-between;
   // flex-direction: column;
   gap: 0;
@@ -59,24 +60,31 @@ export const LoansText = styled.p`
   }
   ${({ theme }) => theme.mediaQueries.xxxl} {
     font-size: 20px;
+    max-width: 480px;
   }
 `
 const Image = styled.img`
   --size: 100%;
   width: var(--size);
   height: calc(var(--size) * 410 / 493);
-  margin-bottom: -40px;
+  margin-bottom: -35px;
   margin-top: 10px;
   display: none;
   ${({ theme }) => theme.mediaQueries.lg} {
-    --size: 403px;
+    --size: 350px;
+    max-height: 291px;
     display: block;
   }
+  ${({ theme }) => theme.mediaQueries.xl} {
+    --size: 385px;
+    max-height: 320px;
+    margin-bottom: -39px;
+  }
   ${({ theme }) => theme.mediaQueries.xxl} {
-    --size: 493px;
-    margin-bottom: -50px;
+    --size: 420px;
+    margin-bottom: -43px;
     margin-right: 30px;
-
+    max-height: 349px;
   }
   ${({ theme }) => theme.mediaQueries.xxxl} {
     margin-right: 50px;
@@ -191,16 +199,16 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
           mb={["32px", "32px", "32px", "32px", "50px", "60px"]}
           background={theme.colors.backgroundAlt}
           borderRadius={theme.radii.card}
-          p={['20px', '20px', '20px 30px', '20px 30px', '0 30px', '0 40px']}
+          p={['20px', '20px', '20px 30px', '20px 30px', '0 40px']}
         >
           <StyledFlex>
-            <Box>
+            <Box py={["0", "0", "0", "0", "30px"]}>
               <LoansH1 as="h1" scale="xxl" color="text" mb="24px">
                 {t('GROFI DEX Launchpad')}
               </LoansH1>
               <LoansText>
                 {t(
-                  `Leading launchpad platform U2U Chain Network. Projects are carefully researched, evaluated and tested by GrofiDex's project team.`
+                  `Leading launchpad platform U2U Chain Network. Projects are carefully researched, evaluated and tested by GroFi Dex's project team.`
                 )}
               </LoansText>
             </Box>
@@ -228,6 +236,14 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
                 {
                   label: t('Ended'),
                   value: LAUNCHPAD_STATUS.ENDED,
+                },
+								{
+                  label: t('Cancelled'),
+                  value: `${LAUNCHPAD_STATUS.ENDED}-${LAUNCHPAD_STATUS.CANCELLED}`,
+                },
+								{
+                  label: t('Claimable'),
+                  value: `${LAUNCHPAD_STATUS.ENDED}-${LAUNCHPAD_STATUS.CLAIMABLE}`,
                 }
               ]}
             />
@@ -265,12 +281,13 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
                 </clipPath>
                 </defs>
               </svg>
-              {t('My pools')}
+              {t('My Contributions')}
             </StyledTab>
           </TabMenu>
           {tab === 0 && <AllProjects filter={{valueSearch, filterType}} />}
 					{tab === 1 && <MyPools/>}
         </StyledBoxTab>
+        <Action/>
       </Container>
     </>
   )

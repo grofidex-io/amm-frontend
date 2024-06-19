@@ -8,7 +8,7 @@ import StakingList from '../Components/StakingList'
 import { BorderLayout, StakingH1, StakingText } from '../style'
 
 const StyledFlex = styled(Flex)`
-  align-items: center;
+  // align-items: center;
   justify-content: space-between;
   // flex-direction: column;
   gap: 0;
@@ -29,13 +29,17 @@ const Image = styled.img`
     max-width: 100%;
   }
   ${({ theme }) => theme.mediaQueries.lg} {
-    --size: 422px;
-    min-width: var(--size);
-    margin-top: 12px;
+    --size: 502px;
+    // min-width: var(--size);
+    margin-top: 16px;
     display: block;
+    max-height: 250px;
+  }
+  ${({ theme }) => theme.mediaQueries.xl} {
+    max-height: 275px;
   }
   ${({ theme }) => theme.mediaQueries.xxl} {
-    --size: 502px;
+    max-height: 300px;
   }
 `
 
@@ -54,7 +58,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
           p={['20px', '20px', '20px 30px', '20px 30px', '0 40px']}
         >
           <StyledFlex>
-            <Box maxWidth={["100%", "100%", "100%", "100%", "620px"]}>
+            <Box maxWidth={["100%", "100%", "100%", "100%", "620px"]} py={["0", "0", "0", "0", "30px"]}>
               <StakingH1 as="h1" scale="xxl" color="text" mb="24px">
                 {t('Become a participant on our journey')}
               </StakingH1>

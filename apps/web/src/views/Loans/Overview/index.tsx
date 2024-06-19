@@ -16,7 +16,7 @@ import { BorrowItem } from "../data/fetchListBorrowing"
 import { useListBorrowing } from "../hooks/useListBorrowing"
 
 const StyledFlex = styled(Flex)`
-  align-items: center;
+  // align-items: center;
   justify-content: space-between;
   // flex-direction: column;
   gap: 0;
@@ -58,8 +58,11 @@ export const LoansText = styled.p`
     max-width: 600px;
   }
   ${({ theme }) => theme.mediaQueries.lg} {
-    font-size: 18px;
+    font-size: 16px;
     max-width: 100%;
+  }
+  ${({ theme }) => theme.mediaQueries.xl} {
+    font-size: 18px;
   }
   ${({ theme }) => theme.mediaQueries.xxxl} {
     font-size: 20px;
@@ -81,10 +84,14 @@ const Image = styled.img`
   --size: 384px;
   width: var(--size);
   height: calc(var(--size) * 320 / 384);
-  ${({ theme }) => theme.mediaQueries.xxl} {
-    margin-right: 40px;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    max-height: 226px;
   }
-  ${({ theme }) => theme.mediaQueries.xxxl} {
+  ${({ theme }) => theme.mediaQueries.xl} {
+    max-height: 251px;
+  }
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    max-height: 276px;
     margin-right: 60px;
   }
   @media screen and (max-width: 991px) {
@@ -94,11 +101,13 @@ const Image = styled.img`
 const LoansInfo = styled.div`
   display: flex;
   gap: 100px;
-  margin-top: 40px;
-  margin-bottom: 10px;
-  @media screen and (max-width: 991px) {
-    margin-top: 30px;
+  margin-top: 30px;
+  @media screen and (max-width: 1199px) {
+    margin-top: 20px;
     gap: 60px;
+  }
+  @media screen and (max-width: 991px) {
+    margin-bottom: 10px;
   }
   @media screen and (max-width: 575px) {
     margin-top: 20px;
@@ -240,23 +249,23 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
           p={['20px', '20px', '20px 30px', '20px 30px', '20px 40px']}
         >
           <StyledFlex>
-            <Box maxWidth={["100%", "100%", "100%", "100%", "675px"]}>
+            <Box maxWidth={["100%", "100%", "100%", "100%", "675px"]} py={["0", "0", "0", "0", "10px"]}>
               <LoansH1 as="h1" scale="xxl" color="text" mb="24px">
                 {t('GROFI DEX Loans')}
               </LoansH1>
               <LoansText>
                 {t(
-                  'Grofidex Loans refer to the process of collateralizing stake shares to borrow U2U for use investment purposes to earn higher returns, or for withdrawal.',
+                  'GroFi Dex Loans refer to the process of collateralizing stake shares to borrow U2U for use investment purposes to earn higher returns, or for withdrawal.',
                 )}
               </LoansText>
               <LoansInfo>
                 <Box>
                   <Text fontSize={["14px", "14px", "14px", "16px"]} color="textExtra">Total Repayable (U2U)</Text>
-                  <Text fontSize={["20px", "24px", "24px", "28px", "32px"]} fontWeight="600" lineHeight="1" color="text" mt={["4px", "6px", "6px", "8px"]}>≈ {formatNumber(totalRepayable, 2, 6)}</Text>
+                  <Text fontSize={["20px", "24px", "24px", "28px", "32px"]} fontWeight="600" lineHeight="1" color="text" mt={["4px", "6px", "6px", "6px", "6px", "8px"]}>≈ {formatNumber(totalRepayable, 2, 6)}</Text>
                 </Box>
                 <Box>
                   <Text fontSize={["14px", "14px", "14px", "16px"]} color="textExtra">Total Collateral (U2U)</Text>
-                  <Text fontSize={["20px", "24px", "24px", "28px", "32px"]} fontWeight="600" lineHeight="1" color="text" mt={["4px", "6px", "6px", "8px"]}>≈ {formatNumber(totalCollateral, 2, 6)}</Text>
+                  <Text fontSize={["20px", "24px", "24px", "28px", "32px"]} fontWeight="600" lineHeight="1" color="text" mt={["4px", "6px", "6px", "6px", "6px", "8px"]}>≈ {formatNumber(totalCollateral, 2, 6)}</Text>
                 </Box>
               </LoansInfo>
               {

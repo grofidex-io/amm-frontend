@@ -62,6 +62,7 @@ export interface IPhase {
 	type: string
 	minStake: number
 	maxStake: number
+	endSaleTime: number
 }
 
 export interface ILaunchpadDetail {
@@ -116,4 +117,5 @@ export interface IHistoryTransaction {
 	processTime: number
 	transactionType: string
 	tokenAmount: any
+	roundAddress: string
 }

@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization';
-import { ArrowBackIcon, Box, Button, Flex, Link as LinkDefault, Progress, Tab, TabMenu, Text } from "@pancakeswap/uikit";
+import { ArrowBackIcon, Box, Button, DiscordIcon, DribbbleIcon, FbIcon, Flex, GitbookIcon, GithubIcon, GlobeIcon, InstagramIcon, Link as LinkDefault, LinkIcon, LinkedinIcon, MediumIcon, Progress, RedditIcon, SkypeIcon, Tab, TabMenu, TelegramIcon, Text, TiktokIcon, XIcon, YoutubeIcon } from "@pancakeswap/uikit";
 import { formatNumber } from '@pancakeswap/utils/formatBalance';
 import BigNumber from 'bignumber.js';
 import Container from 'components/Layout/Container';
@@ -17,6 +17,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { getLaunchpadManagerContract } from 'utils/contractHelpers';
 import { formatDate } from 'views/CakeStaking/components/DataSet/format';
 import { Address, useWalletClient } from 'wagmi';
+import Action from '../Components/Action';
 import CountdownTime from '../Components/CountdownTime';
 import ProjectInfo from '../Components/ProjectInfo';
 import Transactions from '../Components/Transactions';
@@ -156,6 +157,18 @@ const Image = styled.img`
   max-height: 100%;
   object-fit: cover;
 `
+const Video = styled.video`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  object-fit: cover;
+`
 const StyledTitle = styled(Text)`
   font-family: 'Metuo', sans-serif;
   font-size: 38px;
@@ -165,25 +178,28 @@ const StyledTitle = styled(Text)`
   overflow: hidden;
   text-overflow: ellipsis;
   margin-bottom: 20px;
-  max-width: 400px;
+  max-width: 800px;
   @media screen and (max-width: 1559px) {
     font-size: 36px;
-    max-width: 360px;
   }
   @media screen and (max-width: 1439px) {
     font-size: 32px;
     margin-bottom: 16px;
+    max-width: 700px;
   }
   @media screen and (max-width: 1199px) {
     font-size: 30px;
     margin-bottom: 12px;
+    max-width: 580px;
   }
   @media screen and (max-width: 991px) {
     font-size: 28px;
     margin-bottom: 8px;
+    max-width: 420px;
   }
   @media screen and (max-width: 767px) {
     font-size: 26px;
+    max-width: 100%;
   }
   @media screen and (max-width: 575px) {
     font-size: 24px;
@@ -286,28 +302,40 @@ const StyledTab = styled(Tab)`
   }
 `
 const StyledLink = styled(LinkDefault)`
+  --size: 32px;
+  width: var(--size);
+  height: var(--size);
   opacity: 0.8;
   transition: all 0.3s ease-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #69CF00;
   &:not(:last-child) {
     margin-right: 12px;
   }
   &:hover {
     opacity: 1;
-    img {
-      transform: scale(1.1);
-    }
+    transform: scale(1.1);
   }
-  img {
-    --size: 32px;
-    width: var(--size);
-    height: var(--size);
-    transition: all 0.3s ease-out;
+  svg {
+    color: ${({ theme }) => theme.colors.black};
+    fill: ${({ theme }) => theme.colors.black};
     @media screen and (max-width: 991px) {
-      --size: 28px;
+      --size: 18px;
+      width: var(--size);
+      height: var(--size);
     }
     @media screen and (max-width: 575px) {
-      --size: 24px;
+      --size: 16px;
     }
+  }
+  @media screen and (max-width: 991px) {
+    --size: 28px;
+  }
+  @media screen and (max-width: 575px) {
+    --size: 24px;
   }
 `
 const StyledSlide = styled(Box)`
@@ -371,11 +399,11 @@ const StyledContent = styled.div`
 `
 const StyledSwiper = styled(Swiper)`
 	position: relative;
-	@media screen and (min-width: 1440px) {
-		.swiper-wrapper {
-			justify-content: center;
-		}
-	}
+	// @media screen and (min-width: 1440px) {
+	// 	.swiper-wrapper {
+	// 		justify-content: center;
+	// 	}
+	// }
 `
 
 const StyledListTitle = styled(Text)`
@@ -412,15 +440,25 @@ const StyledListText = styled(Text)`
 
 
 const SOCIAL_ICON = {
-	WEBSITE: 'global',
-	TWITTER: 'x',
-	FACEBOOK: 'facebook',
-	YOUTUBE: 'youtube',
-	TELEGRAM: 'telegram',
-	LINKEDIN: 'linkedin',
-	MEDIUM: 'medium',
-	DISCORD: 'discord'
+	WEBSITE: <GlobeIcon />,
+	TWITTER: <XIcon />,
+	FACEBOOK: <FbIcon />,
+	YOUTUBE: <YoutubeIcon />,
+	TELEGRAM: <TelegramIcon />,
+	LINKEDIN: <LinkedinIcon />,
+	MEDIUM: <MediumIcon />,
+	DISCORD: <DiscordIcon />,
+  GITBOOK: <GitbookIcon />,
+  INSTGRAM: <InstagramIcon />,
+  TIKTOK: <TiktokIcon />,
+  SKYPE: <SkypeIcon />,
+  REDDIT: <RedditIcon />,
+  GITHUB: <GithubIcon />,
+  DRIBBBLE: <DribbbleIcon />,
 }
+
+const imageExtensions = ['.gif', '.jpg', '.jpeg', '.png', '.svg', '']
+const videoExtensions =['.mpg', '.mp2', '.mpeg', '.mpe', '.mpv', '.mp4']
 
 const LaunchpadDetailPage = () => {
   const { t } = useTranslation()
@@ -444,9 +482,20 @@ const LaunchpadDetailPage = () => {
 	const router = useRouter()
   const { launchpadId } = router.query
 	const { data: detail, refetch } = useFetchLaunchpadDetail(launchpadId as string)
+
 	
 	const { chainId } = useActiveChainId()
 	const { data: signer } = useWalletClient()
+
+  const isImageOrVideo = (list, v) => {
+    let status = false
+    forEach(list, (e) => {
+      if(v?.includes(e)) {
+        status = true
+      }
+    })
+    return status
+  }
 
 	const fetchStatusLaunchpad = () => {
 		refetch()
@@ -607,6 +656,7 @@ const LaunchpadDetailPage = () => {
 		if(_item.startTime < lastTime.current.startTime && PHASES_NONE.indexOf(_item.type) !== -1) {
 			return true
 		}
+
 		return false
 	}
 
@@ -629,9 +679,16 @@ const LaunchpadDetailPage = () => {
 
   return (
     <>
-      <StyledBanner style={{ backgroundImage: `url(${detail?.projectImageThumbnail})` }}>
+      <StyledBanner>
         <StyledBackground>
-          <Image src={detail?.projectImageThumbnail} alt=''/>
+          {isImageOrVideo(imageExtensions, detail?.projectImageThumbnail) && (
+            <Image src={detail?.projectImageThumbnail} alt=''/>
+          )}
+          {isImageOrVideo(videoExtensions, detail?.projectImageThumbnail) && (
+            <Video autoPlay loop muted>
+              <source src={detail?.projectImageThumbnail} type="video/mp4" />
+            </Video>
+          )}
         </StyledBackground>
         <StyledContainer justifyContent="space-between">
           <Link href="/launchpad" legacyBehavior>
@@ -642,9 +699,13 @@ const LaunchpadDetailPage = () => {
           </Link>
           <Flex>
             {detail?.socials.map(item => {
-              return SOCIAL_ICON[item.type] && (
+              return SOCIAL_ICON[item.type] ? (
                 <StyledLink external href={item.link}>
-                  <img src={`/images/launchpad/icon-${SOCIAL_ICON[item.type]}.svg`} alt="" />
+                  {SOCIAL_ICON[item.type]}
+                </StyledLink>
+              ) : (
+                <StyledLink external href={item.link}>
+                  <LinkIcon />
                 </StyledLink>
               )
               }
@@ -654,7 +715,7 @@ const LaunchpadDetailPage = () => {
       </StyledBanner>
       <Container>
         <Flex my="16px" flexDirection={["column", "column", "column", "row"]}>
-          <Flex alignItems="center" flex={1.5}>
+          <Flex alignItems="center" flex="1">
             <StyledLogo>
               <Image src={detail?.tokenLogo} alt=''/>
             </StyledLogo>
@@ -679,16 +740,15 @@ const LaunchpadDetailPage = () => {
             </Box>
           </Flex>
           <Flex
-            flex={2}
             ml="16px"
-            alignItems={["flex-end", "flex-end", "flex-end", "flex-end", "center"]}
+            alignItems="flex-end"
             justifyContent="center"
             flexDirection="column"
           >
 						{(detail && detail?.status !== LAUNCHPAD_STATUS.ENDED)  && (
 							<>
 								<Text color="primary" textAlign="center" fontSize={["13px", "13px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="1.25" mb={["6px", "6px", "8px", "8px", "10px", "10px", "12px"]}>{ isCountdownEnd ? t('Sale end in') : t('Sale start in')}</Text>
-								{showCountdown ? <CountdownTime type={COUNTDOWN_TYPE.ARRAY} time={isCountdownEnd ? detail?.saleEnd : detail?.saleStart} cb={refetch}/> : 	<Text color="hover" fontSize={["16px", "16px", "20px", "20px", "24px"]} fontWeight="600" lineHeight={["22px", "22px", "26px", "26px", "30px"]}>To be announced</Text>}
+								{showCountdown ? <CountdownTime type={COUNTDOWN_TYPE.ARRAY} time={isCountdownEnd ? detail?.saleEnd : detail?.saleStart} cb={refetch}/> : 	<Text color="bright" fontSize={["16px", "16px", "20px", "20px", "24px"]} fontWeight="600" lineHeight={["22px", "22px", "26px", "26px", "30px"]}>To be announced</Text>}
 							</>
 						)}
           </Flex>
@@ -700,21 +760,21 @@ const LaunchpadDetailPage = () => {
               <StyledListTitle>{t('Sale price')}</StyledListTitle>
               <Flex alignItems="center">
                 <IconImg src='/images/u2u.svg' />
-                <StyledListText>{detail?.priceToken ? `${formatNumber(detail?.priceToken)} U2U` : 'To be announced'}</StyledListText>
+                <StyledListText>{detail?.priceToken ? `${formatNumber(detail?.priceToken, 0, 6)} U2U` : 'To be announced'}</StyledListText>
               </Flex>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Total Raise')}</StyledListTitle>
               <Flex alignItems="center">
                 <IconImg src='/images/u2u.svg' />
-                <StyledListText>{detail?.totalRaise ? `${formatNumber(detail.totalRaise)} U2U` : 'To be announced'} </StyledListText>
+                <StyledListText>{detail?.totalRaise ? `${formatNumber(detail.totalRaise,  0, 6)} U2U` : 'To be announced'} </StyledListText>
               </Flex>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Total for Sale')}</StyledListTitle>
               <Flex alignItems="center">
                 <IconImg style={{ borderRadius: '2px' }} src={detail?.tokenLogo}/>
-                <StyledListText>{detail?.totalSale ? `${formatNumber(detail.totalSale)} ${detail?.tokenSymbol}` : 'To be announced'} </StyledListText>
+                <StyledListText>{detail?.totalSale ? `${formatNumber(detail.totalSale,  0, 6)} ${detail?.tokenSymbol}` : 'To be announced'} </StyledListText>
               </Flex>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
@@ -732,28 +792,28 @@ const LaunchpadDetailPage = () => {
               <StyledListTitle>{t('Softcap')}</StyledListTitle>
               <Flex alignItems="center">
                 <IconImg src='/images/u2u.svg' />
-                <StyledListText>{detail?.softCap ? `${formatNumber(detail.softCap)} U2U` : 'To be announced' }</StyledListText>
+                <StyledListText>{detail?.softCap ? `${formatNumber(detail.softCap,  0, 6)} U2U` : 'To be announced' }</StyledListText>
               </Flex>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Snapshot time')}</StyledListTitle>
-              <StyledListText>{detail?.snapshotTime ? `${formatDate(dayjs.unix(Math.floor(detail.snapshotTime/ 1000)).utc())} UTC` : 'To be announced'}</StyledListText>
+              <StyledListText>{detail?.snapshotTime ? `${formatDate(dayjs.unix(Math.floor(detail.snapshotTime/ 1000)).utc())} ` : 'To be announced'}</StyledListText>
             </Flex>
 						<Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Sale Start')}</StyledListTitle>
-              <StyledListText>{detail?.saleStart ? `${formatDate(dayjs.unix(Math.floor(detail.saleStart/ 1000)).utc())} UTC` : 'To be announced'}</StyledListText>
+              <StyledListText>{detail?.saleStart ? `${formatDate(dayjs.unix(Math.floor(detail.saleStart/ 1000)).utc())} ` : 'To be announced'}</StyledListText>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Sale End')}</StyledListTitle>
-              <StyledListText>{detail?.saleEnd ? `${formatDate(dayjs.unix(Math.floor(detail.saleEnd/ 1000)).utc())} UTC` : 'To be announced'}</StyledListText>
+              <StyledListText>{detail?.saleEnd ? `${formatDate(dayjs.unix(Math.floor(detail.saleEnd/ 1000)).utc())} ` : 'To be announced'}</StyledListText>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Start Apply Whitelist')}</StyledListTitle>
-              <StyledListText>{timeWhiteList?.startTime ? `${formatDate(dayjs.unix(Math.floor(timeWhiteList.startTime/ 1000)).utc())} UTC` : 'To be announced'}</StyledListText>
+              <StyledListText>{timeWhiteList?.startTime ? `${formatDate(dayjs.unix(Math.floor(timeWhiteList.startTime/ 1000)).utc())} ` : 'To be announced'}</StyledListText>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('End Apply Whitelist')}</StyledListTitle>
-              <StyledListText>{timeWhiteList?.endTime ? `${formatDate(dayjs.unix(Math.floor(timeWhiteList.endTime/ 1000)).utc())} UTC` : 'To be announced'}</StyledListText>
+              <StyledListText>{timeWhiteList?.endTime ? `${formatDate(dayjs.unix(Math.floor(timeWhiteList.endTime/ 1000)).utc())} ` : 'To be announced'}</StyledListText>
             </Flex>
     
           </StyledNeubrutal>
@@ -769,7 +829,7 @@ const LaunchpadDetailPage = () => {
               </Flex>
               <StyledProgress primaryStep={detail?.totalRaise ? (totalCommit / detail?.totalRaise) * 100 : 0 } scale="sm" />
               <Flex alignItems="center" justifyContent="center" mt="12px">
-                <Text color='text' fontSize="16px" fontWeight="700">{detail?.totalRaise ? `${formatNumber(detail.totalRaise)} U2U` : 'To be announced'}</Text>
+                <Text color='text' fontSize="16px" fontWeight="700">{detail?.totalRaise ? `${formatNumber(detail.totalRaise,  0, 6)} U2U` : 'To be announced'}</Text>
                 {detail?.totalRaise ? <Text color='textSubtle' fontSize="14px" fontWeight="600" ml="8px">{t('Total Raise')}</Text> : null}
               </Flex>
             </StyledNeubrutal>
@@ -813,8 +873,8 @@ const LaunchpadDetailPage = () => {
 								<StyledBox >
 									<StyledContent style={{ background: `${isComplete(item) ? theme.colors.backgroundItem : (isInProgress(item) ||  item.isActive) ? theme.colors.primary : theme.colors.backgroundAlt}` }}>
 										<img style={{ filter: `${isComplete(item) && 'grayscale(1)'}` }} src={item.imageUrl || `/images/launchpad/icon-step-01.svg`} alt="" />
-										<Text style={{ color: `${isComplete(item) ? theme.colors.hover : (isInProgress(item) ||  item.isActive) ? theme.colors.black : theme.colors.primary}` }} fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="17px" mt="8px">{item.name}</Text>
-										<Text style={{ color: `${isComplete(item) ? theme.colors.textSubtle : (isInProgress(item) ||  item.isActive) ? theme.colors.black : theme.colors.hover}` }} fontSize={["11px", "11px", "11px", "11px", "11px", "11px", "11px", "12px"]} fontWeight="400" lineHeight="13px" mt="4px" minHeight={13}>{item.startTime ? formatDate(dayjs.unix(Math.floor(item.startTime/ 1000)).utc(), 'MMM D YYYY HH:mm:ss') : ''}</Text>
+										<Text style={{ color: `${isComplete(item) ? theme.colors.bright : (isInProgress(item) ||  item.isActive) ? theme.colors.black : theme.colors.primary}` }} fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="17px" mt="8px">{item.name}</Text>
+										<Text style={{ color: `${isComplete(item) ? theme.colors.textSubtle : (isInProgress(item) ||  item.isActive) ? theme.colors.black : theme.colors.bright}` }} fontSize={["11px", "11px", "11px", "11px", "11px", "11px", "11px", "12px"]} fontWeight="400" lineHeight="13px" mt="4px" minHeight={13}>{item.startTime ? formatDate(dayjs.unix(Math.floor(item.startTime/ 1000)).utc(), 'MMM D YYYY hh:mm A') : ''}</Text>
 									</StyledContent>
 									<svg style={{ color: `${isComplete(item) ? theme.colors.backgroundItem : (isInProgress(item) ||  item.isActive) ? theme.colors.primary : theme.colors.backgroundAlt}` }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 49 132" fill="none">
 										<g mask="url(#mask0_3011_2807)">
@@ -871,8 +931,9 @@ const LaunchpadDetailPage = () => {
             </StyledTab>
           </TabMenu>
           {tab === 0 && <ProjectInfo info={detail} timeWhiteList={timeWhiteList} currentTier={currentTier} account={account} totalCommit={totalCommit} updateStatusLaunchpad={fetchStatusLaunchpad}/>}
-          {tab === 1 && <Transactions info={detail} account={account}/>}
+          {tab === 1 && <Transactions info={detail} account={account} phases={detail?.phases}/>}
         </StyledBoxTab>
+        <Action/>
       </Container>
     </>
   )

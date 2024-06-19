@@ -102,7 +102,7 @@ function MyApp(props: AppProps<{ initialReduxState: any; dehydratedState: any }>
           <App {...props} />
         </PersistGate>
       </Providers>
-			<GoogleAnalytics gaId="G-BJ6E447TDD" />
+			<GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GTAG || ''} />
       {/* <Script
         strategy="afterInteractive"
         id="google-tag"
