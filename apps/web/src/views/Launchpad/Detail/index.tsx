@@ -931,7 +931,7 @@ const LaunchpadDetailPage = () => {
             </StyledTab>
           </TabMenu>
           {tab === 0 && <ProjectInfo info={detail} timeWhiteList={timeWhiteList} currentTier={currentTier} account={account} totalCommit={totalCommit} updateStatusLaunchpad={fetchStatusLaunchpad}/>}
-          {tab === 1 && <Transactions info={detail} account={account}/>}
+          {tab === 1 && <Transactions info={detail} account={account} phases={detail?.phases}/>}
         </StyledBoxTab>
         <Action/>
       </Container>
