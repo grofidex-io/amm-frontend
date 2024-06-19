@@ -3,6 +3,7 @@ import { ArrowBackIcon, ArrowForwardIcon, AutoColumn, Box, Flex, ScanLink, Skele
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import dayjs from 'dayjs'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import keyBy from 'lodash/keyBy'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
@@ -25,7 +26,7 @@ const ResponsiveGrid = styled.div`
   display: grid;
   grid-gap: 1em;
   align-items: center;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   padding: 0 24px;
   > * {
     min-width: 140px;
@@ -98,13 +99,15 @@ const TableLoader: React.FC<React.PropsWithChildren> = () => {
   )
 }
 
-export default function Transactions({info, account}) {
+export default function Transactions({info, account, phases}) {
   const { t } = useTranslation()
   const [page, setPage] = useState(1)
 	const {data, isLoading} = useFetchTransactionHistory(account, info?.contractAddress, page)
+	console.log("🚀 ~ Transactions ~ data:", data)
 	const { chainId } = useActiveChainId()
 	const listData = data || []
   const disableNext = listData ? listData?.length === 0 || listData?.length < 10 : false
+	const _phaseByContract = keyBy(phases, (o) => o.contractAddress.toLowerCase() )
   return (
     <Box mt="30px">
       <Wrapper>
@@ -118,7 +121,10 @@ export default function Transactions({info, account}) {
                 {t('TYPE')}
               </StyledTitle>
               <StyledTitle color="textSubtle" textAlign="center">
-                {t('TOKEN')}
+                {t('AMOUNT')}
+              </StyledTitle>
+							<StyledTitle color="textSubtle" textAlign="center">
+                {t('ROUND')}
               </StyledTitle>
               <StyledTitle color="textSubtle" textAlign="right">
                 {t('TIME')}
@@ -139,6 +145,7 @@ export default function Transactions({info, account}) {
 											</Flex>
 											<StyledText color="text" textAlign="center">{TRANSACTION_STATUS[item.transactionType]}</StyledText>
 											<StyledText color="text" textAlign="center">{item.transactionType === 'CLAIM_TOKEN' ? `${formatEther(item.tokenAmount)} ${info?.tokenName}` : `${formatEther(item.u2uAmount)} U2U` }</StyledText>
+											<StyledText color="text" textAlign="center" >{_phaseByContract[item.roundAddress]?.name}</StyledText>
 											<StyledText color="text" textAlign="right">{formatDate(dayjs.unix(Math.floor(item.processTime)).utc())}</StyledText>
 										</ResponsiveGrid>
 									<Break/>

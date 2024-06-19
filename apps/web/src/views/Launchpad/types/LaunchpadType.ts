@@ -117,4 +117,5 @@ export interface IHistoryTransaction {
 	processTime: number
 	transactionType: string
 	tokenAmount: any
+	roundAddress: string
 }

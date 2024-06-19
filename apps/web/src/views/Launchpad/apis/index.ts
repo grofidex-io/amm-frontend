@@ -42,6 +42,7 @@ query listTransaction($user: String!, $launchpad: String!, $skip: Int)  {
     transactionType
     tokenAmount
     roundType
+		roundAddress
 	}
 }
 `

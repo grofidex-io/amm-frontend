@@ -231,13 +231,13 @@ export default function ModalDetail({
                   {t('ROUND')}
                 </Text>
                 <Text color="textSubtle" textAlign="center">
-                  {t('U2U COMMITTED')}
+                  {t('COMMITTED')}
                 </Text>
 								<Text color="textSubtle" textAlign="center">
-                  {t('U2U GIVE BACK')}
+                  {t('GIVE BACK')}
                 </Text>
                 <Text color="textSubtle" textAlign="center">
-                  {t('%tokenName% TOKEN', { tokenName })}
+                  {t('TOKEN')}
                 </Text>
                 <Text color="textSubtle" textAlign="center">
                   {t('ACTION')}
