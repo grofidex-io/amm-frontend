@@ -136,17 +136,16 @@ const StyledLogo = styled(Box)`
   }
 `
 const StyledButton = styled(Button)`
-  --size: 40px;
+  --size: 36px;
   --space: 35px;
   min-width: calc(var(--size) + var(--space));
   width: calc(var(--size) + var(--space));
   height: var(--size);
   white-space: wrap;
   font-weight: 700;
-  line-height: calc(19/16);
-  margin: 6px 4px;
+  line-height: calc(20/16);
+  margin-bottom: 4px;
   @media screen and (max-width: 1439px) {
-    --size: 36px;
     --space: 30px;
   }
   @media screen and (max-width: 1199px) {
@@ -173,14 +172,17 @@ const StyledButton = styled(Button)`
 `
 const StyledText = styled(Text)`
   font-family: 'Metuo', sans-serif;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 900;
   line-height: calc(24/20);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   @media screen and (max-width: 1439px) {
-    font-size: 18px;
+    font-size: 17px;
+  }
+  @media screen and (max-width: 575px) {
+    font-size: 16px;
   }
 `
 const StyledDot = styled(Box)`
@@ -235,7 +237,7 @@ type LaunchpadProps ={
 	isContribution: boolean
 }
 
-const imageExtensions = ['.gif','.jpg','.jpeg','.png']
+const imageExtensions = ['.gif','.jpg','.jpeg','.png', '']
 const videoExtensions =['.mpg', '.mp2', '.mpeg', '.mpe', '.mpv', '.mp4']
 
 const LaunchpadCard = ({ item, filterType, isContribution }: LaunchpadProps) => {
@@ -361,33 +363,36 @@ const LaunchpadCard = ({ item, filterType, isContribution }: LaunchpadProps) => 
           <StyledLogo>
 						<Image src={item.tokenLogo} alt=''/>
           </StyledLogo>
-          <Box style={{ flex: 1 }} overflow="hidden" mx={["12px", "16px", "16px", "16px", "16px", "20px", "24px"]}>
+          <Box style={{ flex: 1 }} overflow="hidden" mt="2px" ml={["12px", "16px", "16px", "16px", "16px", "20px", "24px"]}>
             <StyledText title={item.projectName}>{item.projectName}</StyledText>
-            <Flex alignItems="center" mt={["4px", "6px", "6px", "8px", "8px", "10px", "12px"]}>
-              <StyledDot
-                background={getColorLaunchpadByStatus(getStatusNameByTime(item, totalCommitByUser, totalCommit), theme)}
-              />
-              <Text
-                ml={["6px", "6px", "6px", "6px", "6px", "8px"]}
-                fontSize={["14px", "14px", "14px", "15px", "15px", "16px"]}
-                fontWeight="700"
-                lineHeight="20px"
-                color={getColorLaunchpadByStatus(getStatusNameByTime(item, totalCommitByUser, totalCommit), theme)}
-              >
-                {
-                  getStatusNameByTime(item, totalCommitByUser, totalCommit)
-                }
-              </Text>
+            <Flex justifyContent="space-between" mt="4px">
+              <Flex alignItems="center">
+                <StyledDot
+                  background={getColorLaunchpadByStatus(getStatusNameByTime(item, totalCommitByUser, totalCommit), theme)}
+                />
+                <Text
+                  ml="6px"
+                  fontSize="14px"
+                  fontWeight="600"
+                  lineHeight="20px"
+                  color={getColorLaunchpadByStatus(getStatusNameByTime(item, totalCommitByUser, totalCommit), theme)}
+                >
+                  {
+                    getStatusNameByTime(item, totalCommitByUser, totalCommit)
+                  }
+                </Text>
+              </Flex>
+              <NextLink href={`/launchpad/${item.contractAddress}`} passHref>
+                <StyledButton
+                  className="button-hover"
+                >
+                  <span>{t('View')}</span>
+                  <OpenNewIcon/>
+                </StyledButton>
+              </NextLink>
             </Flex>
+
           </Box>
-          <NextLink href={`/launchpad/${item.contractAddress}`} passHref>
-            <StyledButton
-              className="button-hover"
-            >
-              <span>{t('View')}</span>
-              <OpenNewIcon/>
-            </StyledButton>
-          </NextLink>
         </Flex>
         <Flex flexDirection="column" height="100%" px={["0", "0", "16px", "16px", "0", "0", "16px"]} p="16px">
           <StyledTextInfo fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="400" mb="16px" color='textSubtle'>{item.shortDescription}</StyledTextInfo>

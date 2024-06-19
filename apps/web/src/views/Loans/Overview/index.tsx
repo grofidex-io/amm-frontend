@@ -16,7 +16,7 @@ import { BorrowItem } from "../data/fetchListBorrowing"
 import { useListBorrowing } from "../hooks/useListBorrowing"
 
 const StyledFlex = styled(Flex)`
-  align-items: center;
+  // align-items: center;
   justify-content: space-between;
   // flex-direction: column;
   gap: 0;
@@ -101,11 +101,9 @@ const Image = styled.img`
 const LoansInfo = styled.div`
   display: flex;
   gap: 100px;
-  margin-top: 40px;
-  margin-bottom: 10px;
+  margin-top: 30px;
   @media screen and (max-width: 1199px) {
-    margin-top: 30px;
-    margin-bottom: 8px;
+    margin-top: 20px;
     gap: 60px;
   }
   @media screen and (max-width: 991px) {
@@ -251,7 +249,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
           p={['20px', '20px', '20px 30px', '20px 30px', '20px 40px']}
         >
           <StyledFlex>
-            <Box maxWidth={["100%", "100%", "100%", "100%", "675px"]}>
+            <Box maxWidth={["100%", "100%", "100%", "100%", "675px"]} py={["0", "0", "0", "0", "10px"]}>
               <LoansH1 as="h1" scale="xxl" color="text" mb="24px">
                 {t('GROFI DEX Loans')}
               </LoansH1>
@@ -263,11 +261,11 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
               <LoansInfo>
                 <Box>
                   <Text fontSize={["14px", "14px", "14px", "16px"]} color="textExtra">Total Repayable (U2U)</Text>
-                  <Text fontSize={["20px", "24px", "24px", "28px", "32px"]} fontWeight="600" lineHeight="1" color="text" mt={["4px", "6px", "6px", "8px"]}>≈ {formatNumber(totalRepayable, 2, 6)}</Text>
+                  <Text fontSize={["20px", "24px", "24px", "28px", "32px"]} fontWeight="600" lineHeight="1" color="text" mt={["4px", "6px", "6px", "6px", "6px", "8px"]}>≈ {formatNumber(totalRepayable, 2, 6)}</Text>
                 </Box>
                 <Box>
                   <Text fontSize={["14px", "14px", "14px", "16px"]} color="textExtra">Total Collateral (U2U)</Text>
-                  <Text fontSize={["20px", "24px", "24px", "28px", "32px"]} fontWeight="600" lineHeight="1" color="text" mt={["4px", "6px", "6px", "8px"]}>≈ {formatNumber(totalCollateral, 2, 6)}</Text>
+                  <Text fontSize={["20px", "24px", "24px", "28px", "32px"]} fontWeight="600" lineHeight="1" color="text" mt={["4px", "6px", "6px", "6px", "6px", "8px"]}>≈ {formatNumber(totalCollateral, 2, 6)}</Text>
                 </Box>
               </LoansInfo>
               {

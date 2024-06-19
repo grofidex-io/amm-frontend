@@ -178,25 +178,28 @@ const StyledTitle = styled(Text)`
   overflow: hidden;
   text-overflow: ellipsis;
   margin-bottom: 20px;
-  max-width: 400px;
+  max-width: 800px;
   @media screen and (max-width: 1559px) {
     font-size: 36px;
-    max-width: 360px;
   }
   @media screen and (max-width: 1439px) {
     font-size: 32px;
     margin-bottom: 16px;
+    max-width: 700px;
   }
   @media screen and (max-width: 1199px) {
     font-size: 30px;
     margin-bottom: 12px;
+    max-width: 580px;
   }
   @media screen and (max-width: 991px) {
     font-size: 28px;
     margin-bottom: 8px;
+    max-width: 420px;
   }
   @media screen and (max-width: 767px) {
     font-size: 26px;
+    max-width: 100%;
   }
   @media screen and (max-width: 575px) {
     font-size: 24px;
@@ -454,7 +457,7 @@ const SOCIAL_ICON = {
   DRIBBBLE: <DribbbleIcon />,
 }
 
-const imageExtensions = ['.gif','.jpg','.jpeg','.png']
+const imageExtensions = ['.gif','.jpg','.jpeg','.png', '']
 const videoExtensions =['.mpg', '.mp2', '.mpeg', '.mpe', '.mpv', '.mp4']
 
 const LaunchpadDetailPage = () => {
@@ -712,7 +715,7 @@ const LaunchpadDetailPage = () => {
       </StyledBanner>
       <Container>
         <Flex my="16px" flexDirection={["column", "column", "column", "row"]}>
-          <Flex alignItems="center" flex={1.5}>
+          <Flex alignItems="center" flex="1">
             <StyledLogo>
               <Image src={detail?.tokenLogo} alt=''/>
             </StyledLogo>
@@ -737,9 +740,8 @@ const LaunchpadDetailPage = () => {
             </Box>
           </Flex>
           <Flex
-            flex={2}
             ml="16px"
-            alignItems={["flex-end", "flex-end", "flex-end", "flex-end", "center"]}
+            alignItems="flex-end"
             justifyContent="center"
             flexDirection="column"
           >
