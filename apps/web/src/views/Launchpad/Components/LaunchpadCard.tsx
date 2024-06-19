@@ -403,7 +403,7 @@ const LaunchpadCard = ({ item, filterType, isContribution }: LaunchpadProps) => 
             </Flex>
             <Flex justifyContent="space-between">
               <Text minWidth="68px" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="20px" color='textSubtle'>{t('Total Raise')}</Text>
-              <Text ml="12px" textAlign="right" fontSize={["15px", "15px", "16px", "16px", "15px", "16px", "17px"]} fontWeight="700" lineHeight="20px" color='text'>{item?.totalRaise ? `${formatNumber(item?.totalRaise)} U2U` : 'TBA'}</Text>
+              <Text ml="12px" textAlign="right" fontSize={["15px", "15px", "16px", "16px", "15px", "16px", "17px"]} fontWeight="700" lineHeight="20px" color='text'>{item?.totalRaise ? `${formatNumber(item?.totalRaise, 0, 6)} U2U` : 'TBA'}</Text>
             </Flex>
           </Box>
         </Flex>
