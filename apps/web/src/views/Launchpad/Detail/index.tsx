@@ -580,15 +580,19 @@ const LaunchpadDetailPage = () => {
 		forEach(detail?.phases, (item: IPhase) => {
 			if((item.startTime && item.startTime > _now  && !listTimeoutRefetch.current[item.startTime]) || (item.endTime && item.endTime > _now  && !listTimeoutRefetch.current[item.endTime])) {
 				const _timeout:number = item.startTime - _now 
-				listTimeoutRefetch.current[item.startTime] = setTimeout(() => {
-					initTime()
-					refetch()
-				}, _timeout + 1000)
+				if(_timeout > 0) {
+					listTimeoutRefetch.current[item.startTime] = setTimeout(() => {
+						initTime()
+						refetch()
+					}, _timeout + 1000)
+				}
 				const _timeoutEnd:number = item.endTime - _now 
-				listTimeoutRefetch.current[item.endTime] = setTimeout(() => {
-					initTime()
-					refetch()
-				}, _timeoutEnd + 1000)
+				if(_timeoutEnd > 0) {
+					listTimeoutRefetch.current[item.endTime] = setTimeout(() => {
+						initTime()
+						refetch()
+					}, _timeoutEnd + 1000)
+				}
 			}
 			initTime()
 		})
