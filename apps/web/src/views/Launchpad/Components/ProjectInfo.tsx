@@ -21,7 +21,7 @@ import { formatDate } from 'views/CakeStaking/components/DataSet/format';
 import { Break } from 'views/Info/components/InfoTables/shared';
 import { Address, useWalletClient } from 'wagmi';
 import { COUNTDOWN_TYPE, LAUNCHPAD_STATUS, PHASES_NONE, PHASES_TYPE } from '../helpers';
-import { StyledButton, StyledNeubrutal } from '../styles';
+import { StyledButton, StyledNeubrutal, StyledTypography } from '../styles';
 import { ILaunchpadDetail, IPhase, ITierInfo, ITimeOfPhase, IUserWhiteListInfo } from '../types/LaunchpadType';
 import CountdownTime from './CountdownTime';
 import ModalDetail from './ModalDetail';
@@ -60,7 +60,7 @@ const StyledContentDot = styled(Text)`
   }
 `
 const StyledText = styled(Text)`
-  color: #d6ddd0;
+  color: ${({ theme }) => theme.colors.textHighlight};
   font-size: 17px;
   font-weight: 700;
   line-height: 20px;
@@ -333,12 +333,13 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		const _configInfo: ITierInfo = await _launchpadContract.current.read.getConfigInfo()
 		const _percentCancel: any = await _launchpadContract.current.read.percentCancel()
 		setConfigInfo({..._configInfo, maxCommitAmount: BigNumber(formatEther(_configInfo.maxCommitAmount)).toNumber(), maxBuyPerUser: BigNumber(formatEther(_configInfo.maxBuyPerUser)).toNumber(), startCancel: BigNumber(_configInfo.startCancel).toNumber() * 1000, endCancel: BigNumber(_configInfo.endCancel).toNumber() * 1000, percentCancel: BigNumber(formatEther(_percentCancel)).toNumber()})
-		if(_configInfo.startCancel) {
-			const _now = Date.now()
+		const _timeCancel = BigNumber(_configInfo.startCancel).toNumber() * 1000
+		const _now = Date.now()
+		if(_timeCancel && _timeCancel > _now) {
 			clearTimeout(_timeoutCheckCancel.current)
 			_timeoutCheckCancel.current = setTimeout(() => {
 				setShowCancel(_now)
-			}, ((_now - BigNumber(_configInfo.startCancel).toNumber() * 1000) + 2000))
+			}, ((_timeCancel - _now) + 1000))
 		}
 	}
 
@@ -576,6 +577,11 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 					setCurrentPhaseOrNext(_nextPhase)
 				}
 			}
+			if(_currentPhase.endSaleTime < Date.now() && Date.now() < _currentPhase.endTime) {
+				if(_nextPhase) {
+					setCurrentPhaseOrNext(_nextPhase)
+				}
+			}
 		}
 	}, [info, checkPhase])
 
@@ -720,7 +726,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
         <StyledNeubrutal p={["24px 16px", "24px 16px", "28px 20px", "28px 20px", "32px 24px"]} height="100%" style={{ flex: '2' }}>
           <Box px={["0", "0", "12px", "12px", "16px", "16px", "20px"]} mb={["20px", "20px", "26px", "26px", "32px"]}>
             <StyledTitle mb={["12px", "12px", "16px"]}>{t('About %token% Project', {token: info?.tokenName})}</StyledTitle>
-            <StyledContent>{info?.description && parse(info?.description)}</StyledContent>
+            <StyledTypography>{info?.description && parse(info?.description)}</StyledTypography>
           </Box>
 					{/* <ReactApexChart options={chart.options} series={chart.series} type="donut" height={300} /> */}
           {/* <Box px={["0", "0", "12px", "12px", "16px", "16px", "20px"]} mb={["20px", "20px", "26px", "26px", "32px"]}>
@@ -819,23 +825,23 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 									<Box>
 										{(userConfigInfo && (currentPhase?.type === PHASES_TYPE.TIER || !currentPhase?.type)) && <>
 											<StyledTextItalic>{t(`%estimate% %maxBuyPerUser% U2U to buy IDO in round buy %tier%.`, { maxBuyPerUser: userConfigInfo?.maxBuyPerUser, tier: userConfigInfo?.name, estimate: info?.snapshotTime < Date.now() ? 'Maximum' : 'Estimate maximum'})} 
-											{/* {info.snapshotTime < Date.now() && <StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>} */}
+											{/* {info.snapshotTime < Date.now() && <StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: theme.colors.textHighlight }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} </span></StyledTextItalic>} */}
 											</StyledTextItalic>
 										</>
 										}
 										{(configInfo && currentPhase && currentPhase?.type !== PHASES_TYPE.TIER) && (
 											<>
 											<StyledTextItalic>{t(`%estimate% %maxBuyPerUser% U2U to buy IDO in round buy %tier%.`, { maxBuyPerUser: configInfo?.maxBuyPerUser, tier: currentPhase?.name, estimate: info?.snapshotTime < Date.now() ? 'Maximum' : 'Estimate maximum' })}</StyledTextItalic>
-											{/* {info.snapshotTime < Date.now() && <StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>} */}
+											{/* {info.snapshotTime < Date.now() && <StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: theme.colors.textHighlight }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} </span></StyledTextItalic>} */}
 											</>
 										)}
 							
 										{info?.snapshotTime < Date.now() && (
-											<StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>
+											<StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: theme.colors.textHighlight }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} </span></StyledTextItalic>
 										)}
 										{info?.snapshotTime > Date.now()  && 
 											<>
-												<StyledTextItalic>{t('The snapshot will be ended at ')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>
+												<StyledTextItalic>{t('The snapshot will be ended at ')} <span style={{ color: theme.colors.textHighlight }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} </span></StyledTextItalic>
 												<StyledTextItalic>
 													{t('Staking more to upgrade your tier. ')}
 													<StyledNextLink href="/staking" passHref>{t('Staking Now')}</StyledNextLink>
@@ -845,7 +851,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 												</StyledTextItalic>
 												</>
 											}
-										{/* {userConfigInfo && <StyledTextItalic>{t('Maximum %maxBuyPerUser% U2U to buy IDO in round buy %tier%. The snapshot process has ended at 2024/05/03 14:22:22 UTC.', {maxBuyPerUser: userConfigInfo?.maxBuyPerUser, tier: userConfigInfo?.name })}</StyledTextItalic>} */}
+										{/* {userConfigInfo && <StyledTextItalic>{t('Maximum %maxBuyPerUser% U2U to buy IDO in round buy %tier%. The snapshot process has ended at 2024/05/03 14:22:22 .', {maxBuyPerUser: userConfigInfo?.maxBuyPerUser, tier: userConfigInfo?.name })}</StyledTextItalic>} */}
 									</Box>
 								</Box>
             <Box mb={["20px", "20px", "24px"]}>
@@ -893,8 +899,8 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 						}
 						{timeWhiteList?.endTime > Date.now() && (
 							<Box mt="12px">
-								<Text color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px">{t('Time during (UTC):')}</Text>
-								<Text fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px" style={{ color: '#d6ddd0' }}>{`${timeWhiteList?.startTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.startTime/ 1000)).utc())} - ${timeWhiteList?.endTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.endTime/ 1000)).utc())}`}</Text>
+								<Text color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px">{t('Time during ():')}</Text>
+								<Text fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px" style={{ color: theme.colors.textHighlight }}>{`${timeWhiteList?.startTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.startTime/ 1000)).utc())} - ${timeWhiteList?.endTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.endTime/ 1000)).utc())}`}</Text>
 							</Box>
 						)}
 			
@@ -934,7 +940,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 								) }
                 {(isShowCancel && currentPhase && configInfo?.startCancel && configInfo?.startCancel < Date.now()) && (
 									<StyledTextItalic mt="12px">
-										Note: You can cancel your request buy from {configInfo?.startCancel ? formatDate(dayjs.unix(configInfo.startCancel/ 1000).utc()) : '--'} - {configInfo.endCancel ? formatDate(dayjs.unix(configInfo.endCancel/ 1000).utc()) : '--'} UTC. <span style={{ color: theme.colors.bright }}>{configInfo.percentCancel}% fee</span> when canceling IDO orders.&nbsp;
+										Note: You can cancel your request buy from {configInfo?.startCancel ? formatDate(dayjs.unix(configInfo.startCancel/ 1000).utc()) : '--'} - {configInfo.endCancel ? formatDate(dayjs.unix(configInfo.endCancel/ 1000).utc()) : '--'} . <span style={{ color: theme.colors.bright }}>{configInfo.percentCancel}% fee</span> when canceling IDO orders.&nbsp;
 										<StyledButtonText variant="text" onClick={openCommittedModal}  >
 											{t('Cancel buy IDO')}
 										</StyledButtonText>
@@ -1015,12 +1021,11 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 										<ConnectWalletButton as="a"> <Text fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} style={{ textDecoration: "underline", color: theme.colors.primary, cursor: "pointer"}}>			{t('Connect now')}</Text> </ConnectWalletButton>
 									</StyledContent>
 								)}
-             
-                {scheduleOrder?.length > 0 && (<StyledContent mb="3px">{t(`Schedule time for you (UTC), don't miss it:`)}</StyledContent>)}
+                {scheduleOrder?.length > 0 && (<StyledContent mb="3px">{t(`Schedule time for you (), don't miss it:`)}</StyledContent>)}
 								{scheduleOrder?.map((item: IPhase) => (
 									<StyledContentDot lineHeight="17px" mb="4px">
 										{item.name}
-										<Text fontSize="14px" lineHeight="20px" mt="2px" style={{ color: '#d6ddd0' }}>{`${formatDate(dayjs.unix(Math.floor(item.startTime/ 1000)).utc())} - ${formatDate(dayjs.unix(Math.floor(item.endTime/ 1000)).utc())}`}</Text>
+										<Text fontSize="14px" lineHeight="20px" mt="2px" style={{ color: theme.colors.textHighlight }}>{`${formatDate(dayjs.unix(Math.floor(item.startTime/ 1000)).utc())} - ${formatDate(dayjs.unix(Math.floor((item.endSaleTime || item.endTime)/ 1000)).utc())} `}</Text>
 									</StyledContentDot>
 								))}
           

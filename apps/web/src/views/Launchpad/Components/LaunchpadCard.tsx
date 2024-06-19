@@ -237,7 +237,7 @@ type LaunchpadProps ={
 	isContribution: boolean
 }
 
-const imageExtensions = ['.gif','.jpg','.jpeg','.png', '']
+const imageExtensions = ['.gif', '.jpg', '.jpeg', '.png', '.svg', '']
 const videoExtensions =['.mpg', '.mp2', '.mpeg', '.mpe', '.mpv', '.mp4']
 
 const LaunchpadCard = ({ item, filterType, isContribution }: LaunchpadProps) => {

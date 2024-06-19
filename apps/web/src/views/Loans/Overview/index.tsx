@@ -255,7 +255,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
               </LoansH1>
               <LoansText>
                 {t(
-                  'Grofidex Loans refer to the process of collateralizing stake shares to borrow U2U for use investment purposes to earn higher returns, or for withdrawal.',
+                  'GroFi Dex Loans refer to the process of collateralizing stake shares to borrow U2U for use investment purposes to earn higher returns, or for withdrawal.',
                 )}
               </LoansText>
               <LoansInfo>

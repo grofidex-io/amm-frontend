@@ -208,7 +208,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
               </LoansH1>
               <LoansText>
                 {t(
-                  `Leading launchpad platform U2U Chain Network. Projects are carefully researched, evaluated and tested by GrofiDex's project team.`
+                  `Leading launchpad platform U2U Chain Network. Projects are carefully researched, evaluated and tested by GroFi Dex's project team.`
                 )}
               </LoansText>
             </Box>

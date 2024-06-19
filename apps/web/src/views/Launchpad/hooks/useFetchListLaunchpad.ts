@@ -9,7 +9,7 @@ export const useFetchListLaunchpad = (page: number) => {
 		},
 		retry: 3,
 		retryDelay: 3000,
-		refetchOnMount: false,
+		refetchOnMount: true,
 		refetchOnReconnect: false,
 		refetchOnWindowFocus: false,
   })
