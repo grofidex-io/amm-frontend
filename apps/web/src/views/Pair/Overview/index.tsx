@@ -57,6 +57,7 @@ const ImageIcon = styled.img`
   }
 `
 const StyledFlex = styled(Flex)`
+  justify-content: space-between;
   // flex-direction: column;
   gap: 0;
   ${({ theme }) => theme.mediaQueries.lg} {
@@ -173,8 +174,8 @@ export const Overview = () => {
           my="32px"
           background="var(--colors-backgroundAlt)"
         >
-          <StyledFlex alignItems="center" justifyContent="space-between">
-            <Box>
+          <StyledFlex>
+            <Box py={["0", "0", "0", "0", "10px"]}>
               <StyledHeading maxWidth={["100%", "100%", "560px", "560px", "620px"]}>{t('Put your funds to work by providing liquidity.')}</StyledHeading>
               <Text maxWidth={["100%", "100%", "400px", "400px", "490px"]} mb="10px" fontSize={['14px', '14px', '16px', '16px', '18px', '18px', '18px', '20px']} fontWeight={["500", "500", "600"]} color="textSubtle">
                 {t(

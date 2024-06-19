@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization';
-import { Box, Button, Dots, Flex, Link, Text, TooltipText, useModal, useToast, useTooltip } from '@pancakeswap/uikit';
+import { Box, Button, Dots, Flex, Text, TooltipText, useModal, useToast, useTooltip } from '@pancakeswap/uikit';
 import { formatNumber } from '@pancakeswap/utils/formatBalance';
 import { NumericalInput } from '@pancakeswap/widgets-internal';
 import BigNumber from 'bignumber.js';
@@ -13,6 +13,7 @@ import parse from 'html-react-parser';
 import forEach from 'lodash/forEach';
 import keyBy from 'lodash/keyBy';
 import uniqBy from 'lodash/uniqBy';
+import NextLink from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import styled, { useTheme } from 'styled-components';
 import { getLaunchpadContract, getLaunchpadManagerContract } from 'utils/contractHelpers';
@@ -111,6 +112,21 @@ const StyledTextItalic = styled(Text)`
   font-size: 13px;
   font-style: italic;
   line-height: 16px;
+	@media screen and (max-width: 1559px) {
+		font-size: 12px;
+	}
+`
+const StyledNextLink = styled(NextLink)`
+  color: ${({ theme }) => theme.colors.primary};
+  font-size: 13px;
+	font-weight: 300;
+  font-style: italic;
+  line-height: 16px;
+	text-decoration: underline;
+	transition: all 0.3s;
+	&:hover {
+		color: ${({ theme }) => theme.colors.hover};
+	}
 	@media screen and (max-width: 1559px) {
 		font-size: 12px;
 	}
@@ -822,17 +838,18 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 												<StyledTextItalic>{t('The snapshot will be ended at ')} <span style={{ color: '#d6ddd0' }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc(), 'YYYY/MM/DD hh:mm:ss')} UTC</span></StyledTextItalic>
 												<StyledTextItalic>
 													{t('Staking more to upgrade your tier. ')}
-													<Link fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" style={{ display: 'inline', fontWeight: '300', textDecoration: 'underline' }} href="/staking">
+													<StyledNextLink href="/staking" passHref>{t('Staking Now')}</StyledNextLink>
+													{/* <Link fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" style={{ display: 'inline', fontWeight: '300', textDecoration: 'underline' }} href="/staking">
 														{t('Staking Now')}
-													</Link>
+													</Link> */}
 												</StyledTextItalic>
 												</>
 											}
 										{/* {userConfigInfo && <StyledTextItalic>{t('Maximum %maxBuyPerUser% U2U to buy IDO in round buy %tier%. The snapshot process has ended at 2024/05/03 14:22:22 UTC.', {maxBuyPerUser: userConfigInfo?.maxBuyPerUser, tier: userConfigInfo?.name })}</StyledTextItalic>} */}
 									</Box>
 								</Box>
-             <Box mb={["20px", "20px", "24px"]}>
-						 	<Flex mb="12px">
+            <Box mb={["20px", "20px", "24px"]}>
+							<Flex mb="12px">
 								<Text color="textSubtle" fontSize={["16px", "16px", "16px", "16px", "16px", "16px", "16px", "17px"]} fontWeight="600" mr="10px">{t('Apply Whitlelist')}</Text>
 								<TooltipText ref={applyTooltip.targetRef} decorationColor="secondary">
 									<ImageInfo src="/images/launchpad/icon-exclamation.svg" />

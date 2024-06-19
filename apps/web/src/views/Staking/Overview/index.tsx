@@ -8,7 +8,7 @@ import StakingList from '../Components/StakingList'
 import { BorderLayout, StakingH1, StakingText } from '../style'
 
 const StyledFlex = styled(Flex)`
-  align-items: center;
+  // align-items: center;
   justify-content: space-between;
   // flex-direction: column;
   gap: 0;
@@ -58,7 +58,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
           p={['20px', '20px', '20px 30px', '20px 30px', '0 40px']}
         >
           <StyledFlex>
-            <Box maxWidth={["100%", "100%", "100%", "100%", "620px"]}>
+            <Box maxWidth={["100%", "100%", "100%", "100%", "620px"]} py={["0", "0", "0", "0", "30px"]}>
               <StakingH1 as="h1" scale="xxl" color="text" mb="24px">
                 {t('Become a participant on our journey')}
               </StakingH1>
