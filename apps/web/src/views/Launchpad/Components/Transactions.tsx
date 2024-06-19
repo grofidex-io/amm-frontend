@@ -5,7 +5,7 @@ import dayjs from 'dayjs'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import keyBy from 'lodash/keyBy'
 import React, { useState } from 'react'
-import styled from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { formatEther } from 'viem'
 import { formatDate } from 'views/CakeStaking/components/DataSet/format'
@@ -68,11 +68,11 @@ const StyledText = styled(Text)`
   }
 `
 const TRANSACTION_STATUS = {
-	"CLAIM_TOKEN": 'CLAIM TOKEN', 
-	"COMMIT": "COMMIT", 
-	"REFUND": "REFUND", 
-	"GIVE_BACK": "GIVE BACK",
-	"CANCEL": "CANCEL"
+	"CLAIM_TOKEN": 'Claim Token', 
+	"COMMIT": "Commit", 
+	"REFUND": "Refund", 
+	"GIVE_BACK": "Give Back",
+	"CANCEL": "Cancelled"
 }
 const TableLoader: React.FC<React.PropsWithChildren> = () => {
   const loadingRow = (
@@ -101,13 +101,22 @@ const TableLoader: React.FC<React.PropsWithChildren> = () => {
 
 export default function Transactions({info, account, phases}) {
   const { t } = useTranslation()
+  const theme = useTheme();
   const [page, setPage] = useState(1)
 	const {data, isLoading} = useFetchTransactionHistory(account, info?.contractAddress, page)
-	console.log("🚀 ~ Transactions ~ data:", data)
 	const { chainId } = useActiveChainId()
 	const listData = data || []
   const disableNext = listData ? listData?.length === 0 || listData?.length < 10 : false
 	const _phaseByContract = keyBy(phases, (o) => o.contractAddress.toLowerCase() )
+  const getColorLaunchpadByStatus = (_status: string) => {
+    return  _status === 'Give Back' ? theme.colors.yellow
+    : _status === 'Cancelled' ? theme.colors.orange
+    : _status === 'Refund' ? theme.colors.orange
+    : _status ===  'Claim Token'  ? theme.colors.cyan
+    : _status === 'Commit' ? theme.colors.primary
+    : theme.colors.textSubtle
+  }
+  
   return (
     <Box mt="30px">
       <Wrapper>
@@ -143,7 +152,7 @@ export default function Transactions({info, account, phases}) {
 													</StyledText>
 												</StyledScanLink>
 											</Flex>
-											<StyledText color="text" textAlign="center">{TRANSACTION_STATUS[item.transactionType]}</StyledText>
+											<StyledText style={{ color: getColorLaunchpadByStatus(TRANSACTION_STATUS[item.transactionType]) }} textAlign="center">{TRANSACTION_STATUS[item.transactionType]}</StyledText>
 											<StyledText color="text" textAlign="center">{item.transactionType === 'CLAIM_TOKEN' ? `${formatEther(item.tokenAmount)} ${info?.tokenName}` : `${formatEther(item.u2uAmount)} U2U` }</StyledText>
 											<StyledText color="text" textAlign="center" >{_phaseByContract[item.roundAddress]?.name}</StyledText>
 											<StyledText color="text" textAlign="right">{formatDate(dayjs.unix(Math.floor(item.processTime)).utc())}</StyledText>
