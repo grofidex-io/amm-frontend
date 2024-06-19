@@ -10,7 +10,7 @@ import MyPools from "../Components/MyPools"
 import { LAUNCHPAD_STATUS } from "../helpers"
 
 const StyledFlex = styled(Flex)`
-  align-items: center;
+  // align-items: center;
   justify-content: space-between;
   // flex-direction: column;
   gap: 0;
@@ -60,6 +60,7 @@ export const LoansText = styled.p`
   }
   ${({ theme }) => theme.mediaQueries.xxxl} {
     font-size: 20px;
+    max-width: 480px;
   }
 `
 const Image = styled.img`
@@ -198,10 +199,10 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
           mb={["32px", "32px", "32px", "32px", "50px", "60px"]}
           background={theme.colors.backgroundAlt}
           borderRadius={theme.radii.card}
-          p={['20px', '20px', '20px 30px', '20px 30px', '0 30px', '0 40px']}
+          p={['20px', '20px', '20px 30px', '20px 30px', '0 40px']}
         >
           <StyledFlex>
-            <Box>
+            <Box py={["0", "0", "0", "0", "30px"]}>
               <LoansH1 as="h1" scale="xxl" color="text" mb="24px">
                 {t('GROFI DEX Launchpad')}
               </LoansH1>

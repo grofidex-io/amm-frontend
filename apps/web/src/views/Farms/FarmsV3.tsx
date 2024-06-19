@@ -64,7 +64,6 @@ const ControlContainer = styled.div`
   }
 `
 const StyledFlex = styled(Flex)`
-  align-items: center;
   justify-content: space-between;
   flex-direction: column;
   gap: 0;
@@ -493,7 +492,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
           p={['20px', '20px', '20px 30px', '20px 30px', '0 40px']}
         >
           <StyledFlex>
-            <Box width="100%">
+            <Box width="100%" py={["0", "0", "0", "0", "30px"]}>
               <FarmH1 as="h1" scale="xxl" color="text">
                 {t('Farms')}
               </FarmH1>
