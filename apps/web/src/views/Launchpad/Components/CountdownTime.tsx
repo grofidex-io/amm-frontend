@@ -12,6 +12,7 @@ interface IProps {
 const CountdownTime = ({type, time, cb} : IProps) => {
   const { t } = useTranslation()
 	const refInterval = useRef<any>()
+	const refTimeoutCallback = useRef<any>()
 	const refTimeout = useRef<any>()
 	const [timeCountdownArray, setTimeCountdownArray] = useState<string[]>([])
 	const [timeCountdown, setTimeCountdown] = useState<number |string | undefined>(0)
@@ -30,6 +31,7 @@ const CountdownTime = ({type, time, cb} : IProps) => {
 
 	useEffect(() => {
 		return () => {
+			clearTimeout(refTimeoutCallback.current)
 			clearInterval(refInterval.current)
 		}
 	}, [])
@@ -47,7 +49,10 @@ const CountdownTime = ({type, time, cb} : IProps) => {
 		if(timeCountdown === 0 && cb) {
 			setTimeCountdown(undefined)
 			if(cb) {
-				cb()
+				clearTimeout(refTimeoutCallback.current)
+				refTimeoutCallback.current = setTimeout(() => {
+					cb()
+				}, 500)
 			}
 		}
 	}, [timeCountdown, cb])
