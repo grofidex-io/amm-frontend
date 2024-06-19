@@ -457,7 +457,7 @@ const SOCIAL_ICON = {
   DRIBBBLE: <DribbbleIcon />,
 }
 
-const imageExtensions = ['.gif','.jpg','.jpeg','.png', '']
+const imageExtensions = ['.gif', '.jpg', '.jpeg', '.png', '.svg', '']
 const videoExtensions =['.mpg', '.mp2', '.mpeg', '.mpe', '.mpv', '.mp4']
 
 const LaunchpadDetailPage = () => {
