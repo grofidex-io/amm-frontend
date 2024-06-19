@@ -1021,7 +1021,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 										<ConnectWalletButton as="a"> <Text fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} style={{ textDecoration: "underline", color: theme.colors.primary, cursor: "pointer"}}>			{t('Connect now')}</Text> </ConnectWalletButton>
 									</StyledContent>
 								)}
-                {scheduleOrder?.length > 0 && (<StyledContent mb="3px">{t(`Schedule time for you (), don't miss it:`)}</StyledContent>)}
+                {scheduleOrder?.length > 0 && (<StyledContent mb="3px">{t(`Schedule time for you (UTC), don't miss it:`)}</StyledContent>)}
 								{scheduleOrder?.map((item: IPhase) => (
 									<StyledContentDot lineHeight="17px" mb="4px">
 										{item.name}

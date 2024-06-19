@@ -399,11 +399,11 @@ const StyledContent = styled.div`
 `
 const StyledSwiper = styled(Swiper)`
 	position: relative;
-	@media screen and (min-width: 1440px) {
-		.swiper-wrapper {
-			justify-content: center;
-		}
-	}
+	// @media screen and (min-width: 1440px) {
+	// 	.swiper-wrapper {
+	// 		justify-content: center;
+	// 	}
+	// }
 `
 
 const StyledListTitle = styled(Text)`
