@@ -809,7 +809,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
               <StyledTitle mb={["20px", "20px", "26px", "26px", "32px"]}>{t('Buy IDO %name%', { name: info?.tokenSymbol })}</StyledTitle>
 								<Box mb={["20px", "20px", "24px"]}>
 									<Flex mb="12px">
-										<Text color="textSubtle" fontSize={["16px", "16px", "16px", "16px", "16px", "16px", "16px", "17px"]} fontWeight="600" mr="10px">{t('Your Tier')}</Text>
+										<Text color="textSubtle" fontSize={["16px", "16px", "16px", "16px", "16px", "16px", "16px", "17px"]} fontWeight="600" mr="6px">{t('Your Tier')}</Text>
 										<TooltipText ref={tierTooltip.targetRef} decorationColor="secondary">
 											<ImageInfo src="/images/launchpad/icon-exclamation.svg" />
 										</TooltipText>
@@ -932,7 +932,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
                   </StyledButtonText>
                 </Flex>
                 <Flex alignItems="center" justifyContent="space-between">
-                  <Text color="text" fontSize="24px" fontWeight="700" lineHeight="32px">{formatNumber(totalCommitByUser, 2, 6)} U2U</Text>
+                  <Text color="text" fontSize="24px" fontWeight="700" lineHeight="32px">{formatNumber(totalCommitByUser, 0, 6)} U2U</Text>
                   {(totalGiveback || (info?.saleEnd < Date.now() && BigNumber(totalCommitByUser).gt(0))) && (<StyledButton disabled={totalGiveback < 0} onClick={openCommittedModal} className="button-hover">{t('Claim')}</StyledButton>)}
                 </Flex>
                 { (totalGiveback || (info?.saleEnd < Date.now() && BigNumber(totalCommitByUser).gt(0))) && (
