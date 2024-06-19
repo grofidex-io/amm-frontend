@@ -399,11 +399,11 @@ const StyledContent = styled.div`
 `
 const StyledSwiper = styled(Swiper)`
 	position: relative;
-	@media screen and (min-width: 1440px) {
-		.swiper-wrapper {
-			justify-content: center;
-		}
-	}
+	// @media screen and (min-width: 1440px) {
+	// 	.swiper-wrapper {
+	// 		justify-content: center;
+	// 	}
+	// }
 `
 
 const StyledListTitle = styled(Text)`
@@ -760,21 +760,21 @@ const LaunchpadDetailPage = () => {
               <StyledListTitle>{t('Sale price')}</StyledListTitle>
               <Flex alignItems="center">
                 <IconImg src='/images/u2u.svg' />
-                <StyledListText>{detail?.priceToken ? `${formatNumber(detail?.priceToken)} U2U` : 'To be announced'}</StyledListText>
+                <StyledListText>{detail?.priceToken ? `${formatNumber(detail?.priceToken, 0, 6)} U2U` : 'To be announced'}</StyledListText>
               </Flex>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Total Raise')}</StyledListTitle>
               <Flex alignItems="center">
                 <IconImg src='/images/u2u.svg' />
-                <StyledListText>{detail?.totalRaise ? `${formatNumber(detail.totalRaise)} U2U` : 'To be announced'} </StyledListText>
+                <StyledListText>{detail?.totalRaise ? `${formatNumber(detail.totalRaise,  0, 6)} U2U` : 'To be announced'} </StyledListText>
               </Flex>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
               <StyledListTitle>{t('Total for Sale')}</StyledListTitle>
               <Flex alignItems="center">
                 <IconImg style={{ borderRadius: '2px' }} src={detail?.tokenLogo}/>
-                <StyledListText>{detail?.totalSale ? `${formatNumber(detail.totalSale)} ${detail?.tokenSymbol}` : 'To be announced'} </StyledListText>
+                <StyledListText>{detail?.totalSale ? `${formatNumber(detail.totalSale,  0, 6)} ${detail?.tokenSymbol}` : 'To be announced'} </StyledListText>
               </Flex>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
@@ -792,7 +792,7 @@ const LaunchpadDetailPage = () => {
               <StyledListTitle>{t('Softcap')}</StyledListTitle>
               <Flex alignItems="center">
                 <IconImg src='/images/u2u.svg' />
-                <StyledListText>{detail?.softCap ? `${formatNumber(detail.softCap)} U2U` : 'To be announced' }</StyledListText>
+                <StyledListText>{detail?.softCap ? `${formatNumber(detail.softCap,  0, 6)} U2U` : 'To be announced' }</StyledListText>
               </Flex>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
@@ -829,7 +829,7 @@ const LaunchpadDetailPage = () => {
               </Flex>
               <StyledProgress primaryStep={detail?.totalRaise ? (totalCommit / detail?.totalRaise) * 100 : 0 } scale="sm" />
               <Flex alignItems="center" justifyContent="center" mt="12px">
-                <Text color='text' fontSize="16px" fontWeight="700">{detail?.totalRaise ? `${formatNumber(detail.totalRaise)} U2U` : 'To be announced'}</Text>
+                <Text color='text' fontSize="16px" fontWeight="700">{detail?.totalRaise ? `${formatNumber(detail.totalRaise,  0, 6)} U2U` : 'To be announced'}</Text>
                 {detail?.totalRaise ? <Text color='textSubtle' fontSize="14px" fontWeight="600" ml="8px">{t('Total Raise')}</Text> : null}
               </Flex>
             </StyledNeubrutal>
