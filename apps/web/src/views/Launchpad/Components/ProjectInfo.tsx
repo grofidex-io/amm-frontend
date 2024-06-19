@@ -577,7 +577,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 					setCurrentPhaseOrNext(_nextPhase)
 				}
 			}
-			if(_currentPhase.endSaleTime < Date.now() && Date.now() < _currentPhase.endTime) {
+			if(_currentPhase?.endSaleTime < Date.now() && Date.now() < _currentPhase.endTime) {
 				if(_nextPhase) {
 					setCurrentPhaseOrNext(_nextPhase)
 				}
