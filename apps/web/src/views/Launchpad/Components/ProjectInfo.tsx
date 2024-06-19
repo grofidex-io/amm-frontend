@@ -167,6 +167,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	const _launchpadContract = useRef<any>()
 	const _launchpadContractWhitelist = useRef<any>()
 	const _timeoutGetConfig = useRef<any>()
+	const _timeoutCheckCancel = useRef<any>()
 	const launchpadManagerContract = useRef<any>()
 	const [rate, setRate] = useState<number>(0)
 
@@ -180,6 +181,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	const [amountCommit, setAmountCommit] = useState<string>('')
 	const [configInfo, setConfigInfo] = useState<ITierInfo | null>()
 	const [userConfigInfo, setUserConfigInfo] = useState<ITierInfo | null>()
+	const [isShowCancel, setShowCancel] = useState<number>(Date.now())
 	const [configWhitelistInfo, setConfigWhitelistInfo] = useState<ITierInfo | null>()
 	const [isWhiteList, setIsWhiteList] = useState<boolean>(false)
 	const [loadUserInfo, setLoadUserInfo] = useState<boolean>(false)
@@ -315,6 +317,13 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		const _configInfo: ITierInfo = await _launchpadContract.current.read.getConfigInfo()
 		const _percentCancel: any = await _launchpadContract.current.read.percentCancel()
 		setConfigInfo({..._configInfo, maxCommitAmount: BigNumber(formatEther(_configInfo.maxCommitAmount)).toNumber(), maxBuyPerUser: BigNumber(formatEther(_configInfo.maxBuyPerUser)).toNumber(), startCancel: BigNumber(_configInfo.startCancel).toNumber() * 1000, endCancel: BigNumber(_configInfo.endCancel).toNumber() * 1000, percentCancel: BigNumber(formatEther(_percentCancel)).toNumber()})
+		if(_configInfo.startCancel) {
+			const _now = Date.now()
+			clearTimeout(_timeoutCheckCancel.current)
+			_timeoutCheckCancel.current = setTimeout(() => {
+				setShowCancel(_now)
+			}, ((_now - BigNumber(_configInfo.startCancel).toNumber() * 1000) + 2000))
+		}
 	}
 
 	const getTokenRate = async () => {
@@ -513,10 +522,12 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		setTimeCountdown(currentPhaseOrNext?.startTime)
 		setTypeCountdown(0)
 	}
-	if(currentPhaseOrNext?.endTime && currentPhaseOrNext.endTime > _now && currentPhaseOrNext.startTime < _now) {
-		setTimeCountdown(currentPhaseOrNext?.endTime)
-		setTypeCountdown(1)
-	}
+
+	const _endTime = currentPhaseOrNext?.endSaleTime || currentPhaseOrNext?.endTime
+		if(_endTime && _endTime > _now && currentPhaseOrNext.startTime < _now) {
+			setTimeCountdown(_endTime)
+			setTypeCountdown(1)
+		}
 	}, [currentPhaseOrNext, currentPhase])
 
 
@@ -567,6 +578,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 
 	useEffect(() => {
 		return () => {
+			clearTimeout(_timeoutCheckCancel.current)
 			clearInterval(_refIntervalCheckPhase.current)
 		}
 	}, [])
@@ -640,6 +652,10 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 			}
 			setIsCommitting(false)
 		}
+	}
+
+	const handleSelectCommit = () => {
+		setAmountCommit(maxCommitAmountByTier.toString())
 	}
 	
 	let disableCommitU2U = false
@@ -899,7 +915,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
                 { (totalGiveback || (info?.saleEnd < Date.now() && BigNumber(totalCommitByUser).gt(0))) && (
 									<StyledTextItalic textAlign="right" mt="8px">Estimate {formatNumber(totalGiveback, 0, 6)} U2U{ info?.saleEnd < Date.now() && BigNumber(totalCommit).gt(info?.softCap) ? `, ${formatNumber((totalCommitByUser  - totalGiveback) * rate, 0, 6)} ${info?.tokenSymbol}` : '' } </StyledTextItalic>
 								) }
-                {(currentPhase && configInfo?.startCancel && configInfo?.startCancel < Date.now()) && (
+                {(isShowCancel && currentPhase && configInfo?.startCancel && configInfo?.startCancel < Date.now()) && (
 									<StyledTextItalic mt="12px">
 										Note: You can cancel your request buy from {configInfo?.startCancel ? formatDate(dayjs.unix(configInfo.startCancel/ 1000).utc()) : '--'} - {configInfo.endCancel ? formatDate(dayjs.unix(configInfo.endCancel/ 1000).utc()) : '--'} UTC. <span style={{ color: theme.colors.bright }}>{configInfo.percentCancel}% fee</span> when canceling IDO orders.&nbsp;
 										<StyledButtonText variant="text" onClick={openCommittedModal}  >
@@ -937,7 +953,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 								
 											</Flex>
 											{(BigNumber(maxCommitAmountByTier).gte(0)) ? (
-												<Text color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" lineHeight="16px" mt="8px">{t('Maximum %maxCommitAmount% U2U', { maxCommitAmount: isShowMaximum ? maxCommitAmountByTier.toString() : '0' })}</Text>
+												<Text color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" lineHeight="16px" mt="8px">Maximum {isShowMaximum && maxCommitAmountByTier ? <StyledButtonText variant="text" onClick={handleSelectCommit}  >{maxCommitAmountByTier.toString() } U2U</StyledButtonText> : '0 U2U'}</Text>
 											) : ''}
 										</>
 								)}
