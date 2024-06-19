@@ -55,7 +55,7 @@ const StyledText = styled(Text)`
   font-size: 18px;
   font-weight: 600;
   line-height: calc(22/18);
-  color: #d6ddd0;
+  color: ${({ theme }) => theme.colors.textHighlight};
   margin-left: 12px;
   @media screen and (max-width: 1439px) {
     font-size: 17px;
