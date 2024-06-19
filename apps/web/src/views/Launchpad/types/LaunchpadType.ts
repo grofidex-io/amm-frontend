@@ -62,6 +62,7 @@ export interface IPhase {
 	type: string
 	minStake: number
 	maxStake: number
+	endSaleTime: number
 }
 
 export interface ILaunchpadDetail {

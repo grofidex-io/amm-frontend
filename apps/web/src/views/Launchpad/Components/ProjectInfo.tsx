@@ -522,10 +522,12 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		setTimeCountdown(currentPhaseOrNext?.startTime)
 		setTypeCountdown(0)
 	}
-	if(currentPhaseOrNext?.endTime && currentPhaseOrNext.endTime > _now && currentPhaseOrNext.startTime < _now) {
-		setTimeCountdown(currentPhaseOrNext?.endTime)
-		setTypeCountdown(1)
-	}
+
+	const _endTime = currentPhaseOrNext?.endSaleTime || currentPhaseOrNext?.endTime
+		if(_endTime && _endTime > _now && currentPhaseOrNext.startTime < _now) {
+			setTimeCountdown(_endTime)
+			setTypeCountdown(1)
+		}
 	}, [currentPhaseOrNext, currentPhase])
 
 
