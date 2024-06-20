@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization';
-import { Box, Button, Dots, Flex, Text, TooltipText, useModal, useToast, useTooltip } from '@pancakeswap/uikit';
+import { Box, Button, Dots, Flex, ScanLink, Text, TooltipText, useModal, useToast, useTooltip } from '@pancakeswap/uikit';
 import { formatNumber } from '@pancakeswap/utils/formatBalance';
+import truncateHash from '@pancakeswap/utils/truncateHash';
 import { NumericalInput } from '@pancakeswap/widgets-internal';
 import BigNumber from 'bignumber.js';
 import type { ChartData, ChartDataset } from 'chart.js';
@@ -19,6 +20,7 @@ import NextLink from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Doughnut } from "react-chartjs-2";
 import styled, { useTheme } from 'styled-components';
+import { getBlockExploreLink } from 'utils';
 import { getLaunchpadContract, getLaunchpadManagerContract } from 'utils/contractHelpers';
 import { formatDate } from 'views/CakeStaking/components/DataSet/format';
 import { Break } from 'views/Info/components/InfoTables/shared';
@@ -157,6 +159,18 @@ const StyledChart = styled(Box)`
 		--size: 250px;
 	}
 `
+const StyledScanLink = styled(ScanLink)`
+  transition: 0.3s ease;
+  &:hover {
+    text-decoration: none;
+    opacity: 0.65;
+  }
+  > div {
+    @media screen and (max-width: 575px) {
+      font-size: 14px;
+    }
+  }
+`
 
 export const chartDataOption: ChartDataset<'doughnut', number[]> = {
   data: [],
@@ -166,6 +180,7 @@ export const chartDataOption: ChartDataset<'doughnut', number[]> = {
 export default function ProjectInfo({ info, timeWhiteList, account, currentTier, totalCommit, updateStatusLaunchpad }: { info: ILaunchpadDetail, timeWhiteList: ITimeOfPhase, account: string, currentTier: Address, totalCommit: number, updateStatusLaunchpad: any }) {
   const { t } = useTranslation()
   const theme = useTheme()
+	const { chainId } = useActiveChainId()
 	const _refIntervalCheckPhase = useRef<any>()
 	const _refTimeoutCheckPhase = useRef<any>()
 	const _launchpadContract = useRef<any>()
@@ -174,7 +189,6 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	const _timeoutCheckCancel = useRef<any>()
 	const launchpadManagerContract = useRef<any>()
 	const [rate, setRate] = useState<number>(0)
-
 	const [isFocusInput, setIsFocusInput] = useState(false)
 	const [timeCountdown, setTimeCountdown] = useState<number>(0)
 	const [currentPhaseOrNext, setCurrentPhaseOrNext] = useState<IPhase| null>()
@@ -203,7 +217,6 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 
   const { fetchWithCatchTxError } = useCatchTxError()
 	const { toastSuccess, toastError } = useToast()
-	const { chainId } = useActiveChainId()
 	const { data: signer } = useWalletClient()
 	const refSchedule = useRef<IPhase[]>([])
 
@@ -705,13 +718,42 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
         flexDirection={["column-reverse", "column-reverse", "column-reverse", "column-reverse", "row"]}
       >
         <StyledNeubrutal p={["24px 16px", "24px 16px", "28px 20px", "28px 20px", "32px 24px"]} height="100%" style={{ flex: '2' }}>
-          <Box px={["0", "0", "12px", "12px", "16px", "16px", "20px"]} mb={["20px", "20px", "26px", "26px", "32px"]}>
+          <Box px={["0", "0", "0", "0", "12px", "16px", "20px"]} mb={["20px", "20px", "26px", "26px", "32px"]}>
             <StyledTitle mb={["12px", "12px", "16px"]}>{t('About %token% Project', {token: info?.tokenName})}</StyledTitle>
             <StyledTypography>{info?.description && parse(info?.description)}</StyledTypography>
           </Box>
+          <Box px={["0", "0", "0", "0", "12px", "16px", "20px"]} mb={["20px", "20px", "26px", "26px", "32px"]}>
+            <StyledTitle mb={["12px", "12px", "16px"]}>{t('Token')}</StyledTitle>
+            <StyledTypography>
+							<ul className="border-neubrutal">
+								<li>
+									<p>{t('Address:')}</p>
+									<a title={info?.tokenAddress} target='_blank' href={getBlockExploreLink(info?.tokenAddress, 'token', chainId)} rel="noreferrer">
+											{info?.tokenAddress && truncateHash(info?.tokenAddress, 20, 8)}
+									</a>
+								</li>
+								<li>
+									<p>{t('Name:')}</p>
+									<span>{info?.tokenName}</span>
+								</li>
+								<li>
+									<p>{t('Symbol:')}</p>
+									<span>{info?.tokenSymbol}</span>
+								</li>
+								<li>
+									<p>{t('Decimals:')}</p>
+									<span>{info?.tokenDecimals}</span>
+								</li>
+								<li>
+									<p>{t('Total Supply:')}</p>
+									<span>{info?.totalSupply && formatNumber(info?.totalSupply, 0, 6)}</span>
+								</li>
+							</ul>
+						</StyledTypography>
+          </Box>
 					{info?.tokenomics && (
-						<Box px={["0", "0", "12px", "12px", "16px", "16px", "20px"]} mb={["20px", "20px", "26px", "26px", "32px"]}>
-							<StyledTitle mb={["12px", "12px", "16px"]}>{t('Tokenomics')}</StyledTitle>
+						<Box px={["0", "0", "0", "0", "12px", "16px", "20px"]}>
+							<StyledTitle>{t('Tokenomics')}</StyledTitle>
 							<StyledChart>
 								<Doughnut
 									data={gauges}
