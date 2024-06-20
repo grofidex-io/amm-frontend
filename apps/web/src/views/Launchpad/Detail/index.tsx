@@ -800,23 +800,23 @@ const LaunchpadDetailPage = () => {
               </Flex>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
-              <StyledListTitle>{t('Snapshot time')}</StyledListTitle>
+              <StyledListTitle>{t('Snapshot time')} (UTC)</StyledListTitle>
               <StyledListText>{detail?.snapshotTime ? `${formatDate(dayjs.unix(Math.floor(detail.snapshotTime/ 1000)).utc())} ` : 'To be announced'}</StyledListText>
             </Flex>
 						<Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
-              <StyledListTitle>{t('Sale Start')}</StyledListTitle>
+              <StyledListTitle>{t('Sale Start')} (UTC)</StyledListTitle>
               <StyledListText>{detail?.saleStart ? `${formatDate(dayjs.unix(Math.floor(detail.saleStart/ 1000)).utc())} ` : 'To be announced'}</StyledListText>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
-              <StyledListTitle>{t('Sale End')}</StyledListTitle>
+              <StyledListTitle>{t('Sale End')} (UTC)</StyledListTitle>
               <StyledListText>{detail?.saleEnd ? `${formatDate(dayjs.unix(Math.floor(detail.saleEnd/ 1000)).utc())} ` : 'To be announced'}</StyledListText>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
-              <StyledListTitle>{t('Start Apply Whitelist')}</StyledListTitle>
+              <StyledListTitle>{t('Start Apply Whitelist')} (UTC)</StyledListTitle>
               <StyledListText>{timeWhiteList?.startTime ? `${formatDate(dayjs.unix(Math.floor(timeWhiteList.startTime/ 1000)).utc())} ` : 'To be announced'}</StyledListText>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
-              <StyledListTitle>{t('End Apply Whitelist')}</StyledListTitle>
+              <StyledListTitle>{t('End Apply Whitelist')} (UTC)</StyledListTitle>
               <StyledListText>{timeWhiteList?.endTime ? `${formatDate(dayjs.unix(Math.floor(timeWhiteList.endTime/ 1000)).utc())} ` : 'To be announced'}</StyledListText>
             </Flex>
     
