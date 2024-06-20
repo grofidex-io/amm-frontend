@@ -91,7 +91,6 @@ export const StyledTypography = styled.div`
   a {
     color: ${({ theme }) => theme.colors.primary};
     transition: all 0.3s;
-    text-decoration: underline;
     vertical-align: bottom;
     overflow: hidden;
     max-width: 100%;
@@ -103,5 +102,25 @@ export const StyledTypography = styled.div`
   }
   span {
     color: ${({ theme }) => theme.colors.textHighlight};
+  }
+  ul {
+    list-style: none;
+    padding: 10px 20px;
+    border-radius: ${({ theme }) => theme.radii.card};
+    // background: ${({ theme }) => theme.colors.backgroundItem};
+    li {
+      display: flex;
+      justify-content: space-between;
+      padding: 2px 0;
+      &:not(:last-child) {
+        border-bottom: 1px dashed ${({ theme }) => theme.colors.backgroundItem};
+      }
+      p {
+        min-width: 105px;
+      }
+    }
+    @media screen and (max-width: 575px) {
+      padding: 8px 16px;
+    }
   }
 `
