@@ -862,7 +862,7 @@ const LaunchpadDetailPage = () => {
                   </svg>
                   <Text color="cyan" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "16px"]} fontWeight="500" ml="8px">{t('Investor protection mechanism')}</Text>
                 </Flex>
-                <Text color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "14px"]} fontWeight="600" mt="8px" maxWidth={["260px", "260px", "260px", "260px", "260px", "260px", "260px", "300px"]}>{t('In case, total raise U2U does not reach the value of Softcap, the launched will be cancelled and refund U2U for investors')}</Text>
+                <Text color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "14px"]} fontWeight="600" mt="8px" maxWidth={["260px", "260px", "260px", "260px", "260px", "260px", "260px", "300px"]}>{t('In case, total raised U2U does not reach the value of Softcap, the launched will be cancelled and refund U2U for investors')}</Text>
               </StyledNeubrutal>
             </Flex>
           </Box>

@@ -3,6 +3,8 @@ import { Box, Button, Dots, Flex, Text, TooltipText, useModal, useToast, useTool
 import { formatNumber } from '@pancakeswap/utils/formatBalance';
 import { NumericalInput } from '@pancakeswap/widgets-internal';
 import BigNumber from 'bignumber.js';
+import type { ChartData, ChartDataset } from 'chart.js';
+import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
 import ConnectWalletButton from 'components/ConnectWalletButton';
 import { ToastDescriptionWithTx } from 'components/Toast';
 import dayjs from 'dayjs';
@@ -14,7 +16,8 @@ import forEach from 'lodash/forEach';
 import keyBy from 'lodash/keyBy';
 import uniqBy from 'lodash/uniqBy';
 import NextLink from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Doughnut } from "react-chartjs-2";
 import styled, { useTheme } from 'styled-components';
 import { getLaunchpadContract, getLaunchpadManagerContract } from 'utils/contractHelpers';
 import { formatDate } from 'views/CakeStaking/components/DataSet/format';
@@ -22,10 +25,11 @@ import { Break } from 'views/Info/components/InfoTables/shared';
 import { Address, useWalletClient } from 'wagmi';
 import { COUNTDOWN_TYPE, LAUNCHPAD_STATUS, PHASES_NONE, PHASES_TYPE } from '../helpers';
 import { StyledButton, StyledNeubrutal, StyledTypography } from '../styles';
-import { ILaunchpadDetail, IPhase, ITierInfo, ITimeOfPhase, IUserWhiteListInfo } from '../types/LaunchpadType';
+import { ILaunchpadDetail, IPhase, ITierInfo, ITimeOfPhase, ITokenomics, IUserWhiteListInfo } from '../types/LaunchpadType';
 import CountdownTime from './CountdownTime';
 import ModalDetail from './ModalDetail';
 
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const StyledTitle = styled(Text)`
   font-family: 'Metuo', sans-serif;
@@ -78,31 +82,6 @@ const ImageInfo = styled.img`
 	@media screen and (max-width: 1559px) {
 		--size: 12px;
 	}
-`
-const Wrapper = styled.div`
-  width: 100%;
-`
-const LayoutScroll = styled(Box)`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  overflow-x: auto;
-`
-const ResponsiveGrid = styled.div`
-  display: grid;
-  grid-gap: 1em;
-  align-items: center;
-  grid-template-columns: repeat(5, 1fr);
-  padding: 0 24px;
-  > * {
-    min-width: 100px;
-    @media screen and (max-width: 1199px) and (min-width: 992px) {
-      min-width: 80px;
-    }
-  }
-  @media screen and (max-width: 1199px) and (min-width: 992px) {
-    padding: 0 16px;
-  }
 `
 const IconTier = styled.img`
   height: 40px;
@@ -166,15 +145,24 @@ const StyledButtonText = styled(Button)`
 		font-size: 12px;
 	}
 `
+const StyledChart = styled(Box)`
+	--size: 400px;
+	width: var(--size);
+	height: var(--size);
+	margin: auto;
+	@media screen and (max-width: 575px) {
+		--size: 300px;
+	}
+	@media screen and (max-width: 374px) {
+		--size: 250px;
+	}
+`
 
-const data = [
-  { round: 'Tier 1', startTime: '0h', endTime: '0h', cancelTime: '0h', Claimable: '0h' },
-  { round: 'Tier 2', startTime: '3h', endTime: '3h', cancelTime: '3h', Claimable: '3h' },
-  { round: 'Tier 3', startTime: '6h', endTime: '6h', cancelTime: '6h', Claimable: '6h' },
-  { round: 'Apply Whitelist', startTime: '9h', endTime: '9h', cancelTime: '9h', Claimable: '9h' },
-  { round: 'Community', startTime: '12h', endTime: '12h', cancelTime: '12h', Claimable: '12h' },
-]
-
+export const chartDataOption: ChartDataset<'doughnut', number[]> = {
+  data: [],
+  backgroundColor: ['#F35E79', '#27B9C4', '#8051D6', '#129E7D', '#FCC631', '#2882CC', '#3DDBB5'],
+  borderWidth: 0,
+}
 export default function ProjectInfo({ info, timeWhiteList, account, currentTier, totalCommit, updateStatusLaunchpad }: { info: ILaunchpadDetail, timeWhiteList: ITimeOfPhase, account: string, currentTier: Address, totalCommit: number, updateStatusLaunchpad: any }) {
   const { t } = useTranslation()
   const theme = useTheme()
@@ -218,51 +206,6 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	const { chainId } = useActiveChainId()
 	const { data: signer } = useWalletClient()
 	const refSchedule = useRef<IPhase[]>([])
-
-	// const [chart, setChart] = useState({
-  //   series: [55, 20, 35],
-  //   options: {
-  //     colors: ['#6C4999', '#ff9800', '#00B58D', '#FE5300', '#00DEFF', '#c3f976'],
-  //     stroke: {
-  //       colors: theme.colors.backgroundAlt,
-  //       width: 8
-  //     },
-  //     legend: {
-  //       position: "bottom",
-  //       labels: {
-  //         colors: theme.colors.text
-  //       }
-  //     },
-  //     plotOptions: {
-  //       pie: {
-  //         donut: {
-  //           labels: {
-  //             show: true,
-  //             value: {
-  //               color: theme.colors.text
-  //             },
-  //             total: {
-  //               show: true,
-  //               color: theme.colors.textSubtle
-  //             }
-  //           }
-  //         }
-  //       }
-  //     },
-  //     dataLabels: {
-  //       enabled: false
-  //     },
-  //     labels: ["Web Design", "Mobile App", "Design System"],
-  //     states: {
-  //       hover: {
-  //         filter: "none"
-  //       },
-	// 			active: {
-	// 				filter: "none"
-	// 			}
-  //     }
-  //   },
-  // })
 
 	const getTotalUserCommitted = async () => {
 		try {
@@ -547,7 +490,6 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		}
 	}, [currentPhaseOrNext, currentPhase])
 
-
 	useEffect(() => {
 		if(info?.phases) {
 			const _now = Date.now()
@@ -584,8 +526,6 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 			}
 		}
 	}, [info, checkPhase])
-
-
 	
 	const recheckPhase = () => {
 		clearTimeout(_refTimeoutCheckPhase.current)
@@ -605,6 +545,47 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		}
 	}, [])
 
+	const gauges = useMemo<ChartData<'doughnut'>>(() => {
+    const options = {
+      ...chartDataOption,
+    }
+		const colors: string[] = []
+		const values: any = []
+		const labelsS: any = []
+		if(info?.tokenomics?.length > 0) {
+			forEach(info?.tokenomics, (item: ITokenomics) => {
+				colors.push(item.color)
+				values.push(item.value)
+				labelsS.push(item.label)
+			})
+		}
+    return {
+      labels: labelsS,
+      datasets: [
+        {
+          ...options,
+          data: values,
+					backgroundColor: colors
+        },
+      ],
+    }
+  }, [info])
+
+	const doughnutLabel = {
+		id: 'doughnutLabel',
+		afterDatasetsDraw(chart) {
+			const { ctx } = chart
+			const centerX = chart.getDatasetMeta(0).data[0].x
+			const centerY = chart.getDatasetMeta(0).data[0].y
+			ctx.save()
+			
+			ctx.font = 'bolder 18px Arial'
+			ctx.fillStyle = 'white'
+			ctx.textAlign = 'center'
+			ctx.textBaseline = 'middle'
+			ctx.fillText(info?.tokenSymbol, centerX, centerY)
+		}
+	}
 
 	useEffect(() => {
 		if(info?.phases.length > 0 && account) {
@@ -728,7 +709,31 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
             <StyledTitle mb={["12px", "12px", "16px"]}>{t('About %token% Project', {token: info?.tokenName})}</StyledTitle>
             <StyledTypography>{info?.description && parse(info?.description)}</StyledTypography>
           </Box>
-					{/* <ReactApexChart options={chart.options} series={chart.series} type="donut" height={300} /> */}
+					{info?.tokenomics && (
+						<Box px={["0", "0", "12px", "12px", "16px", "16px", "20px"]} mb={["20px", "20px", "26px", "26px", "32px"]}>
+							<StyledTitle mb={["12px", "12px", "16px"]}>{t('Tokenomics')}</StyledTitle>
+							<StyledChart>
+								<Doughnut
+									data={gauges}
+									options={{
+										responsive: true,
+										cutout: '70%',
+										radius: window.innerWidth > 576 ? '95%' : '90%',
+										plugins: {
+											legend: {
+												position: window.innerWidth > 576 ? 'right' : 'bottom',
+												labels: {
+													color: '#fff'
+												}
+											},
+										},
+									}}
+									plugins={[doughnutLabel]}
+								/>
+							</StyledChart>
+						</Box>
+					)}
+
           {/* <Box px={["0", "0", "12px", "12px", "16px", "16px", "20px"]} mb={["20px", "20px", "26px", "26px", "32px"]}>
             <StyledTitle mb={["12px", "12px", "16px"]}>{t('Roadmap')}</StyledTitle>
             <Box ml={["18px", "18px", "24px", "24px", "30px"]}>
@@ -817,7 +822,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 									</Flex>
 									{loadUserInfo ?  <Text fontSize={16}><Dots/></Text>  : (
 										<Flex alignItems="flex-end" mb="12px">
-											<IconTier src={(account && userConfigInfo && userConfigInfo?.img) ? userConfigInfo?.img : '/images/launchpad/icon-tier-starter.svg'} />
+											<IconTier src={(account && userConfigInfo && userConfigInfo?.img) ? userConfigInfo?.img : '/images/launchpad/step/icon-tier-starter.svg'} />
 											<StyledText ml="12px" style={{ fontSize: '20px', lineHeight: '24px' }}>{account && userConfigInfo?.name?.replace('IDO', '') || 'Starter'}</StyledText>
 										</Flex>
 									)}

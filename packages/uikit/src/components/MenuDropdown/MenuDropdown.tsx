@@ -51,7 +51,7 @@ const MenuDropdown: React.FC<React.PropsWithChildren<Props>> = ({
     position={dropdownPosition}
     target={
       <StyledButton scale="md" variant="text" endIcon={<ChevronDownIcon color="currentColor" />}>
-        Expanse
+        More
       </StyledButton>
     }
   >
