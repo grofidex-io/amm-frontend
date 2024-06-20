@@ -884,11 +884,11 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 										)}
 							
 										{info?.snapshotTime < Date.now() && (
-											<StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: theme.colors.textHighlight }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc())} </span></StyledTextItalic>
+											<StyledTextItalic>{t('The snapshot process has ended at')} <span style={{ color: theme.colors.textHighlight }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc())} UTC</span></StyledTextItalic>
 										)}
 										{info?.snapshotTime > Date.now()  && 
 											<>
-												<StyledTextItalic>{t('The snapshot will be ended at ')} <span style={{ color: theme.colors.textHighlight }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc())} </span></StyledTextItalic>
+												<StyledTextItalic>{t('The snapshot will be ended at ')} <span style={{ color: theme.colors.textHighlight }}>{info?.snapshotTime && formatDate(dayjs.unix(Math.floor(info.snapshotTime/ 1000)).utc())} UTC</span></StyledTextItalic>
 												<StyledTextItalic>
 													{t('Staking more to upgrade your tier. ')}
 													<StyledNextLink href="/staking" passHref>{t('Staking Now')}</StyledNextLink>
