@@ -32,7 +32,7 @@ const CardLayout = styled(Box)`
   transition: all 0.3s ease 0s;
   &:hover {
     transform: translateY(-5px);
-    background: linear-gradient(#272727, #272727) padding-box, conic-gradient(from var(--angle), #000, #9A6AFF, #53DEE9, #000 25%) border-box;
+    background: linear-gradient(${({ theme }) => theme.colors.backgroundAlt}, ${({ theme }) => theme.colors.backgroundAlt}) padding-box, conic-gradient(from var(--angle), #000, #9A6AFF, #53DEE9, #000 25%) border-box;
     border-color: transparent;
     animation: rotate-gradient 5s linear 0s infinite normal none running;
   }
@@ -45,7 +45,7 @@ const CardHeader = styled(Box)`
   position: relative;
   background: ${({ theme }) => theme.colors.backgroundPage};
   // aspect-ratio: 16/9;
-  height: 110px;
+  padding-bottom: 25%;
   overflow: hidden;
   &:before {
     content: "";
@@ -65,11 +65,9 @@ const CardHeader = styled(Box)`
   }
 `
 const CardBody = styled.div`
-  --space: 110px;
   padding: 16px;
   display: flex;
   flex-direction: column;
-  height: calc(100% - var(--space));
 `
 const Image = styled.img`
   position: absolute;
@@ -225,9 +223,13 @@ const IconUser = styled.div`
 `
 const StyledTextInfo = styled(Text)`
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;  
   overflow: hidden;
+  min-height: 45px;
+  @media screen and (max-width: 1439px) {
+    min-height: 42px;
+  }
 `
 
 type LaunchpadProps ={
