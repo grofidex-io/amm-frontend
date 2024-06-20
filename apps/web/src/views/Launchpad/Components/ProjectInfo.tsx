@@ -817,7 +817,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 									</Flex>
 									{loadUserInfo ?  <Text fontSize={16}><Dots/></Text>  : (
 										<Flex alignItems="flex-end" mb="12px">
-											<IconTier src={(account && userConfigInfo && userConfigInfo?.img) ? userConfigInfo?.img : '/images/launchpad/icon-tier-starter.svg'} />
+											<IconTier src={(account && userConfigInfo && userConfigInfo?.img) ? userConfigInfo?.img : '/images/launchpad/step/icon-tier-starter.svg'} />
 											<StyledText ml="12px" style={{ fontSize: '20px', lineHeight: '24px' }}>{account && userConfigInfo?.name?.replace('IDO', '') || 'Starter'}</StyledText>
 										</Flex>
 									)}
