@@ -217,7 +217,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
         </Box>
         <StyledBoxTab>
           <StyledFilter>
-            <SearchInput onChange={inputSearch} placeholder="Search Type symbol, the project name to find your launchpad" />
+            <SearchInput onChange={inputSearch} placeholder="Search symbol, the project name to find your launchpad" />
             <Select
 							onOptionChange={handleSelectType}
               options={[
