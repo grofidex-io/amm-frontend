@@ -65,6 +65,12 @@ export interface IPhase {
 	endSaleTime: number
 }
 
+export interface ITokenomics {
+	color: string,
+	value: string,
+	label: string,
+}
+
 export interface ILaunchpadDetail {
 	tokenName: string,
 	tokenSymbol: string,
@@ -86,7 +92,8 @@ export interface ILaunchpadDetail {
 	saleEnd: number,
 	status: string,
 	socials: ISocial[],
-	phases: IPhase[]
+	phases: IPhase[],
+	tokenomics: ITokenomics[],
 }
 
 export interface IUserCommit {
