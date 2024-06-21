@@ -242,7 +242,7 @@ type LaunchpadProps ={
 const imageExtensions = ['.gif', '.jpg', '.jpeg', '.png', '.svg', '']
 const videoExtensions =['.mpg', '.mp2', '.mpeg', '.mpe', '.mpv', '.mp4']
 
-const LaunchpadCard = ({ item, filterType, isContribution }: LaunchpadProps) => {
+const LaunchpadCard = ({ item, isContribution }: LaunchpadProps) => {
   const { t } = useTranslation()
   const theme = useTheme();
 	const launchpadManagerContract = useRef<any>()
@@ -308,17 +308,7 @@ const LaunchpadCard = ({ item, filterType, isContribution }: LaunchpadProps) => 
 		checkTimeCountdown()
 	}, [])
 
-	if(filterType && filterType === LAUNCHPAD_STATUS.ENDED && getStatusNameByTime(item, totalCommitByUser, totalCommit) !== 'Ended') {
-		return null
-	}
 
-	if(filterType && filterType === `${LAUNCHPAD_STATUS.ENDED}-${LAUNCHPAD_STATUS.CANCELLED}` && getStatusNameByTime(item, totalCommitByUser, totalCommit) !== 'Cancelled') {
-		return null
-	}
-
-	if(filterType && filterType === `${LAUNCHPAD_STATUS.ENDED}-${LAUNCHPAD_STATUS.CLAIMABLE}` && getStatusNameByTime(item, totalCommitByUser, totalCommit) !== 'Claimable') {
-		return null
-	}
 
 
   return (
