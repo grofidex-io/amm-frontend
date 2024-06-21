@@ -30,22 +30,9 @@ export default function AllProjects({filter}: IProjectProp) {
 	const { t } = useTranslation()
   const [page, setPage] = useState(1)
 	const { account } = useAccountActiveChain()
-	const { data: launchpad, isLoading } = useFetchListLaunchpad(page)
+	const { data: list, isLoading } = useFetchListLaunchpad(page, valueSearch, filterType)
 	const {data: listProject} = useFetchListProjectByUser(account)
-	const _listLaunchpad: any = launchpad?.data || []
-	const newData = _listLaunchpad?.filter((item: ILaunchpadItem) => {
-		if(valueSearch?.length > 0 || filterType && filterType?.length > 0) {
-			const _statusFilterName = valueSearch.length > 0 ? item.projectName.toLowerCase().includes(valueSearch.toLowerCase()) : true
-			const _filterTypeSplit = filterType?.split('-')
-			const _statusFilterType = _filterTypeSplit && _filterTypeSplit.length > 0 ? item.status.includes(_filterTypeSplit[0]) : true
-			return _statusFilterName && _statusFilterType
-		} 
-		return true
-	})
-	const list: any = {
-		...launchpad,
-		data: newData || []
-	}
+
 
   return (
     <>
@@ -53,7 +40,7 @@ export default function AllProjects({filter}: IProjectProp) {
 				{isLoading ? <LoanLoading/> : (
 					<>
 					{list?.data.map((item: ILaunchpadItem) => (
-						<LaunchpadCard isContribution={listProject && item.contractAddress ? listProject?.indexOf(item.contractAddress) !== -1 : false} type='upcoming' item={item} filterType={filterType}/>
+						<LaunchpadCard isContribution={listProject && item.contractAddress ? listProject?.indexOf(item.contractAddress) !== -1 : false} type='upcoming' item={item}/>
 					))}
 					</>
 				)}
