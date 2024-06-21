@@ -569,7 +569,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 			forEach(info?.tokenomics, (item: ITokenomics) => {
 				colors.push(item.color)
 				values.push(item.value)
-				labelsS.push(item.label)
+				labelsS.push(`${item.label}: ${item.value}%`)
 			})
 		}
     return {
@@ -591,7 +591,6 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 			const centerX = chart.getDatasetMeta(0).data[0].x
 			const centerY = chart.getDatasetMeta(0).data[0].y
 			ctx.save()
-			
 			ctx.font = 'bolder 18px Arial'
 			ctx.fillStyle = 'white'
 			ctx.textAlign = 'center'
@@ -765,9 +764,20 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 											legend: {
 												position: window.innerWidth > 576 ? 'right' : 'bottom',
 												labels: {
-													color: '#fff'
+													color: '#fff',
 												}
 											},
+											tooltip: {
+												callbacks: {
+													label: (context) => {
+														let label = context.raw
+														if(label) {
+															label += '%'
+														}
+														return label
+													}
+												}
+											}
 										},
 									}}
 									plugins={[doughnutLabel]}
