@@ -769,12 +769,11 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 											},
 											tooltip: {
 												callbacks: {
+													title: (context) => {
+														return context[0].label.split(':')[0]
+													},
 													label: (context) => {
-														let label = context.raw
-														if(label) {
-															label += '%'
-														}
-														return label
+														return `${context.raw}%`
 													}
 												}
 											}
