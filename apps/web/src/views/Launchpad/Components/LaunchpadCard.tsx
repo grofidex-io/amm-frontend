@@ -242,7 +242,7 @@ type LaunchpadProps ={
 const imageExtensions = ['.gif', '.jpg', '.jpeg', '.png', '.svg', '']
 const videoExtensions =['.mpg', '.mp2', '.mpeg', '.mpe', '.mpv', '.mp4']
 
-const LaunchpadCard = ({ item, filterType, isContribution }: LaunchpadProps) => {
+const LaunchpadCard = ({ item, isContribution }: LaunchpadProps) => {
   const { t } = useTranslation()
   const theme = useTheme();
 	const launchpadManagerContract = useRef<any>()
@@ -308,17 +308,7 @@ const LaunchpadCard = ({ item, filterType, isContribution }: LaunchpadProps) => 
 		checkTimeCountdown()
 	}, [])
 
-	if(filterType && filterType === LAUNCHPAD_STATUS.ENDED && getStatusNameByTime(item, totalCommitByUser, totalCommit) !== 'Ended') {
-		return null
-	}
 
-	if(filterType && filterType === `${LAUNCHPAD_STATUS.ENDED}-${LAUNCHPAD_STATUS.CANCELLED}` && getStatusNameByTime(item, totalCommitByUser, totalCommit) !== 'Cancelled') {
-		return null
-	}
-
-	if(filterType && filterType === `${LAUNCHPAD_STATUS.ENDED}-${LAUNCHPAD_STATUS.CLAIMABLE}` && getStatusNameByTime(item, totalCommitByUser, totalCommit) !== 'Claimable') {
-		return null
-	}
 
 
   return (
@@ -400,7 +390,7 @@ const LaunchpadCard = ({ item, filterType, isContribution }: LaunchpadProps) => 
           <StyledTextInfo fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="400" mb="16px" color='textSubtle'>{item.shortDescription}</StyledTextInfo>
           <Box mt="auto">
             <Flex justifyContent="space-between" mb="12px">
-              <Text minWidth="68px" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="20px" color='textSubtle'>{t('Sale price')}</Text>
+              <Text minWidth="68px" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600" lineHeight="20px" color='textSubtle'>{t('Sale Price')}</Text>
               <Text ml="12px" textAlign="right" fontSize={["15px", "15px", "16px", "16px", "15px", "16px", "17px"]} fontWeight="700" lineHeight="20px" color='text'>{item?.priceToken ? `1 ${item?.tokenSymbol} = ${item?.priceToken} U2U` : 'TBA'}</Text>
             </Flex>
             <Flex justifyContent="space-between">

@@ -761,7 +761,7 @@ const LaunchpadDetailPage = () => {
           <StyledNeubrutal  p={["16px", "16px", "20px", "20px", "24px"]} mx="auto" width="100%" minWidth={["100%", "100%", "360px"]} maxWidth={["460px", "460px", "460px", "460px", "460px", "460px", "460px", "500px"]} style={{ flex: "1" }}>
             <StyledTitleCard>{t('Sale Info')}</StyledTitleCard>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
-              <StyledListTitle>{t('Sale price')}</StyledListTitle>
+              <StyledListTitle>{t('Sale Price')}</StyledListTitle>
               <Flex alignItems="center">
                 <IconImg src='/images/u2u.svg' />
                 <StyledListText>{detail?.priceToken ? `${formatNumber(detail?.priceToken, 0, 6)} U2U` : 'To be announced'}</StyledListText>
@@ -800,7 +800,7 @@ const LaunchpadDetailPage = () => {
               </Flex>
             </Flex>
             <Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">
-              <StyledListTitle>{t('Snapshot time')} (UTC)</StyledListTitle>
+              <StyledListTitle>{t('Snapshot Time')} (UTC)</StyledListTitle>
               <StyledListText>{detail?.snapshotTime ? `${formatDate(dayjs.unix(Math.floor(detail.snapshotTime/ 1000)).utc())} ` : 'To be announced'}</StyledListText>
             </Flex>
 						<Flex mb={["8px", "8px", "12px", "12px", "16px", "16px", "20px"]} alignItems="center" justifyContent="space-between">

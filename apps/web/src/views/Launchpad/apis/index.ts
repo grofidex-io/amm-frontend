@@ -3,8 +3,15 @@ import { Address } from "viem"
 import { ICommittedItem, IHistoryTransaction, ILaunchpadDetail, ILaunchpadItem, IPagination } from "../types/LaunchpadType"
 
 const BASE_LAUNCHPAD_URL = process.env.NEXT_PUBLIC_LAUNCHPAD_API
-export const fetchListLaunchpad = async (page: number) : Promise<{data: ILaunchpadItem[], status: boolean, pagination: IPagination}> => {
-	const response = await fetch(`${BASE_LAUNCHPAD_URL}/launchpad?page=${page}&size=12`)
+export const fetchListLaunchpad = async (page: number, search: string, status: string | null) : Promise<{data: ILaunchpadItem[], status: boolean, pagination: IPagination}> => {
+	let url = `${BASE_LAUNCHPAD_URL}/launchpad?page=${page}&size=12`
+	if(search?.length > 0) {
+		url+= `&search=${search}`
+	}
+	if(status && status?.length > 0) {
+		url += `&status=${status}`
+	}
+	const response = await fetch(url)
 	const data = await response.json()
 	return data
 }
