@@ -770,11 +770,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 											tooltip: {
 												callbacks: {
 													label: (context) => {
-														let label = context.raw
-														if(label) {
-															label += '%'
-														}
-														return label
+														return `${context.raw}%`
 													}
 												}
 											}
