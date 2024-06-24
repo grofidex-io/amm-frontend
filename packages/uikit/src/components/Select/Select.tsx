@@ -91,6 +91,9 @@ const ListItem = styled.li`
   &:hover {
     background: ${({ theme }) => theme.colors.gradientHover};
   }
+	&.active {
+    background: ${({ theme }) => theme.colors.gradientHover};
+  }
 `;
 
 export interface SelectProps extends BoxProps {
@@ -98,6 +101,7 @@ export interface SelectProps extends BoxProps {
   onOptionChange?: (option: OptionProps) => void;
   placeHolderText?: string;
   defaultOptionIndex?: number;
+	disableFilterSelected?: boolean
 }
 
 export interface OptionProps {
@@ -111,6 +115,7 @@ const Select: React.FunctionComponent<React.PropsWithChildren<SelectProps>> = ({
   onOptionChange,
   defaultOptionIndex = 0,
   placeHolderText,
+	disableFilterSelected,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -172,8 +177,8 @@ const Select: React.FunctionComponent<React.PropsWithChildren<SelectProps>> = ({
       <DropDownListContainer>
         <DropDownList>
           {options.map((option, index) =>
-            placeHolderText || index !== selectedOptionIndex ? (
-              <ListItem onClick={onOptionClicked(index)} key={option.label}>
+            placeHolderText || (disableFilterSelected ? true : index !== selectedOptionIndex) ? (
+              <ListItem onClick={onOptionClicked(index)} key={option.label} className={(disableFilterSelected && index === selectedOptionIndex) ? 'active' : '' }>
                 {option?.imageUrl && (
                   <Image
                     mr="4px"
