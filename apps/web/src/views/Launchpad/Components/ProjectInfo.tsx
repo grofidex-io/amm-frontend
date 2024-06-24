@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization';
-import { Box, Button, Dots, Flex, ScanLink, Text, TooltipText, useModal, useToast, useTooltip } from '@pancakeswap/uikit';
-import { formatNumber } from '@pancakeswap/utils/formatBalance';
+import { Box, Button, Dots, Flex, Text, TooltipText, useModal, useToast, useTooltip } from '@pancakeswap/uikit';
+import { formatBigInt, formatNumber } from '@pancakeswap/utils/formatBalance';
 import truncateHash from '@pancakeswap/utils/truncateHash';
 import { NumericalInput } from '@pancakeswap/widgets-internal';
 import BigNumber from 'bignumber.js';
@@ -24,7 +24,7 @@ import { getBlockExploreLink } from 'utils';
 import { getLaunchpadContract, getLaunchpadManagerContract } from 'utils/contractHelpers';
 import { formatDate } from 'views/CakeStaking/components/DataSet/format';
 import { Break } from 'views/Info/components/InfoTables/shared';
-import { Address, useWalletClient } from 'wagmi';
+import { Address, useBalance, useWalletClient } from 'wagmi';
 import { COUNTDOWN_TYPE, LAUNCHPAD_STATUS, PHASES_NONE, PHASES_TYPE } from '../helpers';
 import { StyledButton, StyledNeubrutal, StyledTypography } from '../styles';
 import { ILaunchpadDetail, IPhase, ITierInfo, ITimeOfPhase, ITokenomics, IUserWhiteListInfo } from '../types/LaunchpadType';
@@ -159,25 +159,14 @@ const StyledChart = styled(Box)`
 		--size: 250px;
 	}
 `
-const StyledScanLink = styled(ScanLink)`
-  transition: 0.3s ease;
-  &:hover {
-    text-decoration: none;
-    opacity: 0.65;
-  }
-  > div {
-    @media screen and (max-width: 575px) {
-      font-size: 14px;
-    }
-  }
-`
+
 
 export const chartDataOption: ChartDataset<'doughnut', number[]> = {
   data: [],
   backgroundColor: ['#F35E79', '#27B9C4', '#8051D6', '#129E7D', '#FCC631', '#2882CC', '#3DDBB5'],
   borderWidth: 0,
 }
-export default function ProjectInfo({ info, timeWhiteList, account, currentTier, totalCommit, updateStatusLaunchpad }: { info: ILaunchpadDetail, timeWhiteList: ITimeOfPhase, account: string, currentTier: Address, totalCommit: number, updateStatusLaunchpad: any }) {
+export default function ProjectInfo({ info, timeWhiteList, account, currentTier, totalCommit, updateStatusLaunchpad }: { info: ILaunchpadDetail, timeWhiteList: ITimeOfPhase, account: Address, currentTier: Address, totalCommit: number, updateStatusLaunchpad: any }) {
   const { t } = useTranslation()
   const theme = useTheme()
 	const { chainId } = useActiveChainId()
@@ -208,6 +197,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 		giveBackAmount: 0,
 		isWhiteList: false
 	})
+	const { data: balance, refetch: refetchBalance } = useBalance({ address: account })
 	const [totalCommitByUser, setTotalCommitByUser] = useState<number>(0)
 	const [currentCommit, setCurrentCommit] = useState<number>(0)
 	const [isCommitting, setIsCommitting] = useState<boolean>(false)
@@ -438,6 +428,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	const fetchUserData = async () => {
 		const _total = await getTotalUserCommitted()
 		getGiveBack(_total)
+		refetchBalance()
 	}
 
 	const [openCommittedModal] = useModal(
@@ -569,7 +560,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 			forEach(info?.tokenomics, (item: ITokenomics) => {
 				colors.push(item.color)
 				values.push(item.value)
-				labelsS.push(item.label)
+				labelsS.push(`${item.label}: ${item.value}%`)
 			})
 		}
     return {
@@ -591,7 +582,6 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 			const centerX = chart.getDatasetMeta(0).data[0].x
 			const centerY = chart.getDatasetMeta(0).data[0].y
 			ctx.save()
-			
 			ctx.font = 'bolder 18px Arial'
 			ctx.fillStyle = 'white'
 			ctx.textAlign = 'center'
@@ -637,6 +627,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	if(BigNumber(poolAvailable).lte(maxCommitAmountByTier)) {
 		maxCommitAmountByTier = poolAvailable
 	}
+
 	if(currentPhase?.type === PHASES_TYPE.WHITELIST && !isWhiteList) {
 		maxCommitAmountByTier = 0
 	}
@@ -644,12 +635,17 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	const handleCommitU2U = async () => {
 		if(!disableCommitU2U && BigNumber(amountCommit).gt(0) && maxCommitAmountByTier && BigNumber(maxCommitAmountByTier).gte(BigNumber(amountCommit))) {
 			try {
+				if(balance?.formatted && BigNumber(amountCommit).gt(balance?.formatted)) {
+					toastError(t('Failed'), `Insufficient ${balance?.symbol || 'U2U'} balance`)
+					return
+				}
 				setIsCommitting(true)
 				const res = await fetchWithCatchTxError(() => _launchpadContract.current.write.commit({value: parseEther(new BigNumber(amountCommit).toFixed(18))}))
 				if(res?.status) {
 					getTotalUserCommitted()
 					setAmountCommit('')
 					getUserCommitted()
+					refetchBalance()
 					if(currentPhase?.type === PHASES_TYPE.WHITELIST || currentPhase?.type === PHASES_TYPE.COMMUNITY) {
 						getCurrentCommit()
 					}
@@ -765,9 +761,19 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 											legend: {
 												position: window.innerWidth > 576 ? 'right' : 'bottom',
 												labels: {
-													color: '#fff'
+													color: '#fff',
 												}
 											},
+											tooltip: {
+												callbacks: {
+													title: (context) => {
+														return context[0].label.split(':')[0]
+													},
+													label: (context) => {
+														return `${context.raw}%`
+													}
+												}
+											}
 										},
 									}}
 									plugins={[doughnutLabel]}
@@ -1022,9 +1028,12 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 												} 
 								
 											</Flex>
+											<Flex alignItems="center">
 											{(BigNumber(maxCommitAmountByTier).gte(0)) ? (
 												<Text color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" lineHeight="16px" mt="8px">Maximum {isShowMaximum && maxCommitAmountByTier ? <StyledButtonText variant="text" onClick={handleSelectCommit}  >{maxCommitAmountByTier.toString() } U2U</StyledButtonText> : '0 U2U'}</Text>
 											) : ''}
+											{account && <Text  color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" lineHeight="16px" mt="8px">{(BigNumber(maxCommitAmountByTier).gte(0)) ? ',' : null} Available:   {formatBigInt(balance?.value ?? 0n, 6)} {balance?.symbol || 'U2U'}</Text>}
+											</Flex>
 										</>
 								)}
 				
@@ -1071,7 +1080,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
                 {scheduleOrder?.length > 0 && (<StyledContent mb="3px">{t(`Schedule time for you (UTC), don't miss it:`)}</StyledContent>)}
 								{scheduleOrder?.map((item: IPhase) => (
 									<StyledContentDot lineHeight="17px" mb="4px">
-										{item.name}
+										{item.name} {item.maxAmountCommitPerUser && `(Max commit: ${item.maxAmountCommitPerUser} U2U)`}
 										<Text fontSize="14px" lineHeight="20px" mt="2px" style={{ color: theme.colors.textHighlight }}>{`${formatDate(dayjs.unix(Math.floor(item.startTime/ 1000)).utc())} - ${formatDate(dayjs.unix(Math.floor((item.endSaleTime || item.endTime)/ 1000)).utc())} `}</Text>
 									</StyledContentDot>
 								))}
