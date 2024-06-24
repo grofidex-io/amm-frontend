@@ -220,6 +220,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
             <SearchInput onChange={inputSearch} placeholder="Search symbol, the project name to find your launchpad" />
             <Select
 							onOptionChange={handleSelectType}
+							disableFilterSelected
               options={[
                 {
                   label: t('All status'),
