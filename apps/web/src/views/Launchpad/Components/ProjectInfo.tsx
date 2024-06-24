@@ -1030,9 +1030,9 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 											</Flex>
 											<Flex alignItems="center">
 											{(BigNumber(maxCommitAmountByTier).gte(0)) ? (
-												<Text color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" lineHeight="16px" mt="8px">Maximum {isShowMaximum && maxCommitAmountByTier ? <StyledButtonText variant="text" onClick={handleSelectCommit}  >{maxCommitAmountByTier.toString() } U2U, </StyledButtonText> : '0 U2U,'}</Text>
+												<Text color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" lineHeight="16px" mt="8px">Maximum {isShowMaximum && maxCommitAmountByTier ? <StyledButtonText variant="text" onClick={handleSelectCommit}  >{maxCommitAmountByTier.toString() } U2U</StyledButtonText> : '0 U2U'}</Text>
 											) : ''}
-											{account && <Text ml="5px" color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" lineHeight="16px" mt="8px">Available:   {formatBigInt(balance?.value ?? 0n, 6)} {balance?.symbol || 'U2U'}</Text>}
+											{account && <Text  color="textSubtle" fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} fontStyle="italic" lineHeight="16px" mt="8px">{(BigNumber(maxCommitAmountByTier).gte(0)) ? ',' : null} Available:   {formatBigInt(balance?.value ?? 0n, 6)} {balance?.symbol || 'U2U'}</Text>}
 											</Flex>
 										</>
 								)}
