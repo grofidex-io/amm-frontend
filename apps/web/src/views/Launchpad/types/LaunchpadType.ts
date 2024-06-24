@@ -63,6 +63,7 @@ export interface IPhase {
 	minStake: number
 	maxStake: number
 	endSaleTime: number
+	maxAmountCommitPerUser: number
 }
 
 export interface ITokenomics {

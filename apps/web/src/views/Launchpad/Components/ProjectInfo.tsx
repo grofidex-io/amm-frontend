@@ -1080,7 +1080,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
                 {scheduleOrder?.length > 0 && (<StyledContent mb="3px">{t(`Schedule time for you (UTC), don't miss it:`)}</StyledContent>)}
 								{scheduleOrder?.map((item: IPhase) => (
 									<StyledContentDot lineHeight="17px" mb="4px">
-										{item.name}
+										{item.name} {item.maxAmountCommitPerUser && `(Max commit: ${item.maxAmountCommitPerUser} U2U)`}
 										<Text fontSize="14px" lineHeight="20px" mt="2px" style={{ color: theme.colors.textHighlight }}>{`${formatDate(dayjs.unix(Math.floor(item.startTime/ 1000)).utc())} - ${formatDate(dayjs.unix(Math.floor((item.endSaleTime || item.endTime)/ 1000)).utc())} `}</Text>
 									</StyledContentDot>
 								))}
