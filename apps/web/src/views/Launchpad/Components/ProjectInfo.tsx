@@ -907,9 +907,10 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 										{/* {userConfigInfo && <StyledTextItalic>{t('Maximum %maxBuyPerUser% U2U to buy IDO in round buy %tier%. The snapshot process has ended at 2024/05/03 14:22:22 .', {maxBuyPerUser: userConfigInfo?.maxBuyPerUser, tier: userConfigInfo?.name })}</StyledTextItalic>} */}
 									</Box>
 								</Box>
-            <Box mb={["20px", "20px", "24px"]}>
+							{timeWhiteList?.startTime && (
+								<Box mb={["20px", "20px", "24px"]}>
 							<Flex mb="12px">
-								<Text color="textSubtle" fontSize={["16px", "16px", "16px", "16px", "16px", "16px", "16px", "17px"]} fontWeight="600" mr="10px">{t('Apply Whitlelist')}</Text>
+								<Text color="textSubtle" fontSize={["16px", "16px", "16px", "16px", "16px", "16px", "16px", "17px"]} fontWeight="600" mr="10px">{t('Apply Whitelist')}</Text>
 								<TooltipText ref={applyTooltip.targetRef} decorationColor="secondary">
 									<ImageInfo src="/images/launchpad/icon-exclamation.svg" />
 								</TooltipText>
@@ -956,8 +957,9 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 								<Text fontSize={["12px", "12px", "12px", "12px", "12px", "12px", "12px", "13px"]} lineHeight="20px" style={{ color: theme.colors.textHighlight }}>{`${timeWhiteList?.startTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.startTime/ 1000)).utc())} - ${timeWhiteList?.endTime && formatDate(dayjs.unix(Math.floor(timeWhiteList.endTime/ 1000)).utc())}`}</Text>
 							</Box>
 						)}
-			
-					 		</Box>
+							</Box>
+							)}
+           
 							{currentPhaseOrNext && (
 								<Box style={{ textAlign: 'center' }}>
 									<Text color="bright" fontSize={["14px", "14px", "14px", "14px", "14px", "14px", "14px", "15px"]} fontWeight="600">{`Sale token for ${currentPhaseOrNext?.name} ${typeCountdown === 0 ? 'start in' : 'end in'}`}</Text>
