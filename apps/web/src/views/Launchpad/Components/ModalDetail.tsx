@@ -90,7 +90,8 @@ export default function ModalDetail({
 }) {
 	const { data: signer } = useWalletClient()
 	const { chainId } = useActiveChainId()
-	const [configByContract, setConfigByContract] = useState<any>({})
+	// const [configByContract, setConfigByContract] = useState<any>({})
+	const configByContract = useRef<any>({})
   const { fetchWithCatchTxError } = useCatchTxError()
 	const { toastSuccess, toastError } = useToast()
   const { t } = useTranslation();
@@ -168,10 +169,11 @@ export default function ModalDetail({
 	const getConfig = async (item) => {
 		const _contract = getLaunchpadContract(item.roundAddress, signer ?? undefined, chainId)
 		const _configInfo: any = await _contract.read.getConfigInfo()
-		setConfigByContract({
-			...configByContract,
-			[item.roundAddress.toLowerCase()]: {..._configInfo, startCancel: BigNumber(_configInfo.startCancel).toNumber() * 1000, endCancel: BigNumber(_configInfo.endCancel).toNumber() * 1000}
-		})
+		configByContract.current [item.roundAddress.toLowerCase()] = {..._configInfo, startCancel: BigNumber(_configInfo.startCancel).toNumber() * 1000, endCancel: BigNumber(_configInfo.endCancel).toNumber() * 1000}
+		// setConfigByContract({
+		// 	...configByContract,
+		// 	[item.roundAddress.toLowerCase()]: {..._configInfo, startCancel: BigNumber(_configInfo.startCancel).toNumber() * 1000, endCancel: BigNumber(_configInfo.endCancel).toNumber() * 1000}
+		// })
 	}
 
 	useEffect(() => {
@@ -216,7 +218,7 @@ export default function ModalDetail({
 		if(BigNumber(item.u2uAmount).lte(0)) {
 			return 'Cancelled'
 		}
-		if(checkTimeCancel(configByContract[item.roundAddress.toLowerCase()])){
+		if(checkTimeCancel(configByContract.current[item.roundAddress.toLowerCase()])){
 			return <StyledButtonCancel disabled={isCancel} variant="cancel" onClick={() => handleCancel(item)}>{isCancel ? <Dots>Canceling</Dots> : 'Cancel'}</StyledButtonCancel>
 		} 
 		return null
@@ -251,7 +253,7 @@ export default function ModalDetail({
 											<StyledText>{listPhase[item.roundAddress.toLowerCase()]?.name}</StyledText>
 											<StyledText>{formatNumber(BigNumber(formatEther(item.u2uAmount)).toNumber(), 0, 6)} U2U</StyledText>
 											<StyledText>{item.roundType === PHASES_TYPE.TIER && formatNumber(Number(giveBackAmount), 0, 6)}</StyledText>
-											<StyledText>{ endTime && !isSortCap ? `${formatNumber(BigNumber(formatEther(item.u2uAmount)).minus(item.roundType === PHASES_TYPE.TIER ? giveBackAmount : 0).toNumber() * rate, 0, 6)} ${tokenName}`: !isSortCap && 'Calculating' } </StyledText>
+											<StyledText>{ (configByContract.current[item.roundAddress.toLowerCase()]?.endCancel < Date.now() || !isSortCap) ? `${formatNumber(BigNumber(formatEther(item.u2uAmount)).minus(item.roundType === PHASES_TYPE.TIER ? giveBackAmount : 0).toNumber() * rate, 0, 6)} ${tokenName}`: !isSortCap && 'Calculating' } </StyledText>
 											<Box style={{ textAlign: 'center', color: `${ renderAction(item) === 'Claimed' ? theme.colors.primary : renderAction(item) === 'Cancelled' ? theme.colors.failure : renderAction(item) === 'Ready to claim' ? theme.colors.yellow : theme.colors.text }` }}>
 												{renderAction(item)}
 											</Box>
