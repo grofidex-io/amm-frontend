@@ -6,6 +6,7 @@ import { NumericalInput } from '@pancakeswap/widgets-internal';
 import BigNumber from 'bignumber.js';
 import type { ChartData, ChartDataset } from 'chart.js';
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
+import AddToWalletButton from 'components/AddToWallet/AddToWalletButton';
 import ConnectWalletButton from 'components/ConnectWalletButton';
 import { ToastDescriptionWithTx } from 'components/Toast';
 import dayjs from 'dayjs';
@@ -724,9 +725,23 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 							<ul className="border-neubrutal">
 								<li>
 									<p>{t('Address:')}</p>
+									<Flex>
 									<a title={info?.tokenAddress} target='_blank' href={getBlockExploreLink(info?.tokenAddress, 'token', chainId)} rel="noreferrer">
 											{info?.tokenAddress && truncateHash(info?.tokenAddress, 20, 8)}
 									</a>
+									<AddToWalletButton
+                    data-dd-action-name="Add to wallet"
+                    variant="text"
+                    p="0"
+                    height="auto"
+                    width="fit-content"
+										marginLeft="5px"
+                    tokenAddress={info?.tokenAddress}
+                    tokenSymbol={info?.tokenSymbol}
+                    tokenDecimals={info?.tokenDecimals}
+                    tokenLogo={undefined}
+                  />
+									</Flex>
 								</li>
 								<li>
 									<p>{t('Name:')}</p>
