@@ -6,6 +6,7 @@ import { NumericalInput } from '@pancakeswap/widgets-internal';
 import BigNumber from 'bignumber.js';
 import type { ChartData, ChartDataset } from 'chart.js';
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
+import AddToWalletButton from 'components/AddToWallet/AddToWalletButton';
 import ConnectWalletButton from 'components/ConnectWalletButton';
 import { ToastDescriptionWithTx } from 'components/Toast';
 import dayjs from 'dayjs';
@@ -724,9 +725,23 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 							<ul className="border-neubrutal">
 								<li>
 									<p>{t('Address:')}</p>
+									<Flex>
 									<a title={info?.tokenAddress} target='_blank' href={getBlockExploreLink(info?.tokenAddress, 'token', chainId)} rel="noreferrer">
 											{info?.tokenAddress && truncateHash(info?.tokenAddress, 20, 8)}
 									</a>
+									<AddToWalletButton
+                    data-dd-action-name="Add to wallet"
+                    variant="text"
+                    p="0"
+                    height="auto"
+                    width="fit-content"
+										marginLeft="5px"
+                    tokenAddress={info?.tokenAddress}
+                    tokenSymbol={info?.tokenSymbol}
+                    tokenDecimals={info?.tokenDecimals}
+                    tokenLogo={undefined}
+                  />
+									</Flex>
 								</li>
 								<li>
 									<p>{t('Name:')}</p>
@@ -907,7 +922,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 										{/* {userConfigInfo && <StyledTextItalic>{t('Maximum %maxBuyPerUser% U2U to buy IDO in round buy %tier%. The snapshot process has ended at 2024/05/03 14:22:22 .', {maxBuyPerUser: userConfigInfo?.maxBuyPerUser, tier: userConfigInfo?.name })}</StyledTextItalic>} */}
 									</Box>
 								</Box>
-							{timeWhiteList?.startTime && (
+							{timeWhiteList?.startTime ? (
 								<Box mb={["20px", "20px", "24px"]}>
 							<Flex mb="12px">
 								<Text color="textSubtle" fontSize={["16px", "16px", "16px", "16px", "16px", "16px", "16px", "17px"]} fontWeight="600" mr="10px">{t('Apply Whitelist')}</Text>
@@ -958,7 +973,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 							</Box>
 						)}
 							</Box>
-							)}
+							) : null}
            
 							{currentPhaseOrNext && (
 								<Box style={{ textAlign: 'center' }}>
