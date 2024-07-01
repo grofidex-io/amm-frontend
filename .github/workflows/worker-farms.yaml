@@ -2,13 +2,9 @@ name: Worker-Farms
 on:
   push:
     branches: 
-      - staging
-      - testnet
       - test-ci
     paths:
       - 'api/farms/**'
-  release:
-      types: [ published ]
 jobs:
   deploy:
     runs-on: ubuntu-latest
