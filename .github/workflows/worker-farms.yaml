@@ -5,6 +5,8 @@ on:
       - staging
       - testnet
       - test-ci
+    paths:
+      - api/farms/**
   release:
       types: [ published ]
 jobs:
