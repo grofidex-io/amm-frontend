@@ -1,7 +1,10 @@
 name: Worker-Farms
 on:
   push:
-    branches: [ staging, testnet ]
+    branches: 
+      - staging
+      - testnet
+      - test-ci
     paths:
       - api/farms/**
   release:
