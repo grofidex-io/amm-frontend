@@ -1,11 +1,11 @@
 name: Worker-Farms
 on:
   push:
-    branches: [ staging, testnet ]
+    branches: 
+      - staging
+      - testnet
     paths:
-      - api/farms/**
-  release:
-      types: [ published ]
+      - 'apis/farms/**'
 jobs:
   deploy:
     runs-on: ubuntu-latest
