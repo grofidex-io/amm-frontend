@@ -6,7 +6,7 @@ on:
       - testnet
       - test-ci
     paths:
-      - api/farms/**
+      - 'api/farms/**'
   release:
       types: [ published ]
 jobs:
