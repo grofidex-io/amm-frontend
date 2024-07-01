@@ -2,8 +2,8 @@ name: Worker-Farms
 on:
   push:
     branches: [ staging, testnet ]
-  paths:
-    - api/farms/**
+    paths:
+      - api/farms/**
   release:
       types: [ published ]
 jobs:
