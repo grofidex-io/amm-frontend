@@ -4,7 +4,6 @@ on:
     branches: 
       - staging
       - testnet
-      - test-ci
     paths:
       - 'apis/farms/**'
 jobs:
