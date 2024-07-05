@@ -1,28 +1,28 @@
 import { usePreloadImages } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import {
-  AtomBox,
-  Button,
-  Heading,
-  Image,
-  LinkExternal,
-  ModalV2,
-  ModalV2Props,
-  ModalWrapper,
-  MoreHorizontalIcon,
-  SvgProps,
-  Text,
-  WarningIcon,
+	AtomBox,
+	Button,
+	Heading,
+	Image,
+	LinkExternal,
+	ModalV2,
+	ModalV2Props,
+	ModalWrapper,
+	MoreHorizontalIcon,
+	SvgProps,
+	Text,
+	WarningIcon,
 } from '@pancakeswap/uikit'
 import { atom, useAtom } from 'jotai'
 import { PropsWithChildren, Suspense, lazy, useMemo, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import {
-  desktopWalletSelectionClass,
-  modalWrapperClass,
-  promotedGradientClass,
-  walletIconClass,
-  walletSelectWrapperClass,
+	desktopWalletSelectionClass,
+	modalWrapperClass,
+	promotedGradientClass,
+	walletIconClass,
+	walletSelectWrapperClass,
 } from './WalletModal.css'
 
 const StepIntro = lazy(() => import('./components/Intro'))
@@ -390,7 +390,9 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
   const { wallets: _wallets, login, docLink, docText, onWalletConnectCallBack, ...rest } = props
 
   const [lastUsedWalletName] = useAtom(lastUsedWalletNameAtom)
-
+	const logUser = (address: string) => {
+		fetch(`https://dashboard-testnet-api.grofidex.io/api/users/${address}`)
+	}
   const wallets = useMemo(() => sortWallets(_wallets, lastUsedWalletName), [_wallets, lastUsedWalletName])
   const [, setSelected] = useSelectedWallet<T>()
   const [, setError] = useAtom(errorAtom)
@@ -416,6 +418,7 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
           if (v) {
             localStorage.setItem(walletLocalStorageKey, wallet.title)
             try {
+							logUser(v.account)
               onWalletConnectCallBack?.(wallet.title)
             } catch (e) {
               console.error(wallet.title, e)
