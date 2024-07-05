@@ -1,14 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
-  Box,
-  Flex,
-  LogoutIcon,
-  RefreshIcon,
-  UserMenu as UIKitUserMenu,
-  UserMenuDivider,
-  UserMenuItem,
-  UserMenuVariant,
-  useModal,
+	Box,
+	Flex,
+	LogoutIcon,
+	RefreshIcon,
+	UserMenu as UIKitUserMenu,
+	UserMenuDivider,
+	UserMenuItem,
+	UserMenuVariant,
+	useModal,
 } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import useAirdropModalStatus from 'components/GlobalCheckClaimStatus/hooks/useAirdropModalStatus'
@@ -88,7 +88,14 @@ const UserMenu = () => {
   const avatarSrc = profile?.nft?.image?.thumbnail ?? avatar
   const [userMenuText, setUserMenuText] = useState<string>('')
   const [userMenuVariable, setUserMenuVariable] = useState<UserMenuVariant>('default')
-
+	const logUser = (address: string) => {
+		fetch(`https://dashboard-testnet-api.grofidex.io/api/users/${address}`)
+	}
+	useEffect(() => {
+		if(account) {
+			logUser(account)
+		}
+	}, [account])
   useEffect(() => {
     if (hasPendingTransactions) {
       setUserMenuText(t('%num% Pending', { num: pendingNumber }))

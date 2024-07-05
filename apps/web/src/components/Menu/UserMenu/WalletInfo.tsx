@@ -2,19 +2,19 @@ import { ChainId } from '@pancakeswap/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { WNATIVE } from '@pancakeswap/sdk'
 import {
-  Box,
-  Button,
-  CopyAddress,
-  Flex,
-  FlexGap,
-  InfoFilledIcon,
-  InjectedModalProps,
-  LinkExternal,
-  Message,
-  Skeleton,
-  Text,
-  TooltipText,
-  useTooltip,
+	Box,
+	Button,
+	CopyAddress,
+	Flex,
+	FlexGap,
+	InfoFilledIcon,
+	InjectedModalProps,
+	LinkExternal,
+	Message,
+	Skeleton,
+	Text,
+	TooltipText,
+	useTooltip,
 } from '@pancakeswap/uikit'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { FetchStatus } from 'config/constants/types'
