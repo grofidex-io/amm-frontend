@@ -390,9 +390,7 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
   const { wallets: _wallets, login, docLink, docText, onWalletConnectCallBack, ...rest } = props
 
   const [lastUsedWalletName] = useAtom(lastUsedWalletNameAtom)
-	const logUser = (address: string) => {
-		fetch(`https://dashboard-testnet-api.grofidex.io/api/users/${address}`)
-	}
+
   const wallets = useMemo(() => sortWallets(_wallets, lastUsedWalletName), [_wallets, lastUsedWalletName])
   const [, setSelected] = useSelectedWallet<T>()
   const [, setError] = useAtom(errorAtom)
@@ -418,7 +416,6 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
           if (v) {
             localStorage.setItem(walletLocalStorageKey, wallet.title)
             try {
-							logUser(v.account)
               onWalletConnectCallBack?.(wallet.title)
             } catch (e) {
               console.error(wallet.title, e)
