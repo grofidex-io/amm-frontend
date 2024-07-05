@@ -1,5 +1,5 @@
-import { Connector, ConnectorData } from '../connectors'
 import { getClient } from '../client'
+import { Connector, ConnectorData } from '../connectors'
 import { ConnectorAlreadyConnectedError } from '../errors'
 
 export type ConnectArgs = {
@@ -36,7 +36,6 @@ export async function connect({ connector, networkName }: ConnectArgs): Promise<
       status: 'connected',
     }))
     client.storage.setItem('connected', true)
-
     return {
       ...data,
       connector,
