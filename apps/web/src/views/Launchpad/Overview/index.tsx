@@ -6,7 +6,6 @@ import React, { useState } from 'react'
 import styled, { useTheme } from "styled-components"
 import Action from "../Components/Action"
 import AllProjects from "../Components/AllProjects"
-import MyPools from "../Components/MyPools"
 import { LAUNCHPAD_STATUS } from "../helpers"
 
 const StyledFlex = styled(Flex)`
@@ -286,7 +285,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
             </StyledTab>
           </TabMenu>
           {tab === 0 && <AllProjects filter={{valueSearch, filterType}} />}
-					{tab === 1 && <MyPools/>}
+					{tab === 1 && <AllProjects filter={{valueSearch, filterType}} isMyPool/>}
         </StyledBoxTab>
         <Action/>
       </Container>
