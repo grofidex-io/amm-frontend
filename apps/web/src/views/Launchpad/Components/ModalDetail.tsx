@@ -5,6 +5,7 @@ import BigNumber from "bignumber.js";
 import { ToastDescriptionWithTx } from "components/Toast";
 import { formatEther } from "ethers/lib/utils";
 import { useActiveChainId } from "hooks/useActiveChainId";
+import { useCallWithGasPrice } from "hooks/useCallWithGasPrice";
 import useCatchTxError from "hooks/useCatchTxError";
 import forEach from "lodash/forEach";
 import React, { useEffect, useRef, useState } from "react";
@@ -90,6 +91,7 @@ export default function ModalDetail({
 }) {
 	const { data: signer } = useWalletClient()
 	const { chainId } = useActiveChainId()
+	const { callWithGasPrice } = useCallWithGasPrice()
 	// const [configByContract, setConfigByContract] = useState<any>({})
 	const configByContract = useRef<any>({})
   const { fetchWithCatchTxError } = useCatchTxError()
@@ -145,7 +147,8 @@ export default function ModalDetail({
 		setLoadingClaim(true)
 		const _contract = getLaunchpadManagerContract(launchpad, signer ?? undefined, chainId)
 		try {
-			const res = await fetchWithCatchTxError(() => isSortCap ? _contract.write.withdrawSoftCap() : _contract.write.claimToken())
+			// const res = await fetchWithCatchTxError(() => isSortCap ? _contract.write.withdrawSoftCap() : _contract.write.claimToken())
+			const res = await fetchWithCatchTxError(() => callWithGasPrice(_contract, isSortCap ? 'withdrawSoftCap' : 'claimToken'))
 			if(res?.status) {
 				refetch()
 				fetchUserData()

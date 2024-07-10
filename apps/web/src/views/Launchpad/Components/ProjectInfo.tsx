@@ -12,6 +12,7 @@ import { ToastDescriptionWithTx } from 'components/Toast';
 import dayjs from 'dayjs';
 import { formatEther, parseEther } from 'ethers/lib/utils';
 import { useActiveChainId } from 'hooks/useActiveChainId';
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice';
 import useCatchTxError from 'hooks/useCatchTxError';
 import parse from 'html-react-parser';
 import forEach from 'lodash/forEach';
@@ -207,6 +208,8 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 	const [listTooltip, setListTooltip] = useState<IPhase[]>([])
 
   const { fetchWithCatchTxError } = useCatchTxError()
+  const { callWithGasPrice } = useCallWithGasPrice()
+
 	const { toastSuccess, toastError } = useToast()
 	const { data: signer } = useWalletClient()
 	const refSchedule = useRef<IPhase[]>([])
@@ -641,7 +644,7 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 					return
 				}
 				setIsCommitting(true)
-				const res = await fetchWithCatchTxError(() => _launchpadContract.current.write.commit({value: parseEther(new BigNumber(amountCommit).toFixed(18))}))
+				const res = await fetchWithCatchTxError(() => callWithGasPrice(_launchpadContract.current, 'commit', undefined, {value: parseEther(new BigNumber(amountCommit).toFixed(18)) as any}))
 				if(res?.status) {
 					getTotalUserCommitted()
 					setAmountCommit('')
