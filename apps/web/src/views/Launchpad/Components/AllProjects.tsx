@@ -23,23 +23,23 @@ interface IProjectProp {
 	filter: { 
 		valueSearch: string
 		filterType: string | null
-	}
+	},
+	isMyPool?: boolean
 }
-export default function AllProjects({filter}: IProjectProp) {
+export default function AllProjects({filter, isMyPool}: IProjectProp) {
 	const {valueSearch, filterType} = filter
 	const { t } = useTranslation()
   const [page, setPage] = useState(1)
 	const { account } = useAccountActiveChain()
-	const { data: list, isLoading } = useFetchListLaunchpad(page, valueSearch, filterType)
+	const { data: list, isLoading } = useFetchListLaunchpad(page, valueSearch, filterType, isMyPool ? account : undefined)
 	const {data: listProject} = useFetchListProjectByUser(account)
-
 
   return (
     <>
       <Layout>
 				{isLoading ? <LoanLoading/> : (
 					<>
-					{list?.data.map((item: ILaunchpadItem) => (
+					{list?.data && list?.data.map((item: ILaunchpadItem) => (
 						<LaunchpadCard isContribution={listProject && item.contractAddress ? listProject?.indexOf(item.contractAddress) !== -1 : false} type='upcoming' item={item}/>
 					))}
 					</>
