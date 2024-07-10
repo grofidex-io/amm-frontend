@@ -768,35 +768,37 @@ export default function ProjectInfo({ info, timeWhiteList, account, currentTier,
 					{info?.tokenomics && (
 						<Box px={["0", "0", "0", "0", "12px", "16px", "20px"]}>
 							<StyledTitle>{t('Tokenomics')}</StyledTitle>
-							<StyledChart>
-								<Doughnut
-									data={gauges}
-									options={{
-										responsive: true,
-										cutout: '70%',
-										radius: window.innerWidth > 576 ? '95%' : '90%',
-										plugins: {
-											legend: {
-												position: window.innerWidth > 576 ? 'right' : 'bottom',
-												labels: {
-													color: '#fff',
-												}
-											},
-											tooltip: {
-												callbacks: {
-													title: (context) => {
-														return context[0].label.split(':')[0]
-													},
-													label: (context) => {
-														return `${context.raw}%`
+							<Box maxWidth="880px">
+								<StyledChart>
+									<Doughnut
+										data={gauges}
+										options={{
+											responsive: true,
+											cutout: '70%',
+											radius: window.innerWidth > 576 ? '95%' : '90%',
+											plugins: {
+												legend: {
+													position: window.innerWidth > 576 ? 'right' : 'bottom',
+													labels: {
+														color: '#fff',
+													}
+												},
+												tooltip: {
+													callbacks: {
+														title: (context) => {
+															return context[0].label.split(':')[0]
+														},
+														label: (context) => {
+															return `${context.raw}%`
+														}
 													}
 												}
-											}
-										},
-									}}
-									plugins={[doughnutLabel]}
-								/>
-							</StyledChart>
+											},
+										}}
+										plugins={[doughnutLabel]}
+									/>
+								</StyledChart>
+							</Box>
 						</Box>
 					)}
 
