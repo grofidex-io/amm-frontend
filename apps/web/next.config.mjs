@@ -136,7 +136,7 @@ const config = {
       //   destination: '/info',
       //   permanent: true,
       // },
-       {
+      {
         source: '/swap',
         destination: '/trade',
         permanent: true,
