@@ -7,7 +7,7 @@ import { getCakeContract } from 'utils/contractHelpers'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import { bitQueryServerClient, infoServerClient } from 'utils/graphql'
 import { formatEther } from 'viem'
-import InfoPage from './info/index'
+import DashboardPage from './dashboard/index'
 
 // const IndexPage = () => {
 //   return <InfoPage />
@@ -126,4 +126,4 @@ export const getStaticProps: GetStaticProps = async () => {
 
 // IndexPage.chains = []
 
-export default InfoPage
+export default DashboardPage
