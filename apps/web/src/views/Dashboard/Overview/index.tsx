@@ -1,11 +1,20 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, Heading, RowFixed, Text } from '@pancakeswap/uikit'
-import Container from 'components/Layout/Container'
-import React, { useState } from 'react'
-import styled, { useTheme } from 'styled-components'
-import OrdersAnalysis from '../Component/OrdersAnalysis'
-import { BorderCard, StyledTitle } from '../styles'
-import { TimeType } from '../types'
+import { useTranslation } from '@pancakeswap/localization';
+import { Box, Dropdown, Flex, Heading, RowFixed, Text } from '@pancakeswap/uikit';
+import Container from 'components/Layout/Container';
+import dayjs from 'dayjs';
+import useAccountActiveChain from 'hooks/useAccountActiveChain';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { SecondaryLabel } from 'views/Voting/CreateProposal/styles';
+import { DatePicker } from 'views/Voting/components/DatePicker';
+import TotalProfits from '../Component/\bTotalProfits';
+import AssetAllocation from '../Component/AssetAllocation';
+import AssetGrowth from '../Component/AssetGrowth';
+import DailyProfit from '../Component/DailyProfit';
+import OrdersAnalysis from '../Component/OrdersAnalysis';
+import { useFetchUserInfo } from '../hooks/useFetchUserInfo';
+import { BorderCard, StyledTitle } from '../styles';
+import { TimeType } from '../types';
 
 const StyledHeading = styled(Heading)`
   font-size: 24px;
@@ -77,9 +86,29 @@ const listInfo = [
 
 export const Overview: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
-  const theme = useTheme()
-  const [txFilter, setTxFilter] = useState<TimeType | undefined>(TimeType.WEEK)
+  const [startDate, setStartDate] = useState<any>(null);
+	const [endDate, setEndDate] = useState<any>(null);
+  const [txFilter, setTxFilter] = useState<number | undefined>(TimeType.WEEK)
+	const { account } = useAccountActiveChain()
 
+  const handleDateChange = (key: string) => (value: Date) => {
+		if(key === 'startDate') {
+			setStartDate(value)
+		} else {
+			setEndDate(value)
+		}
+		if((startDate && key === 'endDate') || (endDate && key === 'startDate' )) {
+			setTxFilter(TimeType.CUSTOM)
+		}
+  }
+	const resetCustomTime = () => {
+		setStartDate(null)
+		setEndDate(null)
+	}
+	const { data } = useFetchUserInfo(account, txFilter, {
+		startDate: startDate ? Math.round(dayjs(startDate).valueOf()/ 1000) : null,
+		endDate: endDate ? Math.round(dayjs(endDate).valueOf()/ 1000) : null
+	})
   return (
     <Box mt="60px">
       <Container>
@@ -89,6 +118,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
             <SortText
               onClick={() => {
                 setTxFilter(TimeType.WEEK)
+								resetCustomTime()
               }}
               active={txFilter === TimeType.WEEK}
             >
@@ -97,19 +127,46 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
             <SortText
               onClick={() => {
                 setTxFilter(TimeType.MONTH)
+								resetCustomTime()
               }}
               active={txFilter === TimeType.MONTH}
             >
               {t('Past 30 days')}
             </SortText>
-            <SortText
-              onClick={() => {
-                setTxFilter(TimeType.CUSTOM)
-              }}
-              active={txFilter === TimeType.CUSTOM}
-            >
-              {t('+ Custom time')}
-            </SortText>
+
+           
+				
+				    <Dropdown position="bottom-right" target={ 
+							<SortText
+								active={txFilter === TimeType.CUSTOM}
+								>
+								{t('+ Custom time')}
+							</SortText>
+						}>
+						<Flex>
+						<Box marginRight={2} maxWidth={140}>
+							<SecondaryLabel>{t('Start Date')}</SecondaryLabel>
+							<DatePicker
+								name="date"
+								onChange={handleDateChange('startDate')}
+								selected={startDate}
+								dateFormat="yyyy/MM/dd"
+								placeholderText="YYYY/MM/DD"
+							/>
+            </Box>
+						<Box maxWidth={140}>
+							<SecondaryLabel>{t('End Date')}</SecondaryLabel>
+							<DatePicker
+								name="endDate"
+								onChange={handleDateChange('endDate')}
+								selected={endDate}
+								dateFormat="yyyy/MM/dd"
+								placeholderText="YYYY/MM/DD"
+							/>
+            </Box>
+						</Flex>
+      			</Dropdown>
+			
           </RowFixed>
         </Flex>
         <StyledList>
@@ -143,21 +200,24 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
         <Flex>
           <BorderCard style={{ flex: 1 }}>
             <StyledTitle>Asset Allocation</StyledTitle>
-            <StyleImg src="/images/dashboard/chart-01.png" alt="" />
+						<AssetAllocation/>
+            {/* <StyleImg src="/images/dashboard/chart-01.png" alt="" /> */}
           </BorderCard>
           <BorderCard style={{ flex: 2 }} ml="16px">
             <StyledTitle>Asset Growth</StyledTitle>
-            <StyleImg src="/images/dashboard/chart-02.png" alt="" />
+            <AssetGrowth info={data}/>
           </BorderCard>
         </Flex>
         <Flex mt="16px">
           <BorderCard style={{ flex: 1 }}>
-            <StyledTitle>Asset Allocation</StyledTitle>
-            <StyleImg src="/images/dashboard/chart-03.png" alt="" />
+            <StyledTitle>Total Profits</StyledTitle>
+						<TotalProfits info={data}/>
+            {/* <StyleImg src="/images/dashboard/chart-03.png" alt="" /> */}
           </BorderCard>
           <BorderCard style={{ flex: 1 }} ml="16px">
-            <StyledTitle>Asset Growth</StyledTitle>
-            <StyleImg src="/images/dashboard/chart-04.png" alt="" />
+            <StyledTitle>Daily Profit</StyledTitle>
+						<DailyProfit info={data}/>
+            {/* <StyleImg src="/images/dashboard/chart-04.png" alt="" /> */}
           </BorderCard>
         </Flex>
         <OrdersAnalysis/>

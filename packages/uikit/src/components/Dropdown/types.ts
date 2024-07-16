@@ -1,4 +1,4 @@
-export type Position = "top" | "top-right" | "bottom" | "bottom-left";
+export type Position = "top" | "top-right" | "bottom" | "bottom-left" | "bottom-right";
 
 export interface PositionProps {
   position?: Position;
