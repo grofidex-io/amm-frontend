@@ -125,7 +125,7 @@ const Dropdown: React.FC<React.PropsWithChildren<DropdownProps>> = ({ target, po
     <Container $scrolling={scrolling}>
       {target}
       <DropdownContent position={position}>
-				<Content>
+				<Content position={position}>
 					{children}
 				</Content>
 			</DropdownContent>

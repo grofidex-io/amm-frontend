@@ -16,11 +16,11 @@ import TokenTable from './components/TokenTable'
 import TransactionsTable from './components/TransactionsTable'
 import { ChartCardsContainer, MonoSpace } from './components/shared'
 import {
-  useProtocolChartData,
-  useProtocolData,
-  useProtocolTransactionData,
-  useTopPoolsData,
-  useTopTokensData,
+	useProtocolChartData,
+	useProtocolData,
+	useProtocolTransactionData,
+	useTopPoolsData,
+	useTopTokensData,
 } from './hooks'
 import { useTransformedVolumeData } from './hooks/chart'
 import { VolumeWindow } from './types'

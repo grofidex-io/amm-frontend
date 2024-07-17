@@ -1,7 +1,9 @@
 import { Box } from "@pancakeswap/uikit";
+import { formatNumber } from "@pancakeswap/utils/formatBalance";
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import styled from 'styled-components';
+import { getRandomColor, LIST_COLOR } from "../helper";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 const StyledChart = styled(Box)`
@@ -16,35 +18,30 @@ const StyledChart = styled(Box)`
 		--size: 250px;
 	}
 `
-export default function AssetAllocation () {
+export default function AssetAllocation ({balances, listAssetAllocation, totalValue}) {
+
 	const doughnutLabel = {
 		id: 'doughnutLabel',
 		afterDatasetsDraw(chart) {
 			const { ctx } = chart
-			const centerX = chart.getDatasetMeta(0).data[0].x
-			const centerY = chart.getDatasetMeta(0).data[0].y
+			const centerX = chart.getDatasetMeta(0).data[0]?.x
+			const centerY = chart.getDatasetMeta(0).data[0]?.y
 			ctx.save()
 			ctx.font = 'bolder 18px Arial'
 			ctx.fillStyle = 'white'
 			ctx.textAlign = 'center'
 			ctx.textBaseline = 'middle'
-			ctx.fillText('9,627.00 USDT', centerX, centerY)
+			ctx.fillText(`${formatNumber(chart.data.datasets[0].total)} USDT`, centerX, centerY)
 		}
 	}
+
 	const data = {
-		labels: [
-			'Red',
-			'Blue',
-			'Yellow'
-		],
+		labels: Object.keys(balances)?.map((id: any) => { return balances[id]?.currency?.symbol }),
 		datasets: [{
-			label: 'My First Dataset',
-			data: [300, 50, 100],
-			backgroundColor: [
-				'rgb(255, 99, 132)',
-				'rgb(54, 162, 235)',
-				'rgb(255, 205, 86)'
-			],
+			label: 'Total Asset',
+			total: totalValue,
+			data: listAssetAllocation,
+			backgroundColor: Object.keys(balances)?.map((id: any) => { return LIST_COLOR[balances[id]?.currency?.symbol] || getRandomColor() }),
 			hoverOffset: 4
 		}]
 	};

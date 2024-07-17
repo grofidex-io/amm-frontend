@@ -28,14 +28,14 @@ import { fetchedTokenDatas } from '../data/token/tokenData'
 import { fetchTopTokenAddresses } from '../data/token/topTokens'
 import { fetchTokenTransactions } from '../data/token/transactions'
 import {
-  ChartDayData,
-  PoolChartEntry,
-  PoolData,
-  PriceChartEntry,
-  ProtocolData,
-  TokenChartEntry,
-  TokenData,
-  Transaction,
+	ChartDayData,
+	PoolChartEntry,
+	PoolData,
+	PriceChartEntry,
+	ProtocolData,
+	TokenChartEntry,
+	TokenData,
+	Transaction,
 } from '../types'
 
 const QUERY_SETTINGS_IMMUTABLE = {

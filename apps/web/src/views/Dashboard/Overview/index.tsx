@@ -1,17 +1,26 @@
 import { useTranslation } from '@pancakeswap/localization';
+import { Token } from '@pancakeswap/swap-sdk-core';
 import { Box, Dropdown, Flex, Heading, RowFixed, Text } from '@pancakeswap/uikit';
+import { formatNumber } from '@pancakeswap/utils/formatBalance';
+import BigNumber from 'bignumber.js';
 import Container from 'components/Layout/Container';
 import dayjs from 'dayjs';
+import { formatEther } from 'ethers/lib/utils';
 import useAccountActiveChain from 'hooks/useAccountActiveChain';
+import forEach from 'lodash/forEach';
+import keyBy from 'lodash/keyBy';
 import React, { useState } from 'react';
+import { useTokenBalances } from 'state/wallet/hooks';
 import styled from 'styled-components';
 import { SecondaryLabel } from 'views/Voting/CreateProposal/styles';
 import { DatePicker } from 'views/Voting/components/DatePicker';
-import TotalProfits from '../Component/\bTotalProfits';
+import { useBalance } from 'wagmi';
 import AssetAllocation from '../Component/AssetAllocation';
 import AssetGrowth from '../Component/AssetGrowth';
 import DailyProfit from '../Component/DailyProfit';
 import OrdersAnalysis from '../Component/OrdersAnalysis';
+import TotalProfits from '../Component/TotalProfits';
+import { useFetchUserCurrency } from '../hooks/useFetchUserCurrency';
 import { useFetchUserInfo } from '../hooks/useFetchUserInfo';
 import { BorderCard, StyledTitle } from '../styles';
 import { TimeType } from '../types';
@@ -78,18 +87,40 @@ const StyleImg = styled.img`
   margin: auto;
 `
 
-const listInfo = [
-  { title: 'Estimated Total Value', icon: true, price: '9,627.00', increase: '', decrease: '' },
-  { title: 'Previous Day', icon: false, price: '460.40', increase: '', decrease: '4.56%' },
-  { title: 'Total profit of past 7 days', icon: false, price: '460.40', increase: '4.56%', decrease: '' },
-]
 
 export const Overview: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const [startDate, setStartDate] = useState<any>(null);
 	const [endDate, setEndDate] = useState<any>(null);
   const [txFilter, setTxFilter] = useState<number | undefined>(TimeType.WEEK)
-	const { account } = useAccountActiveChain()
+	const { account, chainId } = useAccountActiveChain()
+	const listToken: Token[] = []
+	const { data: balanceU2U } = useBalance({ address: account })
+	// const [totalValue, setTotalValue] = useState(0)
+	const { data: currencies } = useFetchUserCurrency()
+	let U2U_CONTRACT = ''
+	if(currencies) {
+		forEach(currencies, (item: any) => {
+			if(item.id === 'U2U') {
+				U2U_CONTRACT = item.contractAddress
+			}
+			listToken.push(new Token(Number(chainId), item.contractAddress, 18, item.id, item.id))
+		})
+	}
+	const  currencyByContract= keyBy(currencies, 'contractAddress')
+	const balances = useTokenBalances(account, listToken)
+	let totalValue = 0
+	const listAssetAllocation = Object.keys(balances)?.map((id: any) => { 
+		let value: any = 0
+		if(id === U2U_CONTRACT) {
+			value =  balanceU2U?.formatted ? (BigNumber(balanceU2U?.formatted).multipliedBy(Number(currencyByContract[U2U_CONTRACT].currentPrice))).toNumber() : 0
+		} else {
+			value = balances[id]?.numerator ? BigNumber(formatEther(balances[id]?.numerator)).multipliedBy(currencyByContract[id].currentPrice).toNumber() : 0
+		}
+
+		totalValue += value
+		return value
+	})
 
   const handleDateChange = (key: string) => (value: Date) => {
 		if(key === 'startDate') {
@@ -105,10 +136,24 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 		setStartDate(null)
 		setEndDate(null)
 	}
+
 	const { data } = useFetchUserInfo(account, txFilter, {
-		startDate: startDate ? Math.round(dayjs(startDate).valueOf()/ 1000) : null,
-		endDate: endDate ? Math.round(dayjs(endDate).valueOf()/ 1000) : null
+		startDate: startDate ? Math.round(dayjs(Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(),
+		startDate.getDate(), 0, 0, 0)).valueOf()/ 1000) : null,
+		endDate: endDate ? Math.round(dayjs(Date.UTC(endDate.getUTCFullYear(), endDate.getUTCMonth(),
+		endDate.getDate(), 0, 0, 0)).valueOf()/ 1000) : null
 	})
+
+	const { data: dataPrev } = useFetchUserInfo(account, TimeType.PREV)
+  const percentPrev: number = dataPrev?.data?.dailyAssets[0]?.totalAssets && dataPrev?.data?.dailyAssets[1] ? (BigNumber(dataPrev?.data?.dailyAssets[1]?.totalAssets).minus(dataPrev?.data?.dailyAssets[0].totalAssets).div(dataPrev?.data?.dailyAssets[0].totalAssets).multipliedBy(100).toNumber()) : 0
+	let totalProfitFromData = 0
+	forEach(data?.data?.dailyAssets, (item, index: number)=> {
+		const _asset = index === 0 ? Number(item.totalAssets) : data?.data?.dailyAssets[index] && Number(data?.data?.dailyAssets[index].totalAssets) - Number(data?.data?.dailyAssets[index - 1].totalAssets)
+		totalProfitFromData += _asset
+	})
+
+	const percentTotal: number = totalProfitFromData && data?.data?.dailyAssets[0] ? (BigNumber(totalProfitFromData).minus(data?.data?.dailyAssets[0].totalAssets).div(data?.data?.dailyAssets[0].totalAssets).multipliedBy(100).toNumber()) : 0
+	const maxDate = dayjs().utc().subtract(1, 'days').set('hour', 0).set('minute', 0).set('second', 0)
   return (
     <Box mt="60px">
       <Container>
@@ -151,6 +196,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 								onChange={handleDateChange('startDate')}
 								selected={startDate}
 								dateFormat="yyyy/MM/dd"
+								maxDate={new Date(maxDate.valueOf())}
 								placeholderText="YYYY/MM/DD"
 							/>
             </Box>
@@ -161,6 +207,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 								onChange={handleDateChange('endDate')}
 								selected={endDate}
 								dateFormat="yyyy/MM/dd"
+								maxDate={new Date(maxDate.valueOf())}
 								placeholderText="YYYY/MM/DD"
 							/>
             </Box>
@@ -170,38 +217,62 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
           </RowFixed>
         </Flex>
         <StyledList>
-          {listInfo.map(item => (
-            <StyledItem className="border-neubrutal" key={item.title}>
-              <Flex alignItems="center" mb="16px">
-                <Text color="textHighlight" fontSize="14px" mr="16px">{item.title}</Text>
-                {item.icon && <img src="/images/dashboard/icon-eye.svg" width="16px" height="16px" alt="" />}
-              </Flex>
-              <Box>
-                <Text color="text" fontSize="32px" fontWeight="700" lineHeight="1.2">
-                  {item.increase ? '+' : item.decrease ? '-' : ''}
-                  {item.price}
-                </Text>
-                <Flex alignItems="center" mt="8px">
-                  {item.increase ? (
-                    <img src="/images/dashboard/icon-arrow-up.svg" width="16px" height="16px" alt="" />
-                  ) : item.decrease ? (
-                    <img src="/images/dashboard/icon-arrow-down.svg" width="16px" height="16px" alt="" />
-                  ) : (
-                    <Text color="textSubtle" fontSize="16px" fontWeight="500" >≈</Text>
-                  )}
-                  <Text color={item.increase ? 'success' : item.decrease ? 'failure' : 'textSubtle'} fontSize="16px" fontWeight="500" ml="6px">
-                    {item.increase ? item.increase : item.decrease ? item.decrease : item.price }
-                  </Text>
-                </Flex>
-              </Box>
-            </StyledItem>
-          ))}
+				<StyledItem className="border-neubrutal" >
+					<Flex alignItems="center" mb="16px">
+						<Text color="textHighlight" fontSize="14px" mr="16px">Estimated Total Value</Text>
+					</Flex>
+					<Box>
+						<Text color="text" fontSize="32px" fontWeight="700" lineHeight="1.2">
+		
+							{formatNumber(totalValue, 2, 4)} USDT
+						</Text>
+						<Flex alignItems="center" mt="8px">
+						<Text color="textSubtle" fontSize="16px" fontWeight="500" >≈</Text>
+								<Text color='textSubtle' fontSize="16px" fontWeight="500" ml="6px">
+								{formatNumber(totalValue, 2, 4)}
+							</Text>
+						
+						</Flex>
+					</Box>
+				</StyledItem>
+				<StyledItem className="border-neubrutal" >
+					<Flex alignItems="center" mb="16px">
+						<Text color="textHighlight" fontSize="14px" mr="16px">Previous Day</Text>
+					</Flex>
+					<Box>
+						<Text color="text" fontSize="32px" fontWeight="700" lineHeight="1.2">
+							{dataPrev?.data?.dailyAssets[1] ? formatNumber(BigNumber(dataPrev?.data?.dailyAssets[1]?.totalAssets).minus(dataPrev?.data?.dailyAssets[0]?.totalAssets).toNumber(), 2, 4) : 0} USDT
+						</Text>
+						<Flex alignItems="center" mt="8px">
+						<img src={`/images/dashboard/${percentPrev > 0 ? 'icon-arrow-up' : 'icon-arrow-down'}.svg`} width="16px" height="16px" alt="" />
+						<Text color={percentPrev > 0 ? 'success' : 'failure'} fontSize="16px" fontWeight="500" ml="6px">
+								{percentPrev.toFixed(2)}%
+							</Text>
+						</Flex>
+					</Box>
+				</StyledItem>
+				<StyledItem className="border-neubrutal" >
+					<Flex alignItems="center" mb="16px">
+						<Text color="textHighlight" fontSize="14px" mr="16px">{`Total profit of past ${ txFilter === TimeType.WEEK ? '7 days' : txFilter ===  TimeType.MONTH ? '30 days' : 'custom time'}`}</Text>
+					</Flex>
+					<Box>
+						<Text color="text" fontSize="32px" fontWeight="700" lineHeight="1.2">
+							{totalProfitFromData ? formatNumber(totalProfitFromData, 2, 4) : 0} USDT
+						</Text>
+						<Flex alignItems="center" mt="8px">
+						<img src={`/images/dashboard/${percentTotal > 0 ? 'icon-arrow-up' : 'icon-arrow-down'}.svg`} width="16px" height="16px" alt="" />
+						<Text color={percentTotal > 0 ? 'success' : 'failure'} fontSize="16px" fontWeight="500" ml="6px">
+								{percentTotal.toFixed(2)}%
+							</Text>
+						</Flex>
+					</Box>
+				</StyledItem>
+
         </StyledList>
         <Flex>
           <BorderCard style={{ flex: 1 }}>
             <StyledTitle>Asset Allocation</StyledTitle>
-						<AssetAllocation/>
-            {/* <StyleImg src="/images/dashboard/chart-01.png" alt="" /> */}
+						<AssetAllocation balances={balances} listAssetAllocation={listAssetAllocation} totalValue={totalValue}/>
           </BorderCard>
           <BorderCard style={{ flex: 2 }} ml="16px">
             <StyledTitle>Asset Growth</StyledTitle>
@@ -210,14 +281,12 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
         </Flex>
         <Flex mt="16px">
           <BorderCard style={{ flex: 1 }}>
-            <StyledTitle>Total Profits</StyledTitle>
+            <StyledTitle>Total Asset</StyledTitle>
 						<TotalProfits info={data}/>
-            {/* <StyleImg src="/images/dashboard/chart-03.png" alt="" /> */}
           </BorderCard>
           <BorderCard style={{ flex: 1 }} ml="16px">
             <StyledTitle>Daily Profit</StyledTitle>
 						<DailyProfit info={data}/>
-            {/* <StyleImg src="/images/dashboard/chart-04.png" alt="" /> */}
           </BorderCard>
         </Flex>
         <OrdersAnalysis/>

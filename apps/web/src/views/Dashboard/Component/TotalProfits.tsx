@@ -32,7 +32,7 @@ export default function TotalProfits({info}) {
 			<XAxis dataKey="name" axisLine={false} tickLine={false} />
 			<YAxis axisLine={false} tickLine={false}/>
 			<CartesianGrid  vertical={false} strokeDasharray="1 0" opacity={0.1}/>
-			<Tooltip  cursor={false} wrapperStyle={{outline: 'none'}} contentStyle={{ background: '#404040', borderRadius: 8, padding: 0, border: '2px solid black', boxShadow: '2px 2px 0 0 rgba(0, 0, 0, 1)'}} labelStyle={{background: '#69CF00', padding: '5px 20px', borderRadius: "8px 8px 0 0", color: 'black', fontWeight: 'bold'}} itemStyle={{background: '#404040', padding: '5px 20px', borderRadius: "0 0 8px 8px", color: 'white'}}/>
+			<Tooltip  cursor={false} wrapperStyle={{outline: 'none'}} contentStyle={{ background: '#404040', borderRadius: 8, padding: 0, border: '2px solid black', boxShadow: '2px 2px 0 0 rgba(0, 0, 0, 1)'}} labelStyle={{textAlign: 'center',background: '#69CF00', padding: '5px 20px', borderRadius: "8px 8px 0 0", color: 'black', fontWeight: 'bold', borderBottom: '2px solid black'}} itemStyle={{background: '#404040', padding: '5px 20px', borderRadius: "0 0 8px 8px", color: 'white'}}/>
 			{/* <Area type="monotone" dataKey="uv" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" /> */}
 			<Area type="monotone" dataKey="Total" stroke="#69CF00" fillOpacity={1} fill="url(#colorPv)" strokeWidth={2}/>
 		</AreaChart>

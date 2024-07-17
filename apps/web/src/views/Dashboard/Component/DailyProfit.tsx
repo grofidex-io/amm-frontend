@@ -8,10 +8,11 @@ export default function DailyProfit({info}) {
 		}
 		return 'uv'
 	}
-	const data = info?.data?.dailyAssets.map((item) => {
+	const data = info?.data?.dailyAssets.map((item, index) => {
+		const _asset = index === 0 ? item.totalAssets : info?.data?.dailyAssets[index] && Number(info?.data?.dailyAssets[index].totalAssets) - Number(info?.data?.dailyAssets[index - 1].totalAssets)
 		return {
 			name: dayjs.unix(item.timestamp).format('YYYY-MM-DD'),
-			[getKey(item.totalAssets)]: item.totalAssets
+			[getKey(_asset)]: _asset
 		}
 	})
 	return (
@@ -20,7 +21,7 @@ export default function DailyProfit({info}) {
 			<CartesianGrid  vertical={false} strokeDasharray="1 0" opacity={0.1} />
 			<XAxis dataKey="name" axisLine={false} tickLine={false} />
 			<YAxis axisLine={false} tickLine={false}/>
-			<Tooltip  cursor={false} wrapperStyle={{outline: 'none'}} contentStyle={{ background: '#404040', borderRadius: 8, padding: 0, border: '2px solid black', boxShadow: '2px 2px 0 0 rgba(0, 0, 0, 1)'}} labelStyle={{background: '#69CF00', padding: '5px 20px', borderRadius: "8px 8px 0 0", color: 'black', fontWeight: 'bold'}} itemStyle={{background: '#404040', padding: '5px 20px', borderRadius: "0 0 8px 8px", color: 'white'}}/>
+			<Tooltip  cursor={false} wrapperStyle={{outline: 'none'}} contentStyle={{ background: '#404040', borderRadius: 8, padding: 0, border: '2px solid black', boxShadow: '2px 2px 0 0 rgba(0, 0, 0, 1)'}} labelStyle={{textAlign: 'center',background: '#69CF00', padding: '5px 20px', borderRadius: "8px 8px 0 0", color: 'black', fontWeight: 'bold', borderBottom: '2px solid black'}} itemStyle={{background: '#404040', padding: '5px 20px', borderRadius: "0 0 8px 8px", color: 'white'}}/>
 			{/* <Legend /> */}
 			<Bar dataKey="pv" name="Profit" stackId="a" fill="#00B58D" />
 			<Bar dataKey="uv" name="Profit" stackId="a" fill="#FE5300" />
