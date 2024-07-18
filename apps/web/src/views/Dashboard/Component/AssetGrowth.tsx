@@ -8,25 +8,39 @@ import { getRandomColor, LIST_COLOR } from '../helper';
 const Wrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 300px;
 `
-
+const StyledResponsiveContainer = styled(ResponsiveContainer)`
+	height: 360px !important;
+	width: 100%;
+	font-size: 14px;
+	@media screen and (max-width: 1199px) {
+		height: 300px !important;
+	}
+	@media screen and (max-width: 575px) {
+		height: 250px !important;
+	}
+`
 const Circle = styled.div<{color: string}>`
 	width: 9px;
 	height: 9px;
 	border-radius: 50%;
 	background: ${({ color }) => color};
-	margin-right: 2px;
+	margin-right: 4px;
 `
 const FlexInfo = styled(Flex)`
-	position: absolute;
-	left: 50%;
-	transform: translateX(-50%);
-	top: -22px;
-	width: 80%;
+	margin-bottom: 16px;
 	flex-wrap: wrap;
 	justify-content: center;
 `
+
+// const CustomTooltip = ({ active, label }) => {
+// 	if(active) {
+// 		return (
+// 			<Flex>{label}</Flex>
+// 		)
+// 	}
+// 	return null
+// }
 export default function AssetGrowth({info}: any) {
 	let listLine: any = []
 	const dataChart = info && info?.data?.dailyAssets.map((item) => {
@@ -46,7 +60,7 @@ export default function AssetGrowth({info}: any) {
 
 	return (
 		<Wrapper>
-			<FlexInfo position="absolute">
+			<FlexInfo>
 				{listLine.map((item) => {
 					return (
 						<Box margin="0 5px">
@@ -58,31 +72,38 @@ export default function AssetGrowth({info}: any) {
 					)
 				})}
 			</FlexInfo>
-			<ResponsiveContainer width="100%" height="100%">
-			<LineChart
-				width={500}
-				height={300}
-				data={dataChart}
-				margin={{
-					top: 5,
-					right: 30,
-					left: 20,
-					bottom: 5,
-				}}
-			>
-				<CartesianGrid  vertical={false} strokeDasharray="1 0" opacity={0.1} />
-				<XAxis dataKey="name" axisLine={false} tickLine={false} />
-				<YAxis axisLine={false} tickLine={false}/>
-				<Tooltip cursor={false} wrapperStyle={{outline: 'none'}} contentStyle={{ background: '#404040', borderRadius: 8, padding: 0, border: '2px solid black', boxShadow: '2px 2px 0 0 rgba(0, 0, 0, 1)', outline: 'none'}} labelStyle={{ textAlign: 'center', background: '#69CF00', padding: '5px 20px', borderRadius: "8px 8px 0 0", color: 'black', fontWeight: 'bold', borderBottom: '2px solid black'}} itemStyle={{background: '#404040', padding: '5px 20px', borderRadius: "0 0 8px 8px", color: 'white'}}/>
-				{/* <Legend /> */}
-				{listLine.map((item) => {
-					return (
-					<Line type="monotone" dataKey={item.key} stroke={item.value} activeDot={{ r: 8 }} />
-					)
-				})}
-				{/* <Line type="monotone" dataKey="USDT" stroke="#82ca9d" /> */}
-			</LineChart>
-		</ResponsiveContainer>
-	</Wrapper>
+			<StyledResponsiveContainer>
+				<LineChart
+					width={500}
+					height={300}
+					data={dataChart}
+					margin={{
+						top: 5,
+						right: 10,
+						left: 0,
+						bottom: 5,
+					}}
+				>
+					<CartesianGrid  vertical={false} strokeDasharray="1 0" opacity={0.1} />
+					<XAxis dataKey="name" axisLine={false} tickLine={false} />
+					<YAxis axisLine={false} tickLine={false}/>
+					<Tooltip
+						cursor={false}
+						wrapperStyle={{outline: 'none'}}
+						contentStyle={{ background: '#404040', borderRadius: 8, padding: 0, border: '2px solid black', boxShadow: '2px 2px 0 0 rgba(0, 0, 0, 1)', outline: 'none'}}
+						labelStyle={{ background: '#69CF00', padding: '5px 20px', borderRadius: "8px 8px 0 0", color: 'black', fontSize: '14px', fontWeight: 'bold', borderBottom: '2px solid black'}}
+						itemStyle={{background: '#404040', padding: '5px 20px', borderRadius: "0 0 8px 8px", color: 'white'}}
+						// formatter={function(value, name) { return `<div>${value}dasdas${name}</div>` }}
+					/>
+					{/* <Legend /> */}
+					{listLine.map((item) => {
+						return (
+						<Line type="monotone" dataKey={item.key} stroke={item.value} activeDot={{ r: 5 }} />
+						)
+					})}
+					{/* <Line type="monotone" dataKey="USDT" stroke="#82ca9d" /> */}
+				</LineChart>
+			</StyledResponsiveContainer>
+		</Wrapper>
 	)
 }

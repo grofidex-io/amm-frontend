@@ -7,6 +7,12 @@ export const BorderCard = styled(Box)`
   border-radius: ${({ theme }) => theme.radii.card};
   padding: 20px 24px;
   background: ${({ theme }) => theme.colors.backgroundAlt};
+  @media screen and (max-width: 991px) {
+    padding: 20px;
+  }
+  @media screen and (max-width: 575px) {
+    padding: 16px;
+  }
 `
 export const StyledTitle = styled(Text)`
   font-family: 'Metuo', sans-serif;
@@ -16,12 +22,15 @@ export const StyledTitle = styled(Text)`
   color: ${({ theme }) => theme.colors.text};
   margin-bottom: 32px;
   @media screen and (max-width: 1439px) {
+    font-size: 22px;
     margin-bottom: 28px;
   }
   @media screen and (max-width: 991px) {
+    font-size: 20px;
     margin-bottom: 24px;
   }
   @media screen and (max-width: 575px) {
+    font-size: 18px;
     margin-bottom: 20px;
   }
 `
