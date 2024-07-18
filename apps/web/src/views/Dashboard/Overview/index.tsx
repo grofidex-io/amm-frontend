@@ -300,13 +300,13 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 					</Flex>
 					<Box>
 						<Text color="text" fontSize={["20px", "20px", "24px", "24px", "28px", "28px", "32px"]} fontWeight="700" lineHeight="1.2">
-							{isShowBalance ? `${dataPrev?.data?.dailyAssets[1] ? formatNumber(BigNumber(dataPrev?.data?.dailyAssets[1]?.totalAssets).minus(dataPrev?.data?.dailyAssets[0]?.totalAssets).toNumber(), 2, 4) : 0} USDT` : '*****'}
+							{isShowBalance ? ` ${dataPrev?.data?.dailyAssets[1] ? ` ${percentPrev > 0 ? '+' : ''}${formatNumber(BigNumber(dataPrev?.data?.dailyAssets[1]?.totalAssets).minus(dataPrev?.data?.dailyAssets[0]?.totalAssets).toNumber(), 2, 4)}` : 0} USDT` : '*****'}
 						</Text>
 						<Flex alignItems="center" mt="8px">
 						{isShowBalance ? (
 							<>
-							<img src={`/images/dashboard/${percentPrev > 0 ? 'icon-arrow-up' : 'icon-arrow-down'}.svg`} width="16px" height="16px" alt="" />
-							<Text color={percentPrev > 0 ? 'success' : 'failure'} fontSize="16px" fontWeight="500" ml="6px">
+							<img src={`/images/dashboard/${percentPrev >= 0 ? 'icon-arrow-up' : 'icon-arrow-down'}.svg`} width="16px" height="16px" alt="" />
+							<Text color={percentPrev >= 0 ? 'success' : 'failure'} fontSize="16px" fontWeight="500" ml="6px">
 									{percentPrev.toFixed(2)}%
 								</Text>
 								</>
@@ -323,13 +323,13 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 					</Flex>
 					<Box>
 						<Text color="text" fontSize={["20px", "20px", "24px", "24px", "28px", "28px", "32px"]} fontWeight="700" lineHeight="1.2">
-							{isShowBalance ? `${totalProfitFromData ? formatNumber(totalProfitFromData, 2, 4) : 0} USDT`: '*****'}
+							{isShowBalance ? `${totalProfitFromData ? `${percentTotal > 0 ? '+' : ''}${formatNumber(BigNumber(totalProfitFromData).minus(dailyAssets[0].totalAssets).toNumber(), 0, 4)}` : 0} USDT`: '*****'}
 						</Text>
 						<Flex alignItems="center" mt="8px">
 							{isShowBalance ? (
 								<>
-									<img src={`/images/dashboard/${percentTotal > 0 ? 'icon-arrow-up' : 'icon-arrow-down'}.svg`} width="16px" height="16px" alt="" />
-									<Text color={percentTotal > 0 ? 'success' : 'failure'} fontSize="16px" fontWeight="500" ml="6px">
+									<img src={`/images/dashboard/${percentTotal >= 0 ? 'icon-arrow-up' : 'icon-arrow-down'}.svg`} width="16px" height="16px" alt="" />
+									<Text color={percentTotal >= 0 ? 'success' : 'failure'} fontSize="16px" fontWeight="500" ml="6px">
 										{percentTotal.toFixed(2)}%
 									</Text>
 								</>
