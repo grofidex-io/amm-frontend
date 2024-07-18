@@ -41,9 +41,9 @@ const FlexInfo = styled(Flex)`
 // 	}
 // 	return null
 // }
-export default function AssetGrowth({info}: any) {
+export default function AssetGrowth({info, currentAsset}: any) {
 	let listLine: any = []
-	const dataChart = info && info?.data?.dailyAssets.map((item) => {
+	const dataChart = info && [...info?.data?.dailyAssets, ...currentAsset].map((item) => {
 		listLine = []
 		let newItem = {
 			name: dayjs.unix(item.timestamp).format('YYYY-MM-DD'),
@@ -91,7 +91,7 @@ export default function AssetGrowth({info}: any) {
 						cursor={false}
 						wrapperStyle={{outline: 'none'}}
 						contentStyle={{ background: '#404040', borderRadius: 8, padding: 0, border: '2px solid black', boxShadow: '2px 2px 0 0 rgba(0, 0, 0, 1)', outline: 'none'}}
-						labelStyle={{ background: '#69CF00', padding: '5px 20px', borderRadius: "8px 8px 0 0", color: 'black', fontSize: '14px', fontWeight: 'bold', borderBottom: '2px solid black'}}
+						labelStyle={{ background: '#69CF00', padding: '5px 20px', borderRadius: "8px 8px 0 0", color: 'black', fontSize: '14px', fontWeight: 'bold', borderBottom: '2px solid black', textAlign: 'center'}}
 						itemStyle={{background: '#404040', padding: '5px 20px', borderRadius: "0 0 8px 8px", color: 'white'}}
 						// formatter={function(value, name) { return `<div>${value}dasdas${name}</div>` }}
 					/>

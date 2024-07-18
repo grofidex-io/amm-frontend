@@ -7,8 +7,9 @@ const Wrapper = styled.div`
   width: 100%;
   height: 300px;
 `
-export default function TotalProfits({info}) {
-	const data = info?.data?.dailyAssets.map((item) => {
+export default function TotalProfits({info, currentAsset}) {
+	const listData = info?.data ? [...info?.data?.dailyAssets, ...currentAsset] : []
+	const data = listData.map((item) => {
 		return {
 			name: dayjs.unix(item.timestamp).format('YYYY-MM-DD'),
 			Total: item.totalAssets

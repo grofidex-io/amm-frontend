@@ -1,15 +1,16 @@
 import dayjs from "dayjs";
 import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from "recharts";
 
-export default function DailyProfit({info}) {
+export default function DailyProfit({info, currentAsset}) {
 	const getKey = (value: string) => {
 		if(Number(value) > 0) {
 			return 'pv'
 		}
 		return 'uv'
 	}
-	const data = info?.data?.dailyAssets.map((item, index) => {
-		const _asset = index === 0 ? item.totalAssets : info?.data?.dailyAssets[index] && Number(info?.data?.dailyAssets[index].totalAssets) - Number(info?.data?.dailyAssets[index - 1].totalAssets)
+	const listData = info?.data ? [...info?.data?.dailyAssets, ...currentAsset] : []
+	const data = listData.map((item, index) => {
+		const _asset = index === 0 ? item.totalAssets : listData[index] && (Number(listData[index].totalAssets) - Number(listData[index - 1].totalAssets)).toFixed(4)
 		return {
 			name: dayjs.unix(item.timestamp).format('YYYY-MM-DD'),
 			[getKey(_asset)]: _asset
