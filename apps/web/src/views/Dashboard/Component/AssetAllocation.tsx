@@ -45,12 +45,12 @@ export default function AssetAllocation ({balances, listAssetAllocation, totalVa
 	}
 
 	const data = {
-		labels: Object.keys(balances)?.map((id: any) => { return window.innerWidth > 576 ? `${balances[id]?.currency?.symbol} - 26.25%` : `${balances[id]?.currency?.symbol}` }),
+		labels: Object.keys(balances)?.map((id: any) => { return window.innerWidth > 576 ? `${balances[id]?.symbol} - 26.25%` : `${balances[id]?.symbol}` }),
 		datasets: [{
 			label: 'Total Asset',
 			total: totalValue,
 			data: listAssetAllocation,
-			backgroundColor: Object.keys(balances)?.map((id: any) => { return LIST_COLOR[balances[id]?.currency?.symbol] || getRandomColor() }),
+			backgroundColor: Object.keys(balances)?.map((id: any) => { return LIST_COLOR[balances[id]?.symbol] || getRandomColor() }),
 			hoverOffset: 4,
 			borderWidth: 0,
 		}]

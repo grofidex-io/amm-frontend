@@ -1,5 +1,4 @@
 import { useTranslation } from '@pancakeswap/localization';
-import { Token } from '@pancakeswap/swap-sdk-core';
 import { Box, Dropdown, Flex, Heading, RowFixed, Text } from '@pancakeswap/uikit';
 import { formatNumber } from '@pancakeswap/utils/formatBalance';
 import BigNumber from 'bignumber.js';
@@ -10,7 +9,6 @@ import useAccountActiveChain from 'hooks/useAccountActiveChain';
 import forEach from 'lodash/forEach';
 import keyBy from 'lodash/keyBy';
 import React, { useState } from 'react';
-import { useTokenBalances } from 'state/wallet/hooks';
 import styled from 'styled-components';
 import { SecondaryLabel } from 'views/Voting/CreateProposal/styles';
 import { DatePicker } from 'views/Voting/components/DatePicker';
@@ -19,6 +17,7 @@ import AssetAllocation from '../Component/AssetAllocation';
 import AssetGrowth from '../Component/AssetGrowth';
 import DailyProfit from '../Component/DailyProfit';
 import TotalProfits from '../Component/TotalProfits';
+import { useFetchListBalance } from '../hooks/useFetchListBalance';
 import { useFetchUserCurrency } from '../hooks/useFetchUserCurrency';
 import { useFetchUserInfo } from '../hooks/useFetchUserInfo';
 import { BorderCard, StyledTitle } from '../styles';
@@ -121,8 +120,8 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
   const [startDate, setStartDate] = useState<any>(null);
 	const [endDate, setEndDate] = useState<any>(null);
   const [txFilter, setTxFilter] = useState<number | undefined>(TimeType.WEEK)
-	const { account, chainId } = useAccountActiveChain()
-	const listToken: Token[] = []
+	const { account } = useAccountActiveChain()
+	const listToken: any = []
 	const { data: balanceU2U } = useBalance({ address: account })
 	// const [totalValue, setTotalValue] = useState(0)
 	const { data: currencies } = useFetchUserCurrency()
@@ -132,18 +131,20 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 			if(item.id === 'U2U') {
 				U2U_CONTRACT = item.contractAddress
 			}
-			listToken.push(new Token(Number(chainId), item.contractAddress, 18, item.id, item.id))
+			listToken.push({contractAddress: item.contractAddress, symbol: item.id})
 		})
 	}
 	const  currencyByContract= keyBy(currencies, 'contractAddress')
-	const balances = useTokenBalances(account, listToken)
+
+	const {data: listBalance} = useFetchListBalance(listToken)
+	const balances = listBalance || {} 
 	let totalValue = 0
-	const listAssetAllocation = Object.keys(balances)?.map((id: any) => { 
+	const listAssetAllocation = balances && Object.keys(balances)?.map((id: any) => { 
 		let value: any = 0
 		if(id === U2U_CONTRACT) {
 			value =  balanceU2U?.formatted ? (BigNumber(balanceU2U?.formatted).multipliedBy(Number(currencyByContract[U2U_CONTRACT].currentPrice))).toNumber() : 0
 		} else {
-			value = balances[id]?.numerator ? BigNumber(formatEther(balances[id]?.numerator)).multipliedBy(currencyByContract[id].currentPrice).toNumber() : 0
+			value = balances[id]?.result ? BigNumber(formatEther(balances[id]?.result)).multipliedBy(currencyByContract[id].currentPrice).toNumber() : 0
 		}
 
 		totalValue += value
