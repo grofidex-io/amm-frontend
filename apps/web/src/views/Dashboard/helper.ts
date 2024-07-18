@@ -6,6 +6,7 @@ export function getRandomColor() {
   }
   return color;
 }
+export const GROFI_SHOW_BALANCE = 'grofi_show_balance'
 export const LIST_COLOR = {
 	// U2U: '#129E7D',
 	// USDT: '#27B9C4',

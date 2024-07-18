@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization';
-import { Box, Dropdown, Flex, Heading, RowFixed, Text } from '@pancakeswap/uikit';
+import { Box, Dropdown, Flex, Heading, IconButton, RowFixed, Text } from '@pancakeswap/uikit';
 import { formatNumber } from '@pancakeswap/utils/formatBalance';
 import BigNumber from 'bignumber.js';
 import Container from 'components/Layout/Container';
@@ -8,7 +8,7 @@ import { formatEther } from 'ethers/lib/utils';
 import useAccountActiveChain from 'hooks/useAccountActiveChain';
 import forEach from 'lodash/forEach';
 import keyBy from 'lodash/keyBy';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { SecondaryLabel } from 'views/Voting/CreateProposal/styles';
 import { DatePicker } from 'views/Voting/components/DatePicker';
@@ -17,6 +17,7 @@ import AssetAllocation from '../Component/AssetAllocation';
 import AssetGrowth from '../Component/AssetGrowth';
 import DailyProfit from '../Component/DailyProfit';
 import TotalProfits from '../Component/TotalProfits';
+import { GROFI_SHOW_BALANCE } from '../helper';
 import { useFetchListBalance } from '../hooks/useFetchListBalance';
 import { useFetchUserCurrency } from '../hooks/useFetchUserCurrency';
 import { useFetchUserInfo } from '../hooks/useFetchUserInfo';
@@ -123,8 +124,9 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 	const { account } = useAccountActiveChain()
 	const listToken: any = []
 	const { data: balanceU2U } = useBalance({ address: account })
-	// const [totalValue, setTotalValue] = useState(0)
 	const { data: currencies } = useFetchUserCurrency()
+	const [isShowBalance, setIsShowBalance] = useState<boolean>(true)
+
 	let U2U_CONTRACT = ''
 	if(currencies) {
 		forEach(currencies, (item: any) => {
@@ -139,7 +141,8 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 	const {data: listBalance} = useFetchListBalance(listToken)
 	const balances = listBalance || {} 
 	let totalValue = 0
-	const listAssetAllocation = balances && Object.keys(balances)?.map((id: any) => { 
+	const listAssetAllocation = {}
+	forEach(Object.keys(balances), (id: any) => { 
 		let value: any = 0
 		if(id === U2U_CONTRACT) {
 			value =  balanceU2U?.formatted ? (BigNumber(balanceU2U?.formatted).multipliedBy(Number(currencyByContract[U2U_CONTRACT].currentPrice))).toNumber() : 0
@@ -148,7 +151,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 		}
 
 		totalValue += value
-		return value
+		listAssetAllocation[id] = value
 	})
 
   const handleDateChange = (key: string) => (value: Date) => {
@@ -167,22 +170,51 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 	}
 
 	const { data } = useFetchUserInfo(account, txFilter, {
-		startDate: startDate ? Math.round(dayjs(Date.UTC(startDate.getUTCFullYear(), startDate.getUTCMonth(),
+		startDate: startDate ? Math.round(dayjs(Date.UTC(startDate.getUTCFullYear(), startDate.getMonth(),
 		startDate.getDate(), 0, 0, 0)).valueOf()/ 1000) : null,
-		endDate: endDate ? Math.round(dayjs(Date.UTC(endDate.getUTCFullYear(), endDate.getUTCMonth(),
+		endDate: endDate ? Math.round(dayjs(Date.UTC(endDate.getUTCFullYear(), endDate.getMonth(),
 		endDate.getDate(), 0, 0, 0)).valueOf()/ 1000) : null
 	})
+	let currentAsset: any = []
+	if((txFilter === TimeType.WEEK || txFilter === TimeType.MONTH) && listBalance && data?.data) {
+		currentAsset = [{
+			assets: Object.keys(listBalance).map((item) => {
+				return {
+					balance: listBalance[item].result,
+					balanceUsd: Number(listAssetAllocation[item].toFixed(4)),
+					symbol: listBalance[item].symbol,
+					name: listBalance[item].symbol
+				}
+			}),
+			timestamp: Math.round(dayjs().utc().set('hour', 0).set('minute', 0).set('second', 0).valueOf()/1000),
+			totalAssets: Number(totalValue.toFixed(4))
+		}]
+}
+
 
 	const { data: dataPrev } = useFetchUserInfo(account, TimeType.PREV)
   const percentPrev: number = dataPrev?.data?.dailyAssets[0]?.totalAssets && dataPrev?.data?.dailyAssets[1] ? (BigNumber(dataPrev?.data?.dailyAssets[1]?.totalAssets).minus(dataPrev?.data?.dailyAssets[0].totalAssets).div(dataPrev?.data?.dailyAssets[0].totalAssets).multipliedBy(100).toNumber()) : 0
 	let totalProfitFromData = 0
-	forEach(data?.data?.dailyAssets, (item, index: number)=> {
-		const _asset = index === 0 ? Number(item.totalAssets) : data?.data?.dailyAssets[index] && Number(data?.data?.dailyAssets[index].totalAssets) - Number(data?.data?.dailyAssets[index - 1].totalAssets)
+	const dailyAssets = data?.data ? [...data?.data?.dailyAssets, ...currentAsset] : []
+	forEach(dailyAssets, (item, index: number)=> {
+		const _asset = index === 0 ? Number(item.totalAssets) : dailyAssets[index] && Number(dailyAssets[index].totalAssets) - Number(dailyAssets[index - 1].totalAssets)
 		totalProfitFromData += _asset
 	})
 
-	const percentTotal: number = totalProfitFromData && data?.data?.dailyAssets[0] ? (BigNumber(totalProfitFromData).minus(data?.data?.dailyAssets[0].totalAssets).div(data?.data?.dailyAssets[0].totalAssets).multipliedBy(100).toNumber()) : 0
+	const percentTotal: number = totalProfitFromData && dailyAssets[0] ? (BigNumber(totalProfitFromData).minus(dailyAssets[0].totalAssets).div(dailyAssets[0].totalAssets).multipliedBy(100).toNumber()) : 0
 	const maxDate = dayjs().utc().subtract(1, 'days').set('hour', 0).set('minute', 0).set('second', 0)
+
+	const handleShowHideBalance = () => {
+		const status = !isShowBalance
+		localStorage?.setItem(GROFI_SHOW_BALANCE, status.toString())
+		setIsShowBalance(Boolean(status))
+	}
+	useEffect(() => {
+		const status = localStorage.getItem(GROFI_SHOW_BALANCE)
+		if(status) {
+			setIsShowBalance(status !== 'false')
+		}
+	},[])
   return (
     <Box mt={["24px", "24px", "32px", "32px", "48px", "48px", "60px"]}>
       <Container>
@@ -245,34 +277,43 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 				<StyledItem className="border-neubrutal" >
 					<Flex alignItems="center" mb={["8px", "8px", "12px", "12px", "16px"]}>
 						<Text color="textHighlight" fontSize="14px" mr={["8px", "8px", "8px", "8px", "12px", "12px", "16px"]}>Estimated Total Value</Text>
-						<img src="/images/dashboard/icon-eye.svg" width="16px" height="16px" alt="" />
+						<IconButton scale="xs" variant="text" onClick={handleShowHideBalance}>
+							<img src="/images/dashboard/icon-eye.svg" width="16px" height="16px" alt="" />
+						</IconButton>
 					</Flex>
 					<Box>
 						<Text color="text" fontSize={["20px", "20px", "24px", "24px", "28px", "28px", "32px"]} fontWeight="700" lineHeight="1.2">
-							{formatNumber(totalValue, 2, 4)} USDT
+							{isShowBalance ? `${formatNumber(totalValue, 2, 4)} USDT` : '*****'} 
 						</Text>
 						<Flex alignItems="center" mt="8px">
-						<Text color="textSubtle" fontSize="16px" fontWeight="500" >≈</Text>
-								<Text color='textSubtle' fontSize="16px" fontWeight="500" ml="6px">
-								{formatNumber(totalValue, 2, 4)}
-							</Text>
+							{isShowBalance && <Text color="textSubtle" fontSize="16px" fontWeight="500" >≈</Text>}
+							<Text color='textSubtle' fontSize="16px" fontWeight="500" ml="6px">
+							{isShowBalance ? formatNumber(totalValue, 2, 4) : '*****'}
+						</Text>
 						
 						</Flex>
 					</Box>
 				</StyledItem>
 				<StyledItem className="border-neubrutal" >
 					<Flex alignItems="center" mb={["8px", "8px", "12px", "12px", "16px"]}>
-						<Text color="textHighlight" fontSize="14px" mr="16px">Previous Day</Text>
+						<Text color="textHighlight" fontSize="14px" mr="16px">{`Today's Profit`}</Text>
 					</Flex>
 					<Box>
 						<Text color="text" fontSize={["20px", "20px", "24px", "24px", "28px", "28px", "32px"]} fontWeight="700" lineHeight="1.2">
-							{dataPrev?.data?.dailyAssets[1] ? formatNumber(BigNumber(dataPrev?.data?.dailyAssets[1]?.totalAssets).minus(dataPrev?.data?.dailyAssets[0]?.totalAssets).toNumber(), 2, 4) : 0} USDT
+							{isShowBalance ? `${dataPrev?.data?.dailyAssets[1] ? formatNumber(BigNumber(dataPrev?.data?.dailyAssets[1]?.totalAssets).minus(dataPrev?.data?.dailyAssets[0]?.totalAssets).toNumber(), 2, 4) : 0} USDT` : '*****'}
 						</Text>
 						<Flex alignItems="center" mt="8px">
-						<img src={`/images/dashboard/${percentPrev > 0 ? 'icon-arrow-up' : 'icon-arrow-down'}.svg`} width="16px" height="16px" alt="" />
-						<Text color={percentPrev > 0 ? 'success' : 'failure'} fontSize="16px" fontWeight="500" ml="6px">
-								{percentPrev.toFixed(2)}%
-							</Text>
+						{isShowBalance ? (
+							<>
+							<img src={`/images/dashboard/${percentPrev > 0 ? 'icon-arrow-up' : 'icon-arrow-down'}.svg`} width="16px" height="16px" alt="" />
+							<Text color={percentPrev > 0 ? 'success' : 'failure'} fontSize="16px" fontWeight="500" ml="6px">
+									{percentPrev.toFixed(2)}%
+								</Text>
+								</>
+						): 
+						<Text color='textSubtle' fontSize="16px" fontWeight="500" ml="6px">*****</Text>
+						}
+					
 						</Flex>
 					</Box>
 				</StyledItem>
@@ -282,13 +323,20 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 					</Flex>
 					<Box>
 						<Text color="text" fontSize={["20px", "20px", "24px", "24px", "28px", "28px", "32px"]} fontWeight="700" lineHeight="1.2">
-							{totalProfitFromData ? formatNumber(totalProfitFromData, 2, 4) : 0} USDT
+							{isShowBalance ? `${totalProfitFromData ? formatNumber(totalProfitFromData, 2, 4) : 0} USDT`: '*****'}
 						</Text>
 						<Flex alignItems="center" mt="8px">
-						<img src={`/images/dashboard/${percentTotal > 0 ? 'icon-arrow-up' : 'icon-arrow-down'}.svg`} width="16px" height="16px" alt="" />
-						<Text color={percentTotal > 0 ? 'success' : 'failure'} fontSize="16px" fontWeight="500" ml="6px">
-								{percentTotal.toFixed(2)}%
-							</Text>
+							{isShowBalance ? (
+								<>
+									<img src={`/images/dashboard/${percentTotal > 0 ? 'icon-arrow-up' : 'icon-arrow-down'}.svg`} width="16px" height="16px" alt="" />
+									<Text color={percentTotal > 0 ? 'success' : 'failure'} fontSize="16px" fontWeight="500" ml="6px">
+										{percentTotal.toFixed(2)}%
+									</Text>
+								</>
+							) : (
+								<Text color='textSubtle' fontSize="16px" fontWeight="500" ml="6px">*****</Text>
+							)}
+			
 						</Flex>
 					</Box>
 				</StyledItem>
@@ -300,17 +348,17 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
           </BorderCard>
           <BorderCard style={{ flex: 1.5 }} ml={["0", "0", "0", "0", "16px"]} mt={["16px", "16px", "16px", "16px", "0"]}>
             <StyledTitle>Asset Growth</StyledTitle>
-            <AssetGrowth info={data}/>
+            <AssetGrowth info={data} currentAsset={currentAsset}/>
           </BorderCard>
         </Flex>
         <Flex flexDirection={["column", "column", "column", "column", "row"]} mt="16px">
           <BorderCard style={{ flex: 1 }}>
             <StyledTitle>Total Asset</StyledTitle>
-						<TotalProfits info={data}/>
+						<TotalProfits info={data} currentAsset={currentAsset}/>
           </BorderCard>
           <BorderCard style={{ flex: 1 }} ml={["0", "0", "0", "0", "16px"]} mt={["16px", "16px", "16px", "16px", "0"]}>
             <StyledTitle>Daily Profit</StyledTitle>
-						<DailyProfit info={data}/>
+						<DailyProfit info={data} currentAsset={currentAsset}/>
           </BorderCard>
         </Flex>
         {/* <OrdersAnalysis/> */}

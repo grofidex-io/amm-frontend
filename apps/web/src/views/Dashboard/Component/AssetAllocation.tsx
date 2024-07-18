@@ -1,5 +1,6 @@
 import { Box } from "@pancakeswap/uikit";
 import { formatNumber } from "@pancakeswap/utils/formatBalance";
+import BigNumber from "bignumber.js";
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import styled from 'styled-components';
@@ -45,11 +46,11 @@ export default function AssetAllocation ({balances, listAssetAllocation, totalVa
 	}
 
 	const data = {
-		labels: Object.keys(balances)?.map((id: any) => { return window.innerWidth > 576 ? `${balances[id]?.symbol} - 26.25%` : `${balances[id]?.symbol}` }),
+		labels: Object.keys(balances)?.map((id: any) => { return window.innerWidth > 576 ? `${balances[id]?.symbol} - ${formatNumber(BigNumber(listAssetAllocation[id]).div(totalValue).multipliedBy(100).toNumber(), 0, 2)}%` : `${balances[id]?.symbol}` }),
 		datasets: [{
 			label: 'Total Asset',
 			total: totalValue,
-			data: listAssetAllocation,
+			data: Object.keys(listAssetAllocation).map((item) => listAssetAllocation[item]),
 			backgroundColor: Object.keys(balances)?.map((id: any) => { return LIST_COLOR[balances[id]?.symbol] || getRandomColor() }),
 			hoverOffset: 4,
 			borderWidth: 0,
@@ -81,12 +82,10 @@ export default function AssetAllocation ({balances, listAssetAllocation, totalVa
 							tooltip: {
 								callbacks: {
 									title: (context) => {
-										console.log(context);
-										
 										return context[0].label.split(':')[0]
 									},
-									label: (context) => {
-										return `${context.raw} USDT`
+									label: (context: any) => {
+										return `${context.raw && formatNumber(context.raw)} USDT`
 									}
 								}
 							}
