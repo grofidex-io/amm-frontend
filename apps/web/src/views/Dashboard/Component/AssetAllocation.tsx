@@ -11,7 +11,16 @@ const StyledChart = styled(Box)`
 	width: var(--size);
 	height: var(--size);
 	margin: auto;
+	@media screen and (max-width: 1199px) {
+		--size: 360px;
+	}
+	@media screen and (max-width: 991px) {
+		--size: 400px;
+	}
 	@media screen and (max-width: 575px) {
+		--size: 360px;
+	}
+	@media screen and (max-width: 424px) {
 		--size: 300px;
 	}
 	@media screen and (max-width: 374px) {
@@ -27,7 +36,7 @@ export default function AssetAllocation ({balances, listAssetAllocation, totalVa
 			const centerX = chart.getDatasetMeta(0).data[0]?.x
 			const centerY = chart.getDatasetMeta(0).data[0]?.y
 			ctx.save()
-			ctx.font = 'bolder 18px Arial'
+			ctx.font =  window.innerWidth > 576 ? 'bolder 18px Urbanist' : 'bolder 16px Urbanist'
 			ctx.fillStyle = 'white'
 			ctx.textAlign = 'center'
 			ctx.textBaseline = 'middle'
@@ -36,40 +45,50 @@ export default function AssetAllocation ({balances, listAssetAllocation, totalVa
 	}
 
 	const data = {
-		labels: Object.keys(balances)?.map((id: any) => { return balances[id]?.currency?.symbol }),
+		labels: Object.keys(balances)?.map((id: any) => { return window.innerWidth > 576 ? `${balances[id]?.currency?.symbol} - 26.25%` : `${balances[id]?.currency?.symbol}` }),
 		datasets: [{
 			label: 'Total Asset',
 			total: totalValue,
 			data: listAssetAllocation,
 			backgroundColor: Object.keys(balances)?.map((id: any) => { return LIST_COLOR[balances[id]?.currency?.symbol] || getRandomColor() }),
-			hoverOffset: 4
+			hoverOffset: 4,
+			borderWidth: 0,
 		}]
 	};
 	return (
-		<Box px={["0", "0", "0", "0", "12px", "16px", "20px"]}>
+		<Box>
 			<StyledChart>
 				<Doughnut
 					data={data}
 					options={{
 						responsive: true,
 						cutout: '70%',
-						radius: window.innerWidth > 576 ? '95%' : '90%',
+						radius: window.innerWidth > 992 ? '95%' : '90%',
 						plugins: {
 							legend: {
-								position: window.innerWidth > 576 ? 'right' : 'bottom',
+								position: window.innerWidth > 992 ? 'right' : 'bottom',
 								labels: {
 									color: '#fff',
+									usePointStyle: true,
+									boxWidth: 6,
+									boxHeight: 6,
+									boxPadding: 2,
+									font: {
+										size: window.innerWidth > 576 ? 14 : 12
+									}
 								}
 							},
 							tooltip: {
-								// callbacks: {
-								// 	title: (context) => {
-								// 		return context[0].label.split(':')[0]
-								// 	},
-								// 	label: (context) => {
-								// 		return `${context.raw}%`
-								// 	}
-								// }
+								callbacks: {
+									title: (context) => {
+										console.log(context);
+										
+										return context[0].label.split(':')[0]
+									},
+									label: (context) => {
+										return `${context.raw} USDT`
+									}
+								}
 							}
 						},
 					}}

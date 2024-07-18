@@ -18,7 +18,6 @@ import { useBalance } from 'wagmi';
 import AssetAllocation from '../Component/AssetAllocation';
 import AssetGrowth from '../Component/AssetGrowth';
 import DailyProfit from '../Component/DailyProfit';
-import OrdersAnalysis from '../Component/OrdersAnalysis';
 import TotalProfits from '../Component/TotalProfits';
 import { useFetchUserCurrency } from '../hooks/useFetchUserCurrency';
 import { useFetchUserInfo } from '../hooks/useFetchUserInfo';
@@ -51,14 +50,18 @@ const SortText = styled.button<{ active: boolean }>`
   background-color: ${({ active, theme }) => (active ? theme.colors.secondary : theme.colors.transparent)};
   font-size: 14px;
   padding: 8px 16px;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radii.card};
   color: ${({ active, theme }) => (active ? theme.colors.black : theme.colors.textSubtle)};
   border-color: ${({ active, theme }) => (active ? theme.colors.cardBorder : theme.colors.textSubtle)};
   outline: none;
   transition: all 0.3s ease-out;
+	@media screen and (max-width: 424px) {
+		margin: 3px;
+  	border-radius: ${({ theme }) => theme.radii.small};
+	}
   @media screen and (max-width: 374px) {
-    margin-left: 4px;
     padding: 8px 12px;
+		margin: 2px;
   }
   &:hover {
     color: ${({ active, theme }) => (active ? theme.colors.black : theme.colors.hover)};
@@ -66,21 +69,46 @@ const SortText = styled.button<{ active: boolean }>`
   }
 `
 const StyledList = styled.div`
-  --item: 4;
+  --item: 3;
   --space: 16px;
   display: flex;
   flex-wrap: wrap;
   gap: var(--space);
   margin-bottom: 56px;
+	@media screen and (max-width: 1439px) {
+		margin-bottom: 48px;
+	}
+	@media screen and (max-width: 1199px) {
+		margin-bottom: 40px;
+	}
+	@media screen and (max-width: 991px) {
+		--item: 2;
+		margin-bottom: 32px;
+	}
+	@media screen and (max-width: 767px) {
+		margin-bottom: 24px;
+	}
   @media screen and (max-width: 575px) {
     --item: 1;
     gap: 0;
+		margin-bottom: 16px;
   }
 `
 const StyledItem = styled.div`
   width: calc((100% - (var(--item) - 1) * var(--space)) / var(--item));
   border-radius: ${({ theme }) => theme.radii.card};
   padding: 20px 24px;
+	@media screen and (max-width: 991px) {
+		padding: 20px;
+	}
+	@media screen and (max-width: 575px) {
+		padding: 16px;
+	}
+	&:not(:last-child) {
+		@media screen and (max-width: 575px) {
+			margin-bottom: var(--space);
+		}
+	}
 `
 const StyleImg = styled.img`
   width: 100%;
@@ -155,11 +183,11 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 	const percentTotal: number = totalProfitFromData && data?.data?.dailyAssets[0] ? (BigNumber(totalProfitFromData).minus(data?.data?.dailyAssets[0].totalAssets).div(data?.data?.dailyAssets[0].totalAssets).multipliedBy(100).toNumber()) : 0
 	const maxDate = dayjs().utc().subtract(1, 'days').set('hour', 0).set('minute', 0).set('second', 0)
   return (
-    <Box mt="60px">
+    <Box mt={["24px", "24px", "32px", "32px", "48px", "48px", "60px"]}>
       <Container>
-        <Flex alignItems="center" justifyContent="space-between" mb={["20px", "20px", "24px", "24px", "28px", "28px", "32px"]}>
+        <Flex flexDirection={["column", "column", "column", "row"]} alignItems={["", "", "", "center"]} justifyContent="space-between" mb={["20px", "20px", "24px", "24px", "28px", "28px", "32px"]}>
           <StyledHeading as="h1" scale="xxl" color="text">{t('Assets Analysis')}</StyledHeading>
-          <RowFixed>
+          <RowFixed mt={["12px", "12px", "12px", "0px"]} ml="auto">
             <SortText
               onClick={() => {
                 setTxFilter(TimeType.WEEK)
@@ -178,9 +206,6 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
             >
               {t('Past 30 days')}
             </SortText>
-
-           
-				
 				    <Dropdown position="bottom-right" target={ 
 							<SortText
 								active={txFilter === TimeType.CUSTOM}
@@ -188,42 +213,41 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 								{t('+ Custom time')}
 							</SortText>
 						}>
-						<Flex>
-						<Box marginRight={2} maxWidth={140}>
-							<SecondaryLabel>{t('Start Date')}</SecondaryLabel>
-							<DatePicker
-								name="date"
-								onChange={handleDateChange('startDate')}
-								selected={startDate}
-								dateFormat="yyyy/MM/dd"
-								maxDate={new Date(maxDate.valueOf())}
-								placeholderText="YYYY/MM/DD"
-							/>
-            </Box>
-						<Box maxWidth={140}>
-							<SecondaryLabel>{t('End Date')}</SecondaryLabel>
-							<DatePicker
-								name="endDate"
-								onChange={handleDateChange('endDate')}
-								selected={endDate}
-								dateFormat="yyyy/MM/dd"
-								maxDate={new Date(maxDate.valueOf())}
-								placeholderText="YYYY/MM/DD"
-							/>
-            </Box>
-						</Flex>
+							<Flex>
+								<Box marginRight={2} maxWidth={140}>
+									<SecondaryLabel>{t('Start Date')}</SecondaryLabel>
+									<DatePicker
+										name="date"
+										onChange={handleDateChange('startDate')}
+										selected={startDate}
+										dateFormat="yyyy/MM/dd"
+										maxDate={new Date(maxDate.valueOf())}
+										placeholderText="YYYY/MM/DD"
+									/>
+								</Box>
+								<Box maxWidth={140}>
+									<SecondaryLabel>{t('End Date')}</SecondaryLabel>
+									<DatePicker
+										name="endDate"
+										onChange={handleDateChange('endDate')}
+										selected={endDate}
+										dateFormat="yyyy/MM/dd"
+										maxDate={new Date(maxDate.valueOf())}
+										placeholderText="YYYY/MM/DD"
+									/>
+								</Box>
+							</Flex>
       			</Dropdown>
-			
           </RowFixed>
         </Flex>
         <StyledList>
 				<StyledItem className="border-neubrutal" >
-					<Flex alignItems="center" mb="16px">
-						<Text color="textHighlight" fontSize="14px" mr="16px">Estimated Total Value</Text>
+					<Flex alignItems="center" mb={["8px", "8px", "12px", "12px", "16px"]}>
+						<Text color="textHighlight" fontSize="14px" mr={["8px", "8px", "8px", "8px", "12px", "12px", "16px"]}>Estimated Total Value</Text>
+						<img src="/images/dashboard/icon-eye.svg" width="16px" height="16px" alt="" />
 					</Flex>
 					<Box>
-						<Text color="text" fontSize="32px" fontWeight="700" lineHeight="1.2">
-		
+						<Text color="text" fontSize={["20px", "20px", "24px", "24px", "28px", "28px", "32px"]} fontWeight="700" lineHeight="1.2">
 							{formatNumber(totalValue, 2, 4)} USDT
 						</Text>
 						<Flex alignItems="center" mt="8px">
@@ -236,11 +260,11 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 					</Box>
 				</StyledItem>
 				<StyledItem className="border-neubrutal" >
-					<Flex alignItems="center" mb="16px">
+					<Flex alignItems="center" mb={["8px", "8px", "12px", "12px", "16px"]}>
 						<Text color="textHighlight" fontSize="14px" mr="16px">Previous Day</Text>
 					</Flex>
 					<Box>
-						<Text color="text" fontSize="32px" fontWeight="700" lineHeight="1.2">
+						<Text color="text" fontSize={["20px", "20px", "24px", "24px", "28px", "28px", "32px"]} fontWeight="700" lineHeight="1.2">
 							{dataPrev?.data?.dailyAssets[1] ? formatNumber(BigNumber(dataPrev?.data?.dailyAssets[1]?.totalAssets).minus(dataPrev?.data?.dailyAssets[0]?.totalAssets).toNumber(), 2, 4) : 0} USDT
 						</Text>
 						<Flex alignItems="center" mt="8px">
@@ -252,11 +276,11 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 					</Box>
 				</StyledItem>
 				<StyledItem className="border-neubrutal" >
-					<Flex alignItems="center" mb="16px">
+					<Flex alignItems="center" mb={["8px", "8px", "12px", "12px", "16px"]}>
 						<Text color="textHighlight" fontSize="14px" mr="16px">{`Total profit of past ${ txFilter === TimeType.WEEK ? '7 days' : txFilter ===  TimeType.MONTH ? '30 days' : 'custom time'}`}</Text>
 					</Flex>
 					<Box>
-						<Text color="text" fontSize="32px" fontWeight="700" lineHeight="1.2">
+						<Text color="text" fontSize={["20px", "20px", "24px", "24px", "28px", "28px", "32px"]} fontWeight="700" lineHeight="1.2">
 							{totalProfitFromData ? formatNumber(totalProfitFromData, 2, 4) : 0} USDT
 						</Text>
 						<Flex alignItems="center" mt="8px">
@@ -267,29 +291,28 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 						</Flex>
 					</Box>
 				</StyledItem>
-
         </StyledList>
-        <Flex>
+        <Flex flexDirection={["column", "column", "column", "column", "row"]}>
           <BorderCard style={{ flex: 1 }}>
             <StyledTitle>Asset Allocation</StyledTitle>
 						<AssetAllocation balances={balances} listAssetAllocation={listAssetAllocation} totalValue={totalValue}/>
           </BorderCard>
-          <BorderCard style={{ flex: 2 }} ml="16px">
+          <BorderCard style={{ flex: 1.5 }} ml={["0", "0", "0", "0", "16px"]} mt={["16px", "16px", "16px", "16px", "0"]}>
             <StyledTitle>Asset Growth</StyledTitle>
             <AssetGrowth info={data}/>
           </BorderCard>
         </Flex>
-        <Flex mt="16px">
+        <Flex flexDirection={["column", "column", "column", "column", "row"]} mt="16px">
           <BorderCard style={{ flex: 1 }}>
             <StyledTitle>Total Asset</StyledTitle>
 						<TotalProfits info={data}/>
           </BorderCard>
-          <BorderCard style={{ flex: 1 }} ml="16px">
+          <BorderCard style={{ flex: 1 }} ml={["0", "0", "0", "0", "16px"]} mt={["16px", "16px", "16px", "16px", "0"]}>
             <StyledTitle>Daily Profit</StyledTitle>
 						<DailyProfit info={data}/>
           </BorderCard>
         </Flex>
-        <OrdersAnalysis/>
+        {/* <OrdersAnalysis/> */}
       </Container>
     </Box>
   )
