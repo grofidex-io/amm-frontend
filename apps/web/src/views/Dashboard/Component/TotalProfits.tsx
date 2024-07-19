@@ -1,43 +1,81 @@
+import { Flex } from "@pancakeswap/uikit"
+import { formatNumber } from "@pancakeswap/utils/formatBalance"
+import BigNumber from "bignumber.js"
 import dayjs from "dayjs"
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 import styled from "styled-components"
+import { Circle, CustomTooltipContainer, TooltipContent, TooltipLabel } from "../styles"
 
 const Wrapper = styled.div`
   position: relative;
   width: 100%;
   height: 300px;
 `
+
+const CustomTooltip = ({ active, payload, label } : any) => {
+	if(active && payload && payload.length) {
+		return (
+			<CustomTooltipContainer>
+				<TooltipLabel>{`${label}`}</TooltipLabel>
+				<TooltipContent>
+					{payload.map((item) => {
+						return (
+							<>
+								<Flex alignItems="center" mb="1">
+									<Circle color="#E1FABB" size="6px" />
+									<p>Total Asset: <span>{item.value} USDT</span></p>
+								</Flex>
+								<Flex alignItems="center" mb="1">
+									<Circle color="#E1FABB" size="6px" />
+									<p>Total PnL: <span>{item.payload?.pnl && formatNumber(item.payload?.pnl, 0, 6)}%</span></p>
+								</Flex>
+							</>
+
+						)
+					})}
+				</TooltipContent>
+			</CustomTooltipContainer>
+		)
+	}
+	return null
+}
+
 export default function TotalProfits({info, currentAsset}) {
 	const listData = info?.data ? [...info?.data?.dailyAssets, ...currentAsset] : []
-	const data = listData.map((item) => {
+	const data = listData.map((item, index) => {
 		return {
 			name: dayjs.unix(item.timestamp).format('YYYY-MM-DD'),
-			Total: item.totalAssets
+			Total: item?.totalAssets,
+			pnl: !listData[index-1]?.totalAssets ? 0 : item.totalAssets && BigNumber(item.totalAssets).minus(listData[index-1]?.totalAssets).div(listData[index-1]?.totalAssets).multipliedBy(100).toNumber()
 		}
 	})
 	return (
 		<Wrapper>
-		<ResponsiveContainer width="100%" height="100%">
-		<AreaChart width={500} height={250} data={data}
-			margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-			<defs>
-				{/* <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-					<stop offset="5%" stopColor="#E1FABB" stopOpacity={0.8}/>
-					<stop offset="100%" stopColor="#E1FABB" stopOpacity={0}/>
-				</linearGradient> */}
-				<linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-				<stop offset="0" stopColor="#E1FABB" stopOpacity={0.25}/>
-				<stop offset="90%" stopColor="#FFFFFF" stopOpacity={0}/>
-				</linearGradient>
-			</defs>
-			<XAxis dataKey="name" axisLine={false} tickLine={false} />
-			<YAxis axisLine={false} tickLine={false}/>
-			<CartesianGrid  vertical={false} strokeDasharray="1 0" opacity={0.1}/>
-			<Tooltip  cursor={false} wrapperStyle={{outline: 'none'}} contentStyle={{ background: '#404040', borderRadius: 8, padding: 0, border: '2px solid black', boxShadow: '2px 2px 0 0 rgba(0, 0, 0, 1)'}} labelStyle={{textAlign: 'center',background: '#69CF00', padding: '5px 20px', borderRadius: "8px 8px 0 0", color: 'black', fontWeight: 'bold', borderBottom: '2px solid black'}} itemStyle={{background: '#404040', padding: '5px 20px', borderRadius: "0 0 8px 8px", color: 'white'}}/>
-			{/* <Area type="monotone" dataKey="uv" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" /> */}
-			<Area type="monotone" dataKey="Total" stroke="#69CF00" fillOpacity={1} fill="url(#colorPv)" strokeWidth={2}/>
-		</AreaChart>
-		</ResponsiveContainer>
+			<ResponsiveContainer width="100%" height="100%">
+				<AreaChart width={500} height={250} data={data}
+					margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+					<defs>
+						{/* <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+							<stop offset="5%" stopColor="#E1FABB" stopOpacity={0.8}/>
+							<stop offset="100%" stopColor="#E1FABB" stopOpacity={0}/>
+						</linearGradient> */}
+						<linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
+						<stop offset="0" stopColor="#E1FABB" stopOpacity={0.25}/>
+						<stop offset="90%" stopColor="#FFFFFF" stopOpacity={0}/>
+						</linearGradient>
+					</defs>
+					<XAxis stroke="#c3c3c3" tick={{fontSize: 12}} dataKey="name" axisLine={false} tickLine={false} />
+					<YAxis stroke="#c3c3c3" tick={{fontSize: 12}} axisLine={false} tickLine={false}/>
+					<CartesianGrid  vertical={false} strokeDasharray="1 0" opacity={0.1}/>
+					<Tooltip
+						cursor={false}
+						wrapperStyle={{outline: 'none'}}
+						content={<CustomTooltip/>}
+					/>
+					{/* <Area type="monotone" dataKey="uv" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" /> */}
+					<Area type="monotone" dataKey="Total" stroke="#69CF00" fillOpacity={1} fill="url(#colorPv)" strokeWidth={2} activeDot={{ stroke: '#E1FABB', strokeWidth: 8, strokeOpacity: 0.5, r: 4 }}/>
+				</AreaChart>
+			</ResponsiveContainer>
 		</Wrapper>
 	)
 }

@@ -6,6 +6,7 @@ import { Doughnut } from "react-chartjs-2";
 import styled from 'styled-components';
 import { getRandomColor, LIST_COLOR } from "../helper";
 
+
 ChartJS.register(ArcElement, Tooltip, Legend);
 const StyledChart = styled(Box)`
 	--size: 400px;

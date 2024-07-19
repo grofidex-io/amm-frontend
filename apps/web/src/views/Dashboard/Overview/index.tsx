@@ -278,7 +278,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 					<Flex alignItems="center" mb={["8px", "8px", "12px", "12px", "16px"]}>
 						<Text color="textHighlight" fontSize="14px" mr={["8px", "8px", "8px", "8px", "12px", "12px", "16px"]}>Estimated Total Value</Text>
 						<IconButton scale="xs" variant="text" onClick={handleShowHideBalance}>
-							<img src="/images/dashboard/icon-eye.svg" width="16px" height="16px" alt="" />
+							<img src={`/images/dashboard/${isShowBalance ? 'icon-eye' : 'icon-eye-close'}.svg`} width="16px" height="16px" alt="" />
 						</IconButton>
 					</Flex>
 					<Box>
@@ -288,9 +288,8 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 						<Flex alignItems="center" mt="8px">
 							{isShowBalance && <Text color="textSubtle" fontSize="16px" fontWeight="500" >≈</Text>}
 							<Text color='textSubtle' fontSize="16px" fontWeight="500" ml="6px">
-							{isShowBalance ? formatNumber(totalValue, 2, 4) : '*****'}
-						</Text>
-						
+								{isShowBalance ? `${formatNumber(totalValue, 2, 4)} USD` : '*****'}
+							</Text>
 						</Flex>
 					</Box>
 				</StyledItem>
