@@ -32,15 +32,54 @@ const FlexInfo = styled(Flex)`
 	flex-wrap: wrap;
 	justify-content: center;
 `
+const CustomTooltipContainer = styled.div`
+ background: '#404040';
+  border-radius: 8px; 
+	padding: 0;
+	border: 2px solid black;
+	box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 1);
+	outline: none;
+`
+const TooltipLabel = styled.div`
+	background: #69CF00;
+	padding: 5px 20px; 
+	border-radius: 8px 8px 0 0;
+  color: black; 
+	font-size: 14px;
+	font-weight: bold;
+	border-bottom: 2px solid black;
+	text-align: center
+`
+const TooltipContent = styled.div`
+	background: #404040;
+	padding: 5px 20px;
+	border-radius: 0 0 8px 8px; 
+	color: white
+`
 
-// const CustomTooltip = ({ active, label }) => {
-// 	if(active) {
-// 		return (
-// 			<Flex>{label}</Flex>
-// 		)
-// 	}
-// 	return null
-// }
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <CustomTooltipContainer>
+        <TooltipLabel className="label">{`${label}`}</TooltipLabel>
+				<TooltipContent>
+				{
+					payload.map((item) => {
+						return (
+							<Flex alignItems="center" mb="1">
+								<Circle color={item.color}/>
+								<p className="intro">{item.name} : <span style={{fontWeight: 'bold'}}>{item.value} USDT</span></p>
+							</Flex>
+						)
+					})
+				}
+				</TooltipContent>
+      </CustomTooltipContainer>
+    );
+  }
+
+  return null;
+};
 export default function AssetGrowth({info, currentAsset}: any) {
 	let listLine: any = []
 	const dataChart = info && [...info?.data?.dailyAssets, ...currentAsset].map((item) => {
@@ -90,9 +129,7 @@ export default function AssetGrowth({info, currentAsset}: any) {
 					<Tooltip
 						cursor={false}
 						wrapperStyle={{outline: 'none'}}
-						contentStyle={{ background: '#404040', borderRadius: 8, padding: 0, border: '2px solid black', boxShadow: '2px 2px 0 0 rgba(0, 0, 0, 1)', outline: 'none'}}
-						labelStyle={{ background: '#69CF00', padding: '5px 20px', borderRadius: "8px 8px 0 0", color: 'black', fontSize: '14px', fontWeight: 'bold', borderBottom: '2px solid black', textAlign: 'center'}}
-						itemStyle={{background: '#404040', padding: '5px 20px', borderRadius: "0 0 8px 8px", color: 'white'}}
+						content={<CustomTooltip/>}
 						// formatter={function(value, name) { return `<div>${value}dasdas${name}</div>` }}
 					/>
 					{/* <Legend /> */}
