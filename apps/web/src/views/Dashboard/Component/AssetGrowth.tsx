@@ -4,6 +4,7 @@ import forEach from 'lodash/forEach';
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import styled from 'styled-components';
 import { getRandomColor, LIST_COLOR } from '../helper';
+import { Circle, CustomTooltipContainer, TooltipContent, TooltipLabel } from "../styles";
 
 const Wrapper = styled.div`
   position: relative;
@@ -20,44 +21,15 @@ const StyledResponsiveContainer = styled(ResponsiveContainer)`
 		height: 250px !important;
 	}
 `
-const Circle = styled.div<{color: string}>`
-	width: 9px;
-	height: 9px;
-	border-radius: 50%;
-	background: ${({ color }) => color};
-	margin-right: 4px;
-`
 const FlexInfo = styled(Flex)`
 	margin-bottom: 16px;
 	flex-wrap: wrap;
 	justify-content: center;
 `
-const CustomTooltipContainer = styled.div`
- background: '#404040';
-  border-radius: 8px; 
-	padding: 0;
-	border: 2px solid black;
-	box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 1);
-	outline: none;
-`
-const TooltipLabel = styled.div`
-	background: #69CF00;
-	padding: 5px 20px; 
-	border-radius: 8px 8px 0 0;
-  color: black; 
-	font-size: 14px;
-	font-weight: bold;
-	border-bottom: 2px solid black;
-	text-align: center
-`
-const TooltipContent = styled.div`
-	background: #404040;
-	padding: 5px 20px;
-	border-radius: 0 0 8px 8px; 
-	color: white
-`
 
 const CustomTooltip = ({ active, payload, label }: any) => {
+	console.log(payload);
+	
   if (active && payload && payload.length) {
     return (
       <CustomTooltipContainer>
@@ -124,8 +96,8 @@ export default function AssetGrowth({info, currentAsset}: any) {
 					}}
 				>
 					<CartesianGrid  vertical={false} strokeDasharray="1 0" opacity={0.1} />
-					<XAxis dataKey="name" axisLine={false} tickLine={false} />
-					<YAxis axisLine={false} tickLine={false}/>
+					<XAxis stroke="#c3c3c3" tick={{fontSize: 12}} dataKey="name" axisLine={false} tickLine={false} />
+					<YAxis stroke="#c3c3c3" tick={{fontSize: 12}} axisLine={false} tickLine={false}/>
 					<Tooltip
 						cursor={false}
 						wrapperStyle={{outline: 'none'}}
@@ -135,7 +107,7 @@ export default function AssetGrowth({info, currentAsset}: any) {
 					{/* <Legend /> */}
 					{listLine.map((item) => {
 						return (
-						<Line type="monotone" dataKey={item.key} stroke={item.value} activeDot={{ r: 5 }} />
+						<Line type="monotone" dataKey={item.key} stroke={item.value} dot={{ r:0 }} activeDot={{ stroke: item.value, strokeWidth: 8, strokeOpacity: 0.5, r: 4 }} />
 						)
 					})}
 					{/* <Line type="monotone" dataKey="USDT" stroke="#82ca9d" /> */}
