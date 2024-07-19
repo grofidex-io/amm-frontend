@@ -170,9 +170,9 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 	}
 
 	const { data } = useFetchUserInfo(account, txFilter, {
-		startDate: startDate ? Math.round(dayjs(Date.UTC(startDate.getUTCFullYear(), startDate.getMonth(),
+		startDate: startDate ? Math.floor(dayjs(Date.UTC(startDate.getUTCFullYear(), startDate.getMonth(),
 		startDate.getDate(), 0, 0, 0)).valueOf()/ 1000) : null,
-		endDate: endDate ? Math.round(dayjs(Date.UTC(endDate.getUTCFullYear(), endDate.getMonth(),
+		endDate: endDate ? Math.floor(dayjs(Date.UTC(endDate.getUTCFullYear(), endDate.getMonth(),
 		endDate.getDate(), 0, 0, 0)).valueOf()/ 1000) : null
 	})
 	let currentAsset: any = []
@@ -186,14 +186,14 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 					name: listBalance[item].symbol
 				}
 			}),
-			timestamp: Math.round(dayjs().utc().set('hour', 0).set('minute', 0).set('second', 0).valueOf()/1000),
+			timestamp: Math.floor(dayjs().utc().set('hour', 0).set('minute', 0).set('second', 0).valueOf()/1000),
 			totalAssets: Number(totalValue.toFixed(4))
 		}]
 }
 
 
 	const { data: dataPrev } = useFetchUserInfo(account, TimeType.PREV)
-  const percentPrev: number = dataPrev?.data?.dailyAssets[0]?.totalAssets && dataPrev?.data?.dailyAssets[1] ? (BigNumber(dataPrev?.data?.dailyAssets[1]?.totalAssets).minus(dataPrev?.data?.dailyAssets[0].totalAssets).div(dataPrev?.data?.dailyAssets[0].totalAssets).multipliedBy(100).toNumber()) : 0
+  const percentPrev: number = dataPrev?.data?.dailyAssets[0]?.totalAssets ? (BigNumber(totalValue).minus(dataPrev?.data?.dailyAssets[0].totalAssets).div(totalValue).multipliedBy(100).toNumber()) : 0
 	let totalProfitFromData = 0
 	const dailyAssets = data?.data ? [...data?.data?.dailyAssets, ...currentAsset] : []
 	forEach(dailyAssets, (item, index: number)=> {
@@ -300,7 +300,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 					</Flex>
 					<Box>
 						<Text color="text" fontSize={["20px", "20px", "24px", "24px", "28px", "28px", "32px"]} fontWeight="700" lineHeight="1.2">
-							{isShowBalance ? ` ${dataPrev?.data?.dailyAssets[1] ? ` ${percentPrev > 0 ? '+' : ''}${formatNumber(BigNumber(dataPrev?.data?.dailyAssets[1]?.totalAssets).minus(dataPrev?.data?.dailyAssets[0]?.totalAssets).toNumber(), 2, 4)}` : 0} USDT` : '*****'}
+							{isShowBalance ? ` ${dataPrev?.data?.dailyAssets[0] ? ` ${percentPrev > 0 ? '+' : ''}${formatNumber(BigNumber(totalValue).minus(dataPrev?.data?.dailyAssets[0]?.totalAssets).toNumber(), 2, 4)}` : 0} USDT` : '*****'}
 						</Text>
 						<Flex alignItems="center" mt="8px">
 						{isShowBalance ? (
