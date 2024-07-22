@@ -5,6 +5,7 @@ import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import styled from 'styled-components';
 import { getRandomColor, LIST_COLOR } from "../helper";
+import { StyledNoData } from "../styles";
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -63,40 +64,47 @@ export default function AssetAllocation ({balances, listAssetAllocation, totalVa
 	return (
 		<Box>
 			<StyledChart>
-				<Doughnut
-					data={data}
-					options={{
-						responsive: true,
-						cutout: '70%',
-						radius: window.innerWidth > 992 ? '95%' : '90%',
-						plugins: {
-							legend: {
-								position: window.innerWidth > 992 ? 'right' : 'bottom',
-								labels: {
-									color: '#fff',
-									usePointStyle: true,
-									boxWidth: 6,
-									boxHeight: 6,
-									boxPadding: 2,
-									font: {
-										size: window.innerWidth > 576 ? 14 : 12
+				{Object.keys(listAssetAllocation)?.length > 0 ? (
+					<Doughnut
+						data={data}
+						options={{
+							responsive: true,
+							cutout: '70%',
+							radius: window.innerWidth > 992 ? '95%' : '90%',
+							plugins: {
+								legend: {
+									position: window.innerWidth > 992 ? 'right' : 'bottom',
+									labels: {
+										color: '#fff',
+										usePointStyle: true,
+										boxWidth: 6,
+										boxHeight: 6,
+										boxPadding: 2,
+										font: {
+											size: window.innerWidth > 576 ? 14 : 12
+										}
+									}
+								},
+								tooltip: {
+									callbacks: {
+										title: (context) => {
+											return context[0].label.split(':')[0]
+										},
+										label: (context: any) => {
+											return `${context.raw && formatNumber(context.raw)} USDT`
+										}
 									}
 								}
 							},
-							tooltip: {
-								callbacks: {
-									title: (context) => {
-										return context[0].label.split(':')[0]
-									},
-									label: (context: any) => {
-										return `${context.raw && formatNumber(context.raw)} USDT`
-									}
-								}
-							}
-						},
-					}}
-					plugins={[doughnutLabel]}
-				/>
+						}}
+						plugins={[doughnutLabel]}
+					/>
+				) : (
+					<StyledNoData>
+						<img src="/images/no-data.svg" alt="" />
+						<span>No Data</span>
+					</StyledNoData>
+				)}
 			</StyledChart>
 		</Box>
 	)

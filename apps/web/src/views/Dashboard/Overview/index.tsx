@@ -11,7 +11,7 @@ import keyBy from 'lodash/keyBy';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { SecondaryLabel } from 'views/Voting/CreateProposal/styles';
-import { DatePicker } from 'views/Voting/components/DatePicker';
+import { DatePicker, DatePickerPortal } from 'views/Voting/components/DatePicker';
 import { useBalance } from 'wagmi';
 import AssetAllocation from '../Component/AssetAllocation';
 import AssetGrowth from '../Component/AssetGrowth';
@@ -302,11 +302,11 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 						<Flex alignItems="center" mt="8px">
 						{isShowBalance ? (
 							<>
-							<img src={`/images/dashboard/${percentPrev >= 0 ? 'icon-arrow-up' : 'icon-arrow-down'}.svg`} width="16px" height="16px" alt="" />
-							<Text color={percentPrev >= 0 ? 'success' : 'failure'} fontSize="16px" fontWeight="500" ml="6px">
-									{percentPrev && Number(percentPrev.toFixed(2))}%
+								<img src={`/images/dashboard/${percentPrev > 0 ? 'icon-arrow-up' : percentPrev < 0 ? 'icon-arrow-down' : ''}.svg`} width={percentPrev ? 16 : ''} height="16px" alt="" />
+								<Text color={percentPrev > 0 ? 'success' : percentPrev < 0 ? 'failure' : 'textSubtle'} fontSize="16px" fontWeight="500" ml="6px">
+									{percentPrev ? `${Number(percentPrev.toFixed(2))}%` : '--'}
 								</Text>
-								</>
+							</>
 						): 
 						<Text color='textSubtle' fontSize="16px" fontWeight="500" ml="6px">*****</Text>
 						}
@@ -325,9 +325,9 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 						<Flex alignItems="center" mt="8px">
 							{isShowBalance ? (
 								<>
-									<img src={`/images/dashboard/${percentTotal >= 0 ? 'icon-arrow-up' : 'icon-arrow-down'}.svg`} width="16px" height="16px" alt="" />
-									<Text color={percentTotal >= 0 ? 'success' : 'failure'} fontSize="16px" fontWeight="500" ml="6px">
-										{percentTotal && Number(percentTotal.toFixed(2))}%
+									<img src={`/images/dashboard/${percentTotal > 0 ? 'icon-arrow-up' : percentTotal < 0 ? 'icon-arrow-down' : ''}.svg`} width={percentPrev ? 16 : ''} height="16px" alt="" />
+									<Text color={percentTotal > 0 ? 'success' : percentTotal < 0 ? 'failure' : 'textSubtle'} fontSize="16px" fontWeight="500" ml="6px">
+										{percentTotal ? `${Number(percentTotal.toFixed(2))}%` : '--'}
 									</Text>
 								</>
 							) : (
@@ -360,6 +360,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
         </Flex>
         {/* <OrdersAnalysis/> */}
       </Container>
+      <DatePickerPortal />
     </Box>
   )
 }

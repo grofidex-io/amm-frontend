@@ -4,7 +4,7 @@ import BigNumber from "bignumber.js";
 import dayjs from "dayjs";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import styled from "styled-components";
-import { Circle, CustomTooltipContainer, TooltipContent, TooltipLabel } from "../styles";
+import { Circle, CustomTooltipContainer, StyledNoData, TooltipContent, TooltipLabel } from "../styles";
 
 const StyledResponsiveContainer = styled(ResponsiveContainer)`
 	height: 300px !important;
@@ -64,19 +64,26 @@ export default function DailyProfit({info, currentAsset, isShowBalance}) {
 	})
 	return (
 		<StyledResponsiveContainer>
-			<BarChart width={600} height={300} data={data} margin={{top: 0, right: 0, left: 0, bottom: 0}}>
-				<CartesianGrid  vertical={false} strokeDasharray="1 0" opacity={0.1} />
-				<XAxis tick={isShowBalance ? {fontSize: 12} : false} dataKey="name" stroke="#c3c3c3" axisLine={false} tickLine={false} />
-				<YAxis tick={isShowBalance ?  {fontSize: 12}: false} stroke="#c3c3c3" axisLine={false} tickLine={false}/>
-				<Tooltip
-					cursor={false}
-					wrapperStyle={{outline: 'none'}}
-					content={<CustomTooltip isShowBalance={isShowBalance}/>}
-				/>
-				{/* <Legend /> */}
-				<Bar dataKey="pv" name="Profit" stackId="a" fill="#00B58D" />
-				<Bar dataKey="uv" name="Profit" stackId="a" fill="#FE5300" />
-			</BarChart>
+			{data?.length > 0 ? (
+				<BarChart width={600} height={300} data={data} margin={{top: 0, right: 0, left: 0, bottom: 0}}>
+					<CartesianGrid  vertical={false} strokeDasharray="1 0" opacity={0.1} />
+					<XAxis tick={isShowBalance ? {fontSize: 12} : false} dataKey="name" stroke="#c3c3c3" axisLine={false} tickLine={false} />
+					<YAxis tick={isShowBalance ?  {fontSize: 12}: false} stroke="#c3c3c3" axisLine={false} tickLine={false}/>
+					<Tooltip
+						cursor={false}
+						wrapperStyle={{outline: 'none'}}
+						content={<CustomTooltip isShowBalance={isShowBalance}/>}
+					/>
+					{/* <Legend /> */}
+					<Bar dataKey="pv" name="Profit" stackId="a" fill="#00B58D" />
+					<Bar dataKey="uv" name="Profit" stackId="a" fill="#FE5300" />
+				</BarChart>
+			) : (
+				<StyledNoData>
+					<img src="/images/no-data.svg" alt="" />
+					<span>No Data</span>
+				</StyledNoData>
+			)}
 		</StyledResponsiveContainer>
 
 	)

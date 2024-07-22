@@ -4,7 +4,7 @@ import forEach from 'lodash/forEach';
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import styled from 'styled-components';
 import { getRandomColor, LIST_COLOR } from '../helper';
-import { Circle, CustomTooltipContainer, TooltipContent, TooltipLabel } from "../styles";
+import { Circle, CustomTooltipContainer, StyledNoData, TooltipContent, TooltipLabel } from "../styles";
 
 const Wrapper = styled.div`
   position: relative;
@@ -82,34 +82,41 @@ export default function AssetGrowth({info, currentAsset, isShowBalance}: any) {
 				})}
 			</FlexInfo>
 			<StyledResponsiveContainer>
-				<LineChart
-					width={500}
-					height={300}
-					data={dataChart}
-					margin={{
-						top: 5,
-						right: 10,
-						left: 0,
-						bottom: 5,
-					}}
-				>
-					<CartesianGrid  vertical={false} strokeDasharray="1 0" opacity={0.1} />
-					<XAxis stroke="#c3c3c3" tick={ isShowBalance ? {  fontSize: 12} : false} dataKey="name" axisLine={false} tickLine={false}  />
-					<YAxis stroke="#c3c3c3" tick={ isShowBalance ? {fontSize: 12} : false } axisLine={false} tickLine={false}/>
-					<Tooltip
-						cursor={false}
-						wrapperStyle={{outline: 'none'}}
-						content={ <CustomTooltip isShowBalance={isShowBalance}/>}
-						// formatter={function(value, name) { return `<div>${value}dasdas${name}</div>` }}
-					/>
-					{/* <Legend /> */}
-					{listLine.map((item) => {
-						return (
-						<Line type="monotone" dataKey={item.key} stroke={item.value} dot={{ r:0 }} activeDot={{ stroke: item.value, strokeWidth: 8, strokeOpacity: 0.5, r: 4 }} />
-						)
-					})}
-					{/* <Line type="monotone" dataKey="USDT" stroke="#82ca9d" /> */}
-				</LineChart>
+				{dataChart?.length > 0 ? (
+					<LineChart
+						width={500}
+						height={300}
+						data={dataChart}
+						margin={{
+							top: 8,
+							right: 8,
+							left: 0,
+							bottom: 0,
+						}}
+					>
+						<CartesianGrid  vertical={false} strokeDasharray="1 0" opacity={0.1} />
+						<XAxis stroke="#c3c3c3" tick={ isShowBalance ? {  fontSize: 12} : false} dataKey="name" axisLine={false} tickLine={false}  />
+						<YAxis stroke="#c3c3c3" tick={ isShowBalance ? {fontSize: 12} : false } axisLine={false} tickLine={false}/>
+						<Tooltip
+							cursor={false}
+							wrapperStyle={{outline: 'none'}}
+							content={ <CustomTooltip isShowBalance={isShowBalance}/>}
+							// formatter={function(value, name) { return `<div>${value}dasdas${name}</div>` }}
+						/>
+						{/* <Legend /> */}
+						{listLine.map((item) => {
+							return (
+							<Line type="monotone" dataKey={item.key} stroke={item.value} dot={{ r:0 }} activeDot={{ stroke: item.value, strokeWidth: 8, strokeOpacity: 0.5, r: 4 }} />
+							)
+						})}
+						{/* <Line type="monotone" dataKey="USDT" stroke="#82ca9d" /> */}
+					</LineChart>
+				) : (
+					<StyledNoData>
+						<img src="/images/no-data.svg" alt="" />
+						<span>No Data</span>
+					</StyledNoData>
+				)}
 			</StyledResponsiveContainer>
 		</Wrapper>
 	)
