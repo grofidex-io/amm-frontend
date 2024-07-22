@@ -30,7 +30,7 @@ const StyledChart = styled(Box)`
 		--size: 250px;
 	}
 `
-export default function AssetAllocation ({balances, listAssetAllocation, totalValue, isShowBalance}) {
+export default function AssetAllocation ({balances, listAssetAllocation, totalValue, isShowBalance, isLoading}) {
 
 	const doughnutLabel = {
 		id: 'doughnutLabel',
@@ -44,12 +44,12 @@ export default function AssetAllocation ({balances, listAssetAllocation, totalVa
 			ctx.fillStyle = 'white'
 			ctx.textAlign = 'center'
 			ctx.textBaseline = 'middle'
-			ctx.fillText(chart.data.datasets[0].isShowBalance ? `${formatNumber(chart.data.datasets[0].total, 0, 4)} USDT` : '****', centerX, centerY)
+			ctx.fillText(chart.data.datasets[0].isShowBalance ? `${formatNumber(Number(chart.data.datasets[0].total), 0, 4)} USDT` : '****', centerX, centerY)
 		}
 	}
 
 	const data = {
-		labels: Object.keys(balances)?.map((id: any) => { return window.innerWidth > 576 ? `${balances[id]?.symbol} - ${totalValue ? formatNumber(BigNumber(listAssetAllocation[id]).div(totalValue).multipliedBy(100).toNumber(), 0, 2) : 0}%` : `${balances[id]?.symbol}` }),
+		labels: Object.keys(balances)?.map((id: any) => { return window.innerWidth > 576 ? `${balances[id]?.symbol} - ${Number(totalValue) ? formatNumber(BigNumber(listAssetAllocation[id]).div(totalValue).multipliedBy(100).toNumber(), 0, 2) : 0}%` : `${balances[id]?.symbol}` }),
 		datasets: [{
 			label: 'Total Asset',
 			total: totalValue,
@@ -64,7 +64,7 @@ export default function AssetAllocation ({balances, listAssetAllocation, totalVa
 	return (
 		<Box>
 			<StyledChart>
-				{Object.keys(listAssetAllocation)?.length > 0 ? (
+				{Object.keys(listAssetAllocation)?.length > 0  ? (
 					<Doughnut
 						data={data}
 						options={{
@@ -91,7 +91,7 @@ export default function AssetAllocation ({balances, listAssetAllocation, totalVa
 											return context[0].label.split(':')[0]
 										},
 										label: (context: any) => {
-											return `${context.raw && formatNumber(context.raw)} USDT`
+											return `${isShowBalance  ? context.raw && `${formatNumber(context.raw)} USDT`  :'****' }`
 										}
 									}
 								}
@@ -100,10 +100,14 @@ export default function AssetAllocation ({balances, listAssetAllocation, totalVa
 						plugins={[doughnutLabel]}
 					/>
 				) : (
-					<StyledNoData>
-						<img src="/images/no-data.svg" alt="" />
-						<span>No Data</span>
-					</StyledNoData>
+					<>
+					{!isLoading && (
+						<StyledNoData>
+							<img src="/images/no-data.svg" alt="" />
+							<span>No Data</span>
+						</StyledNoData>
+					)}
+					</>
 				)}
 			</StyledChart>
 		</Box>

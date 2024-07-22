@@ -1,3 +1,5 @@
+import BigNumber from "bignumber.js";
+
 export function getRandomColor() {
   const letters = '0123456789ABCDEF';
   let color = '#';
@@ -5,6 +7,16 @@ export function getRandomColor() {
     color += letters[Math.floor(Math.random() * 16)];
   }
   return color;
+}
+
+export const getPercent = (a: string | number, b: string | number) => {
+	if(Number(a) && Number(b)) {
+		return BigNumber(a).minus(b).div(b).multipliedBy(100).toNumber()
+	}
+	if(!Number(b) && Number(a)) {
+		return 100
+	}
+	return 0
 }
 export const GROFI_SHOW_BALANCE = 'grofi_show_balance'
 export const LIST_COLOR = {

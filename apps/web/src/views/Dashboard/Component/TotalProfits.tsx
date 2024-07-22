@@ -23,11 +23,11 @@ const CustomTooltip = ({ active, payload, label, isShowBalance } : any) => {
 							<>
 								<Flex alignItems="center" mb="1">
 									<Circle color="#E1FABB" size="6px" />
-									<p>Total Asset: <span> {isShowBalance ? `${item.value} USDT` : '****'} </span></p>
+									<p>Total Asset: <span> {isShowBalance ? `${formatNumber(Number(item.value), 0, 4)} USDT` : '****'} </span></p>
 								</Flex>
 								<Flex alignItems="center" mb="1">
 									<Circle color="#E1FABB" size="6px" />
-									<p>Total PnL: <span>{ isShowBalance ? `${item.payload?.pnl && formatNumber(item.payload?.pnl, 0, 6)}%` : '****'} </span></p>
+									<p>Total PnL: <span>{ isShowBalance ? `${item.payload?.pnl && formatNumber(Number(item.payload?.pnl), 0, 6)}%` : '****'} </span></p>
 								</Flex>
 							</>
 
@@ -40,7 +40,7 @@ const CustomTooltip = ({ active, payload, label, isShowBalance } : any) => {
 	return null
 }
 
-export default function TotalProfits({info, currentAsset, isShowBalance}) {
+export default function TotalProfits({info, currentAsset, isShowBalance, isLoading}) {
 	const listData = info?.data ? [...info?.data?.dailyAssets, ...currentAsset] : []
 	const data = listData.map((item, index) => {
 		return {
@@ -77,10 +77,14 @@ export default function TotalProfits({info, currentAsset, isShowBalance}) {
 						<Area type="monotone" dataKey="Total" stroke="#69CF00" fillOpacity={1} fill="url(#colorPv)" strokeWidth={2} activeDot={{ stroke: '#E1FABB', strokeWidth: 8, strokeOpacity: 0.5, r: 4 }}/>
 					</AreaChart>
 				) : (
-					<StyledNoData>
-						<img src="/images/no-data.svg" alt="" />
-						<span>No Data</span>
-					</StyledNoData>
+					<>
+					{!isLoading && (
+						<StyledNoData>
+							<img src="/images/no-data.svg" alt="" />
+							<span>No Data</span>
+						</StyledNoData>
+					)}
+					</>
 				)}
 			</ResponsiveContainer>
 		</Wrapper>

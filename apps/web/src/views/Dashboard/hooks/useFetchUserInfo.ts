@@ -1,4 +1,4 @@
-import { keepPreviousData, useQuery } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs"
 import { Address } from "viem"
 import { fetchUserInfo } from "../api"
@@ -33,7 +33,6 @@ export const useFetchUserInfo = (address: Address | undefined, txtFilter: number
 		enabled: Boolean(address && ((txtFilter && txtFilter !== TimeType.CUSTOM && !customTime?.startDate) || (txtFilter === TimeType.CUSTOM && customTime?.startDate && customTime.endDate))),
 		retryDelay: 3000,
 		refetchOnMount: true,
-    placeholderData: keepPreviousData,
 		refetchOnReconnect: false,
 		refetchOnWindowFocus: false,
   })

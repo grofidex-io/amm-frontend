@@ -28,11 +28,11 @@ const CustomTooltip = ({ active, payload, label, isShowBalance } : any) => {
 							<>
 								<Flex alignItems="center" mb="1">
 									<Circle color="#E1FABB" size="6px" />
-									<p>Total Profit: <span>{isShowBalance ? `${item.value} USDT` : '****'} </span></p>
+									<p>Total Profit: <span>{isShowBalance ? `${formatNumber(Number(item.value), 0, 4)} USDT` : '****'} </span></p>
 								</Flex>
 								<Flex alignItems="center" mb="1">
 									<Circle color="#E1FABB" size="6px" />
-									<p>Total PnL: <span>{isShowBalance ? `${item.payload?.pnl && formatNumber(item.payload?.pnl, 0, 6)}%` : '****'} </span></p>
+									<p>Total PnL: <span>{isShowBalance ? `${item.payload?.pnl && formatNumber(Number(item.payload?.pnl), 0, 6)}%` : '****'} </span></p>
 								</Flex>
 							</>
 
@@ -45,7 +45,7 @@ const CustomTooltip = ({ active, payload, label, isShowBalance } : any) => {
 	return null
 }
 
-export default function DailyProfit({info, currentAsset, isShowBalance}) {
+export default function DailyProfit({info, currentAsset, isShowBalance, isLoading}) {
 	const getKey = (value: string) => {
 		if(Number(value) > 0) {
 			return 'pv'
@@ -79,10 +79,14 @@ export default function DailyProfit({info, currentAsset, isShowBalance}) {
 					<Bar dataKey="uv" name="Profit" stackId="a" fill="#FE5300" />
 				</BarChart>
 			) : (
-				<StyledNoData>
-					<img src="/images/no-data.svg" alt="" />
-					<span>No Data</span>
-				</StyledNoData>
+				<>
+					{!isLoading && (
+						<StyledNoData>
+							<img src="/images/no-data.svg" alt="" />
+							<span>No Data</span>
+						</StyledNoData>
+					)}
+					</>
 			)}
 		</StyledResponsiveContainer>
 

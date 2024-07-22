@@ -17,7 +17,7 @@ import AssetAllocation from '../Component/AssetAllocation';
 import AssetGrowth from '../Component/AssetGrowth';
 import DailyProfit from '../Component/DailyProfit';
 import TotalProfits from '../Component/TotalProfits';
-import { GROFI_SHOW_BALANCE } from '../helper';
+import { getPercent, GROFI_SHOW_BALANCE } from '../helper';
 import { useFetchListBalance } from '../hooks/useFetchListBalance';
 import { useFetchUserCurrency } from '../hooks/useFetchUserCurrency';
 import { useFetchUserInfo } from '../hooks/useFetchUserInfo';
@@ -149,8 +149,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 		totalValue += value
 		listAssetAllocation[id] = value
 	})
-	totalValue = Number(formatNumber(totalValue, 0, 4))
-
+	totalValue = Number(totalValue).toFixed(4)
 
   const handleDateChange = (key: string) => (value: Date) => {
 		if(key === 'startDate') {
@@ -167,7 +166,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 		setEndDate(null)
 	}
 
-	const { data } = useFetchUserInfo(account, txFilter, {
+	const { data, isLoading } = useFetchUserInfo(account, txFilter, {
 		startDate: startDate ? Math.floor(dayjs(Date.UTC(startDate.getUTCFullYear(), startDate.getMonth(),
 		startDate.getDate(), 0, 0, 0)).valueOf()/ 1000) : null,
 		endDate: endDate ? Math.floor(dayjs(Date.UTC(endDate.getUTCFullYear(), endDate.getMonth(),
@@ -185,13 +184,12 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 				}
 			}),
 			timestamp: Math.floor(dayjs().utc().set('hour', 0).set('minute', 0).set('second', 0).valueOf()/1000),
-			totalAssets: Number(totalValue.toFixed(4))
+			totalAssets: totalValue
 		}]
 }
 
-
 	const { data: dataPrev } = useFetchUserInfo(account, TimeType.PREV)
-  const percentPrev: number = totalValue && dataPrev?.data?.dailyAssets[0]?.totalAssets ? (BigNumber(totalValue).minus(dataPrev?.data?.dailyAssets[0].totalAssets).div(dataPrev?.data?.dailyAssets[0].totalAssets).multipliedBy(100).toNumber()) : 0
+  const percentPrev: number = getPercent(totalValue, dataPrev?.data?.dailyAssets[0]?.totalAssets) // totalValue && Number(dataPrev?.data?.dailyAssets[0]?.totalAssets) ? (BigNumber(totalValue).minus(dataPrev?.data?.dailyAssets[0].totalAssets).div(dataPrev?.data?.dailyAssets[0].totalAssets).multipliedBy(100).toNumber()) :  Number(dataPrev?.data?.dailyAssets[0]?.totalAssets) ? 0 : 100
 	let totalProfitFromData = 0
 	const dailyAssets = data?.data ? [...data?.data?.dailyAssets, ...currentAsset] : []
 	forEach(dailyAssets, (item, index: number)=> {
@@ -199,7 +197,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 		totalProfitFromData += _asset
 	})
 
-	const percentTotal: number = totalProfitFromData && dailyAssets[0].totalAssets ? (BigNumber(totalProfitFromData).minus(dailyAssets[0].totalAssets).div(dailyAssets[0].totalAssets).multipliedBy(100).toNumber()) : 0
+	const percentTotal: number = getPercent(totalProfitFromData, dailyAssets[0]?.totalAssets) // ? (BigNumber(totalProfitFromData).minus(dailyAssets[0].totalAssets).div(dailyAssets[0].totalAssets).multipliedBy(100).toNumber()) : 0
 	const maxDate = dayjs().utc().subtract(1, 'days').set('hour', 0).set('minute', 0).set('second', 0)
 
 	const handleShowHideBalance = () => {
@@ -281,12 +279,12 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 					</Flex>
 					<Box>
 						<Text color="text" fontSize={["20px", "20px", "24px", "24px", "28px", "28px", "32px"]} fontWeight="700" lineHeight="1.2">
-							{isShowBalance ? `${formatNumber(totalValue, 0, 4)} USDT` : '*****'} 
+							{isShowBalance ? `${Number(totalValue) ? formatNumber(Number(totalValue), 0, 4) : 0} USDT` : '*****'} 
 						</Text>
 						<Flex alignItems="center" mt="8px">
 							{isShowBalance && <Text color="textSubtle" fontSize="16px" fontWeight="500" >≈</Text>}
 							<Text color='textSubtle' fontSize="16px" fontWeight="500" ml="6px">
-								{isShowBalance ? `${formatNumber(totalValue, 0, 4)} USD` : '*****'}
+								{isShowBalance ? `${Number(totalValue) ? formatNumber(Number(totalValue), 0, 4) : 0} USD` : '*****'}
 							</Text>
 						</Flex>
 					</Box>
@@ -297,12 +295,12 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 					</Flex>
 					<Box>
 						<Text color="text" fontSize={["20px", "20px", "24px", "24px", "28px", "28px", "32px"]} fontWeight="700" lineHeight="1.2">
-							{isShowBalance ? ` ${dataPrev?.data?.dailyAssets[0] ? ` ${percentPrev > 0 ? '+' : ''}${formatNumber(BigNumber(totalValue).minus(dataPrev?.data?.dailyAssets[0]?.totalAssets).toNumber(), 0, 4)}` : 0} USDT` : '*****'}
+							{isShowBalance ? ` ${` ${percentPrev > 0 ? '+' : ''}${formatNumber(BigNumber(totalValue).minus(dataPrev?.data?.dailyAssets[0]?.totalAssets || 0).toNumber(), 0, 4)}`} USDT` : '*****'}
 						</Text>
 						<Flex alignItems="center" mt="8px">
 						{isShowBalance ? (
 							<>
-								<img src={`/images/dashboard/${percentPrev > 0 ? 'icon-arrow-up' : percentPrev < 0 ? 'icon-arrow-down' : ''}.svg`} width={percentPrev ? 16 : ''} height="16px" alt="" />
+								{Number(percentPrev) ? <img src={`/images/dashboard/${percentPrev >= 0 ? 'icon-arrow-up' : 'icon-arrow-down'}.svg`} width="16px" height="16px" alt="" /> : null}
 								<Text color={percentPrev > 0 ? 'success' : percentPrev < 0 ? 'failure' : 'textSubtle'} fontSize="16px" fontWeight="500" ml="6px">
 									{percentPrev ? `${Number(percentPrev.toFixed(2))}%` : '--'}
 								</Text>
@@ -325,7 +323,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 						<Flex alignItems="center" mt="8px">
 							{isShowBalance ? (
 								<>
-									<img src={`/images/dashboard/${percentTotal > 0 ? 'icon-arrow-up' : percentTotal < 0 ? 'icon-arrow-down' : ''}.svg`} width={percentPrev ? 16 : ''} height="16px" alt="" />
+									{Number(percentTotal) ? <img src={`/images/dashboard/${percentTotal >= 0 ? 'icon-arrow-up' : 'icon-arrow-down'}.svg`} width="16px" height="16px" alt="" /> : null}
 									<Text color={percentTotal > 0 ? 'success' : percentTotal < 0 ? 'failure' : 'textSubtle'} fontSize="16px" fontWeight="500" ml="6px">
 										{percentTotal ? `${Number(percentTotal.toFixed(2))}%` : '--'}
 									</Text>
@@ -341,21 +339,21 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
         <Flex flexDirection={["column", "column", "column", "column", "row"]}>
           <BorderCard style={{ flex: 1 }}>
             <StyledTitle>Asset Allocation</StyledTitle>
-						<AssetAllocation balances={balances} listAssetAllocation={listAssetAllocation} totalValue={totalValue} isShowBalance={isShowBalance}/>
+						<AssetAllocation balances={balances} listAssetAllocation={listAssetAllocation} totalValue={totalValue} isShowBalance={isShowBalance} isLoading={isLoading}/>
           </BorderCard>
           <BorderCard style={{ flex: 1.5 }} ml={["0", "0", "0", "0", "16px"]} mt={["16px", "16px", "16px", "16px", "0"]}>
             <StyledTitle>Asset Growth</StyledTitle>
-            <AssetGrowth info={data} currentAsset={currentAsset} isShowBalance={isShowBalance}/>
+            <AssetGrowth info={data} currentAsset={currentAsset} isShowBalance={isShowBalance} isLoading={isLoading}/>
           </BorderCard>
         </Flex>
         <Flex flexDirection={["column", "column", "column", "column", "row"]} mt="16px">
           <BorderCard style={{ flex: 1 }}>
             <StyledTitle>Total Asset</StyledTitle>
-						<TotalProfits info={data} currentAsset={currentAsset} isShowBalance={isShowBalance}/>
+						<TotalProfits info={data} currentAsset={currentAsset} isShowBalance={isShowBalance} isLoading={isLoading}/>
           </BorderCard>
           <BorderCard style={{ flex: 1 }} ml={["0", "0", "0", "0", "16px"]} mt={["16px", "16px", "16px", "16px", "0"]}>
             <StyledTitle>Daily Profit</StyledTitle>
-						<DailyProfit info={data} currentAsset={currentAsset} isShowBalance={isShowBalance}/>
+						<DailyProfit info={data} currentAsset={currentAsset} isShowBalance={isShowBalance} isLoading={isLoading}/>
           </BorderCard>
         </Flex>
         {/* <OrdersAnalysis/> */}
