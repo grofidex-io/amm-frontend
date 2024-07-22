@@ -116,7 +116,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const [startDate, setStartDate] = useState<any>(null);
 	const [endDate, setEndDate] = useState<any>(null);
-  const [txFilter, setTxFilter] = useState<number | undefined>(TimeType.MONTH)
+  const [txFilter, setTxFilter] = useState<number | undefined>(TimeType.WEEK)
 	const { account } = useAccountActiveChain()
 	const listToken: any = []
 	const { data: balanceU2U } = useBalance({ address: account })
@@ -136,7 +136,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 
 	const {data: listBalance} = useFetchListBalance(listToken)
 	const balances = listBalance || {} 
-	let totalValue = 0
+	let totalValue: any = 0
 	const listAssetAllocation = {}
 	forEach(Object.keys(balances), (id: any) => { 
 		let value: any = 0
@@ -149,6 +149,8 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 		totalValue += value
 		listAssetAllocation[id] = value
 	})
+	totalValue = Number(formatNumber(totalValue, 0, 4))
+
 
   const handleDateChange = (key: string) => (value: Date) => {
 		if(key === 'startDate') {
@@ -279,12 +281,12 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 					</Flex>
 					<Box>
 						<Text color="text" fontSize={["20px", "20px", "24px", "24px", "28px", "28px", "32px"]} fontWeight="700" lineHeight="1.2">
-							{isShowBalance ? `${formatNumber(totalValue, 2, 4)} USDT` : '*****'} 
+							{isShowBalance ? `${formatNumber(totalValue, 0, 4)} USDT` : '*****'} 
 						</Text>
 						<Flex alignItems="center" mt="8px">
 							{isShowBalance && <Text color="textSubtle" fontSize="16px" fontWeight="500" >≈</Text>}
 							<Text color='textSubtle' fontSize="16px" fontWeight="500" ml="6px">
-								{isShowBalance ? `${formatNumber(totalValue, 2, 4)} USD` : '*****'}
+								{isShowBalance ? `${formatNumber(totalValue, 0, 4)} USD` : '*****'}
 							</Text>
 						</Flex>
 					</Box>
@@ -295,7 +297,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 					</Flex>
 					<Box>
 						<Text color="text" fontSize={["20px", "20px", "24px", "24px", "28px", "28px", "32px"]} fontWeight="700" lineHeight="1.2">
-							{isShowBalance ? ` ${dataPrev?.data?.dailyAssets[0] ? ` ${percentPrev > 0 ? '+' : ''}${formatNumber(BigNumber(totalValue).minus(dataPrev?.data?.dailyAssets[0]?.totalAssets).toNumber(), 2, 4)}` : 0} USDT` : '*****'}
+							{isShowBalance ? ` ${dataPrev?.data?.dailyAssets[0] ? ` ${percentPrev > 0 ? '+' : ''}${formatNumber(BigNumber(totalValue).minus(dataPrev?.data?.dailyAssets[0]?.totalAssets).toNumber(), 0, 4)}` : 0} USDT` : '*****'}
 						</Text>
 						<Flex alignItems="center" mt="8px">
 						{isShowBalance ? (
