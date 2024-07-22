@@ -4,7 +4,7 @@ import BigNumber from "bignumber.js"
 import dayjs from "dayjs"
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 import styled from "styled-components"
-import { Circle, CustomTooltipContainer, TooltipContent, TooltipLabel } from "../styles"
+import { Circle, CustomTooltipContainer, StyledNoData, TooltipContent, TooltipLabel } from "../styles"
 
 const Wrapper = styled.div`
   position: relative;
@@ -52,29 +52,36 @@ export default function TotalProfits({info, currentAsset, isShowBalance}) {
 	return (
 		<Wrapper>
 			<ResponsiveContainer width="100%" height="100%">
-				<AreaChart width={500} height={250} data={data}
-					margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
-					<defs>
-						{/* <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-							<stop offset="5%" stopColor="#E1FABB" stopOpacity={0.8}/>
-							<stop offset="100%" stopColor="#E1FABB" stopOpacity={0}/>
-						</linearGradient> */}
-						<linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-						<stop offset="0" stopColor="#E1FABB" stopOpacity={0.25}/>
-						<stop offset="90%" stopColor="#FFFFFF" stopOpacity={0}/>
-						</linearGradient>
-					</defs>
-					<XAxis stroke="#c3c3c3" tick={isShowBalance ? {fontSize: 12} : false} dataKey="name" axisLine={false} tickLine={false} />
-					<YAxis stroke="#c3c3c3" tick={ isShowBalance ? {fontSize: 12} : false } axisLine={false} tickLine={false}/>
-					<CartesianGrid  vertical={false} strokeDasharray="1 0" opacity={0.1}/>
-					<Tooltip
-						cursor={false}
-						wrapperStyle={{outline: 'none'}}
-						content={<CustomTooltip isShowBalance={isShowBalance}/>}
-					/>
-					{/* <Area type="monotone" dataKey="uv" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" /> */}
-					<Area type="monotone" dataKey="Total" stroke="#69CF00" fillOpacity={1} fill="url(#colorPv)" strokeWidth={2} activeDot={{ stroke: '#E1FABB', strokeWidth: 8, strokeOpacity: 0.5, r: 4 }}/>
-				</AreaChart>
+				{data?.length > 0 ? (
+					<AreaChart width={500} height={250} data={data}
+						margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
+						<defs>
+							{/* <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+								<stop offset="5%" stopColor="#E1FABB" stopOpacity={0.8}/>
+								<stop offset="100%" stopColor="#E1FABB" stopOpacity={0}/>
+							</linearGradient> */}
+							<linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
+							<stop offset="0" stopColor="#E1FABB" stopOpacity={0.25}/>
+							<stop offset="90%" stopColor="#FFFFFF" stopOpacity={0}/>
+							</linearGradient>
+						</defs>
+						<XAxis stroke="#c3c3c3" tick={isShowBalance ? {fontSize: 12} : false} dataKey="name" axisLine={false} tickLine={false} />
+						<YAxis stroke="#c3c3c3" tick={ isShowBalance ? {fontSize: 12} : false } axisLine={false} tickLine={false}/>
+						<CartesianGrid  vertical={false} strokeDasharray="1 0" opacity={0.1}/>
+						<Tooltip
+							cursor={false}
+							wrapperStyle={{outline: 'none'}}
+							content={<CustomTooltip isShowBalance={isShowBalance}/>}
+						/>
+						{/* <Area type="monotone" dataKey="uv" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" /> */}
+						<Area type="monotone" dataKey="Total" stroke="#69CF00" fillOpacity={1} fill="url(#colorPv)" strokeWidth={2} activeDot={{ stroke: '#E1FABB', strokeWidth: 8, strokeOpacity: 0.5, r: 4 }}/>
+					</AreaChart>
+				) : (
+					<StyledNoData>
+						<img src="/images/no-data.svg" alt="" />
+						<span>No Data</span>
+					</StyledNoData>
+				)}
 			</ResponsiveContainer>
 		</Wrapper>
 	)

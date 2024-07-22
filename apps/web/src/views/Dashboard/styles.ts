@@ -45,7 +45,7 @@ export const CustomTooltipContainer = styled(Box)`
   overflow: hidden;
 `
 export const TooltipLabel = styled(Box)`
-  background: ${({ theme }) => theme.colors.darker};
+  background: ${({ theme }) => theme.colors.primaryDark};
 	padding: 5px 20px; 
   color: ${({ theme }) => theme.colors.black}; 
 	font-size: 14px;
@@ -69,4 +69,27 @@ export const Circle = styled.div<{color: string, size?: string}>`
 	border-radius: 50%;
 	background: ${({ color }) => color};
 	margin-right: 4px;
+`
+
+export const StyledNoData = styled(Box)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  img {
+    height: 60px;
+    @media screen and (max-width: 575px) {
+      height: 50px;
+    }
+  }
+  span {
+    margin-top: 16px;
+    color: ${({ theme }) => theme.colors.textExtra};
+    font-size: 16px;
+    font-weight: 500;
+    @media screen and (max-width: 575px) {
+      font-size: 15px;
+    }
+  }
 `
