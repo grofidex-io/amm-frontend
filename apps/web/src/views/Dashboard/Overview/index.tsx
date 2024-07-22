@@ -110,17 +110,13 @@ const StyledItem = styled.div`
 		}
 	}
 `
-const StyleImg = styled.img`
-  width: 100%;
-  margin: auto;
-`
 
 
 export const Overview: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const [startDate, setStartDate] = useState<any>(null);
 	const [endDate, setEndDate] = useState<any>(null);
-  const [txFilter, setTxFilter] = useState<number | undefined>(TimeType.WEEK)
+  const [txFilter, setTxFilter] = useState<number | undefined>(TimeType.MONTH)
 	const { account } = useAccountActiveChain()
 	const listToken: any = []
 	const { data: balanceU2U } = useBalance({ address: account })
@@ -306,7 +302,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 							<>
 							<img src={`/images/dashboard/${percentPrev >= 0 ? 'icon-arrow-up' : 'icon-arrow-down'}.svg`} width="16px" height="16px" alt="" />
 							<Text color={percentPrev >= 0 ? 'success' : 'failure'} fontSize="16px" fontWeight="500" ml="6px">
-									{percentPrev.toFixed(2)}%
+									{percentPrev && Number(percentPrev.toFixed(2))}%
 								</Text>
 								</>
 						): 
@@ -329,7 +325,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 								<>
 									<img src={`/images/dashboard/${percentTotal >= 0 ? 'icon-arrow-up' : 'icon-arrow-down'}.svg`} width="16px" height="16px" alt="" />
 									<Text color={percentTotal >= 0 ? 'success' : 'failure'} fontSize="16px" fontWeight="500" ml="6px">
-										{percentTotal.toFixed(2)}%
+										{percentTotal && Number(percentTotal.toFixed(2))}%
 									</Text>
 								</>
 							) : (

@@ -58,7 +58,7 @@ export default function DailyProfit({info, currentAsset}) {
 		const pnl = !listData[index-1]?.totalAssets ? 0 : item.totalAssets && BigNumber(item.totalAssets).minus(listData[index-1]?.totalAssets).div(listData[index-1]?.totalAssets).multipliedBy(100).toNumber()
 		return {
 			name: dayjs.unix(item.timestamp).format('YYYY-MM-DD'),
-			[getKey(_asset)]: _asset,
+			[getKey(_asset)]: Number(_asset),
 			pnl
 		}
 	})

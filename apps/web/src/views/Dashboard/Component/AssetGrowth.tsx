@@ -28,7 +28,6 @@ const FlexInfo = styled(Flex)`
 `
 
 const CustomTooltip = ({ active, payload, label }: any) => {
-	console.log(payload);
 	
   if (active && payload && payload.length) {
     return (
@@ -62,7 +61,7 @@ export default function AssetGrowth({info, currentAsset}: any) {
 		forEach(item.assets, (asset) => {
 			newItem = {
 				...newItem,
-				[asset.name]: asset.balanceUsd
+				[asset.name]: Number(asset.balanceUsd)
 			}
 			listLine.push({key: asset.name, value: LIST_COLOR[asset.name] || getRandomColor() })
 		})

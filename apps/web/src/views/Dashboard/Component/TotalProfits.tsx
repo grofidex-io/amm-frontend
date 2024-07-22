@@ -45,7 +45,7 @@ export default function TotalProfits({info, currentAsset}) {
 	const data = listData.map((item, index) => {
 		return {
 			name: dayjs.unix(item.timestamp).format('YYYY-MM-DD'),
-			Total: item?.totalAssets,
+			Total: Number(item?.totalAssets),
 			pnl: !listData[index-1]?.totalAssets ? 0 : item.totalAssets && BigNumber(item.totalAssets).minus(listData[index-1]?.totalAssets).div(listData[index-1]?.totalAssets).multipliedBy(100).toNumber()
 		}
 	})
