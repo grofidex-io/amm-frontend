@@ -91,7 +91,7 @@ export default function AssetAllocation ({balances, listAssetAllocation, totalVa
 											return context[0].label.split(':')[0]
 										},
 										label: (context: any) => {
-											return `${context.raw && formatNumber(context.raw)} USDT`
+											return `${isShowBalance  ? context.raw && `${formatNumber(context.raw)} USDT`  :'****' }`
 										}
 									}
 								}
