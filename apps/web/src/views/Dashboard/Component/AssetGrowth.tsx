@@ -27,8 +27,7 @@ const FlexInfo = styled(Flex)`
 	justify-content: center;
 `
 
-const CustomTooltip = ({ active, payload, label }: any) => {
-	
+const CustomTooltip = ({ active, payload, label, isShowBalance }: any) => {
   if (active && payload && payload.length) {
     return (
       <CustomTooltipContainer>
@@ -39,7 +38,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 						return (
 							<Flex alignItems="center" mb="1">
 								<Circle color={item.color}/>
-								<p className="intro">{item.name} : <span style={{fontWeight: 'bold'}}>{item.value} USDT</span></p>
+								<p className="intro">{item.name} : <span style={{fontWeight: 'bold'}}> { isShowBalance ? `${item.value} USDT` : '****'}</span></p>
 							</Flex>
 						)
 					})
@@ -51,7 +50,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
   return null;
 };
-export default function AssetGrowth({info, currentAsset}: any) {
+export default function AssetGrowth({info, currentAsset, isShowBalance}: any) {
 	let listLine: any = []
 	const dataChart = info && [...info?.data?.dailyAssets, ...currentAsset].map((item) => {
 		listLine = []
@@ -95,12 +94,12 @@ export default function AssetGrowth({info, currentAsset}: any) {
 					}}
 				>
 					<CartesianGrid  vertical={false} strokeDasharray="1 0" opacity={0.1} />
-					<XAxis stroke="#c3c3c3" tick={{fontSize: 12}} dataKey="name" axisLine={false} tickLine={false} />
-					<YAxis stroke="#c3c3c3" tick={{fontSize: 12}} axisLine={false} tickLine={false}/>
+					<XAxis stroke="#c3c3c3" tick={ isShowBalance ? {  fontSize: 12} : false} dataKey="name" axisLine={false} tickLine={false}  />
+					<YAxis stroke="#c3c3c3" tick={ isShowBalance ? {fontSize: 12} : false } axisLine={false} tickLine={false}/>
 					<Tooltip
 						cursor={false}
 						wrapperStyle={{outline: 'none'}}
-						content={<CustomTooltip/>}
+						content={ <CustomTooltip isShowBalance={isShowBalance}/>}
 						// formatter={function(value, name) { return `<div>${value}dasdas${name}</div>` }}
 					/>
 					{/* <Legend /> */}

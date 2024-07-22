@@ -29,11 +29,12 @@ const StyledChart = styled(Box)`
 		--size: 250px;
 	}
 `
-export default function AssetAllocation ({balances, listAssetAllocation, totalValue}) {
+export default function AssetAllocation ({balances, listAssetAllocation, totalValue, isShowBalance}) {
 
 	const doughnutLabel = {
 		id: 'doughnutLabel',
 		afterDatasetsDraw(chart) {
+
 			const { ctx } = chart
 			const centerX = chart.getDatasetMeta(0).data[0]?.x
 			const centerY = chart.getDatasetMeta(0).data[0]?.y
@@ -42,7 +43,7 @@ export default function AssetAllocation ({balances, listAssetAllocation, totalVa
 			ctx.fillStyle = 'white'
 			ctx.textAlign = 'center'
 			ctx.textBaseline = 'middle'
-			ctx.fillText(`${formatNumber(chart.data.datasets[0].total)} USDT`, centerX, centerY)
+			ctx.fillText(chart.data.datasets[0].isShowBalance ? `${formatNumber(chart.data.datasets[0].total)} USDT` : '****', centerX, centerY)
 		}
 	}
 
@@ -51,12 +52,14 @@ export default function AssetAllocation ({balances, listAssetAllocation, totalVa
 		datasets: [{
 			label: 'Total Asset',
 			total: totalValue,
+			isShowBalance,
 			data: Object.keys(listAssetAllocation).map((item) => listAssetAllocation[item]),
 			backgroundColor: Object.keys(balances)?.map((id: any) => { return LIST_COLOR[balances[id]?.symbol] || getRandomColor() }),
 			hoverOffset: 4,
 			borderWidth: 0,
 		}]
 	};
+
 	return (
 		<Box>
 			<StyledChart>

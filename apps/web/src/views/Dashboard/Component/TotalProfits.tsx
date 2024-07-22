@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   height: 300px;
 `
 
-const CustomTooltip = ({ active, payload, label } : any) => {
+const CustomTooltip = ({ active, payload, label, isShowBalance } : any) => {
 	if(active && payload && payload.length) {
 		return (
 			<CustomTooltipContainer>
@@ -23,11 +23,11 @@ const CustomTooltip = ({ active, payload, label } : any) => {
 							<>
 								<Flex alignItems="center" mb="1">
 									<Circle color="#E1FABB" size="6px" />
-									<p>Total Asset: <span>{item.value} USDT</span></p>
+									<p>Total Asset: <span> {isShowBalance ? `${item.value} USDT` : '****'} </span></p>
 								</Flex>
 								<Flex alignItems="center" mb="1">
 									<Circle color="#E1FABB" size="6px" />
-									<p>Total PnL: <span>{item.payload?.pnl && formatNumber(item.payload?.pnl, 0, 6)}%</span></p>
+									<p>Total PnL: <span>{ isShowBalance ? `${item.payload?.pnl && formatNumber(item.payload?.pnl, 0, 6)}%` : '****'} </span></p>
 								</Flex>
 							</>
 
@@ -40,7 +40,7 @@ const CustomTooltip = ({ active, payload, label } : any) => {
 	return null
 }
 
-export default function TotalProfits({info, currentAsset}) {
+export default function TotalProfits({info, currentAsset, isShowBalance}) {
 	const listData = info?.data ? [...info?.data?.dailyAssets, ...currentAsset] : []
 	const data = listData.map((item, index) => {
 		return {
@@ -64,13 +64,13 @@ export default function TotalProfits({info, currentAsset}) {
 						<stop offset="90%" stopColor="#FFFFFF" stopOpacity={0}/>
 						</linearGradient>
 					</defs>
-					<XAxis stroke="#c3c3c3" tick={{fontSize: 12}} dataKey="name" axisLine={false} tickLine={false} />
-					<YAxis stroke="#c3c3c3" tick={{fontSize: 12}} axisLine={false} tickLine={false}/>
+					<XAxis stroke="#c3c3c3" tick={isShowBalance ? {fontSize: 12} : false} dataKey="name" axisLine={false} tickLine={false} />
+					<YAxis stroke="#c3c3c3" tick={ isShowBalance ? {fontSize: 12} : false } axisLine={false} tickLine={false}/>
 					<CartesianGrid  vertical={false} strokeDasharray="1 0" opacity={0.1}/>
 					<Tooltip
 						cursor={false}
 						wrapperStyle={{outline: 'none'}}
-						content={<CustomTooltip/>}
+						content={<CustomTooltip isShowBalance={isShowBalance}/>}
 					/>
 					{/* <Area type="monotone" dataKey="uv" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" /> */}
 					<Area type="monotone" dataKey="Total" stroke="#69CF00" fillOpacity={1} fill="url(#colorPv)" strokeWidth={2} activeDot={{ stroke: '#E1FABB', strokeWidth: 8, strokeOpacity: 0.5, r: 4 }}/>

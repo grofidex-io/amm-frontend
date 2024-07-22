@@ -341,21 +341,21 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
         <Flex flexDirection={["column", "column", "column", "column", "row"]}>
           <BorderCard style={{ flex: 1 }}>
             <StyledTitle>Asset Allocation</StyledTitle>
-						<AssetAllocation balances={balances} listAssetAllocation={listAssetAllocation} totalValue={totalValue}/>
+						<AssetAllocation balances={balances} listAssetAllocation={listAssetAllocation} totalValue={totalValue} isShowBalance={isShowBalance}/>
           </BorderCard>
           <BorderCard style={{ flex: 1.5 }} ml={["0", "0", "0", "0", "16px"]} mt={["16px", "16px", "16px", "16px", "0"]}>
             <StyledTitle>Asset Growth</StyledTitle>
-            <AssetGrowth info={data} currentAsset={currentAsset}/>
+            <AssetGrowth info={data} currentAsset={currentAsset} isShowBalance={isShowBalance}/>
           </BorderCard>
         </Flex>
         <Flex flexDirection={["column", "column", "column", "column", "row"]} mt="16px">
           <BorderCard style={{ flex: 1 }}>
             <StyledTitle>Total Asset</StyledTitle>
-						<TotalProfits info={data} currentAsset={currentAsset}/>
+						<TotalProfits info={data} currentAsset={currentAsset} isShowBalance={isShowBalance}/>
           </BorderCard>
           <BorderCard style={{ flex: 1 }} ml={["0", "0", "0", "0", "16px"]} mt={["16px", "16px", "16px", "16px", "0"]}>
             <StyledTitle>Daily Profit</StyledTitle>
-						<DailyProfit info={data} currentAsset={currentAsset}/>
+						<DailyProfit info={data} currentAsset={currentAsset} isShowBalance={isShowBalance}/>
           </BorderCard>
         </Flex>
         {/* <OrdersAnalysis/> */}

@@ -17,7 +17,7 @@ const StyledResponsiveContainer = styled(ResponsiveContainer)`
 	// 	height: 250px !important;
 	// }
 `
-const CustomTooltip = ({ active, payload, label } : any) => {
+const CustomTooltip = ({ active, payload, label, isShowBalance } : any) => {
 	if(active && payload && payload.length) {
 		return (
 			<CustomTooltipContainer>
@@ -28,11 +28,11 @@ const CustomTooltip = ({ active, payload, label } : any) => {
 							<>
 								<Flex alignItems="center" mb="1">
 									<Circle color="#E1FABB" size="6px" />
-									<p>Total Profit: <span>{item.value} USDT</span></p>
+									<p>Total Profit: <span>{isShowBalance ? `${item.value} USDT` : '****'} </span></p>
 								</Flex>
 								<Flex alignItems="center" mb="1">
 									<Circle color="#E1FABB" size="6px" />
-									<p>Total PnL: <span>{item.payload?.pnl && formatNumber(item.payload?.pnl, 0, 6)}%</span></p>
+									<p>Total PnL: <span>{isShowBalance ? `${item.payload?.pnl && formatNumber(item.payload?.pnl, 0, 6)}%` : '****'} </span></p>
 								</Flex>
 							</>
 
@@ -45,7 +45,7 @@ const CustomTooltip = ({ active, payload, label } : any) => {
 	return null
 }
 
-export default function DailyProfit({info, currentAsset}) {
+export default function DailyProfit({info, currentAsset, isShowBalance}) {
 	const getKey = (value: string) => {
 		if(Number(value) > 0) {
 			return 'pv'
@@ -66,12 +66,12 @@ export default function DailyProfit({info, currentAsset}) {
 		<StyledResponsiveContainer>
 			<BarChart width={600} height={300} data={data} margin={{top: 0, right: 0, left: 0, bottom: 0}}>
 				<CartesianGrid  vertical={false} strokeDasharray="1 0" opacity={0.1} />
-				<XAxis tick={{fontSize: 12}} dataKey="name" stroke="#c3c3c3" axisLine={false} tickLine={false} />
-				<YAxis tick={{fontSize: 12}} stroke="#c3c3c3" axisLine={false} tickLine={false}/>
+				<XAxis tick={isShowBalance ? {fontSize: 12} : false} dataKey="name" stroke="#c3c3c3" axisLine={false} tickLine={false} />
+				<YAxis tick={isShowBalance ?  {fontSize: 12}: false} stroke="#c3c3c3" axisLine={false} tickLine={false}/>
 				<Tooltip
 					cursor={false}
 					wrapperStyle={{outline: 'none'}}
-					content={<CustomTooltip/>}
+					content={<CustomTooltip isShowBalance={isShowBalance}/>}
 				/>
 				{/* <Legend /> */}
 				<Bar dataKey="pv" name="Profit" stackId="a" fill="#00B58D" />
