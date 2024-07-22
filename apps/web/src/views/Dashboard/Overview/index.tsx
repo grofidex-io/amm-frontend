@@ -191,7 +191,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 
 
 	const { data: dataPrev } = useFetchUserInfo(account, TimeType.PREV)
-  const percentPrev: number = totalValue && dataPrev?.data?.dailyAssets[0]?.totalAssets ? (BigNumber(totalValue).minus(dataPrev?.data?.dailyAssets[0].totalAssets).div(totalValue).multipliedBy(100).toNumber()) : 0
+  const percentPrev: number = totalValue && dataPrev?.data?.dailyAssets[0]?.totalAssets ? (BigNumber(totalValue).minus(dataPrev?.data?.dailyAssets[0].totalAssets).div(dataPrev?.data?.dailyAssets[0].totalAssets).multipliedBy(100).toNumber()) : 0
 	let totalProfitFromData = 0
 	const dailyAssets = data?.data ? [...data?.data?.dailyAssets, ...currentAsset] : []
 	forEach(dailyAssets, (item, index: number)=> {
