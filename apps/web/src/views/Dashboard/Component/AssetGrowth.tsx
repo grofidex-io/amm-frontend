@@ -52,7 +52,7 @@ const CustomTooltip = ({ active, payload, label, isShowBalance }: any) => {
   return null;
 };
 
-export default function AssetGrowth({info, currentAsset, isShowBalance}: any) {
+export default function AssetGrowth({info, currentAsset, isShowBalance, isLoading}: any) {
 	let listLine: any = []
 	const dataChart = info?.data && [...info?.data?.dailyAssets, ...currentAsset].map((item) => {
 		listLine = []
@@ -113,11 +113,15 @@ export default function AssetGrowth({info, currentAsset, isShowBalance}: any) {
 						})}
 						{/* <Line type="monotone" dataKey="USDT" stroke="#82ca9d" /> */}
 					</LineChart>
-				) : (
-					<StyledNoData>
-						<img src="/images/no-data.svg" alt="" />
-						<span>No Data</span>
-					</StyledNoData>
+				) :  (
+					<>
+					{!isLoading && (
+						<StyledNoData>
+							<img src="/images/no-data.svg" alt="" />
+							<span>No Data</span>
+						</StyledNoData>
+					)}
+					</>
 				)}
 			</StyledResponsiveContainer>
 		</Wrapper>

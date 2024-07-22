@@ -166,7 +166,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 		setEndDate(null)
 	}
 
-	const { data } = useFetchUserInfo(account, txFilter, {
+	const { data, isLoading } = useFetchUserInfo(account, txFilter, {
 		startDate: startDate ? Math.floor(dayjs(Date.UTC(startDate.getUTCFullYear(), startDate.getMonth(),
 		startDate.getDate(), 0, 0, 0)).valueOf()/ 1000) : null,
 		endDate: endDate ? Math.floor(dayjs(Date.UTC(endDate.getUTCFullYear(), endDate.getMonth(),
@@ -295,12 +295,12 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 					</Flex>
 					<Box>
 						<Text color="text" fontSize={["20px", "20px", "24px", "24px", "28px", "28px", "32px"]} fontWeight="700" lineHeight="1.2">
-							{isShowBalance ? ` ${dataPrev?.data?.dailyAssets[0] ? ` ${percentPrev > 0 ? '+' : ''}${formatNumber(BigNumber(totalValue).minus(dataPrev?.data?.dailyAssets[0]?.totalAssets).toNumber(), 0, 4)}` : 0} USDT` : '*****'}
+							{isShowBalance ? ` ${` ${percentPrev > 0 ? '+' : ''}${formatNumber(BigNumber(totalValue).minus(dataPrev?.data?.dailyAssets[0]?.totalAssets || 0).toNumber(), 0, 4)}`} USDT` : '*****'}
 						</Text>
 						<Flex alignItems="center" mt="8px">
 						{isShowBalance ? (
 							<>
-								<img src={`/images/dashboard/${percentPrev > 0 ? 'icon-arrow-up' : percentPrev < 0 ? 'icon-arrow-down' : ''}.svg`} width={percentPrev ? 16 : ''} height="16px" alt="" />
+								{Number(percentPrev) ? <img src={`/images/dashboard/${percentPrev >= 0 ? 'icon-arrow-up' : 'icon-arrow-down'}.svg`} width="16px" height="16px" alt="" /> : null}
 								<Text color={percentPrev > 0 ? 'success' : percentPrev < 0 ? 'failure' : 'textSubtle'} fontSize="16px" fontWeight="500" ml="6px">
 									{percentPrev ? `${Number(percentPrev.toFixed(2))}%` : '--'}
 								</Text>
@@ -323,7 +323,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 						<Flex alignItems="center" mt="8px">
 							{isShowBalance ? (
 								<>
-									<img src={`/images/dashboard/${percentTotal > 0 ? 'icon-arrow-up' : percentTotal < 0 ? 'icon-arrow-down' : ''}.svg`} width={percentPrev ? 16 : ''} height="16px" alt="" />
+									{Number(percentTotal) ? <img src={`/images/dashboard/${percentTotal >= 0 ? 'icon-arrow-up' : 'icon-arrow-down'}.svg`} width="16px" height="16px" alt="" /> : null}
 									<Text color={percentTotal > 0 ? 'success' : percentTotal < 0 ? 'failure' : 'textSubtle'} fontSize="16px" fontWeight="500" ml="6px">
 										{percentTotal ? `${Number(percentTotal.toFixed(2))}%` : '--'}
 									</Text>
@@ -339,21 +339,21 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
         <Flex flexDirection={["column", "column", "column", "column", "row"]}>
           <BorderCard style={{ flex: 1 }}>
             <StyledTitle>Asset Allocation</StyledTitle>
-						<AssetAllocation balances={balances} listAssetAllocation={listAssetAllocation} totalValue={totalValue} isShowBalance={isShowBalance}/>
+						<AssetAllocation balances={balances} listAssetAllocation={listAssetAllocation} totalValue={totalValue} isShowBalance={isShowBalance} isLoading={isLoading}/>
           </BorderCard>
           <BorderCard style={{ flex: 1.5 }} ml={["0", "0", "0", "0", "16px"]} mt={["16px", "16px", "16px", "16px", "0"]}>
             <StyledTitle>Asset Growth</StyledTitle>
-            <AssetGrowth info={data} currentAsset={currentAsset} isShowBalance={isShowBalance}/>
+            <AssetGrowth info={data} currentAsset={currentAsset} isShowBalance={isShowBalance} isLoading={isLoading}/>
           </BorderCard>
         </Flex>
         <Flex flexDirection={["column", "column", "column", "column", "row"]} mt="16px">
           <BorderCard style={{ flex: 1 }}>
             <StyledTitle>Total Asset</StyledTitle>
-						<TotalProfits info={data} currentAsset={currentAsset} isShowBalance={isShowBalance}/>
+						<TotalProfits info={data} currentAsset={currentAsset} isShowBalance={isShowBalance} isLoading={isLoading}/>
           </BorderCard>
           <BorderCard style={{ flex: 1 }} ml={["0", "0", "0", "0", "16px"]} mt={["16px", "16px", "16px", "16px", "0"]}>
             <StyledTitle>Daily Profit</StyledTitle>
-						<DailyProfit info={data} currentAsset={currentAsset} isShowBalance={isShowBalance}/>
+						<DailyProfit info={data} currentAsset={currentAsset} isShowBalance={isShowBalance} isLoading={isLoading}/>
           </BorderCard>
         </Flex>
         {/* <OrdersAnalysis/> */}

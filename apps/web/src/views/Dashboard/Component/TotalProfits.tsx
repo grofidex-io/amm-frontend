@@ -40,7 +40,7 @@ const CustomTooltip = ({ active, payload, label, isShowBalance } : any) => {
 	return null
 }
 
-export default function TotalProfits({info, currentAsset, isShowBalance}) {
+export default function TotalProfits({info, currentAsset, isShowBalance, isLoading}) {
 	const listData = info?.data ? [...info?.data?.dailyAssets, ...currentAsset] : []
 	const data = listData.map((item, index) => {
 		return {
@@ -77,10 +77,14 @@ export default function TotalProfits({info, currentAsset, isShowBalance}) {
 						<Area type="monotone" dataKey="Total" stroke="#69CF00" fillOpacity={1} fill="url(#colorPv)" strokeWidth={2} activeDot={{ stroke: '#E1FABB', strokeWidth: 8, strokeOpacity: 0.5, r: 4 }}/>
 					</AreaChart>
 				) : (
-					<StyledNoData>
-						<img src="/images/no-data.svg" alt="" />
-						<span>No Data</span>
-					</StyledNoData>
+					<>
+					{!isLoading && (
+						<StyledNoData>
+							<img src="/images/no-data.svg" alt="" />
+							<span>No Data</span>
+						</StyledNoData>
+					)}
+					</>
 				)}
 			</ResponsiveContainer>
 		</Wrapper>

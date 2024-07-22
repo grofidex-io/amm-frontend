@@ -45,7 +45,7 @@ const CustomTooltip = ({ active, payload, label, isShowBalance } : any) => {
 	return null
 }
 
-export default function DailyProfit({info, currentAsset, isShowBalance}) {
+export default function DailyProfit({info, currentAsset, isShowBalance, isLoading}) {
 	const getKey = (value: string) => {
 		if(Number(value) > 0) {
 			return 'pv'
@@ -79,10 +79,14 @@ export default function DailyProfit({info, currentAsset, isShowBalance}) {
 					<Bar dataKey="uv" name="Profit" stackId="a" fill="#FE5300" />
 				</BarChart>
 			) : (
-				<StyledNoData>
-					<img src="/images/no-data.svg" alt="" />
-					<span>No Data</span>
-				</StyledNoData>
+				<>
+					{!isLoading && (
+						<StyledNoData>
+							<img src="/images/no-data.svg" alt="" />
+							<span>No Data</span>
+						</StyledNoData>
+					)}
+					</>
 			)}
 		</StyledResponsiveContainer>
 

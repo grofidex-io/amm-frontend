@@ -30,7 +30,7 @@ const StyledChart = styled(Box)`
 		--size: 250px;
 	}
 `
-export default function AssetAllocation ({balances, listAssetAllocation, totalValue, isShowBalance}) {
+export default function AssetAllocation ({balances, listAssetAllocation, totalValue, isShowBalance, isLoading}) {
 
 	const doughnutLabel = {
 		id: 'doughnutLabel',
@@ -64,7 +64,7 @@ export default function AssetAllocation ({balances, listAssetAllocation, totalVa
 	return (
 		<Box>
 			<StyledChart>
-				{Object.keys(listAssetAllocation)?.length > 0 ? (
+				{Object.keys(listAssetAllocation)?.length > 0  ? (
 					<Doughnut
 						data={data}
 						options={{
@@ -100,10 +100,14 @@ export default function AssetAllocation ({balances, listAssetAllocation, totalVa
 						plugins={[doughnutLabel]}
 					/>
 				) : (
-					<StyledNoData>
-						<img src="/images/no-data.svg" alt="" />
-						<span>No Data</span>
-					</StyledNoData>
+					<>
+					{!isLoading && (
+						<StyledNoData>
+							<img src="/images/no-data.svg" alt="" />
+							<span>No Data</span>
+						</StyledNoData>
+					)}
+					</>
 				)}
 			</StyledChart>
 		</Box>
