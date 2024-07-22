@@ -46,7 +46,7 @@ export default function TotalProfits({info, currentAsset, isShowBalance}) {
 		return {
 			name: dayjs.unix(item.timestamp).format('YYYY-MM-DD'),
 			Total: Number(item?.totalAssets),
-			pnl: !listData[index-1]?.totalAssets ? 0 : item.totalAssets && BigNumber(item.totalAssets).minus(listData[index-1]?.totalAssets).div(listData[index-1]?.totalAssets).multipliedBy(100).toNumber()
+			pnl: !listData[index-1]?.totalAssets ? 0 : item.totalAssets && Number(listData[index-1]?.totalAssets) ? BigNumber(item.totalAssets).minus(listData[index-1]?.totalAssets).div(listData[index-1]?.totalAssets).multipliedBy(100).toNumber() : 0
 		}
 	})
 	return (

@@ -191,7 +191,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 
 
 	const { data: dataPrev } = useFetchUserInfo(account, TimeType.PREV)
-  const percentPrev: number = dataPrev?.data?.dailyAssets[0]?.totalAssets ? (BigNumber(totalValue).minus(dataPrev?.data?.dailyAssets[0].totalAssets).div(totalValue).multipliedBy(100).toNumber()) : 0
+  const percentPrev: number = totalValue && dataPrev?.data?.dailyAssets[0]?.totalAssets ? (BigNumber(totalValue).minus(dataPrev?.data?.dailyAssets[0].totalAssets).div(totalValue).multipliedBy(100).toNumber()) : 0
 	let totalProfitFromData = 0
 	const dailyAssets = data?.data ? [...data?.data?.dailyAssets, ...currentAsset] : []
 	forEach(dailyAssets, (item, index: number)=> {
@@ -199,7 +199,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 		totalProfitFromData += _asset
 	})
 
-	const percentTotal: number = totalProfitFromData && dailyAssets[0] ? (BigNumber(totalProfitFromData).minus(dailyAssets[0].totalAssets).div(dailyAssets[0].totalAssets).multipliedBy(100).toNumber()) : 0
+	const percentTotal: number = totalProfitFromData && dailyAssets[0].totalAssets ? (BigNumber(totalProfitFromData).minus(dailyAssets[0].totalAssets).div(dailyAssets[0].totalAssets).multipliedBy(100).toNumber()) : 0
 	const maxDate = dayjs().utc().subtract(1, 'days').set('hour', 0).set('minute', 0).set('second', 0)
 
 	const handleShowHideBalance = () => {

@@ -43,12 +43,12 @@ export default function AssetAllocation ({balances, listAssetAllocation, totalVa
 			ctx.fillStyle = 'white'
 			ctx.textAlign = 'center'
 			ctx.textBaseline = 'middle'
-			ctx.fillText(chart.data.datasets[0].isShowBalance ? `${formatNumber(chart.data.datasets[0].total)} USDT` : '****', centerX, centerY)
+			ctx.fillText(chart.data.datasets[0].isShowBalance ? `${formatNumber(chart.data.datasets[0].total, 0, 4)} USDT` : '****', centerX, centerY)
 		}
 	}
 
 	const data = {
-		labels: Object.keys(balances)?.map((id: any) => { return window.innerWidth > 576 ? `${balances[id]?.symbol} - ${formatNumber(BigNumber(listAssetAllocation[id]).div(totalValue).multipliedBy(100).toNumber(), 0, 2)}%` : `${balances[id]?.symbol}` }),
+		labels: Object.keys(balances)?.map((id: any) => { return window.innerWidth > 576 ? `${balances[id]?.symbol} - ${totalValue ? formatNumber(BigNumber(listAssetAllocation[id]).div(totalValue).multipliedBy(100).toNumber(), 0, 2) : 0}%` : `${balances[id]?.symbol}` }),
 		datasets: [{
 			label: 'Total Asset',
 			total: totalValue,

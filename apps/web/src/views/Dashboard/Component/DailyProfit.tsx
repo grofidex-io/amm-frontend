@@ -55,7 +55,7 @@ export default function DailyProfit({info, currentAsset, isShowBalance}) {
 	const listData = info?.data ? [...info?.data?.dailyAssets, ...currentAsset] : []
 	const data = listData.map((item, index) => {
 		const _asset = index === 0 ? item.totalAssets : listData[index] && (Number(listData[index].totalAssets) - Number(listData[index - 1].totalAssets)).toFixed(4)
-		const pnl = !listData[index-1]?.totalAssets ? 0 : item.totalAssets && BigNumber(item.totalAssets).minus(listData[index-1]?.totalAssets).div(listData[index-1]?.totalAssets).multipliedBy(100).toNumber()
+		const pnl = !listData[index-1]?.totalAssets ? 0 : item.totalAssets && Number(listData[index-1]?.totalAssets) ? BigNumber(item.totalAssets).minus(listData[index-1]?.totalAssets).div(listData[index-1]?.totalAssets).multipliedBy(100).toNumber() : 0
 		return {
 			name: dayjs.unix(item.timestamp).format('YYYY-MM-DD'),
 			[getKey(_asset)]: Number(_asset),
