@@ -9,7 +9,7 @@ export const useFetchListBalance = (listToken: any) => {
 	const { account , chainId } = useAccountActiveChain()
 	const client = publicClient({ chainId })
   return useQuery({
-    queryKey: ['fetchListBalance'],
+    queryKey: ['fetchListBalance', account],
     queryFn: async () => {
 			const listContract: any = listToken.map((item) => {
 				return {

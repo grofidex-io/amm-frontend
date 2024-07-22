@@ -1,4 +1,5 @@
 import { Box, Flex, Text } from '@pancakeswap/uikit';
+import { formatNumber } from '@pancakeswap/utils/formatBalance';
 import dayjs from 'dayjs';
 import forEach from 'lodash/forEach';
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
@@ -38,7 +39,7 @@ const CustomTooltip = ({ active, payload, label, isShowBalance }: any) => {
 						return (
 							<Flex alignItems="center" mb="1">
 								<Circle color={item.color}/>
-								<p className="intro">{item.name} : <span style={{fontWeight: 'bold'}}> { isShowBalance ? `${item.value} USDT` : '****'}</span></p>
+								<p className="intro">{item.name} : <span style={{fontWeight: 'bold'}}> { isShowBalance ? `${formatNumber(item.value)} USDT` : '****'}</span></p>
 							</Flex>
 						)
 					})
@@ -50,9 +51,10 @@ const CustomTooltip = ({ active, payload, label, isShowBalance }: any) => {
 
   return null;
 };
+
 export default function AssetGrowth({info, currentAsset, isShowBalance}: any) {
 	let listLine: any = []
-	const dataChart = info && [...info?.data?.dailyAssets, ...currentAsset].map((item) => {
+	const dataChart = info?.data && [...info?.data?.dailyAssets, ...currentAsset].map((item) => {
 		listLine = []
 		let newItem = {
 			name: dayjs.unix(item.timestamp).format('YYYY-MM-DD'),

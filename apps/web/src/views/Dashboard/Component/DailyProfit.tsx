@@ -28,11 +28,11 @@ const CustomTooltip = ({ active, payload, label, isShowBalance } : any) => {
 							<>
 								<Flex alignItems="center" mb="1">
 									<Circle color="#E1FABB" size="6px" />
-									<p>Total Profit: <span>{isShowBalance ? `${item.value} USDT` : '****'} </span></p>
+									<p>Total Profit: <span>{isShowBalance ? `${formatNumber(Number(item.value), 0, 4)} USDT` : '****'} </span></p>
 								</Flex>
 								<Flex alignItems="center" mb="1">
 									<Circle color="#E1FABB" size="6px" />
-									<p>Total PnL: <span>{isShowBalance ? `${item.payload?.pnl && formatNumber(item.payload?.pnl, 0, 6)}%` : '****'} </span></p>
+									<p>Total PnL: <span>{isShowBalance ? `${item.payload?.pnl && formatNumber(Number(item.payload?.pnl), 0, 6)}%` : '****'} </span></p>
 								</Flex>
 							</>
 

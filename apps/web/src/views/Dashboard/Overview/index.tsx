@@ -17,7 +17,7 @@ import AssetAllocation from '../Component/AssetAllocation';
 import AssetGrowth from '../Component/AssetGrowth';
 import DailyProfit from '../Component/DailyProfit';
 import TotalProfits from '../Component/TotalProfits';
-import { GROFI_SHOW_BALANCE } from '../helper';
+import { getPercent, GROFI_SHOW_BALANCE } from '../helper';
 import { useFetchListBalance } from '../hooks/useFetchListBalance';
 import { useFetchUserCurrency } from '../hooks/useFetchUserCurrency';
 import { useFetchUserInfo } from '../hooks/useFetchUserInfo';
@@ -149,8 +149,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 		totalValue += value
 		listAssetAllocation[id] = value
 	})
-	totalValue = Number(formatNumber(totalValue, 0, 4))
-
+	totalValue = Number(totalValue).toFixed(4)
 
   const handleDateChange = (key: string) => (value: Date) => {
 		if(key === 'startDate') {
@@ -185,13 +184,12 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 				}
 			}),
 			timestamp: Math.floor(dayjs().utc().set('hour', 0).set('minute', 0).set('second', 0).valueOf()/1000),
-			totalAssets: Number(totalValue.toFixed(4))
+			totalAssets: totalValue
 		}]
 }
 
-
 	const { data: dataPrev } = useFetchUserInfo(account, TimeType.PREV)
-  const percentPrev: number = totalValue && dataPrev?.data?.dailyAssets[0]?.totalAssets ? (BigNumber(totalValue).minus(dataPrev?.data?.dailyAssets[0].totalAssets).div(dataPrev?.data?.dailyAssets[0].totalAssets).multipliedBy(100).toNumber()) : 0
+  const percentPrev: number = getPercent(totalValue, dataPrev?.data?.dailyAssets[0]?.totalAssets) // totalValue && Number(dataPrev?.data?.dailyAssets[0]?.totalAssets) ? (BigNumber(totalValue).minus(dataPrev?.data?.dailyAssets[0].totalAssets).div(dataPrev?.data?.dailyAssets[0].totalAssets).multipliedBy(100).toNumber()) :  Number(dataPrev?.data?.dailyAssets[0]?.totalAssets) ? 0 : 100
 	let totalProfitFromData = 0
 	const dailyAssets = data?.data ? [...data?.data?.dailyAssets, ...currentAsset] : []
 	forEach(dailyAssets, (item, index: number)=> {
@@ -199,7 +197,7 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 		totalProfitFromData += _asset
 	})
 
-	const percentTotal: number = totalProfitFromData && dailyAssets[0].totalAssets ? (BigNumber(totalProfitFromData).minus(dailyAssets[0].totalAssets).div(dailyAssets[0].totalAssets).multipliedBy(100).toNumber()) : 0
+	const percentTotal: number = getPercent(totalProfitFromData, dailyAssets[0]?.totalAssets) // ? (BigNumber(totalProfitFromData).minus(dailyAssets[0].totalAssets).div(dailyAssets[0].totalAssets).multipliedBy(100).toNumber()) : 0
 	const maxDate = dayjs().utc().subtract(1, 'days').set('hour', 0).set('minute', 0).set('second', 0)
 
 	const handleShowHideBalance = () => {
@@ -281,12 +279,12 @@ export const Overview: React.FC<React.PropsWithChildren> = () => {
 					</Flex>
 					<Box>
 						<Text color="text" fontSize={["20px", "20px", "24px", "24px", "28px", "28px", "32px"]} fontWeight="700" lineHeight="1.2">
-							{isShowBalance ? `${formatNumber(totalValue, 0, 4)} USDT` : '*****'} 
+							{isShowBalance ? `${Number(totalValue) ? formatNumber(Number(totalValue), 0, 4) : 0} USDT` : '*****'} 
 						</Text>
 						<Flex alignItems="center" mt="8px">
 							{isShowBalance && <Text color="textSubtle" fontSize="16px" fontWeight="500" >≈</Text>}
 							<Text color='textSubtle' fontSize="16px" fontWeight="500" ml="6px">
-								{isShowBalance ? `${formatNumber(totalValue, 0, 4)} USD` : '*****'}
+								{isShowBalance ? `${Number(totalValue) ? formatNumber(Number(totalValue), 0, 4) : 0} USD` : '*****'}
 							</Text>
 						</Flex>
 					</Box>
